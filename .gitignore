@@ -1,0 +1,66 @@
+# Laravel & PHP Files
+/vendor/
+/node_modules/
+
+# Laravel Environment Files
+.env
+.env.*.backup
+
+# Log Files
+/storage/logs/*.log
+/bootstrap/cache/*
+
+# Cache Files
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*/
+
+
+/storage/logs/*
+# Public Disk Storage (Optional, based on project needs)
+/storage/app/public/*
+/storage/public/*
+
+# Debugbar
+/storage/debugbar/*
+/storage/app/public/.gitignore
+# Composer Files
+composer.lock
+
+# NPM/Yarn Files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+/public/build/
+# IDE Specific
+.idea/
+/.vscode/
+/nbproject/
+/*.iml
+
+# OS Specific
+.DS_Store
+Thumbs.db
+
+# PHPUnit
+.phpunit.result.cache
+
+# Backup Files
+*.bak
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# Other
+public/hot
+public/storage
+/public/*.map
+/public/mix-manifest.json
+/smtptest/*
+
+# Deployment Files
+homestead.yaml
+Homestead.yaml
+nginx.conf
+docker-compose.yml
