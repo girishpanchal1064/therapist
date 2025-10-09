@@ -72,9 +72,9 @@ Route::middleware('auth')->group(function () {
 });
 
 // Placeholder routes for other pages
-Route::get('/assessments', function () {
-    return view('web.assessments.index');
-})->name('assessments.index');
+Route::get('/assessments', [App\Http\Controllers\Web\AssessmentController::class, 'index'])->name('assessments.index');
+Route::get('/assessments/{slug}', [App\Http\Controllers\Web\AssessmentController::class, 'show'])->name('assessments.show');
+Route::get('/assessments/{slug}/start', [App\Http\Controllers\Web\AssessmentController::class, 'start'])->name('assessments.start');
 
 Route::get('/blog', [App\Http\Controllers\Web\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [App\Http\Controllers\Web\BlogController::class, 'show'])->name('blog.show');
