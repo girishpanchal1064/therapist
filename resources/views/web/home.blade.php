@@ -333,10 +333,17 @@
 
                         <!-- Action Buttons -->
                         <div class="action-buttons space-y-2">
-                            <a href="{{ route('booking.form', $therapist->id) }}"
-                               class="btn-primary w-full text-center block py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
-                                Book a session
-                            </a>
+                            @auth
+                                <a href="{{ route('booking.form', $therapist->id) }}"
+                                   class="btn-primary w-full text-center block py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
+                                    Book a session
+                                </a>
+                            @else
+                                <a href="{{ route('login', ['redirect' => route('booking.form', $therapist->id)]) }}"
+                                   class="btn-primary w-full text-center block py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
+                                    Login to Book
+                                </a>
+                            @endauth
                             <a href="{{ route('therapists.show', $therapist->id) }}"
                                class="btn-outline w-full text-center block py-2 border border-teal-500 text-teal-600 rounded-lg hover:bg-teal-50 transition-colors">
                                 View Profile

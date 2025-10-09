@@ -9,8 +9,18 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        // Store the intended URL for redirect after login
+        if ($request->has('redirect')) {
+            session(['url.intended' => $request->redirect]);
+
+            // Check if it's a booking redirect
+            if (str_contains($request->redirect, '/book/')) {
+                session(['booking_redirect' => true]);
+            }
+        }
+
         return view('auth.login');
     }
 

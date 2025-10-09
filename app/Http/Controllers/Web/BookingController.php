@@ -15,9 +15,15 @@ class BookingController extends Controller
     public function showBookingForm($therapistId)
     {
         $therapist = User::with('therapistProfile')->findOrFail($therapistId);
-        
+
         if (!$therapist->isTherapist() || !$therapist->therapistProfile) {
             abort(404, 'Therapist not found');
+        }
+
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login', ['redirect' => route('booking.form', $therapistId)])
+                ->with('message', 'Please login first to book a session with ' . $therapist->name . '. After logging in, you will be redirected to complete your booking.');
         }
 
         return view('web.booking.form', compact('therapist'));
@@ -30,7 +36,7 @@ class BookingController extends Controller
         $sessionMode = $request->session_mode ?? 'video';
 
         $therapist = User::findOrFail($therapistId);
-        
+
         if (!$therapist->isTherapist()) {
             return response()->json(['error' => 'Therapist not found'], 404);
         }
@@ -97,7 +103,7 @@ class BookingController extends Controller
         ]);
 
         $therapist = User::findOrFail($request->therapist_id);
-        
+
         if (!$therapist->isTherapist()) {
             return back()->withErrors(['error' => 'Therapist not found']);
         }

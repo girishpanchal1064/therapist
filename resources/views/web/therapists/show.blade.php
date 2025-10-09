@@ -279,7 +279,7 @@
                                     Book Session
                                 </a>
                             @else
-                                <a href="{{ route('login') }}"
+                                <a href="{{ route('login', ['redirect' => route('booking.form', $therapist->id)]) }}"
                                    class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-primary-700 hover:to-secondary-700 transition-all duration-200 flex items-center justify-center mb-6">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
