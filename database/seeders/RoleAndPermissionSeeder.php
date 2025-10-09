@@ -23,7 +23,7 @@ class RoleAndPermissionSeeder extends Seeder
             'delete users',
             'suspend users',
             'activate users',
-            
+
             // Therapist management
             'view therapists',
             'create therapists',
@@ -32,7 +32,7 @@ class RoleAndPermissionSeeder extends Seeder
             'verify therapists',
             'approve therapists',
             'reject therapists',
-            
+
             // Appointment management
             'view appointments',
             'create appointments',
@@ -41,38 +41,38 @@ class RoleAndPermissionSeeder extends Seeder
             'cancel appointments',
             'reschedule appointments',
             'complete appointments',
-            
+
             // Payment management
             'view payments',
             'process payments',
             'refund payments',
             'view financial reports',
-            
+
             // Content management
             'view blog posts',
             'create blog posts',
             'edit blog posts',
             'delete blog posts',
             'publish blog posts',
-            
+
             // Assessment management
             'view assessments',
             'create assessments',
             'edit assessments',
             'delete assessments',
             'view assessment results',
-            
+
             // Review management
             'view reviews',
             'approve reviews',
             'reject reviews',
             'delete reviews',
-            
+
             // Settings management
             'view settings',
             'edit settings',
             'view system logs',
-            
+
             // Client specific permissions
             'book appointments',
             'view own appointments',
@@ -86,7 +86,7 @@ class RoleAndPermissionSeeder extends Seeder
             'take assessments',
             'view own reviews',
             'create reviews',
-            
+
             // Therapist specific permissions
             'view own appointments',
             'manage own availability',
@@ -102,10 +102,14 @@ class RoleAndPermissionSeeder extends Seeder
         }
 
         // Create roles
+        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $therapistRole = Role::firstOrCreate(['name' => 'therapist']);
         $clientRole = Role::firstOrCreate(['name' => 'client']);
         $corporateAdminRole = Role::firstOrCreate(['name' => 'corporate_admin']);
+
+        // Assign permissions to super admin role (full access)
+        $superAdminRole->givePermissionTo(Permission::all());
 
         // Assign permissions to admin role
         $adminRole->givePermissionTo([

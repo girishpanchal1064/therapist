@@ -1,0 +1,226 @@
+{
+  "menu": [
+    {
+      "url": "/admin",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ri-home-smile-line",
+      "slug": "admin.dashboard"
+    },
+    {
+      "menuHeader": "User Management"
+    },
+    {
+      "name": "Users",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "admin.users",
+      "submenu": [
+        {
+          "url": "/admin/users",
+          "name": "All Users",
+          "slug": "admin.users.index"
+        },
+        {
+          "url": "/admin/users/create",
+          "name": "Add User",
+          "slug": "admin.users.create"
+        }
+      ]
+    },
+    {
+      "name": "Therapists",
+      "icon": "menu-icon tf-icons ri-user-heart-line",
+      "slug": "admin.therapists",
+      "submenu": [
+        {
+          "url": "/admin/therapists",
+          "name": "All Therapists",
+          "slug": "admin.therapists.index"
+        },
+        {
+          "url": "/admin/therapists/pending",
+          "name": "Pending Approval",
+          "slug": "admin.therapists.pending"
+        },
+        {
+          "url": "/admin/therapists/create",
+          "name": "Add Therapist",
+          "slug": "admin.therapists.create"
+        }
+      ]
+    },
+    {
+      "menuHeader": "Appointments & Sessions"
+    },
+    {
+      "name": "Appointments",
+      "icon": "menu-icon tf-icons ri-calendar-check-line",
+      "slug": "admin.appointments",
+      "submenu": [
+        {
+          "url": "/admin/appointments",
+          "name": "All Appointments",
+          "slug": "admin.appointments.index"
+        },
+        {
+          "url": "/admin/appointments/today",
+          "name": "Today's Appointments",
+          "slug": "admin.appointments.today"
+        },
+        {
+          "url": "/admin/appointments/create",
+          "name": "Schedule Appointment",
+          "slug": "admin.appointments.create"
+        }
+      ]
+    },
+    {
+      "menuHeader": "Content Management"
+    },
+    {
+      "name": "Blog Posts",
+      "icon": "menu-icon tf-icons ri-article-line",
+      "slug": "admin.blog",
+      "submenu": [
+        {
+          "url": "/admin/blog",
+          "name": "All Posts",
+          "slug": "admin.blog.index"
+        },
+        {
+          "url": "/admin/blog/create",
+          "name": "Create Post",
+          "slug": "admin.blog.create"
+        },
+        {
+          "url": "/admin/blog/categories",
+          "name": "Categories",
+          "slug": "admin.blog.categories"
+        }
+      ]
+    },
+    {
+      "name": "Assessments",
+      "icon": "menu-icon tf-icons ri-file-list-3-line",
+      "slug": "admin.assessments",
+      "submenu": [
+        {
+          "url": "/admin/assessments",
+          "name": "All Assessments",
+          "slug": "admin.assessments.index"
+        },
+        {
+          "url": "/admin/assessments/create",
+          "name": "Create Assessment",
+          "slug": "admin.assessments.create"
+        },
+        {
+          "url": "/admin/assessments/results",
+          "name": "Assessment Results",
+          "slug": "admin.assessments.results"
+        }
+      ]
+    },
+    {
+      "menuHeader": "Financial"
+    },
+    {
+      "name": "Payments",
+      "icon": "menu-icon tf-icons ri-money-dollar-circle-line",
+      "slug": "admin.payments",
+      "submenu": [
+        {
+          "url": "/admin/payments",
+          "name": "All Payments",
+          "slug": "admin.payments.index"
+        },
+        {
+          "url": "/admin/payments/pending",
+          "name": "Pending Payments",
+          "slug": "admin.payments.pending"
+        },
+        {
+          "url": "/admin/payments/reports",
+          "name": "Financial Reports",
+          "slug": "admin.payments.reports"
+        }
+      ]
+    },
+    {
+      "menuHeader": "Reviews & Feedback"
+    },
+    {
+      "name": "Reviews",
+      "icon": "menu-icon tf-icons ri-star-line",
+      "slug": "admin.reviews",
+      "submenu": [
+        {
+          "url": "/admin/reviews",
+          "name": "All Reviews",
+          "slug": "admin.reviews.index"
+        },
+        {
+          "url": "/admin/reviews/pending",
+          "name": "Pending Reviews",
+          "slug": "admin.reviews.pending"
+        }
+      ]
+    },
+    {
+      "menuHeader": "System"
+    },
+    {
+      "name": "Settings",
+      "icon": "menu-icon tf-icons ri-settings-3-line",
+      "slug": "admin.settings",
+      "submenu": [
+        {
+          "url": "/admin/settings/general",
+          "name": "General Settings",
+          "slug": "admin.settings.general"
+        },
+        {
+          "url": "/admin/roles",
+          "name": "Roles Management",
+          "slug": "admin.roles.index"
+        },
+        {
+          "url": "/admin/permissions",
+          "name": "Permissions Management",
+          "slug": "admin.permissions.index"
+        },
+        {
+          "url": "/admin/user-roles",
+          "name": "User Role Assignment",
+          "slug": "admin.user-roles.index"
+        },
+        {
+          "url": "/admin/settings/system",
+          "name": "System Settings",
+          "slug": "admin.settings.system"
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "icon": "menu-icon tf-icons ri-bar-chart-line",
+      "slug": "admin.reports",
+      "submenu": [
+        {
+          "url": "/admin/reports/users",
+          "name": "User Reports",
+          "slug": "admin.reports.users"
+        },
+        {
+          "url": "/admin/reports/appointments",
+          "name": "Appointment Reports",
+          "slug": "admin.reports.appointments"
+        },
+        {
+          "url": "/admin/reports/financial",
+          "name": "Financial Reports",
+          "slug": "admin.reports.financial"
+        }
+      ]
+    }
+  ]
+}

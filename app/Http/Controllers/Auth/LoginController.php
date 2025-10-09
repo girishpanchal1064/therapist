@@ -40,7 +40,9 @@ class LoginController extends Controller
             $user->update(['last_login_at' => now()]);
 
             // Redirect based on role
-            if ($user->isTherapist()) {
+            if ($user->hasRole('super_admin') || $user->hasRole('admin')) {
+                return redirect()->intended(route('admin.dashboard'));
+            } elseif ($user->isTherapist()) {
                 return redirect()->intended(route('therapist.dashboard'));
             } else {
                 return redirect()->intended(route('client.dashboard'));
