@@ -23,6 +23,10 @@ class User extends Authenticatable
         'password',
         'role',
         'phone',
+        'avatar',
+        'date_of_birth',
+        'gender',
+        'address',
         'profile_completed',
         'status',
         'last_login_at',
@@ -49,6 +53,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'phone_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
+            'date_of_birth' => 'date',
             'password' => 'hashed',
             'profile_completed' => 'boolean',
         ];
@@ -195,8 +200,8 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute()
     {
-        return $this->profile ? 
-            $this->profile->first_name . ' ' . $this->profile->last_name : 
+        return $this->profile ?
+            $this->profile->first_name . ' ' . $this->profile->last_name :
             $this->name;
     }
 
@@ -205,8 +210,12 @@ class User extends Authenticatable
      */
     public function getAvatarAttribute()
     {
-        return $this->profile?->profile_image ? 
-            asset('storage/' . $this->profile->profile_image) : 
+        if ($this->attributes['avatar'] ?? null) {
+            return asset('storage/' . $this->attributes['avatar']);
+        }
+
+        return $this->profile?->profile_image ?
+            asset('storage/' . $this->profile->profile_image) :
             'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 }

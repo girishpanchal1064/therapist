@@ -104,12 +104,13 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <div class="d-grid px-4 pt-2 pb-1">
-                  <a class="btn btn-danger d-flex" href="javascript:void(0);">
+                <form method="POST" action="{{ route('admin.logout') }}" class="d-grid px-4 pt-2 pb-1">
+                  @csrf
+                  <button type="submit" class="btn btn-danger d-flex w-100">
                     <small class="align-middle">Logout</small>
                     <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
-                  </a>
-                </div>
+                  </button>
+                </form>
               </li>
             </ul>
           </li>

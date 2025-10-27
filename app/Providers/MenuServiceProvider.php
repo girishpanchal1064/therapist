@@ -95,6 +95,9 @@ class MenuServiceProvider extends ServiceProvider
         // Define permission mapping for menu items
         $permissionMap = [
             'admin.dashboard' => ['view users', 'view therapists', 'view appointments'],
+            'admin.profile' => ['view profile'],
+            'admin.profile.index' => ['view profile'],
+            'admin.profile.edit' => ['view profile'],
             'admin.users' => ['view users'],
             'admin.users.index' => ['view users'],
             'admin.users.create' => ['create users'],

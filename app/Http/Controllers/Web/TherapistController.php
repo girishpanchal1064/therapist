@@ -146,13 +146,13 @@ class TherapistController extends Controller
         // Handle AJAX requests
         if ($request->ajax()) {
             $viewType = $request->get('view_type', 'card');
-            
+
             if ($viewType === 'list') {
                 $html = view('web.therapists.partials.list-view', compact('therapists'))->render();
             } else {
                 $html = view('web.therapists.partials.card-view', compact('therapists'))->render();
             }
-            
+
             return response()->json([
                 'html' => $html,
                 'pagination' => $therapists->links()->render(),

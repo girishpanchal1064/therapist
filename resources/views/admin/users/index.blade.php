@@ -2,6 +2,16 @@
 
 @section('title', 'Users Management')
 
+@section('vendor-style')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+@endsection
+
+@section('vendor-script')
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+@endsection
+
 @section('content')
 <div class="row">
   <div class="col-12">
@@ -47,6 +57,21 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Fallback loading message -->
+        <div id="loadingMessage" class="text-center py-4" style="display: none;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Loading users...</p>
+        </div>
+
+        <!-- Error message -->
+        <div id="errorMessage" class="alert alert-danger" style="display: none;">
+          <h6>Error Loading Users</h6>
+          <p id="errorText"></p>
+          <button class="btn btn-sm btn-outline-danger" onclick="location.reload()">Retry</button>
+        </div>
       </div>
     </div>
   </div>
@@ -56,12 +81,41 @@
 @section('page-script')
 <script>
 $(document).ready(function() {
+    console.log('Initializing DataTable...');
+
+    // Show loading message
+    $('#loadingMessage').show();
+    $('#usersTable').hide();
+
     $('#usersTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: "{{ route('admin.users.index') }}",
-            type: 'GET'
+            type: 'GET',
+            data: function(d) {
+                console.log('DataTables AJAX Request Data:', d);
+                return d;
+            },
+            dataSrc: function(json) {
+                console.log('DataTables AJAX Response:', json);
+                // Hide loading message and show table
+                $('#loadingMessage').hide();
+                $('#usersTable').show();
+                return json.data;
+            },
+            error: function(xhr, error, thrown) {
+                console.error('DataTables AJAX Error:', error);
+                console.error('Response Status:', xhr.status);
+                console.error('Response Text:', xhr.responseText);
+                console.error('Thrown:', thrown);
+
+                // Hide loading message and show error
+                $('#loadingMessage').hide();
+                $('#usersTable').hide();
+                $('#errorText').text('Failed to load users data. Please check the console for details.');
+                $('#errorMessage').show();
+            }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
@@ -90,8 +144,28 @@ $(document).ready(function() {
                 next: "Next",
                 previous: "Previous"
             }
+        },
+        drawCallback: function(settings) {
+            console.log('DataTable draw completed');
+            console.log('Data:', settings.json);
+        },
+        initComplete: function(settings, json) {
+            console.log('DataTable initialization completed');
+            console.log('Initial data:', json);
         }
     });
+
+    console.log('DataTable initialized');
+
+    // Set a timeout to show error if DataTables doesn't load within 10 seconds
+    setTimeout(function() {
+        if ($('#loadingMessage').is(':visible')) {
+            $('#loadingMessage').hide();
+            $('#usersTable').hide();
+            $('#errorText').text('DataTables failed to load within 10 seconds. Please refresh the page.');
+            $('#errorMessage').show();
+        }
+    }, 10000);
 });
 </script>
 @endsection

@@ -14,7 +14,7 @@ class DataTablesServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('datatables', function ($app) {
-            return new DataTablesHelper($app['request']);
+            return new DataTablesHelper(null, $app['request']);
         });
     }
 

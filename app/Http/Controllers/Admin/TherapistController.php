@@ -17,7 +17,7 @@ class TherapistController extends Controller
     {
         $therapists = User::whereHas('roles', function($query) {
             $query->where('name', 'therapist');
-        })->with(['therapistProfile', 'specializations'])->paginate(15);
+        })->with(['therapistProfile.specializations'])->paginate(15);
 
         return view('admin.therapists.index', compact('therapists'));
     }
@@ -83,7 +83,10 @@ class TherapistController extends Controller
             'is_approved' => true,
         ]);
 
-        $user->specializations()->attach($request->specializations);
+        // Attach specializations to therapist profile
+        if ($user->therapistProfile) {
+            $user->therapistProfile->specializations()->attach($request->specializations);
+        }
 
         return redirect()->route('admin.therapists.index')
             ->with('success', 'Therapist created successfully.');
@@ -91,14 +94,14 @@ class TherapistController extends Controller
 
     public function show(User $therapist)
     {
-        $therapist->load(['therapistProfile', 'specializations', 'appointmentsAsTherapist.client']);
+        $therapist->load(['therapistProfile.specializations', 'appointmentsAsTherapist.client']);
         return view('admin.therapists.show', compact('therapist'));
     }
 
     public function edit(User $therapist)
     {
         $specializations = TherapistSpecialization::all();
-        $therapist->load(['therapistProfile', 'specializations']);
+        $therapist->load(['therapistProfile.specializations']);
         return view('admin.therapists.edit', compact('therapist', 'specializations'));
     }
 
@@ -155,7 +158,10 @@ class TherapistController extends Controller
             'education' => $request->education,
         ]);
 
-        $therapist->specializations()->sync($request->specializations);
+        // Sync specializations with therapist profile
+        if ($therapist->therapistProfile) {
+            $therapist->therapistProfile->specializations()->sync($request->specializations);
+        }
 
         return redirect()->route('admin.therapists.index')
             ->with('success', 'Therapist updated successfully.');
@@ -179,7 +185,7 @@ class TherapistController extends Controller
             $query->where('name', 'therapist');
         })->whereHas('therapistProfile', function($query) {
             $query->where('is_approved', false);
-        })->with(['therapistProfile', 'specializations'])->paginate(15);
+        })->with(['therapistProfile.specializations'])->paginate(15);
 
         return view('admin.therapists.pending', compact('therapists'));
     }

@@ -17,7 +17,7 @@ class BackendAccess
     {
         // Check if user is authenticated
         if (!auth()->check()) {
-            return redirect()->route('login');
+            return redirect()->route('admin.login');
         }
 
         $user = auth()->user();

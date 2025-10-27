@@ -14,10 +14,10 @@ class DataTablesHelper
     protected $searchableColumns = [];
     protected $orderableColumns = [];
 
-    public function __construct($query, Request $request)
+    public function __construct($query, Request $request = null)
     {
         $this->query = $query;
-        $this->request = $request;
+        $this->request = $request ?: request();
     }
 
     public static function of($query, Request $request = null)

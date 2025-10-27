@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\UserRoleController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +28,52 @@ use App\Http\Controllers\Admin\UserRoleController;
 |
 */
 
+// Admin Authentication Routes (outside middleware)
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AdminAuthController::class, 'login']);
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+        // Debug route to test logout
+        Route::get('/logout-debug', function() {
+            return response()->json([
+                'message' => 'Logout debug route hit',
+                'user_authenticated' => auth()->check(),
+                'user_id' => auth()->id(),
+                'user_email' => auth()->user() ? auth()->user()->email : 'No user'
+            ]);
+        })->name('logout.debug');
+
+        // Debug route to test users data
+        Route::get('/users-debug', function() {
+            $users = \App\Models\User::with('roles')->get();
+            return response()->json([
+                'total_users' => $users->count(),
+                'users' => $users->map(function($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'roles' => $user->roles->pluck('name')->toArray(),
+                        'status' => $user->status
+                    ];
+                })
+            ]);
+        })->name('users.debug');
+});
+
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->group(function () {
 
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Profile Management
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::put('/', [ProfileController::class, 'update'])->name('update');
+        Route::post('/password', [ProfileController::class, 'updatePassword'])->name('password');
+    });
 
     // User Management
     Route::resource('users', UserController::class);
