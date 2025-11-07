@@ -78,10 +78,10 @@ class AdminAuthController extends Controller
                     'session_destroyed' => true
                 ]);
 
-                return redirect()->route('admin.login')->with('success', 'You have been logged out successfully.');
+                return redirect()->route('login')->with('success', 'You have been logged out successfully.');
             } else {
                 \Log::warning('Admin logout called but no user authenticated');
-                return redirect()->route('admin.login')->with('error', 'No user was logged in.');
+                return redirect()->route('login')->with('error', 'No user was logged in.');
             }
         } catch (\Exception $e) {
             \Log::error('Admin logout error', [
@@ -91,7 +91,7 @@ class AdminAuthController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
 
-            return redirect()->route('admin.login')->with('error', 'Logout failed. Please try again.');
+            return redirect()->route('login')->with('error', 'Logout failed. Please try again.');
         }
     }
 }

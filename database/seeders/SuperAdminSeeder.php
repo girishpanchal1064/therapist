@@ -15,10 +15,6 @@ class SuperAdminSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create SuperAdmin role if it doesn't exist
-        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
-
-        // Create SuperAdmin user
         $superAdmin = User::firstOrCreate(
             ['email' => 'superadmin@therapist.com'],
             [
@@ -30,13 +26,8 @@ class SuperAdminSeeder extends Seeder
                 'profile_completed' => true,
             ]
         );
+        $superAdmin->assignRole('SuperAdmin');
 
-        // Assign SuperAdmin role
-        if (!$superAdmin->hasRole('super_admin')) {
-            $superAdmin->assignRole('super_admin');
-        }
-
-        // Create Admin user
         $admin = User::firstOrCreate(
             ['email' => 'admin@therapist.com'],
             [
@@ -48,17 +39,12 @@ class SuperAdminSeeder extends Seeder
                 'profile_completed' => true,
             ]
         );
+        $admin->assignRole('Admin');
 
-        // Assign Admin role
-        if (!$admin->hasRole('admin')) {
-            $admin->assignRole('admin');
-        }
-
-        // Create Therapist user
         $therapist = User::firstOrCreate(
             ['email' => 'therapist@therapist.com'],
             [
-                'name' => 'Test Therapist',
+                'name' => 'Therapist',
                 'email' => 'therapist@therapist.com',
                 'password' => Hash::make('password'),
                 'phone' => '+1234567892',
@@ -67,14 +53,6 @@ class SuperAdminSeeder extends Seeder
             ]
         );
 
-        // Assign Therapist role
-        if (!$therapist->hasRole('therapist')) {
-            $therapist->assignRole('therapist');
-        }
-
-        $this->command->info('SuperAdmin, Admin, and Therapist users created successfully!');
-        $this->command->info('SuperAdmin: superadmin@therapist.com / password');
-        $this->command->info('Admin: admin@therapist.com / password');
-        $this->command->info('Therapist: therapist@therapist.com / password');
+      $therapist->assignRole('Therapist');
     }
 }

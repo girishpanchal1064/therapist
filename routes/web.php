@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Therapist\DashboardController as TherapistDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Therapist\AvailabilityController as TherapistAvailabilityController;
+use App\Http\Controllers\Therapist\SessionController as TherapistSessionController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -34,15 +36,56 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/image', [ProfileController::class, 'deleteProfileImage'])->name('profile.image.delete');
 });
 
-// Client dashboard routes
-Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
-    Route::get('/dashboard', [ClientDashboardController::class, 'index'])->name('dashboard');
+// Admin dashboard (SuperAdmin and Admin share)
+Route::middleware(['auth', 'role:SuperAdmin|Admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 });
-
-
-// Therapist dashboard routes
-Route::middleware(['auth', 'role:therapist'])->prefix('therapist')->name('therapist.')->group(function () {
+// Therapist dashboard (controller)
+Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therapist.')->group(function () {
     Route::get('/dashboard', [TherapistDashboardController::class, 'index'])->name('dashboard');
+});
+// Therapist-specific profile routes
+Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therapist.')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::delete('/profile/image', [ProfileController::class, 'deleteProfileImage'])->name('profile.image.delete');
+    Route::get('/dashboard', [TherapistDashboardController::class, 'index'])->name('dashboard');
+
+    // Availability module
+    Route::prefix('availability')->name('availability.')->group(function () {
+        // Set Availability (Week wise)
+        Route::get('/set', [TherapistAvailabilityController::class, 'set'])->name('set');
+        Route::post('/set', [TherapistAvailabilityController::class, 'storeSet'])->name('set.store');
+        Route::put('/set/{availability}', [TherapistAvailabilityController::class, 'updateSet'])->name('set.update');
+        Route::delete('/set/{availability}', [TherapistAvailabilityController::class, 'destroySet'])->name('set.destroy');
+
+        // Single Availability (Single Day)
+        Route::get('/single', [TherapistAvailabilityController::class, 'single'])->name('single');
+        Route::post('/single', [TherapistAvailabilityController::class, 'storeSingle'])->name('single.store');
+        Route::put('/single/{availability}', [TherapistAvailabilityController::class, 'updateSingle'])->name('single.update');
+        Route::delete('/single/{availability}', [TherapistAvailabilityController::class, 'destroySingle'])->name('single.destroy');
+
+        // Block Availability
+        Route::get('/block', [TherapistAvailabilityController::class, 'block'])->name('block');
+        Route::post('/block/date', [TherapistAvailabilityController::class, 'storeBlockDate'])->name('block.date.store');
+        Route::put('/block/date/{block}', [TherapistAvailabilityController::class, 'updateBlockDate'])->name('block.date.update');
+        Route::post('/block/slot', [TherapistAvailabilityController::class, 'storeBlockSlots'])->name('block.slot.store');
+        Route::put('/block/slot/{block}', [TherapistAvailabilityController::class, 'updateBlockSlots'])->name('block.slot.update');
+        Route::post('/block/{block}/toggle', [TherapistAvailabilityController::class, 'toggleBlock'])->name('block.toggle');
+        Route::delete('/block/{block}', [TherapistAvailabilityController::class, 'destroyBlock'])->name('block.destroy');
+    });
+
+    // Online Sessions module
+    Route::prefix('sessions')->name('sessions.')->group(function () {
+        Route::get('/', [TherapistSessionController::class, 'index'])->name('index');
+    });
+});
+// Client dashboard (controller)
+Route::middleware(['auth', 'role:Client'])->prefix('client')->name('client.')->group(function () {
+    Route::get('/dashboard', [ClientDashboardController::class, 'index'])->name('dashboard');
 });
 
 // Therapist listing and booking routes

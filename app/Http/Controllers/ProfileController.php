@@ -18,6 +18,10 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = $user->profile ?? new UserProfile();
 
+        if (request()->routeIs('therapist.*')) {
+            return view('therapist.profile.edit', compact('profile'));
+        }
+
         return view('profile.edit', compact('profile'));
     }
 
@@ -82,6 +86,11 @@ class ProfileController extends Controller
 
         $profile->save();
 
+        if ($request->routeIs('therapist.*')) {
+            return redirect()->route('therapist.profile.edit')
+                ->with('success', 'Profile updated successfully!');
+        }
+
         return redirect()->route('profile.edit')
             ->with('success', 'Profile updated successfully!');
     }
@@ -99,6 +108,11 @@ class ProfileController extends Controller
         $user = Auth::user();
         $user->password = bcrypt($request->password);
         $user->save();
+
+        if ($request->routeIs('therapist.*')) {
+            return redirect()->route('therapist.profile.edit')
+                ->with('success', 'Password updated successfully!');
+        }
 
         return redirect()->route('profile.edit')
             ->with('success', 'Password updated successfully!');
@@ -119,6 +133,11 @@ class ProfileController extends Controller
 
             $profile->profile_image = null;
             $profile->save();
+        }
+
+        if (request()->routeIs('therapist.*')) {
+            return redirect()->route('therapist.profile.edit')
+                ->with('success', 'Profile image deleted successfully!');
         }
 
         return redirect()->route('profile.edit')

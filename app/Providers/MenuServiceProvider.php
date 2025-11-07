@@ -41,6 +41,63 @@ class MenuServiceProvider extends ServiceProvider
         // Load menu configuration
         $menuConfig = json_decode(file_get_contents(resource_path('menu/backendMenu.json')), true);
 
+        // Special handling for Therapist role: limit menu
+        if ($user->hasRole('Therapist')) {
+            $therapistMenu = [
+                [
+                    'url' => '/therapist/dashboard',
+                    'name' => 'Dashboard',
+                    'icon' => 'menu-icon tf-icons ri-home-smile-line',
+                    'slug' => 'therapist.dashboard'
+                ],
+                [
+                    'url' => '/therapist/profile',
+                    'name' => 'My Profile',
+                    'icon' => 'menu-icon tf-icons ri-user-line',
+                    'slug' => 'therapist.profile.edit'
+                ],
+                [
+                    'url' => '/therapist/sessions',
+                    'name' => 'Online Sessions',
+                    'icon' => 'menu-icon tf-icons ri-group-line',
+                    'slug' => 'therapist.sessions.index'
+                ],
+                [
+                    'name' => 'Availability',
+                    'icon' => 'menu-icon tf-icons ri-calendar-check-line',
+                    'slug' => 'therapist.availability',
+                    'submenu' => [
+                        [
+                            'url' => '/therapist/availability/set',
+                            'name' => 'Set Availability',
+                            'slug' => 'therapist.availability.set'
+                        ],
+                        [
+                            'url' => '/therapist/availability/single',
+                            'name' => 'Single Availability',
+                            'slug' => 'therapist.availability.single'
+                        ],
+                        [
+                            'url' => '/therapist/availability/block',
+                            'name' => 'Block Availability',
+                            'slug' => 'therapist.availability.block'
+                        ]
+                    ]
+                ]
+            ];
+
+            // Convert arrays to objects (including nested submenu items)
+            foreach ($therapistMenu as &$item) {
+                if (isset($item['submenu']) && is_array($item['submenu'])) {
+                    $item['submenu'] = array_map(function ($sub) { return (object) $sub; }, $item['submenu']);
+                }
+                $item = (object) $item;
+            }
+            unset($item);
+
+            return collect([(object)['menu' => $therapistMenu]]);
+        }
+
         // Filter menu items based on user permissions
         $filteredMenu = $this->filterMenuByPermissions($menuConfig['menu'], $user);
 
@@ -88,7 +145,7 @@ class MenuServiceProvider extends ServiceProvider
     private function canViewMenuItem($item, $user)
     {
         // Super admin can see everything
-        if ($user->hasRole('super_admin')) {
+        if ($user->hasRole('SuperAdmin')) {
             return true;
         }
 

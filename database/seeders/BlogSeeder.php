@@ -61,14 +61,16 @@ class BlogSeeder extends Seeder
         }
 
         // Get a therapist user to be the author
-        $author = User::where('role', 'therapist')->first();
+        $author = User::role('Therapist')->first();
         if (!$author) {
+            $therapistRole = \Spatie\Permission\Models\Role::where('name', 'Therapist')->first();
             $author = User::create([
                 'name' => 'Dr. Sarah Johnson',
                 'email' => 'sarah.johnson@example.com',
                 'password' => bcrypt('password'),
-                'role' => 'therapist',
+                'role_id' => $therapistRole?->id,
             ]);
+            $author->assignRole('Therapist');
         }
 
         // Create blog posts

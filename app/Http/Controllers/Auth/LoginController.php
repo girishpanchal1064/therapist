@@ -35,16 +35,16 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-
-            // Update last login
             $user->update(['last_login_at' => now()]);
 
             // Redirect based on role
-            if ($user->hasRole('super_admin') || $user->hasRole('admin')) {
+            if ($user->hasRole('SuperAdmin')) {
                 return redirect()->intended(route('admin.dashboard'));
-            } elseif ($user->isTherapist()) {
+            } elseif ($user->hasRole('Admin')) {
+                return redirect()->intended(route('admin.dashboard'));
+            } elseif ($user->hasRole('Therapist')) {
                 return redirect()->intended(route('therapist.dashboard'));
-            } else {
+            } elseif ($user->hasRole('Client')) {
                 return redirect()->intended(route('client.dashboard'));
             }
         }
@@ -61,6 +61,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }

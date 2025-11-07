@@ -102,11 +102,10 @@ class RoleAndPermissionSeeder extends Seeder
         }
 
         // Create roles
-        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin']);
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $therapistRole = Role::firstOrCreate(['name' => 'therapist']);
-        $clientRole = Role::firstOrCreate(['name' => 'client']);
-        $corporateAdminRole = Role::firstOrCreate(['name' => 'corporate_admin']);
+        $superAdminRole = Role::firstOrCreate(['name' => 'SuperAdmin']);
+        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
+        $therapistRole = Role::firstOrCreate(['name' => 'Therapist']);
+        $clientRole = Role::firstOrCreate(['name' => 'Client']);
 
         // Assign permissions to super admin role (full access)
         $superAdminRole->givePermissionTo(Permission::all());
@@ -134,12 +133,6 @@ class RoleAndPermissionSeeder extends Seeder
             'book appointments', 'view own appointments', 'cancel own appointments', 'reschedule own appointments',
             'view own profile', 'edit own profile', 'view own messages', 'send messages',
             'view own assessments', 'take assessments', 'view own reviews', 'create reviews',
-        ]);
-
-        // Assign permissions to corporate admin role
-        $corporateAdminRole->givePermissionTo([
-            'view users', 'create users', 'edit users', 'view appointments', 'view payments',
-            'view own profile', 'edit own profile',
         ]);
     }
 }

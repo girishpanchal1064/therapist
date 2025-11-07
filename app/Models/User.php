@@ -160,7 +160,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->role === 'admin';
+        return $this->hasRole('Admin');
     }
 
     /**
@@ -168,7 +168,7 @@ class User extends Authenticatable
      */
     public function isTherapist()
     {
-        return $this->role === 'therapist';
+        return $this->hasRole('Therapist');
     }
 
     /**
@@ -176,15 +176,7 @@ class User extends Authenticatable
      */
     public function isClient()
     {
-        return $this->role === 'client';
-    }
-
-    /**
-     * Check if user is corporate admin.
-     */
-    public function isCorporateAdmin()
-    {
-        return $this->role === 'corporate_admin';
+        return $this->hasRole('Client');
     }
 
     /**

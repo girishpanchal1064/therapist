@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         // Get featured therapists (top rated and verified)
-        $featuredTherapists = User::where('role', 'therapist')
+        $featuredTherapists = User::role('Therapist')
             ->whereHas('therapistProfile', function($q) {
                 $q->where('is_verified', true)
                   ->where('is_available', true);

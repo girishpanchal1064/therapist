@@ -17,13 +17,13 @@ class BackendAccess
     {
         // Check if user is authenticated
         if (!auth()->check()) {
-            return redirect()->route('admin.login');
+            return redirect()->route('login');
         }
 
         $user = auth()->user();
 
-        // Check if user has backend access roles
-        if (!$user->hasAnyRole(['super_admin', 'admin', 'therapist'])) {
+        // Check if user has backend access roles (SuperAdmin, Admin, Therapist)
+        if (!$user->hasAnyRole(['SuperAdmin', 'Admin', 'Therapist'])) {
             abort(403, 'Access denied. You do not have permission to access the backend panel.');
         }
 

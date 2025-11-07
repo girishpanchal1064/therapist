@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->enum('role', ['admin', 'therapist', 'client', 'corporate_admin'])->default('client');
+            $table->unsignedBigInteger('role_id')->nullable()->index();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
@@ -26,8 +27,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            
-            $table->index(['role', 'status']);
+
+            $table->index('status');
             $table->index('email');
             $table->index('phone');
         });

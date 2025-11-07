@@ -12,7 +12,7 @@ class TherapistController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::where('role', 'therapist')
+        $query = User::role('Therapist')
             ->whereHas('therapistProfile', function($q) {
                 $q->where('is_verified', true)
                   ->where('is_available', true);
@@ -112,7 +112,7 @@ class TherapistController extends Controller
             ->get();
 
         // Get languages for filter
-        $languages = User::where('role', 'therapist')
+        $languages = User::role('Therapist')
             ->whereHas('therapistProfile')
             ->get()
             ->pluck('therapistProfile.languages')
@@ -172,7 +172,7 @@ class TherapistController extends Controller
 
     public function show($slug)
     {
-        $therapist = User::where('role', 'therapist')
+        $therapist = User::role('Therapist')
             ->whereHas('therapistProfile', function($q) {
                 $q->where('is_verified', true);
             })
