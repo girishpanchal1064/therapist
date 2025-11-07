@@ -28,6 +28,28 @@ class TherapistProfile extends Model
         'rating_average',
         'total_sessions',
         'total_reviews',
+        'prefix',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'category',
+        'user_name',
+        'brief_description',
+        'present_address',
+        'present_country',
+        'present_state',
+        'present_city',
+        'present_district',
+        'present_zip',
+        'clinic_address',
+        'same_as_present_address',
+        'clinic_country',
+        'clinic_state',
+        'clinic_city',
+        'clinic_district',
+        'clinic_zip',
+        'timezone',
+        'areas_of_expertise',
     ];
 
     protected function casts(): array
@@ -35,8 +57,10 @@ class TherapistProfile extends Model
         return [
             'languages' => 'array',
             'verification_documents' => 'array',
+            'areas_of_expertise' => 'array',
             'is_verified' => 'boolean',
             'is_available' => 'boolean',
+            'same_as_present_address' => 'boolean',
             'verified_at' => 'datetime',
             'consultation_fee' => 'decimal:2',
             'couple_consultation_fee' => 'decimal:2',
@@ -90,6 +114,46 @@ class TherapistProfile extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class, 'therapist_id');
+    }
+
+    /**
+     * Get the experiences.
+     */
+    public function experiences()
+    {
+        return $this->hasMany(TherapistExperience::class, 'therapist_profile_id');
+    }
+
+    /**
+     * Get the qualifications.
+     */
+    public function qualifications()
+    {
+        return $this->hasMany(TherapistQualification::class, 'therapist_profile_id');
+    }
+
+    /**
+     * Get the awards.
+     */
+    public function awards()
+    {
+        return $this->hasMany(TherapistAward::class, 'therapist_profile_id');
+    }
+
+    /**
+     * Get the professional bodies.
+     */
+    public function professionalBodies()
+    {
+        return $this->hasMany(TherapistProfessionalBody::class, 'therapist_profile_id');
+    }
+
+    /**
+     * Get the bank details.
+     */
+    public function bankDetails()
+    {
+        return $this->hasMany(TherapistBankDetail::class, 'therapist_profile_id');
     }
 
     /**
