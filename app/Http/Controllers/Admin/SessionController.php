@@ -86,11 +86,11 @@ class SessionController extends Controller
         $this->checkSuperAdmin();
         
         $therapists = User::whereHas('roles', function($query) {
-            $query->where('name', 'therapist');
+            $query->where('name', 'Therapist');
         })->get();
         
         $clients = User::whereHas('roles', function($query) {
-            $query->where('name', 'user');
+            $query->where('name', 'Client');
         })->get();
         
         return view('admin.sessions.create', compact('therapists', 'clients'));
@@ -117,7 +117,7 @@ class SessionController extends Controller
 
         // Check if therapist is actually a therapist
         $therapist = User::findOrFail($validated['therapist_id']);
-        if (!$therapist->hasRole('therapist')) {
+        if (!$therapist->hasRole('Therapist')) {
             return back()->withErrors(['therapist_id' => 'Selected user is not a therapist.'])->withInput();
         }
 
@@ -154,11 +154,11 @@ class SessionController extends Controller
         $session = Appointment::with(['therapist', 'client'])->findOrFail($id);
         
         $therapists = User::whereHas('roles', function($query) {
-            $query->where('name', 'therapist');
+            $query->where('name', 'Therapist');
         })->get();
         
         $clients = User::whereHas('roles', function($query) {
-            $query->where('name', 'user');
+            $query->where('name', 'Client');
         })->get();
         
         return view('admin.sessions.edit', compact('session', 'therapists', 'clients'));
@@ -188,7 +188,7 @@ class SessionController extends Controller
 
         // Check if therapist is actually a therapist
         $therapist = User::findOrFail($validated['therapist_id']);
-        if (!$therapist->hasRole('therapist')) {
+        if (!$therapist->hasRole('Therapist')) {
             return back()->withErrors(['therapist_id' => 'Selected user is not a therapist.'])->withInput();
         }
 

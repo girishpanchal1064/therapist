@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\AreaOfExpertiseController;
 use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Controllers\Admin\SessionController;
+use App\Http\Controllers\Admin\TherapistAvailabilityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,4 +161,30 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::get('sessions/{id}/edit', [SessionController::class, 'edit'])->name('sessions.edit');
     Route::put('sessions/{id}', [SessionController::class, 'update'])->name('sessions.update');
     Route::delete('sessions/{id}', [SessionController::class, 'destroy'])->name('sessions.destroy');
+
+    // Therapist Availability Management (SuperAdmin Only)
+    Route::prefix('therapist-availability')->name('therapist-availability.')->group(function () {
+        Route::get('/', [TherapistAvailabilityController::class, 'index'])->name('index');
+        
+        // Set Availability (Weekly)
+        Route::get('/set', [TherapistAvailabilityController::class, 'set'])->name('set');
+        Route::post('/set', [TherapistAvailabilityController::class, 'storeSet'])->name('set.store');
+        Route::put('/set/{availability}', [TherapistAvailabilityController::class, 'updateSet'])->name('set.update');
+        Route::delete('/set/{availability}', [TherapistAvailabilityController::class, 'destroySet'])->name('set.destroy');
+        
+        // Single Availability
+        Route::get('/single', [TherapistAvailabilityController::class, 'single'])->name('single');
+        Route::post('/single', [TherapistAvailabilityController::class, 'storeSingle'])->name('single.store');
+        Route::put('/single/{availability}', [TherapistAvailabilityController::class, 'updateSingle'])->name('single.update');
+        Route::delete('/single/{availability}', [TherapistAvailabilityController::class, 'destroySingle'])->name('single.destroy');
+        
+        // Block Availability
+        Route::get('/block', [TherapistAvailabilityController::class, 'block'])->name('block');
+        Route::post('/block/date', [TherapistAvailabilityController::class, 'storeBlockDate'])->name('block.date.store');
+        Route::put('/block/date/{block}', [TherapistAvailabilityController::class, 'updateBlockDate'])->name('block.date.update');
+        Route::post('/block/slot', [TherapistAvailabilityController::class, 'storeBlockSlots'])->name('block.slot.store');
+        Route::put('/block/slot/{block}', [TherapistAvailabilityController::class, 'updateBlockSlots'])->name('block.slot.update');
+        Route::post('/block/{block}/toggle', [TherapistAvailabilityController::class, 'toggleBlock'])->name('block.toggle');
+        Route::delete('/block/{block}', [TherapistAvailabilityController::class, 'destroyBlock'])->name('block.destroy');
+    });
 });

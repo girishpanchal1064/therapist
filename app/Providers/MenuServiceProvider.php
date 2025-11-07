@@ -253,6 +253,7 @@ class MenuServiceProvider extends ServiceProvider
             'admin.areas-of-expertise.index' => ['super admin only'],
             'admin.specializations.index' => ['super admin only'],
             'admin.sessions.index' => ['super admin only'],
+            'admin.therapist-availability.index' => ['super admin only'],
         ];
 
         // Handle both array and object formats

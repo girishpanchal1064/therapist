@@ -207,6 +207,12 @@
       "url": "/admin/sessions"
     },
     {
+      "name": "Therapist Availability",
+      "icon": "menu-icon tf-icons ri-calendar-schedule-line",
+      "slug": "admin.therapist-availability.index",
+      "url": "/admin/therapist-availability"
+    },
+    {
       "name": "Reports",
       "icon": "menu-icon tf-icons ri-bar-chart-line",
       "slug": "admin.reports",
