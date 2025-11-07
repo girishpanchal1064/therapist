@@ -11,6 +11,8 @@ use App\Http\Controllers\Therapist\DashboardController as TherapistDashboardCont
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Therapist\AvailabilityController as TherapistAvailabilityController;
 use App\Http\Controllers\Therapist\SessionController as TherapistSessionController;
+use App\Http\Controllers\Therapist\TherapistProfileController;
+use App\Http\Controllers\Therapist\ReviewController as TherapistReviewController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -81,6 +83,33 @@ Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therap
     // Online Sessions module
     Route::prefix('sessions')->name('sessions.')->group(function () {
         Route::get('/', [TherapistSessionController::class, 'index'])->name('index');
+    });
+
+    // Reviews module
+    Route::prefix('reviews')->name('reviews.')->group(function () {
+        Route::get('/', [TherapistReviewController::class, 'index'])->name('index');
+    });
+
+    // Profile module
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [TherapistProfileController::class, 'index'])->name('index');
+        Route::post('/basic-info', [TherapistProfileController::class, 'updateBasicInfo'])->name('basic-info.update');
+        Route::post('/experience', [TherapistProfileController::class, 'storeExperience'])->name('experience.store');
+        Route::put('/experience/{experience}', [TherapistProfileController::class, 'updateExperience'])->name('experience.update');
+        Route::delete('/experience/{experience}', [TherapistProfileController::class, 'deleteExperience'])->name('experience.delete');
+        Route::post('/qualification', [TherapistProfileController::class, 'storeQualification'])->name('qualification.store');
+        Route::put('/qualification/{qualification}', [TherapistProfileController::class, 'updateQualification'])->name('qualification.update');
+        Route::delete('/qualification/{qualification}', [TherapistProfileController::class, 'deleteQualification'])->name('qualification.delete');
+        Route::post('/areas-of-expertise', [TherapistProfileController::class, 'updateAreasOfExpertise'])->name('areas-of-expertise.update');
+        Route::post('/award', [TherapistProfileController::class, 'storeAward'])->name('award.store');
+        Route::put('/award/{award}', [TherapistProfileController::class, 'updateAward'])->name('award.update');
+        Route::delete('/award/{award}', [TherapistProfileController::class, 'deleteAward'])->name('award.delete');
+        Route::post('/professional-body', [TherapistProfileController::class, 'storeProfessionalBody'])->name('professional-body.store');
+        Route::put('/professional-body/{professionalBody}', [TherapistProfileController::class, 'updateProfessionalBody'])->name('professional-body.update');
+        Route::delete('/professional-body/{professionalBody}', [TherapistProfileController::class, 'deleteProfessionalBody'])->name('professional-body.delete');
+        Route::post('/bank-detail', [TherapistProfileController::class, 'storeBankDetail'])->name('bank-detail.store');
+        Route::put('/bank-detail/{bankDetail}', [TherapistProfileController::class, 'updateBankDetail'])->name('bank-detail.update');
+        Route::delete('/bank-detail/{bankDetail}', [TherapistProfileController::class, 'deleteBankDetail'])->name('bank-detail.delete');
     });
 });
 // Client dashboard (controller)

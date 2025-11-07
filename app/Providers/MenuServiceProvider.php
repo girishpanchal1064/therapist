@@ -75,6 +75,12 @@ class MenuServiceProvider extends ServiceProvider
                     'slug' => 'therapist.sessions.index'
                 ],
                 [
+                    'url' => '/therapist/reviews',
+                    'name' => 'Reviews',
+                    'icon' => 'menu-icon tf-icons ri-star-line',
+                    'slug' => 'therapist.reviews.index'
+                ],
+                [
                     'name' => 'Availability',
                     'icon' => 'menu-icon tf-icons ri-calendar-check-line',
                     'slug' => 'therapist.availability',
