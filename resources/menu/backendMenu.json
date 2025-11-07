@@ -7,16 +7,10 @@
       "slug": "admin.dashboard"
     },
     {
-      "menuHeader": "Account"
-    },
-    {
       "url": "/admin/profile",
       "name": "My Profile",
       "icon": "menu-icon tf-icons ri-user-line",
       "slug": "admin.profile.index"
-    },
-    {
-      "menuHeader": "User Management"
     },
     {
       "name": "Users",
@@ -58,9 +52,6 @@
       ]
     },
     {
-      "menuHeader": "Appointments & Sessions"
-    },
-    {
       "name": "Appointments",
       "icon": "menu-icon tf-icons ri-calendar-check-line",
       "slug": "admin.appointments",
@@ -81,9 +72,6 @@
           "slug": "admin.appointments.create"
         }
       ]
-    },
-    {
-      "menuHeader": "Content Management"
     },
     {
       "name": "Blog Posts",
@@ -130,9 +118,6 @@
       ]
     },
     {
-      "menuHeader": "Financial"
-    },
-    {
       "name": "Payments",
       "icon": "menu-icon tf-icons ri-money-dollar-circle-line",
       "slug": "admin.payments",
@@ -155,9 +140,6 @@
       ]
     },
     {
-      "menuHeader": "Reviews & Feedback"
-    },
-    {
       "name": "Reviews",
       "icon": "menu-icon tf-icons ri-star-line",
       "slug": "admin.reviews",
@@ -173,9 +155,6 @@
           "slug": "admin.reviews.pending"
         }
       ]
-    },
-    {
-      "menuHeader": "System"
     },
     {
       "name": "Settings",
@@ -208,6 +187,18 @@
           "slug": "admin.settings.system"
         }
       ]
+    },
+    {
+      "name": "Areas of Expertise",
+      "icon": "menu-icon tf-icons ri-focus-3-line",
+      "slug": "admin.areas-of-expertise.index",
+      "url": "/admin/areas-of-expertise"
+    },
+    {
+      "name": "Specializations",
+      "icon": "menu-icon tf-icons ri-star-line",
+      "slug": "admin.specializations.index",
+      "url": "/admin/specializations"
     },
     {
       "name": "Reports",

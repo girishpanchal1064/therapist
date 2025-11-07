@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\AreaOfExpertiseController;
+use App\Http\Controllers\Admin\SpecializationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,4 +145,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
         Route::delete('{user}/remove/{role}', [UserRoleController::class, 'removeRole'])->name('remove');
         Route::post('{user}/sync', [UserRoleController::class, 'syncRoles'])->name('sync');
     });
+
+    // Area of Expertise Management (SuperAdmin Only)
+    Route::resource('areas-of-expertise', AreaOfExpertiseController::class);
+
+    // Specializations Management (SuperAdmin Only)
+    Route::resource('specializations', SpecializationController::class);
 });

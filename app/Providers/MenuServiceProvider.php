@@ -39,7 +39,19 @@ class MenuServiceProvider extends ServiceProvider
         }
 
         // Load menu configuration
-        $menuConfig = json_decode(file_get_contents(resource_path('menu/backendMenu.json')), true);
+        $menuFilePath = resource_path('menu/backendMenu.json');
+        
+        if (!file_exists($menuFilePath)) {
+            return collect([(object)['menu' => []]]);
+        }
+        
+        $menuJson = file_get_contents($menuFilePath);
+        $menuConfig = json_decode($menuJson, true);
+        
+        // Check if JSON decode was successful
+        if ($menuConfig === null || json_last_error() !== JSON_ERROR_NONE || !isset($menuConfig['menu'])) {
+            return collect([(object)['menu' => []]]);
+        }
 
         // Special handling for Therapist role: limit menu
         if ($user->hasRole('Therapist')) {
@@ -52,9 +64,9 @@ class MenuServiceProvider extends ServiceProvider
                 ],
                 [
                     'url' => '/therapist/profile',
-                    'name' => 'My Profile',
+                    'name' => 'Profile',
                     'icon' => 'menu-icon tf-icons ri-user-line',
-                    'slug' => 'therapist.profile.edit'
+                    'slug' => 'therapist.profile.index'
                 ],
                 [
                     'url' => '/therapist/sessions',
@@ -87,18 +99,36 @@ class MenuServiceProvider extends ServiceProvider
             ];
 
             // Convert arrays to objects (including nested submenu items)
-            foreach ($therapistMenu as &$item) {
-                if (isset($item['submenu']) && is_array($item['submenu'])) {
-                    $item['submenu'] = array_map(function ($sub) { return (object) $sub; }, $item['submenu']);
-                }
-                $item = (object) $item;
+            if (!is_array($therapistMenu)) {
+                $therapistMenu = [];
             }
-            unset($item);
+            
+            if (!empty($therapistMenu)) {
+                foreach ($therapistMenu as $key => $item) {
+                    if (!isset($item) || !is_array($item)) {
+                        continue;
+                    }
+                    
+                    $itemArray = $item;
+                    
+                    if (isset($itemArray['submenu']) && is_array($itemArray['submenu']) && !empty($itemArray['submenu'])) {
+                        $itemArray['submenu'] = array_map(function ($sub) { 
+                            return is_array($sub) ? (object) $sub : $sub; 
+                        }, $itemArray['submenu']);
+                    }
+                    
+                    $therapistMenu[$key] = (object) $itemArray;
+                }
+            }
 
-            return collect([(object)['menu' => $therapistMenu]]);
+            return collect([(object)['menu' => $therapistMenu ?? []]]);
         }
 
         // Filter menu items based on user permissions
+        if (!isset($menuConfig['menu']) || !is_array($menuConfig['menu'])) {
+            return collect([(object)['menu' => []]]);
+        }
+        
         $filteredMenu = $this->filterMenuByPermissions($menuConfig['menu'], $user);
 
         // Convert arrays to objects for the template
@@ -116,15 +146,34 @@ class MenuServiceProvider extends ServiceProvider
     {
         $filteredMenu = [];
 
+        if (!is_array($menuItems) || empty($menuItems)) {
+            return $filteredMenu;
+        }
+
         foreach ($menuItems as $item) {
+            if (!isset($item) || (!is_array($item) && !is_object($item))) {
+                continue;
+            }
+            
+            // Convert to array if it's an object for easier checking
+            $itemArray = is_array($item) ? $item : (array) $item;
+            
+            // Skip menu headers with "Account" or "USER MANAGEMENT" text
+            if (isset($itemArray['menuHeader'])) {
+                $headerText = strtolower(trim($itemArray['menuHeader']));
+                if ($headerText === 'account' || $headerText === 'user management') {
+                    continue;
+                }
+            }
+            
             // Check if user has permission to view this menu item
             if ($this->canViewMenuItem($item, $user)) {
-                $filteredItem = $item;
+                $filteredItem = $itemArray;
 
                 // If item has submenu, filter submenu items too
-                if (isset($item['submenu'])) {
+                if (isset($itemArray['submenu']) && is_array($itemArray['submenu'])) {
                     $filteredSubmenu = [];
-                    foreach ($item['submenu'] as $subItem) {
+                    foreach ($itemArray['submenu'] as $subItem) {
                         if ($this->canViewMenuItem($subItem, $user)) {
                             $filteredSubmenu[] = (object) $subItem;
                         }
@@ -201,12 +250,19 @@ class MenuServiceProvider extends ServiceProvider
             'admin.reports.users' => ['view users'],
             'admin.reports.appointments' => ['view appointments'],
             'admin.reports.financial' => ['view financial reports'],
+            'admin.areas-of-expertise.index' => ['super admin only'],
+            'admin.specializations.index' => ['super admin only'],
         ];
 
-        $slug = $item['slug'] ?? '';
+        // Handle both array and object formats
+        if (is_array($item)) {
+            $slug = $item['slug'] ?? '';
+        } else {
+            $slug = $item->slug ?? '';
+        }
 
         // If no specific permission is defined, allow access
-        if (!isset($permissionMap[$slug])) {
+        if (empty($slug) || !isset($permissionMap[$slug])) {
             return true;
         }
 
