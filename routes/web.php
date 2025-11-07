@@ -13,6 +13,7 @@ use App\Http\Controllers\Therapist\AvailabilityController as TherapistAvailabili
 use App\Http\Controllers\Therapist\SessionController as TherapistSessionController;
 use App\Http\Controllers\Therapist\TherapistProfileController;
 use App\Http\Controllers\Therapist\ReviewController as TherapistReviewController;
+use App\Http\Controllers\Therapist\AccountSummaryController as TherapistAccountSummaryController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -88,6 +89,11 @@ Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therap
     // Reviews module
     Route::prefix('reviews')->name('reviews.')->group(function () {
         Route::get('/', [TherapistReviewController::class, 'index'])->name('index');
+    });
+
+    // Account Summary module
+    Route::prefix('account-summary')->name('account-summary.')->group(function () {
+        Route::get('/', [TherapistAccountSummaryController::class, 'index'])->name('index');
     });
 
     // Profile module

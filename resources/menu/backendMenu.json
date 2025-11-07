@@ -213,6 +213,12 @@
       "url": "/admin/therapist-availability"
     },
     {
+      "name": "Account Summary",
+      "icon": "menu-icon tf-icons ri-file-list-3-line",
+      "slug": "admin.account-summary.index",
+      "url": "/admin/account-summary"
+    },
+    {
       "name": "Reports",
       "icon": "menu-icon tf-icons ri-bar-chart-line",
       "slug": "admin.reports",

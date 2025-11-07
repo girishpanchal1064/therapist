@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\AreaOfExpertiseController;
 use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Controllers\Admin\SessionController;
 use App\Http\Controllers\Admin\TherapistAvailabilityController;
+use App\Http\Controllers\Admin\AccountSummaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -186,5 +187,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
         Route::put('/block/slot/{block}', [TherapistAvailabilityController::class, 'updateBlockSlots'])->name('block.slot.update');
         Route::post('/block/{block}/toggle', [TherapistAvailabilityController::class, 'toggleBlock'])->name('block.toggle');
         Route::delete('/block/{block}', [TherapistAvailabilityController::class, 'destroyBlock'])->name('block.destroy');
+    });
+
+    // Account Summary (SuperAdmin Only)
+    Route::prefix('account-summary')->name('account-summary.')->group(function () {
+        Route::get('/', [AccountSummaryController::class, 'index'])->name('index');
     });
 });

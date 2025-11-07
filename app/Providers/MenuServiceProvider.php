@@ -81,6 +81,12 @@ class MenuServiceProvider extends ServiceProvider
                     'slug' => 'therapist.reviews.index'
                 ],
                 [
+                    'url' => '/therapist/account-summary',
+                    'name' => 'Account Summary',
+                    'icon' => 'menu-icon tf-icons ri-file-list-3-line',
+                    'slug' => 'therapist.account-summary.index'
+                ],
+                [
                     'name' => 'Availability',
                     'icon' => 'menu-icon tf-icons ri-calendar-check-line',
                     'slug' => 'therapist.availability',
@@ -260,6 +266,7 @@ class MenuServiceProvider extends ServiceProvider
             'admin.specializations.index' => ['super admin only'],
             'admin.sessions.index' => ['super admin only'],
             'admin.therapist-availability.index' => ['super admin only'],
+            'admin.account-summary.index' => ['super admin only'],
         ];
 
         // Handle both array and object formats
