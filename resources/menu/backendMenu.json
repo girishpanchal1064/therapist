@@ -201,6 +201,12 @@
       "url": "/admin/specializations"
     },
     {
+      "name": "Online Sessions",
+      "icon": "menu-icon tf-icons ri-group-line",
+      "slug": "admin.sessions.index",
+      "url": "/admin/sessions"
+    },
+    {
       "name": "Reports",
       "icon": "menu-icon tf-icons ri-bar-chart-line",
       "slug": "admin.reports",

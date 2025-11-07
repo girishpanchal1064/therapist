@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\AreaOfExpertiseController;
 use App\Http\Controllers\Admin\SpecializationController;
+use App\Http\Controllers\Admin\SessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -151,4 +152,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
 
     // Specializations Management (SuperAdmin Only)
     Route::resource('specializations', SpecializationController::class);
+
+    // Online Sessions Management (SuperAdmin Only)
+    Route::get('sessions', [SessionController::class, 'index'])->name('sessions.index');
+    Route::get('sessions/create', [SessionController::class, 'create'])->name('sessions.create');
+    Route::post('sessions', [SessionController::class, 'store'])->name('sessions.store');
+    Route::get('sessions/{id}/edit', [SessionController::class, 'edit'])->name('sessions.edit');
+    Route::put('sessions/{id}', [SessionController::class, 'update'])->name('sessions.update');
+    Route::delete('sessions/{id}', [SessionController::class, 'destroy'])->name('sessions.destroy');
 });

@@ -252,6 +252,7 @@ class MenuServiceProvider extends ServiceProvider
             'admin.reports.financial' => ['view financial reports'],
             'admin.areas-of-expertise.index' => ['super admin only'],
             'admin.specializations.index' => ['super admin only'],
+            'admin.sessions.index' => ['super admin only'],
         ];
 
         // Handle both array and object formats
