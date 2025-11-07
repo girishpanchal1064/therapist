@@ -182,7 +182,7 @@ class TherapistController extends Controller
     public function pending()
     {
         $therapists = User::whereHas('roles', function($query) {
-            $query->where('name', 'therapist');
+            $query->where('name', 'Therapist');
         })->whereHas('therapistProfile', function($query) {
             $query->where('is_approved', false);
         })->with(['therapistProfile.specializations'])->paginate(15);
@@ -192,10 +192,12 @@ class TherapistController extends Controller
 
     public function approve(User $therapist)
     {
-        $therapist->therapistProfile->update([
-            'is_approved' => true,
-            'is_verified' => true,
-        ]);
+        if ($therapist->therapistProfile) {
+            $therapist->therapistProfile->update([
+                'is_approved' => true,
+                'is_verified' => true,
+            ]);
+        }
 
         return redirect()->back()
             ->with('success', 'Therapist approved successfully.');
@@ -203,10 +205,12 @@ class TherapistController extends Controller
 
     public function reject(User $therapist)
     {
-        $therapist->therapistProfile->update([
-            'is_approved' => false,
-            'is_verified' => false,
-        ]);
+        if ($therapist->therapistProfile) {
+            $therapist->therapistProfile->update([
+                'is_approved' => false,
+                'is_verified' => false,
+            ]);
+        }
 
         return redirect()->back()
             ->with('success', 'Therapist rejected successfully.');

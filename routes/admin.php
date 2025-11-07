@@ -86,10 +86,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::post('users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
 
     // Therapist Management
-    Route::resource('therapists', TherapistController::class);
     Route::get('therapists/pending', [TherapistController::class, 'pending'])->name('therapists.pending');
     Route::post('therapists/{therapist}/approve', [TherapistController::class, 'approve'])->name('therapists.approve');
     Route::post('therapists/{therapist}/reject', [TherapistController::class, 'reject'])->name('therapists.reject');
+    Route::resource('therapists', TherapistController::class);
 
     // Appointment Management
     Route::resource('appointments', AppointmentController::class);
