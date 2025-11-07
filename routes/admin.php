@@ -107,10 +107,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::get('assessments/results', [AssessmentController::class, 'results'])->name('assessments.results');
 
     // Payment Management
-    Route::resource('payments', PaymentController::class);
     Route::get('payments/pending', [PaymentController::class, 'pending'])->name('payments.pending');
     Route::get('payments/reports', [PaymentController::class, 'reports'])->name('payments.reports');
     Route::post('payments/{payment}/refund', [PaymentController::class, 'refund'])->name('payments.refund');
+    Route::resource('payments', PaymentController::class);
 
     // Review Management
     Route::resource('reviews', ReviewController::class);

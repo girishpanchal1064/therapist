@@ -8,10 +8,34 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $payments = Payment::with(['user'])->paginate(15);
-        return view('admin.payments.index', compact('payments'));
+        $status = $request->get('status', 'all');
+        $search = $request->get('search');
+        $perPage = $request->get('per_page', 15);
+
+        $query = Payment::with(['user', 'payable']);
+
+        // Filter by status
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Apply search
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('transaction_id', 'like', "%{$search}%")
+                  ->orWhere('amount', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $payments = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        return view('admin.payments.index', compact('payments', 'status', 'search', 'perPage'));
     }
 
     public function create()
@@ -45,10 +69,28 @@ class PaymentController extends Controller
         return redirect()->route('admin.payments.index');
     }
 
-    public function pending()
+    public function pending(Request $request)
     {
-        $payments = Payment::where('status', 'pending')->paginate(15);
-        return view('admin.payments.pending', compact('payments'));
+        $search = $request->get('search');
+        $perPage = $request->get('per_page', 15);
+
+        $query = Payment::with(['user', 'payable'])->where('status', 'pending');
+
+        // Apply search
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('transaction_id', 'like', "%{$search}%")
+                  ->orWhere('amount', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $payments = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        return view('admin.payments.pending', compact('payments', 'search', 'perPage'));
     }
 
     public function reports()

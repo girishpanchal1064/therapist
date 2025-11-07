@@ -107,6 +107,20 @@ class MenuServiceProvider extends ServiceProvider
                             'slug' => 'therapist.availability.block'
                         ]
                     ]
+                ],
+                [
+                    'url' => '/',
+                    'name' => 'Visit Website',
+                    'icon' => 'menu-icon tf-icons ri-global-line',
+                    'slug' => 'home',
+                    'target' => '_blank'
+                ],
+                [
+                    'url' => '#',
+                    'name' => 'Logout',
+                    'icon' => 'menu-icon tf-icons ri-logout-box-r-line',
+                    'slug' => 'logout',
+                    'onclick' => 'event.preventDefault(); document.getElementById("logout-form").submit();'
                 ]
             ];
 
@@ -142,6 +156,22 @@ class MenuServiceProvider extends ServiceProvider
         }
         
         $filteredMenu = $this->filterMenuByPermissions($menuConfig['menu'], $user);
+
+        // Add Visit Website and Logout menu items at the end for admin users
+        $filteredMenu[] = [
+            'url' => '/',
+            'name' => 'Visit Website',
+            'icon' => 'menu-icon tf-icons ri-global-line',
+            'slug' => 'home',
+            'target' => '_blank'
+        ];
+        $filteredMenu[] = [
+            'url' => '#',
+            'name' => 'Logout',
+            'icon' => 'menu-icon tf-icons ri-logout-box-r-line',
+            'slug' => 'admin.logout',
+            'onclick' => 'event.preventDefault(); document.getElementById("logout-form").submit();'
+        ];
 
         // Convert arrays to objects for the template
         $filteredMenu = array_map(function($item) {

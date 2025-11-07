@@ -17,7 +17,8 @@
   <div class="menu-inner-shadow"></div>
 
   <ul class="menu-inner py-1">
-    @foreach ($menuData[0]->menu as $menu)
+    @if(isset($menuData) && isset($menuData[0]) && isset($menuData[0]->menu))
+      @foreach ($menuData[0]->menu as $menu)
 
       {{-- adding active and open class if child is active --}}
 
@@ -50,11 +51,20 @@
           }
         }
       }
+      else {
+        // Check if current route starts with menu slug (for profile tabs, etc.)
+        if (str_starts_with($currentRouteName, $menu->slug . '.')) {
+          $activeClass = 'active';
+        }
+      }
       @endphp
 
       {{-- main menu --}}
       <li class="menu-item {{$activeClass}}">
-        <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
+        <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" 
+           class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" 
+           @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif
+           @if (isset($menu->onclick)) onclick="{{ $menu->onclick }}" @endif>
           @isset($menu->icon)
             <i class="{{ $menu->icon }}"></i>
           @endisset
@@ -70,7 +80,21 @@
         @endisset
       </li>
       @endif
-    @endforeach
+      @endforeach
+    @endif
+
+    {{-- Logout Form (Hidden) --}}
+    @auth
+      @if(auth()->user()->hasRole('SuperAdmin') || auth()->user()->hasRole('Admin'))
+        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+          @csrf
+        </form>
+      @else
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          @csrf
+        </form>
+      @endif
+    @endauth
   </ul>
 
 </aside>
