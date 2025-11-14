@@ -133,13 +133,41 @@ class PaymentController extends Controller
 
     public function paymentSuccess(Request $request)
     {
-        $paymentId = $request->payment_id;
-        $payment = Payment::findOrFail($paymentId);
+        $paymentId = $request->get('payment_id');
+        
+        if (!$paymentId) {
+            return redirect()->route('client.dashboard')
+                ->with('error', 'Payment ID is required.');
+        }
+
+        // Handle demo/test payment IDs
+        if (str_starts_with($paymentId, 'demo_')) {
+            // For demo payments, just show success message
+            return redirect()->route('client.dashboard')
+                ->with('success', 'Payment completed successfully! Your appointment has been confirmed.');
+        }
+
+        try {
+            $payment = Payment::findOrFail($paymentId);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->route('client.dashboard')
+                ->with('error', 'Payment not found.');
+        }
+
+        // Update payment status if still pending
+        if ($payment->status === 'pending') {
+            $payment->update([
+                'status' => 'completed',
+                'paid_at' => now(),
+            ]);
+        }
 
         // Update appointment status
         if ($payment->payable_type === Appointment::class) {
             $appointment = $payment->payable;
-            $appointment->update(['status' => 'confirmed']);
+            if ($appointment && $appointment->status !== 'confirmed') {
+                $appointment->update(['status' => 'confirmed']);
+            }
         }
 
         return redirect()->route('client.dashboard')

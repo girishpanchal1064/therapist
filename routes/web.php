@@ -138,10 +138,12 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/payment/create/{appointment}', [App\Http\Controllers\PaymentController::class, 'showPaymentForm'])->name('payment.create');
     Route::post('/payment/process', [App\Http\Controllers\PaymentController::class, 'createPayment'])->name('payment.process');
-    Route::get('/payment/success', [App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('payment.success');
-    Route::get('/payment/failure', [App\Http\Controllers\PaymentController::class, 'paymentFailure'])->name('payment.failure');
     Route::post('/payment/refund', [App\Http\Controllers\PaymentController::class, 'refundPayment'])->name('payment.refund');
 });
+
+// Payment callback routes (may be called by payment gateways without auth)
+Route::get('/payment/success', [App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/failure', [App\Http\Controllers\PaymentController::class, 'paymentFailure'])->name('payment.failure');
 
 // Chat routes
 Route::middleware('auth')->group(function () {

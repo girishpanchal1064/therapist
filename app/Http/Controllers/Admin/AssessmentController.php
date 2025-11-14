@@ -53,7 +53,28 @@ class AssessmentController extends Controller
 
     public function store(Request $request)
     {
-        // Implementation for storing assessments
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:assessments,slug',
+            'description' => 'required|string',
+            'category' => 'required|string|max:255',
+            'icon' => 'nullable|string|max:255',
+            'color' => 'nullable|string|max:7',
+            'duration_minutes' => 'required|integer|min:1|max:300',
+            'question_count' => 'nullable|integer|min:0',
+            'is_active' => 'boolean',
+            'sort_order' => 'nullable|integer|min:0',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+        ]);
+
+        // Set default question_count if not provided
+        $validated['question_count'] = $validated['question_count'] ?? 0;
+
+        Assessment::create($validated);
+
+        return redirect()->route('admin.assessments.index')
+            ->with('success', 'Assessment created successfully.');
     }
 
     public function show(Assessment $assessment)

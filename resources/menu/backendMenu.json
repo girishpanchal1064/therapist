@@ -109,11 +109,6 @@
           "url": "/admin/assessments/create",
           "name": "Create Assessment",
           "slug": "admin.assessments.create"
-        },
-        {
-          "url": "/admin/assessments/results",
-          "name": "Assessment Results",
-          "slug": "admin.assessments.results"
         }
       ]
     },

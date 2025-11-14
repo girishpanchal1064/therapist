@@ -91,11 +91,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::post('therapists/{therapist}/reject', [TherapistController::class, 'reject'])->name('therapists.reject');
     Route::resource('therapists', TherapistController::class);
 
-    // Appointment Management
-    Route::resource('appointments', AppointmentController::class);
+    // Appointments Management
     Route::get('appointments/today', [AppointmentController::class, 'today'])->name('appointments.today');
     Route::post('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
     Route::post('appointments/{appointment}/complete', [AppointmentController::class, 'complete'])->name('appointments.complete');
+    Route::resource('appointments', AppointmentController::class);
 
     // Blog Management
     Route::get('blog/categories', [BlogController::class, 'categories'])->name('blog.categories');
