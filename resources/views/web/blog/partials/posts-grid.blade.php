@@ -50,7 +50,7 @@
             <div class="flex items-center justify-between text-sm text-gray-500">
                 <div class="flex items-center">
                     @if($post->author->profile && $post->author->profile->profile_image)
-                        <img src="{{ Storage::url($post->author->profile->profile_image) }}"
+                        <img src="{{ asset('storage/' . $post->author->profile->profile_image) }}"
                              alt="{{ $post->author->name }}"
                              class="w-8 h-8 rounded-full object-cover mr-2">
                     @else

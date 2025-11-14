@@ -98,11 +98,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::post('appointments/{appointment}/complete', [AppointmentController::class, 'complete'])->name('appointments.complete');
 
     // Blog Management
-    Route::resource('blog', BlogController::class);
     Route::get('blog/categories', [BlogController::class, 'categories'])->name('blog.categories');
+    Route::post('blog/categories', [BlogController::class, 'storeCategory'])->name('blog.categories.store');
+    Route::put('blog/categories/{category}', [BlogController::class, 'updateCategory'])->name('blog.categories.update');
+    Route::delete('blog/categories/{category}', [BlogController::class, 'destroyCategory'])->name('blog.categories.destroy');
     Route::post('blog/{post}/publish', [BlogController::class, 'publish'])->name('blog.publish');
+    Route::resource('blog', BlogController::class);
 
     // Assessment Management
+    Route::post('assessments/bulk-update', [AssessmentController::class, 'bulkUpdate'])->name('assessments.bulk-update');
     Route::resource('assessments', AssessmentController::class);
     Route::get('assessments/results', [AssessmentController::class, 'results'])->name('assessments.results');
 
@@ -113,10 +117,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::resource('payments', PaymentController::class);
 
     // Review Management
-    Route::resource('reviews', ReviewController::class);
     Route::get('reviews/pending', [ReviewController::class, 'pending'])->name('reviews.pending');
     Route::post('reviews/{review}/approve', [ReviewController::class, 'approve'])->name('reviews.approve');
     Route::post('reviews/{review}/reject', [ReviewController::class, 'reject'])->name('reviews.reject');
+    Route::resource('reviews', ReviewController::class);
 
     // Settings
     Route::prefix('settings')->name('settings.')->group(function () {

@@ -175,6 +175,12 @@
                 </a>
               </div>
               <span class="text-muted ms-2">Page {{ $payments->currentPage() }} of {{ $payments->lastPage() }}</span>
+              <select class="form-select form-select-sm" style="width: auto;" onchange="updatePerPagePending(this.value)">
+                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10 rows</option>
+                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25 rows</option>
+                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50 rows</option>
+                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100 rows</option>
+              </select>
             </div>
           </div>
         @endif
@@ -182,4 +188,14 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('page-script')
+<script>
+  function updatePerPagePending(value) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('per_page', value);
+    window.location.href = url.toString();
+  }
+</script>
 @endsection
