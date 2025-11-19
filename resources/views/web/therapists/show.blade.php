@@ -338,22 +338,83 @@
                                         <svg class="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
-                                        Available This Week
+                                        Available Time Slots
                                     </h4>
-                                    <div class="space-y-3">
-                                        @foreach(array_slice($availableSlots, 0, 3) as $day)
-                                            <div class="bg-green-50 rounded-lg p-3 border border-green-200">
-                                                <div class="font-medium text-green-900">{{ $day['day_name'] }}, {{ $day['formatted_date'] }}</div>
-                                                <div class="text-sm text-green-700">
-                                                    {{ count($day['slots']) }} slots available
+                                    <div class="space-y-3 max-h-96 overflow-y-auto">
+                                        @foreach($availableSlots as $day)
+                                            @if($day['is_available'] && count($day['slots']) > 0)
+                                                <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                                                    <div class="flex items-center justify-between mb-2">
+                                                        <div class="font-medium text-green-900">
+                                                            @if($day['is_today'])
+                                                                Today, {{ $day['formatted_date'] }}
+                                                            @elseif($day['is_tomorrow'])
+                                                                Tomorrow, {{ $day['formatted_date'] }}
+                                                            @else
+                                                                {{ $day['day_name'] }}, {{ $day['formatted_date'] }}
+                                                            @endif
+                                                        </div>
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                            {{ count($day['slots']) }} slots
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex flex-wrap gap-2 mt-3">
+                                                        @foreach(array_slice($day['slots'], 0, 6) as $slot)
+                                                            <span class="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-white text-green-700 border border-green-300 hover:bg-green-100 transition-colors">
+                                                                <svg class="w-3 h-3 mr-1.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                                </svg>
+                                                                {{ $slot['formatted_time'] }}
+                                                            </span>
+                                                        @endforeach
+                                                        @if(count($day['slots']) > 6)
+                                                            <span class="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium bg-green-100 text-green-800 border border-green-300">
+                                                                +{{ count($day['slots']) - 6 }} more
+                                                            </span>
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @elseif(!$day['is_past'])
+                                                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                                                    <div class="font-medium text-gray-600">
+                                                        @if($day['is_today'])
+                                                            Today, {{ $day['formatted_date'] }}
+                                                        @elseif($day['is_tomorrow'])
+                                                            Tomorrow, {{ $day['formatted_date'] }}
+                                                        @else
+                                                            {{ $day['day_name'] }}, {{ $day['formatted_date'] }}
+                                                        @endif
+                                                    </div>
+                                                    <div class="text-sm text-gray-500 mt-1">
+                                                        No slots available
+                                                    </div>
+                                                </div>
+                                            @endif
                                         @endforeach
-                                        @if(count($availableSlots) > 3)
-                                            <div class="text-sm text-gray-500 text-center">
-                                                +{{ count($availableSlots) - 3 }} more days
-                                            </div>
-                                        @endif
+                                    </div>
+                                    <div class="mt-3 text-center">
+                                        <a href="{{ route('booking.form', $therapist->id) }}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            Book Appointment
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="mt-6">
+                                    <h4 class="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+                                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                        Available Time Slots
+                                    </h4>
+                                    <div class="text-center py-4 text-gray-500 bg-gray-50 rounded-lg border border-gray-200">
+                                        <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <p class="text-sm">No availability set yet</p>
+                                        <p class="text-xs text-gray-400 mt-1">Check back later for available slots</p>
                                     </div>
                                 </div>
                             @endif

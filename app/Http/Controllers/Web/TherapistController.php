@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\TherapistProfile;
 use App\Models\TherapistSpecialization;
+use App\Services\TherapistAvailabilityService;
 use Illuminate\Http\Request;
 
 class TherapistController extends Controller
@@ -204,46 +205,7 @@ class TherapistController extends Controller
 
     private function getAvailableSlots($therapistId)
     {
-        // This is a simplified version - in real app, get from availability table
-        $slots = [];
-        $startDate = today();
-
-        for ($i = 0; $i < 7; $i++) {
-            $date = $startDate->copy()->addDays($i);
-            $daySlots = [];
-
-            // Generate time slots for each day (9 AM to 6 PM, 1-hour slots)
-            for ($hour = 9; $hour < 18; $hour++) {
-                if ($hour == 12) continue; // Skip lunch break
-
-                $time = sprintf('%02d:00', $hour);
-
-                // Check if slot is available
-                $isBooked = \App\Models\Appointment::where('therapist_id', $therapistId)
-                    ->where('appointment_date', $date->toDateString())
-                    ->where('appointment_time', $time . ':00')
-                    ->whereIn('status', ['scheduled', 'confirmed'])
-                    ->exists();
-
-                if (!$isBooked && ($date->isFuture() || ($date->isToday() && $hour > now()->hour))) {
-                    $daySlots[] = [
-                        'time' => $time,
-                        'formatted_time' => \Carbon\Carbon::parse($time)->format('g:i A'),
-                        'available' => true
-                    ];
-                }
-            }
-
-            if (!empty($daySlots)) {
-                $slots[] = [
-                    'date' => $date->toDateString(),
-                    'formatted_date' => $date->format('M d, Y'),
-                    'day_name' => $date->format('l'),
-                    'slots' => $daySlots
-                ];
-            }
-        }
-
-        return $slots;
+        $availabilityService = new TherapistAvailabilityService();
+        return $availabilityService->getAvailabilityCalendar($therapistId, null, 7);
     }
 }

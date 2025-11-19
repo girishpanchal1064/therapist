@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Appointment;
 use App\Models\TherapistProfile;
+use App\Services\TherapistAvailabilityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -31,9 +32,17 @@ class BookingController extends Controller
 
     public function getAvailableSlots(Request $request)
     {
+        $request->validate([
+            'therapist_id' => 'required|exists:users,id',
+            'date' => 'required|date',
+            'session_mode' => 'nullable|in:online,offline',
+            'duration_minutes' => 'nullable|integer|min:30|max:120'
+        ]);
+
         $therapistId = $request->therapist_id;
         $date = $request->date;
-        $sessionMode = $request->session_mode ?? 'video';
+        $sessionMode = $request->session_mode; // 'online' or 'offline'
+        $durationMinutes = $request->duration_minutes ?? 60;
 
         $therapist = User::findOrFail($therapistId);
 
@@ -41,53 +50,16 @@ class BookingController extends Controller
             return response()->json(['error' => 'Therapist not found'], 404);
         }
 
-        // Get therapist's working hours (simplified - in real app, get from availability table)
-        $workingHours = [
-            'start' => '09:00',
-            'end' => '18:00',
-            'break_start' => '12:00',
-            'break_end' => '13:00'
-        ];
+        $availabilityService = new TherapistAvailabilityService();
+        $slots = $availabilityService->getAvailableSlots($therapistId, $date, $sessionMode, $durationMinutes);
 
-        // Generate time slots
-        $slots = [];
-        $startTime = Carbon::parse($date . ' ' . $workingHours['start']);
-        $endTime = Carbon::parse($date . ' ' . $workingHours['end']);
-        $breakStart = Carbon::parse($date . ' ' . $workingHours['break_start']);
-        $breakEnd = Carbon::parse($date . ' ' . $workingHours['break_end']);
-
-        while ($startTime->lt($endTime)) {
-            // Skip break time
-            if ($startTime->between($breakStart, $breakEnd)) {
-                $startTime->addHour();
-                continue;
-            }
-
-            // Skip past time slots for today
-            if ($date === today()->toDateString() && $startTime->isPast()) {
-                $startTime->addHour();
-                continue;
-            }
-
-            // Check if slot is already booked
-            $isBooked = Appointment::where('therapist_id', $therapistId)
-                ->where('appointment_date', $date)
-                ->where('appointment_time', $startTime->format('H:i:s'))
-                ->whereIn('status', ['scheduled', 'confirmed'])
-                ->exists();
-
-            if (!$isBooked) {
-                $slots[] = [
-                    'time' => $startTime->format('H:i'),
-                    'formatted_time' => $startTime->format('g:i A'),
-                    'available' => true
-                ];
-            }
-
-            $startTime->addHour();
-        }
-
-        return response()->json(['slots' => $slots]);
+        return response()->json([
+            'slots' => $slots,
+            'date' => $date,
+            'formatted_date' => Carbon::parse($date)->format('M d, Y'),
+            'day_name' => Carbon::parse($date)->format('l'),
+            'slot_count' => count($slots)
+        ]);
     }
 
     public function bookAppointment(Request $request)
