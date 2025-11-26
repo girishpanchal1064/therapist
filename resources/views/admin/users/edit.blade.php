@@ -116,13 +116,13 @@
           </div>
 
           <!-- Current Avatar Preview -->
-          @if($user->avatar)
+          @if($user->getRawOriginal('avatar'))
             <div class="row">
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label">Current Profile Picture</label>
                   <div class="d-flex align-items-center">
-                    <img src="{{ Storage::url($user->avatar) }}" alt="Current Avatar" class="rounded-circle me-3" width="60" height="60">
+                    <img src="{{ $user->avatar }}" alt="Current Avatar" class="rounded-circle me-3" width="60" height="60" style="object-fit: cover;">
                     <div>
                       <p class="mb-0 text-muted">Current profile picture</p>
                       <small class="text-muted">Upload a new image to replace it</small>

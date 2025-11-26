@@ -8,8 +8,8 @@
     <div class="card">
       <div class="card-body text-center">
         <div class="avatar avatar-xl mb-3">
-          @if($user->avatar)
-            <img src="{{ Storage::url($user->avatar) }}" alt="Avatar" class="rounded-circle">
+          @if($user->getRawOriginal('avatar'))
+            <img src="{{ $user->avatar }}" alt="Avatar" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
           @else
             <span class="avatar-initial rounded bg-primary">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
           @endif

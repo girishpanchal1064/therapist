@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -33,7 +34,7 @@ class ProfileController extends Controller
             'phone' => 'nullable|string|max:20',
             'current_password' => 'nullable|required_with:password',
             'password' => 'nullable|string|min:8|confirmed',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -60,12 +61,22 @@ class ProfileController extends Controller
 
         // Handle avatar upload
         if ($request->hasFile('avatar')) {
-            // Delete old avatar if exists
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
-            }
+            try {
+                // Delete old avatar if exists
+                $oldAvatar = $user->getRawOriginal('avatar');
+                if ($oldAvatar && Storage::disk('public')->exists($oldAvatar)) {
+                    Storage::disk('public')->delete($oldAvatar);
+                }
 
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+                // Store new avatar
+                $avatarPath = $request->file('avatar')->store('avatars', 'public');
+                $data['avatar'] = $avatarPath;
+                
+                Log::info('Avatar uploaded successfully', ['path' => $avatarPath, 'user_id' => $user->id]);
+            } catch (\Exception $e) {
+                Log::error('Avatar upload failed', ['error' => $e->getMessage(), 'user_id' => $user->id]);
+                return redirect()->back()->withErrors(['avatar' => 'Failed to upload avatar. Please try again.'])->withInput();
+            }
         }
 
         $user->update($data);
@@ -96,5 +107,24 @@ class ProfileController extends Controller
         ]);
 
         return redirect()->route('admin.profile.index')->with('success', 'Password updated successfully.');
+    }
+
+    public function deleteAvatar()
+    {
+        $user = Auth::user();
+
+        try {
+            $oldAvatar = $user->getRawOriginal('avatar');
+            if ($oldAvatar && Storage::disk('public')->exists($oldAvatar)) {
+                Storage::disk('public')->delete($oldAvatar);
+            }
+
+            $user->update(['avatar' => null]);
+
+            return redirect()->route('admin.profile.index')->with('success', 'Avatar removed successfully.');
+        } catch (\Exception $e) {
+            Log::error('Avatar deletion failed', ['error' => $e->getMessage(), 'user_id' => $user->id]);
+            return redirect()->back()->with('error', 'Failed to remove avatar. Please try again.');
+        }
     }
 }

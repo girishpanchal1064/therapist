@@ -78,6 +78,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
         Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
         Route::put('/', [ProfileController::class, 'update'])->name('update');
         Route::post('/password', [ProfileController::class, 'updatePassword'])->name('password');
+        Route::delete('/avatar', [ProfileController::class, 'deleteAvatar'])->name('avatar.delete');
     });
 
     // User Management
