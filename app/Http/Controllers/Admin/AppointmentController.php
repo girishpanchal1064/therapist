@@ -14,9 +14,11 @@ class AppointmentController extends Controller
         $status = $request->get('status', 'all');
         $type = $request->get('type', 'all');
         $mode = $request->get('mode', 'all');
+        $dateFrom = $request->get('date_from');
+        $dateTo = $request->get('date_to');
         $perPage = $request->get('per_page', 15);
 
-        $query = Appointment::with(['client', 'therapist', 'payment']);
+        $query = Appointment::with(['client', 'therapist', 'therapist.therapistProfile', 'payment']);
 
         // Search filter
         if ($search) {
@@ -48,18 +50,40 @@ class AppointmentController extends Controller
             $query->where('session_mode', $mode);
         }
 
+        // Date range filter
+        if ($dateFrom) {
+            $query->whereDate('appointment_date', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $query->whereDate('appointment_date', '<=', $dateTo);
+        }
+
         $appointments = $query->orderBy('appointment_date', 'desc')
                               ->orderBy('appointment_time', 'desc')
                               ->paginate($perPage);
 
-        return view('admin.appointments.index', compact('appointments', 'search', 'status', 'type', 'mode', 'perPage'));
+        // Get statistics
+        $stats = [
+            'total' => Appointment::count(),
+            'today' => Appointment::whereDate('appointment_date', today())->count(),
+            'upcoming' => Appointment::whereDate('appointment_date', '>=', today())
+                ->whereIn('status', ['scheduled', 'confirmed'])
+                ->count(),
+            'completed' => Appointment::where('status', 'completed')->count(),
+            'cancelled' => Appointment::where('status', 'cancelled')->count(),
+            'in_progress' => Appointment::where('status', 'in_progress')->count(),
+            'this_week' => Appointment::whereBetween('appointment_date', [now()->startOfWeek(), now()->endOfWeek()])->count(),
+            'this_month' => Appointment::whereMonth('appointment_date', now()->month)->whereYear('appointment_date', now()->year)->count(),
+        ];
+
+        return view('admin.appointments.index', compact('appointments', 'search', 'status', 'type', 'mode', 'perPage', 'stats', 'dateFrom', 'dateTo'));
     }
 
     public function create()
     {
         $therapists = \App\Models\User::whereHas('roles', function($query) {
             $query->where('name', 'Therapist');
-        })->orderBy('name')->get();
+        })->with('therapistProfile')->orderBy('name')->get();
         
         $clients = \App\Models\User::whereHas('roles', function($query) {
             $query->where('name', 'Client');
@@ -124,6 +148,7 @@ class AppointmentController extends Controller
 
     public function show(Appointment $appointment)
     {
+        $appointment->load(['client', 'therapist.therapistProfile', 'payment']);
         return view('admin.appointments.show', compact('appointment'));
     }
 
