@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\AreaOfExpertise;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,9 @@ class HomeController extends Controller
             })
             ->take(6);
 
-        return view('web.home', compact('featuredTherapists'));
+        // Get active areas of expertise
+        $areasOfExpertise = AreaOfExpertise::active()->ordered()->get();
+
+        return view('web.home', compact('featuredTherapists', 'areasOfExpertise'));
     }
 }

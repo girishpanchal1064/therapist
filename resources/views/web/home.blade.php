@@ -161,7 +161,7 @@
     </div>
 </section>
 
-<!-- Specializations Section -->
+<!-- Areas of Expertise Section -->
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
@@ -173,6 +173,56 @@
             </p>
         </div>
 
+        @if($areasOfExpertise->count() > 0)
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @php
+                // Define color schemes for variety
+                $colorSchemes = [
+                    ['bg' => 'bg-red-50', 'iconBg' => 'bg-red-100', 'text' => 'text-red-600', 'thoughts' => 'Thoughts of therapy for management and healing'],
+                    ['bg' => 'bg-blue-50', 'iconBg' => 'bg-blue-100', 'text' => 'text-blue-600', 'thoughts' => 'Thoughts of therapy for recovery and hope'],
+                    ['bg' => 'bg-green-50', 'iconBg' => 'bg-green-100', 'text' => 'text-green-600', 'thoughts' => 'Thoughts of therapy for growth and connection'],
+                    ['bg' => 'bg-purple-50', 'iconBg' => 'bg-purple-100', 'text' => 'text-purple-600', 'thoughts' => 'Thoughts of therapy for relief and balance'],
+                    ['bg' => 'bg-yellow-50', 'iconBg' => 'bg-yellow-100', 'text' => 'text-yellow-600', 'thoughts' => 'Thoughts of therapy for freedom and wellness'],
+                    ['bg' => 'bg-pink-50', 'iconBg' => 'bg-pink-100', 'text' => 'text-pink-600', 'thoughts' => 'Thoughts of therapy for healing and resilience'],
+                    ['bg' => 'bg-indigo-50', 'iconBg' => 'bg-indigo-100', 'text' => 'text-indigo-600', 'thoughts' => 'Thoughts of therapy for clarity and peace'],
+                    ['bg' => 'bg-teal-50', 'iconBg' => 'bg-teal-100', 'text' => 'text-teal-600', 'thoughts' => 'Thoughts of therapy for harmony and wellbeing'],
+                    ['bg' => 'bg-orange-50', 'iconBg' => 'bg-orange-100', 'text' => 'text-orange-600', 'thoughts' => 'Thoughts of therapy for energy and renewal'],
+                    ['bg' => 'bg-cyan-50', 'iconBg' => 'bg-cyan-100', 'text' => 'text-cyan-600', 'thoughts' => 'Thoughts of therapy for calm and serenity'],
+                ];
+            @endphp
+            
+            @foreach($areasOfExpertise as $index => $area)
+                @php
+                    $colorIndex = $index % count($colorSchemes);
+                    $color = $colorSchemes[$colorIndex];
+                @endphp
+                <a href="{{ route('therapists.index', ['area' => $area->slug]) }}" 
+                   class="spec-hover-overlay {{ $color['bg'] }} {{ $color['text'] }} block transition-transform hover:scale-105" 
+                   data-thoughts="{{ $color['thoughts'] }}">
+                    <div class="spec-icon {{ $color['iconBg'] }} rounded-full flex items-center justify-center">
+                        @if($area->icon)
+                            <i class="{{ $area->icon }} w-12 h-12 {{ $color['text'] }}" style="font-size: 3rem; display: flex; align-items: center; justify-content: center;"></i>
+                        @else
+                            <svg class="w-12 h-12 {{ $color['text'] }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        @endif
+                    </div>
+                    <div class="spec-text {{ $color['text'] }}">{{ $area->name }}</div>
+                    @if($area->description)
+                        <p class="text-sm text-gray-500 mt-2 px-4 text-center line-clamp-2">{{ Str::limit($area->description, 80) }}</p>
+                    @endif
+                </a>
+            @endforeach
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="{{ route('therapists.index') }}" class="btn-outline text-lg px-8 py-4">
+                View All Therapists
+            </a>
+        </div>
+        @else
+        <!-- Fallback static content if no areas exist -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="spec-hover-overlay bg-red-50 text-red-600" data-thoughts="Thoughts of therapy for anxiety management and peace">
                 <div class="spec-icon bg-red-100 rounded-full flex items-center justify-center">
@@ -228,6 +278,7 @@
                 <div class="spec-text text-pink-600">Trauma</div>
             </div>
         </div>
+        @endif
     </div>
 </section>
 

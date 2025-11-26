@@ -120,7 +120,26 @@ Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therap
 });
 // Client dashboard (controller)
 Route::middleware(['auth', 'role:Client'])->prefix('client')->name('client.')->group(function () {
-    Route::get('/dashboard', [ClientDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Client\DashboardController::class, 'index'])->name('dashboard');
+    
+    // Appointments
+    Route::get('/appointments', [App\Http\Controllers\Client\AppointmentController::class, 'index'])->name('appointments.index');
+    Route::get('/appointments/{appointment}', [App\Http\Controllers\Client\AppointmentController::class, 'show'])->name('appointments.show');
+    
+    // Online Sessions
+    Route::get('/sessions/join/{appointment}', [App\Http\Controllers\Client\SessionController::class, 'join'])->name('sessions.join');
+    Route::get('/sessions/{appointment}', [App\Http\Controllers\Client\SessionController::class, 'show'])->name('sessions.show');
+    
+    // Wallet
+    Route::get('/wallet', [App\Http\Controllers\Client\WalletController::class, 'index'])->name('wallet.index');
+    Route::post('/wallet/recharge', [App\Http\Controllers\Client\WalletController::class, 'recharge'])->name('wallet.recharge');
+    Route::get('/wallet/transactions', [App\Http\Controllers\Client\WalletController::class, 'transactions'])->name('wallet.transactions');
+    
+    // Reviews
+    Route::get('/reviews/create/{appointment}', [App\Http\Controllers\Client\ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/reviews', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('/reviews/{appointment}', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('reviews.store.appointment');
+    Route::get('/reviews', [App\Http\Controllers\Client\ReviewController::class, 'index'])->name('reviews.index');
 });
 
 // Therapist listing and booking routes

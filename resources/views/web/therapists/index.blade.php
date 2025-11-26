@@ -129,6 +129,25 @@
                     </div>
                 </div>
 
+                <!-- Areas of Expertise -->
+                @if(isset($filterOptions['areasOfExpertise']) && $filterOptions['areasOfExpertise']->count() > 0)
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Areas of Expertise</label>
+                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                        @foreach($filterOptions['areasOfExpertise'] as $area)
+                            <label class="flex items-center">
+                                <input type="radio"
+                                       name="area"
+                                       value="{{ $area->slug }}"
+                                       {{ request('area') === $area->slug ? 'checked' : '' }}
+                                       class="border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">{{ $area->name }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
                 <!-- Filter Actions -->
                 <div class="col-span-full flex justify-end gap-3 pt-4 border-t">
                     <button type="button" id="clearFilters" class="px-4 py-2 text-gray-600 hover:text-gray-800">
@@ -144,10 +163,47 @@
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Area of Expertise Banner (when filtering) -->
+        @if(isset($currentArea) && $currentArea)
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 mb-6 text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                        @if($currentArea->icon)
+                            <i class="{{ $currentArea->icon }} text-white" style="font-size: 2rem;"></i>
+                        @else
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        @endif
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold">{{ $currentArea->name }}</h2>
+                        @if($currentArea->description)
+                            <p class="text-white/80 mt-1">{{ Str::limit($currentArea->description, 120) }}</p>
+                        @endif
+                    </div>
+                </div>
+                <a href="{{ route('therapists.index') }}" class="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    Clear Filter
+                </a>
+            </div>
+        </div>
+        @endif
+
         <!-- Results Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">Find Your Perfect Therapist</h1>
+                <h1 class="text-2xl font-bold text-gray-900">
+                    @if(isset($currentArea) && $currentArea)
+                        Therapists Specializing in {{ $currentArea->name }}
+                    @else
+                        Find Your Perfect Therapist
+                    @endif
+                </h1>
                 <p id="resultsCount" class="text-gray-600 mt-1">
                     Showing {{ $therapists->total() }} therapists
                 </p>

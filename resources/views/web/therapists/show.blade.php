@@ -134,6 +134,52 @@
                     </div>
                 @endif
 
+                <!-- Areas of Expertise -->
+                @php
+                    $areasOfExpertise = $therapist->therapistProfile->areas_of_expertise ?? [];
+                    $areasCollection = \App\Models\AreaOfExpertise::whereIn('slug', is_array($areasOfExpertise) ? $areasOfExpertise : [])->active()->get();
+                @endphp
+                @if($areasCollection->count() > 0)
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                            <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+                                <svg class="w-6 h-6 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                                Areas of Expertise
+                            </h2>
+                        </div>
+                        <div class="px-6 py-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                @php
+                                    $areaColors = [
+                                        ['bg' => 'bg-red-50', 'border' => 'border-red-200', 'text' => 'text-red-800', 'icon' => 'text-red-600'],
+                                        ['bg' => 'bg-blue-50', 'border' => 'border-blue-200', 'text' => 'text-blue-800', 'icon' => 'text-blue-600'],
+                                        ['bg' => 'bg-purple-50', 'border' => 'border-purple-200', 'text' => 'text-purple-800', 'icon' => 'text-purple-600'],
+                                        ['bg' => 'bg-yellow-50', 'border' => 'border-yellow-200', 'text' => 'text-yellow-800', 'icon' => 'text-yellow-600'],
+                                        ['bg' => 'bg-pink-50', 'border' => 'border-pink-200', 'text' => 'text-pink-800', 'icon' => 'text-pink-600'],
+                                        ['bg' => 'bg-indigo-50', 'border' => 'border-indigo-200', 'text' => 'text-indigo-800', 'icon' => 'text-indigo-600'],
+                                    ];
+                                @endphp
+                                @foreach($areasCollection as $index => $area)
+                                    @php $color = $areaColors[$index % count($areaColors)]; @endphp
+                                    <a href="{{ route('therapists.index', ['area' => $area->slug]) }}" 
+                                       class="flex items-center p-3 {{ $color['bg'] }} rounded-lg border {{ $color['border'] }} hover:shadow-md transition-shadow">
+                                        @if($area->icon)
+                                            <i class="{{ $area->icon }} w-5 h-5 {{ $color['icon'] }} mr-3" style="font-size: 1.25rem;"></i>
+                                        @else
+                                            <svg class="w-5 h-5 {{ $color['icon'] }} mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                            </svg>
+                                        @endif
+                                        <span class="{{ $color['text'] }} font-medium">{{ $area->name }}</span>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Experience & Qualifications -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">

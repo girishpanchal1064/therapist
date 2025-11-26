@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\TherapistProfile;
 use App\Models\TherapistSpecialization;
+use App\Models\AreaOfExpertise;
 use App\Services\TherapistAvailabilityService;
 use Illuminate\Http\Request;
 
@@ -32,6 +33,14 @@ class TherapistController extends Controller
                   ->orWhereHas('therapistProfile.specializations', function($subQ) use ($searchTerm) {
                       $subQ->where('name', 'like', "%{$searchTerm}%");
                   });
+            });
+        }
+
+        // Filter by area of expertise
+        if ($request->filled('area')) {
+            $areaSlug = $request->area;
+            $query->whereHas('therapistProfile', function($q) use ($areaSlug) {
+                $q->whereJsonContains('areas_of_expertise', $areaSlug);
             });
         }
 
@@ -112,6 +121,9 @@ class TherapistController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        // Get areas of expertise for filter
+        $areasOfExpertise = AreaOfExpertise::active()->ordered()->get();
+
         // Get languages for filter
         $languages = User::role('Therapist')
             ->whereHas('therapistProfile')
@@ -123,9 +135,16 @@ class TherapistController extends Controller
             ->sort()
             ->values();
 
+        // Get current area filter name for display
+        $currentArea = null;
+        if ($request->filled('area')) {
+            $currentArea = AreaOfExpertise::where('slug', $request->area)->first();
+        }
+
         // Get filter options
         $filterOptions = [
             'specializations' => $specializations,
+            'areasOfExpertise' => $areasOfExpertise,
             'languages' => $languages,
             'genders' => ['male', 'female', 'other'],
             'experience_ranges' => [
@@ -166,8 +185,10 @@ class TherapistController extends Controller
         return view('web.therapists.index', compact(
             'therapists',
             'specializations',
+            'areasOfExpertise',
             'languages',
-            'filterOptions'
+            'filterOptions',
+            'currentArea'
         ));
     }
 

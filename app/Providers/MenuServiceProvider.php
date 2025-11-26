@@ -53,6 +53,87 @@ class MenuServiceProvider extends ServiceProvider
             return collect([(object)['menu' => []]]);
         }
 
+        // Special handling for Client role: custom menu
+        if ($user->hasRole('Client')) {
+            $clientMenu = [
+                [
+                    'url' => '/client/dashboard',
+                    'name' => 'Dashboard',
+                    'icon' => 'menu-icon tf-icons ri-home-smile-line',
+                    'slug' => 'client.dashboard'
+                ],
+                [
+                    'url' => '/client/appointments',
+                    'name' => 'Appointments',
+                    'icon' => 'menu-icon tf-icons ri-calendar-check-line',
+                    'slug' => 'client.appointments.index'
+                ],
+                [
+                    'url' => '/client/appointments',
+                    'name' => 'My Sessions',
+                    'icon' => 'menu-icon tf-icons ri-video-line',
+                    'slug' => 'client.appointments.index'
+                ],
+                [
+                    'url' => '/client/wallet',
+                    'name' => 'Wallet',
+                    'icon' => 'menu-icon tf-icons ri-wallet-3-line',
+                    'slug' => 'client.wallet.index'
+                ],
+                [
+                    'url' => '/assessments',
+                    'name' => 'Assessments',
+                    'icon' => 'menu-icon tf-icons ri-file-list-3-line',
+                    'slug' => 'assessments.index'
+                ],
+                [
+                    'url' => '/client/reviews',
+                    'name' => 'Reviews',
+                    'icon' => 'menu-icon tf-icons ri-star-line',
+                    'slug' => 'client.reviews.index'
+                ],
+                [
+                    'url' => '/',
+                    'name' => 'Visit Website',
+                    'icon' => 'menu-icon tf-icons ri-global-line',
+                    'slug' => 'home',
+                    'target' => '_blank'
+                ],
+                [
+                    'url' => '#',
+                    'name' => 'Logout',
+                    'icon' => 'menu-icon tf-icons ri-logout-box-r-line',
+                    'slug' => 'logout',
+                    'onclick' => 'event.preventDefault(); document.getElementById("logout-form").submit();'
+                ]
+            ];
+
+            // Convert arrays to objects
+            if (!is_array($clientMenu)) {
+                $clientMenu = [];
+            }
+            
+            if (!empty($clientMenu)) {
+                foreach ($clientMenu as $key => $item) {
+                    if (!isset($item) || !is_array($item)) {
+                        continue;
+                    }
+                    
+                    $itemArray = $item;
+                    
+                    if (isset($itemArray['submenu']) && is_array($itemArray['submenu']) && !empty($itemArray['submenu'])) {
+                        $itemArray['submenu'] = array_map(function ($sub) { 
+                            return is_array($sub) ? (object) $sub : $sub; 
+                        }, $itemArray['submenu']);
+                    }
+                    
+                    $clientMenu[$key] = (object) $itemArray;
+                }
+            }
+
+            return collect([(object)['menu' => $clientMenu ?? []]]);
+        }
+
         // Special handling for Therapist role: limit menu
         if ($user->hasRole('Therapist')) {
             $therapistMenu = [
