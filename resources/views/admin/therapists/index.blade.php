@@ -148,55 +148,101 @@
 
   /* Therapist Avatar */
   .therapist-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     object-fit: cover;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .therapist-avatar-default {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
   }
 
   .therapist-avatar-initials {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    font-size: 0.875rem;
+    font-weight: 700;
+    font-size: 1rem;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   }
 
   /* Specialization Badge */
   .spec-badge {
     background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
     color: #0369a1;
-    padding: 0.25rem 0.625rem;
+    padding: 0.3rem 0.65rem;
     border-radius: 6px;
-    font-size: 0.6875rem;
+    font-size: 0.7rem;
     font-weight: 600;
     margin-right: 0.25rem;
     margin-bottom: 0.25rem;
     display: inline-block;
+    border: 1px solid rgba(3, 105, 161, 0.1);
   }
 
-  /* Info Badge */
-  .info-badge {
-    background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
-    color: #4338ca;
-    padding: 0.375rem 0.75rem;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
+  /* Experience Badge */
+  .exp-badge {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1e40af;
+    padding: 0.5rem 0.875rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid rgba(30, 64, 175, 0.15);
+    box-shadow: 0 2px 6px rgba(30, 64, 175, 0.1);
   }
 
-  .rate-badge {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    color: #92400e;
-    padding: 0.375rem 0.75rem;
+  .exp-badge i {
+    font-size: 0.9rem;
+    color: #3b82f6;
+  }
+
+  /* Fee Badge */
+  .fee-badge {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #166534;
+    padding: 0.5rem 0.875rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid rgba(22, 101, 52, 0.15);
+    box-shadow: 0 2px 6px rgba(22, 101, 52, 0.1);
+  }
+
+  .fee-badge i {
+    font-size: 0.9rem;
+    color: #22c55e;
+  }
+
+  /* Not Set Badge */
+  .not-set-badge {
+    background: #f3f4f6;
+    color: #6b7280;
+    padding: 0.4rem 0.75rem;
     border-radius: 8px;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 500;
+    font-style: italic;
   }
 
   /* Status Badge */
@@ -364,7 +410,7 @@
             <th>Phone</th>
             <th>Specializations</th>
             <th>Experience</th>
-            <th>Rate</th>
+            <th>Fee</th>
             <th>Status</th>
             <th>Created At</th>
             <th>Actions</th>
@@ -375,12 +421,12 @@
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td>
-                @if($therapist->avatar)
+                @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
+                  <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}" alt="Avatar" class="therapist-avatar">
+                @elseif($therapist->avatar)
                   <img src="{{ asset('storage/' . $therapist->avatar) }}" alt="Avatar" class="therapist-avatar">
                 @else
-                  <div class="therapist-avatar-initials">
-                    {{ strtoupper(substr($therapist->name, 0, 2)) }}
-                  </div>
+                  <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=96&bold=true&format=svg" alt="Avatar" class="therapist-avatar-default">
                 @endif
               </td>
               <td>
@@ -405,21 +451,21 @@
                 @endif
               </td>
               <td>
-                @if($therapist->therapistProfile)
-                  <span class="info-badge">
-                    <i class="ri-briefcase-line me-1"></i>{{ $therapist->therapistProfile->experience_years }} yrs
+                @if($therapist->therapistProfile && $therapist->therapistProfile->experience_years)
+                  <span class="exp-badge">
+                    <i class="ri-award-line"></i>{{ $therapist->therapistProfile->experience_years }} Years
                   </span>
                 @else
-                  <span class="text-muted small">Not set</span>
+                  <span class="not-set-badge">Not set</span>
                 @endif
               </td>
               <td>
-                @if($therapist->therapistProfile)
-                  <span class="rate-badge">
-                    <i class="ri-money-dollar-circle-line me-1"></i>${{ number_format($therapist->therapistProfile->hourly_rate, 0) }}/hr
+                @if($therapist->therapistProfile && $therapist->therapistProfile->consultation_fee)
+                  <span class="fee-badge">
+                    <i class="ri-money-rupee-circle-line"></i>₹{{ number_format($therapist->therapistProfile->consultation_fee, 0) }}
                   </span>
                 @else
-                  <span class="text-muted small">Not set</span>
+                  <span class="not-set-badge">Not set</span>
                 @endif
               </td>
               <td>

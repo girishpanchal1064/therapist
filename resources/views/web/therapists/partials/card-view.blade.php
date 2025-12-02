@@ -15,14 +15,18 @@
                     <!-- Avatar with Pink Ring -->
                     <div class="therapist-avatar-wrapper">
                         <div class="therapist-avatar-ring">
-                            @if($therapist->profile && $therapist->profile->profile_image)
-                                <img src="{{ Storage::url($therapist->profile->profile_image) }}"
+                            @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
+                                <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}"
+                                     alt="{{ $therapist->name }}"
+                                     class="therapist-avatar">
+                            @elseif($therapist->avatar)
+                                <img src="{{ asset('storage/' . $therapist->avatar) }}"
                                      alt="{{ $therapist->name }}"
                                      class="therapist-avatar">
                             @else
-                                <div class="therapist-avatar-placeholder">
-                                    {{ substr($therapist->name, 0, 1) }}
-                                </div>
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=ec4899&color=fff&size=200&bold=true&format=svg"
+                                     alt="{{ $therapist->name }}"
+                                     class="therapist-avatar">
                             @endif
                         </div>
                     </div>

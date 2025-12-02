@@ -5,13 +5,15 @@
                 <!-- Avatar Section -->
                 <div class="list-avatar-section">
                     <div class="list-avatar-ring">
-                        @if($therapist->profile && $therapist->profile->profile_image)
-                            <img src="{{ Storage::url($therapist->profile->profile_image) }}"
+                        @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
+                            <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}"
+                                 alt="{{ $therapist->name }}">
+                        @elseif($therapist->avatar)
+                            <img src="{{ asset('storage/' . $therapist->avatar) }}"
                                  alt="{{ $therapist->name }}">
                         @else
-                            <div class="list-avatar-placeholder">
-                                {{ substr($therapist->name, 0, 1) }}
-                            </div>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=ec4899&color=fff&size=180&bold=true&format=svg"
+                                 alt="{{ $therapist->name }}">
                         @endif
                     </div>
                 </div>

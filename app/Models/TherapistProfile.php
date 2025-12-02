@@ -51,6 +51,9 @@ class TherapistProfile extends Model
         'clinic_zip',
         'timezone',
         'areas_of_expertise',
+        'profile_image',
+        'certifications',
+        'education',
     ];
 
     protected function casts(): array
