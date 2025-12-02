@@ -268,22 +268,84 @@
     color: #4b5563;
   }
 
-  /* Action Dropdown */
+  /* Modern Action Buttons */
+  .action-btns {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .btn-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+
+  .btn-action:hover {
+    transform: translateY(-3px);
+  }
+
+  .btn-action.view {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1d4ed8;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+  }
+
+  .btn-action.view:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+  }
+
+  .btn-action.edit {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #b45309;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+  }
+
+  .btn-action.edit:hover {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+  }
+
+  .btn-action.delete {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #dc2626;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+  }
+
+  .btn-action.delete:hover {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+  }
+
+  /* Action Dropdown - Fallback */
   .action-dropdown .dropdown-toggle {
-    background: #f1f5f9;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
     border: none;
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
   }
 
   .action-dropdown .dropdown-toggle:hover {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   }
 
   .action-dropdown .dropdown-menu {
@@ -291,12 +353,14 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
     padding: 0.5rem;
+    min-width: 180px;
   }
 
   .action-dropdown .dropdown-item {
     border-radius: 8px;
-    padding: 0.5rem 1rem;
+    padding: 0.625rem 1rem;
     font-size: 0.875rem;
+    font-weight: 500;
     transition: all 0.2s ease;
   }
 
@@ -477,26 +541,20 @@
                 <span class="text-muted">{{ $therapist->created_at->format('M d, Y') }}</span>
               </td>
               <td>
-                <div class="dropdown action-dropdown">
-                  <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="ri-more-2-line"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="{{ route('admin.therapists.show', $therapist) }}">
-                      <i class="ri-eye-line me-2 text-primary"></i> View Profile
-                    </a>
-                    <a class="dropdown-item" href="{{ route('admin.therapists.edit', $therapist) }}">
-                      <i class="ri-pencil-line me-2 text-info"></i> Edit
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <form action="{{ route('admin.therapists.destroy', $therapist) }}" method="POST" class="d-inline">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this therapist?')">
-                        <i class="ri-delete-bin-line me-2"></i> Delete
-                      </button>
-                    </form>
-                  </div>
+                <div class="action-btns">
+                  <a href="{{ route('admin.therapists.show', $therapist) }}" class="btn-action view" title="View Profile">
+                    <i class="ri-eye-line"></i>
+                  </a>
+                  <a href="{{ route('admin.therapists.edit', $therapist) }}" class="btn-action edit" title="Edit">
+                    <i class="ri-pencil-line"></i>
+                  </a>
+                  <form action="{{ route('admin.therapists.destroy', $therapist) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-action delete" title="Delete" onclick="return confirm('Are you sure you want to delete this therapist?')">
+                      <i class="ri-delete-bin-line"></i>
+                    </button>
+                  </form>
                 </div>
               </td>
             </tr>

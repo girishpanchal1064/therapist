@@ -21,6 +21,7 @@
     .page-header h4 {
         margin: 0;
         font-weight: 600;
+        color: white;
     }
     
     .page-header p {

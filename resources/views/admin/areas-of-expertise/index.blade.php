@@ -31,6 +31,7 @@
     .page-header h4 {
         margin: 0;
         font-weight: 600;
+        color: white;
     }
     
     .page-header p {
@@ -173,6 +174,66 @@
         padding: 0.5rem;
     }
     
+    /* Modern Action Buttons */
+    .action-btns {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .btn-action {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-3px);
+    }
+
+    .btn-action.view {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #1d4ed8;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn-action.view:hover {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    }
+
+    .btn-action.edit {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #b45309;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+    }
+
+    .btn-action.edit:hover {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+    }
+
+    .btn-action.delete {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #dc2626;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+    }
+
+    .btn-action.delete:hover {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+    }
+
     .action-dropdown .dropdown-item {
         border-radius: 6px;
         padding: 0.5rem 1rem;
@@ -334,26 +395,20 @@
                                 </span>
                             </td>
                             <td>
-                                <div class="dropdown action-dropdown">
-                                    <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown">
-                                        <i class="ri-more-2-line"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="{{ route('admin.areas-of-expertise.show', $area) }}">
-                                            <i class="ri-eye-line me-2"></i> View
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('admin.areas-of-expertise.edit', $area) }}">
-                                            <i class="ri-pencil-line me-2"></i> Edit
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <form action="{{ route('admin.areas-of-expertise.destroy', $area) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this area?')">
-                                                <i class="ri-delete-bin-line me-2"></i> Delete
-                                            </button>
-                                        </form>
-                                    </div>
+                                <div class="action-btns">
+                                    <a href="{{ route('admin.areas-of-expertise.show', $area) }}" class="btn-action view" title="View">
+                                        <i class="ri-eye-line"></i>
+                                    </a>
+                                    <a href="{{ route('admin.areas-of-expertise.edit', $area) }}" class="btn-action edit" title="Edit">
+                                        <i class="ri-pencil-line"></i>
+                                    </a>
+                                    <form action="{{ route('admin.areas-of-expertise.destroy', $area) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-action delete" title="Delete" onclick="return confirm('Are you sure you want to delete this area?')">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
