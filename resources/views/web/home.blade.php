@@ -3,6 +3,210 @@
 @section('title', 'TalkToAngel Clone - Online Mental Health Counseling')
 @section('description', 'Connect with verified therapists for online counseling, therapy sessions, and mental health support. Professional help when you need it most.')
 
+@section('head')
+<style>
+    /* Therapist Card Styles - Two Column Layout */
+    .therapist-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+        height: 100%;
+        padding: 1.5rem;
+        min-height: 380px;
+    }
+    .therapist-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    .therapist-card-inner {
+        display: flex;
+        gap: 1.25rem;
+        height: 100%;
+    }
+    /* Left Column - Profile Info */
+    .therapist-left {
+        flex: 0 0 auto;
+        text-align: center;
+        width: 140px;
+    }
+    .therapist-avatar-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    .therapist-avatar-ring {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        padding: 4px;
+        background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .therapist-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: white;
+    }
+    .therapist-avatar-placeholder {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ec4899;
+    }
+    .therapist-name {
+        color: #0d9488;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+        line-height: 1.3;
+    }
+    .therapist-specialization {
+        color: #374151;
+        font-size: 0.85rem;
+        margin-bottom: 0.2rem;
+    }
+    .therapist-title {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-bottom: 0.2rem;
+    }
+    .therapist-experience {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-bottom: 0.2rem;
+    }
+    .therapist-qualification {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-bottom: 0.6rem;
+    }
+    .therapist-rating {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        margin-bottom: 0.3rem;
+    }
+    .therapist-rating svg {
+        width: 18px;
+        height: 18px;
+        color: #fbbf24;
+    }
+    .therapist-rating .rating-value {
+        font-size: 0.9rem;
+        color: #374151;
+        font-weight: 600;
+    }
+    .therapist-reviews {
+        font-size: 0.8rem;
+        color: #f59e0b;
+    }
+    /* Right Column - Actions */
+    .therapist-right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    .see-availability {
+        font-size: 0.85rem;
+        color: #374151;
+        text-decoration: underline;
+        margin-bottom: 0.75rem;
+        display: inline-block;
+    }
+    .see-availability:hover {
+        color: #0d9488;
+    }
+    .recommend-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #0d9488;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        width: fit-content;
+    }
+    .recommend-badge svg {
+        width: 16px;
+        height: 16px;
+    }
+    .online-status {
+        font-size: 1.2rem;
+        color: #374151;
+        font-style: italic;
+        margin-bottom: 0.75rem;
+    }
+    .session-price {
+        margin-bottom: 1.25rem;
+    }
+    .session-price-label {
+        font-size: 0.9rem;
+        color: #6b7280;
+    }
+    .session-price-amount {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #ec4899;
+    }
+    .btn-book-session {
+        display: block;
+        width: 100%;
+        background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+        color: white;
+        padding: 0.85rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-bottom: 0.6rem;
+        font-size: 0.95rem;
+    }
+    .btn-book-session:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(236, 72, 153, 0.35);
+        color: white;
+    }
+    .btn-view-profile {
+        display: block;
+        width: 100%;
+        background: #0d9488;
+        color: white;
+        padding: 0.85rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+    .btn-view-profile:hover {
+        background: #0f766e;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(13, 148, 136, 0.35);
+    }
+</style>
+@endsection
+
 @section('content')
 <!-- Hero Section -->
 <section class="relative bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
@@ -296,130 +500,91 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($featuredTherapists as $therapist)
-                <div class="therapist-card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                    <!-- Profile Section -->
-                    <div class="profile-section bg-gray-50 p-4 text-center border-b">
-                        <div class="relative inline-block">
-                            @if($therapist->profile && $therapist->profile->profile_image)
-                                <img src="{{ Storage::url($therapist->profile->profile_image) }}"
-                                     alt="{{ $therapist->name }}"
-                                     class="profile-image w-20 h-20 rounded-full object-cover border-2 border-white shadow-sm">
-                            @else
-                                <div class="profile-image w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold border-2 border-white shadow-sm">
-                                    {{ substr($therapist->name, 0, 1) }}
+                <div class="therapist-card">
+                    <div class="therapist-card-inner">
+                        <!-- Left Column - Profile Info -->
+                        <div class="therapist-left">
+                            <!-- Avatar with Pink Ring -->
+                            <div class="therapist-avatar-wrapper">
+                                <div class="therapist-avatar-ring">
+                                    @if($therapist->profile && $therapist->profile->profile_image)
+                                        <img src="{{ Storage::url($therapist->profile->profile_image) }}"
+                                             alt="{{ $therapist->name }}"
+                                             class="therapist-avatar">
+                                    @else
+                                        <div class="therapist-avatar-placeholder">
+                                            {{ substr($therapist->name, 0, 1) }}
+                                        </div>
+                                    @endif
                                 </div>
+                            </div>
+
+                            <!-- Name -->
+                            <h3 class="therapist-name">{{ strtoupper($therapist->name) }}</h3>
+                            
+                            <!-- Specialization -->
+                            @if($therapist->therapistProfile && $therapist->therapistProfile->specializations->count() > 0)
+                                <p class="therapist-specialization">{{ $therapist->therapistProfile->specializations->first()->name }}</p>
+                            @else
+                                <p class="therapist-specialization">Counselling</p>
                             @endif
-                            <!-- Online Status -->
-                            <div class="online-badge absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
-                        </div>
-                    </div>
+                            
+                            <!-- Title -->
+                            <p class="therapist-title">Psychologist</p>
+                            
+                            <!-- Experience -->
+                            <p class="therapist-experience">{{ $therapist->therapistProfile->experience_years ?? 0 }} Yrs</p>
+                            
+                            <!-- Qualification -->
+                            <p class="therapist-qualification">{{ $therapist->therapistProfile->qualification ?? 'MA' }}</p>
 
-                    <!-- Content Section -->
-                    <div class="content-section p-4">
-                        <!-- Therapist Info -->
-                        <div class="text-center mb-1">
-                            <h3 class="therapist-name text-lg font-semibold text-gray-900 mb-0.5">{{ $therapist->name }}</h3>
-                            <p class="therapist-title text-sm text-gray-600">{{ $therapist->therapistProfile->qualification ?? 'Licensed Therapist' }}</p>
-                        </div>
-
-                        <!-- Experience & Education -->
-                        <div class="space-y-0.5 mb-1 text-xs text-gray-600">
-                            <div class="flex items-center justify-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                {{ $therapist->therapistProfile->experience_years ?? 0 }} Years Experience
-                            </div>
-                            <div class="flex items-center justify-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
-                                </svg>
-                                {{ $therapist->therapistProfile->qualification ?? 'BA, MA' }}
-                            </div>
-                        </div>
-
-                        <!-- Rating -->
-                        <div class="rating-container flex items-center justify-center gap-2 mb-1">
-                            <div class="rating-stars flex gap-1">
+                            <!-- Rating -->
+                            <div class="therapist-rating">
                                 @for($i = 1; $i <= 5; $i++)
-                                    <svg class="rating-star w-4 h-4 {{ $i <= floor($therapist->therapistProfile->rating_average ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}"
-                                         fill="currentColor" viewBox="0 0 20 20">
+                                    <svg fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                     </svg>
                                 @endfor
+                                <span class="rating-value">({{ number_format($therapist->therapistProfile->rating_average ?? 0, 1) }})</span>
                             </div>
-                            <span class="rating-text text-sm font-semibold text-gray-700">
-                                {{ number_format($therapist->therapistProfile->rating_average ?? 0, 1) }}
-                            </span>
-                            <span class="rating-count text-xs text-gray-500">
-                                ({{ $therapist->therapistProfile->total_reviews ?? 0 }} Ratings)
-                            </span>
+                            <p class="therapist-reviews">({{ $therapist->therapistProfile->total_reviews ?? 0 }} Ratings)</p>
                         </div>
 
-                        <!-- Specializations -->
-                        @if($therapist->therapistProfile && $therapist->therapistProfile->specializations->count() > 0)
-                            <div class="specializations flex flex-wrap gap-1 justify-center mb-1">
-                                @foreach($therapist->therapistProfile->specializations->take(2) as $specialization)
-                                    <span class="specialization-tag px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
-                                        {{ $specialization->name }}
-                                    </span>
-                                @endforeach
-                                @if($therapist->therapistProfile->specializations->count() > 2)
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                                        +{{ $therapist->therapistProfile->specializations->count() - 2 }}
-                                    </span>
-                                @endif
-                            </div>
-                        @endif
+                        <!-- Right Column - Actions -->
+                        <div class="therapist-right">
+                            <!-- See Availability -->
+                            <a href="{{ route('therapists.show', $therapist->id) }}" class="see-availability">See Availability</a>
 
-                        <!-- Session Info -->
-                        <div class="text-center mb-1">
-                            <div class="text-sm text-gray-600">
-                                Session beginning at
-                                <span class="text-lg font-bold text-teal-600">
-                                    ₹{{ number_format($therapist->therapistProfile->consultation_fee ?? 0) }}
-                                </span>
+                            <!-- Recommend Badge -->
+                            <div class="recommend-badge">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.834a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                </svg>
+                                Recommend
                             </div>
-                        </div>
 
-                        <!-- Action Buttons -->
-                        <div class="action-buttons space-y-2">
+                            <!-- Online Status -->
+                            <p class="online-status">Online</p>
+
+                            <!-- Session Price -->
+                            <div class="session-price">
+                                <p class="session-price-label">Session beginning at</p>
+                                <p class="session-price-amount">₹ {{ number_format($therapist->therapistProfile->consultation_fee ?? 0) }}</p>
+                            </div>
+
+                            <!-- Action Buttons -->
                             @auth
-                                <a href="{{ route('booking.form', $therapist->id) }}"
-                                   class="btn-primary w-full text-center block py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
+                                <a href="{{ route('booking.form', $therapist->id) }}" class="btn-book-session">
                                     Book a session
                                 </a>
                             @else
-                                <a href="{{ route('login', ['redirect' => route('booking.form', $therapist->id)]) }}"
-                                   class="btn-primary w-full text-center block py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
-                                    Login to Book
+                                <a href="{{ route('login', ['redirect' => route('booking.form', $therapist->id)]) }}" class="btn-book-session">
+                                    Book a session
                                 </a>
                             @endauth
-                            <a href="{{ route('therapists.show', $therapist->id) }}"
-                               class="btn-outline w-full text-center block py-2 border border-teal-500 text-teal-600 rounded-lg hover:bg-teal-50 transition-colors">
+                            <a href="{{ route('therapists.show', $therapist->id) }}" class="btn-view-profile">
                                 View Profile
                             </a>
-                        </div>
-
-                        <!-- See Availability Link -->
-                        <div class="text-center mt-2">
-                            <a href="{{ route('therapists.show', $therapist->id) }}"
-                               class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full hover:bg-green-200 transition-colors">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                                </svg>
-                                See Availability
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Recommend Badge -->
-                    <div class="absolute top-3 right-3">
-                        <div class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.834a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
-                            </svg>
-                            Recommend
                         </div>
                     </div>
                 </div>

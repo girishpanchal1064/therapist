@@ -2,6 +2,423 @@
 
 @section('title', 'Find Your Perfect Therapist - TalkToAngel Clone')
 
+@section('head')
+<style>
+    /* Therapist Card Styles - Two Column Layout */
+    .therapist-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+        height: 100%;
+        padding: 1.5rem;
+        min-height: 380px;
+    }
+    .therapist-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    .therapist-card-inner {
+        display: flex;
+        gap: 1.25rem;
+        height: 100%;
+    }
+    /* Left Column - Profile Info */
+    .therapist-left {
+        flex: 0 0 auto;
+        text-align: center;
+        width: 140px;
+    }
+    .therapist-avatar-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    .therapist-avatar-ring {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        padding: 4px;
+        background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .therapist-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: white;
+    }
+    .therapist-avatar-placeholder {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ec4899;
+    }
+    .therapist-name {
+        color: #0d9488;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+        line-height: 1.3;
+    }
+    .therapist-specialization {
+        color: #374151;
+        font-size: 0.85rem;
+        margin-bottom: 0.2rem;
+    }
+    .therapist-title {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-bottom: 0.2rem;
+    }
+    .therapist-experience {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-bottom: 0.2rem;
+    }
+    .therapist-qualification {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-bottom: 0.6rem;
+    }
+    .therapist-rating {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        margin-bottom: 0.3rem;
+    }
+    .therapist-rating svg {
+        width: 18px;
+        height: 18px;
+        color: #fbbf24;
+    }
+    .therapist-rating .rating-value {
+        font-size: 0.9rem;
+        color: #374151;
+        font-weight: 600;
+    }
+    .therapist-reviews {
+        font-size: 0.8rem;
+        color: #f59e0b;
+    }
+    /* Right Column - Actions */
+    .therapist-right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    .see-availability {
+        font-size: 0.85rem;
+        color: #374151;
+        text-decoration: underline;
+        margin-bottom: 0.75rem;
+        display: inline-block;
+    }
+    .see-availability:hover {
+        color: #0d9488;
+    }
+    .recommend-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #0d9488;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        width: fit-content;
+    }
+    .recommend-badge svg {
+        width: 16px;
+        height: 16px;
+    }
+    .online-status {
+        font-size: 1.2rem;
+        color: #374151;
+        font-style: italic;
+        margin-bottom: 0.75rem;
+    }
+    .session-price {
+        margin-bottom: 1.25rem;
+    }
+    .session-price-label {
+        font-size: 0.9rem;
+        color: #6b7280;
+    }
+    .session-price-amount {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #ec4899;
+    }
+    .btn-book-session {
+        display: block;
+        width: 100%;
+        background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+        color: white;
+        padding: 0.85rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-bottom: 0.6rem;
+        font-size: 0.95rem;
+    }
+    .btn-book-session:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(236, 72, 153, 0.35);
+        color: white;
+    }
+    .btn-view-profile {
+        display: block;
+        width: 100%;
+        background: #0d9488;
+        color: white;
+        padding: 0.85rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+    .btn-view-profile:hover {
+        background: #0f766e;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(13, 148, 136, 0.35);
+    }
+
+    /* =============== LIST VIEW STYLES =============== */
+    .therapist-list-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .therapist-list-card:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    .therapist-list-inner {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    /* List - Avatar Section */
+    .list-avatar-section {
+        flex: 0 0 auto;
+        text-align: center;
+    }
+    .list-avatar-ring {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        padding: 4px;
+        background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .list-avatar-ring img,
+    .list-avatar-ring .list-avatar-placeholder {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: white;
+    }
+    .list-avatar-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #ec4899;
+        background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%) !important;
+    }
+    /* List - Info Section */
+    .list-info-section {
+        flex: 1;
+        min-width: 0;
+    }
+    .list-therapist-name {
+        color: #0d9488;
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+    .list-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+        color: #6b7280;
+    }
+    .list-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    .list-rating {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    .list-rating svg {
+        width: 16px;
+        height: 16px;
+        color: #fbbf24;
+    }
+    .list-rating-text {
+        font-size: 0.85rem;
+        color: #374151;
+        font-weight: 600;
+    }
+    .list-rating-count {
+        font-size: 0.8rem;
+        color: #f59e0b;
+    }
+    /* List - Price Section */
+    .list-price-section {
+        flex: 0 0 auto;
+        text-align: center;
+        padding: 0 1.5rem;
+        border-left: 1px solid #e5e7eb;
+        border-right: 1px solid #e5e7eb;
+    }
+    .list-online-status {
+        font-size: 1rem;
+        color: #374151;
+        font-style: italic;
+        margin-bottom: 0.25rem;
+    }
+    .list-price-label {
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+    .list-price-amount {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ec4899;
+    }
+    /* List - Actions Section */
+    .list-actions-section {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-width: 160px;
+    }
+    .list-recommend-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        background: #0d9488;
+        color: white;
+        padding: 0.4rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .list-recommend-badge svg {
+        width: 14px;
+        height: 14px;
+    }
+    .list-btn-book {
+        display: block;
+        background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+        color: white;
+        padding: 0.6rem 1.25rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+    }
+    .list-btn-book:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(236, 72, 153, 0.35);
+        color: white;
+    }
+    .list-btn-profile {
+        display: block;
+        background: #0d9488;
+        color: white;
+        padding: 0.6rem 1.25rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+    }
+    .list-btn-profile:hover {
+        background: #0f766e;
+        color: white;
+        transform: translateY(-2px);
+    }
+    .list-availability-link {
+        font-size: 0.8rem;
+        color: #374151;
+        text-decoration: underline;
+        text-align: center;
+    }
+    .list-availability-link:hover {
+        color: #0d9488;
+    }
+
+    /* Page Header Gradient */
+    .page-header-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    /* Responsive adjustments for list view */
+    @media (max-width: 768px) {
+        .therapist-list-inner {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+        .list-price-section {
+            border: none;
+            padding: 0;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 0;
+            width: 100%;
+        }
+        .list-actions-section {
+            width: 100%;
+        }
+        .list-meta-row {
+            justify-content: center;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="min-h-screen bg-gray-50">
     <!-- Header Section -->
@@ -11,9 +428,9 @@
                 <!-- Search and Filter -->
                 <div class="flex flex-col sm:flex-row gap-4 flex-1">
                     <!-- Filter Button -->
-                    <button id="filterToggle" class="flex items-center gap-2 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
+                    <button id="filterToggle" class="flex items-center gap-2 px-5 py-2.5 text-white rounded-lg transition-all duration-300 hover:shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
                         </svg>
                         Filter
                     </button>
@@ -150,10 +567,10 @@
 
                 <!-- Filter Actions -->
                 <div class="col-span-full flex justify-end gap-3 pt-4 border-t">
-                    <button type="button" id="clearFilters" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                    <button type="button" id="clearFilters" class="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium">
                         Clear All
                     </button>
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    <button type="submit" class="px-6 py-2.5 text-white rounded-lg font-medium transition-all duration-300 hover:shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                         Apply Filters
                     </button>
                 </div>
