@@ -8,7 +8,7 @@
     .therapist-card {
         background: white;
         border-radius: 16px;
-        overflow: hidden;
+        overflow: visible;
         transition: all 0.3s ease;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
         position: relative;
@@ -119,33 +119,50 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        padding-top: 2.5rem;
     }
     .see-availability {
-        font-size: 0.85rem;
-        color: #374151;
-        text-decoration: underline;
-        margin-bottom: 0.75rem;
-        display: inline-block;
-    }
-    .see-availability:hover {
-        color: #0d9488;
-    }
-    .recommend-badge {
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        color: #0d9488;
+        background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+        padding: 0.4rem 0.85rem;
+        border-radius: 20px;
+        font-weight: 500;
+        text-decoration: none;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    .see-availability:hover {
+        background: linear-gradient(135deg, #99f6e4 0%, #5eead4 100%);
+        color: #0f766e;
+        transform: translateY(-1px);
+    }
+    .see-availability svg {
+        width: 14px;
+        height: 14px;
+    }
+    .recommend-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
         background: #0d9488;
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
-        margin-bottom: 1rem;
-        width: fit-content;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
     }
     .recommend-badge svg {
-        width: 16px;
-        height: 16px;
+        width: 15px;
+        height: 15px;
     }
     .online-status {
         font-size: 1.2rem;

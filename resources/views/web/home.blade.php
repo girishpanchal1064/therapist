@@ -9,7 +9,7 @@
     .therapist-card {
         background: white;
         border-radius: 16px;
-        overflow: hidden;
+        overflow: visible;
         transition: all 0.3s ease;
         box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
         position: relative;
@@ -120,33 +120,50 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        padding-top: 2.5rem;
     }
     .see-availability {
-        font-size: 0.85rem;
-        color: #374151;
-        text-decoration: underline;
-        margin-bottom: 0.75rem;
-        display: inline-block;
-    }
-    .see-availability:hover {
-        color: #0d9488;
-    }
-    .recommend-badge {
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        color: #0d9488;
+        background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+        padding: 0.4rem 0.85rem;
+        border-radius: 20px;
+        font-weight: 500;
+        text-decoration: none;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    .see-availability:hover {
+        background: linear-gradient(135deg, #99f6e4 0%, #5eead4 100%);
+        color: #0f766e;
+        transform: translateY(-1px);
+    }
+    .see-availability svg {
+        width: 14px;
+        height: 14px;
+    }
+    .recommend-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
         background: #0d9488;
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
-        margin-bottom: 1rem;
-        width: fit-content;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
     }
     .recommend-badge svg {
-        width: 16px;
-        height: 16px;
+        width: 15px;
+        height: 15px;
     }
     .online-status {
         font-size: 1.2rem;
@@ -501,6 +518,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($featuredTherapists as $therapist)
                 <div class="therapist-card">
+                    <!-- Recommend Badge - Top Right Corner -->
+                    <div class="recommend-badge">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.834a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                        </svg>
+                        Recommend
+                    </div>
+
                     <div class="therapist-card-inner">
                         <!-- Left Column - Profile Info -->
                         <div class="therapist-left">
@@ -552,16 +577,13 @@
 
                         <!-- Right Column - Actions -->
                         <div class="therapist-right">
-                            <!-- See Availability -->
-                            <a href="{{ route('therapists.show', $therapist->id) }}" class="see-availability">See Availability</a>
-
-                            <!-- Recommend Badge -->
-                            <div class="recommend-badge">
+                            <!-- See Availability Pill -->
+                            <a href="{{ route('therapists.show', $therapist->id) }}" class="see-availability">
                                 <svg fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.834a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                                 </svg>
-                                Recommend
-                            </div>
+                                See Availability
+                            </a>
 
                             <!-- Online Status -->
                             <p class="online-status">Online</p>
