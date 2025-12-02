@@ -234,8 +234,8 @@
   }
 
   .account-summary-table thead th {
-    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-    color: white;
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    color: #4a5568;
     font-weight: 600;
     padding: 1rem;
     border: none;

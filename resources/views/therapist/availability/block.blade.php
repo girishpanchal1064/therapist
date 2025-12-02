@@ -130,8 +130,8 @@
   }
 
   .availability-table thead th {
-    background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
-    color: #4338ca;
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    color: #4a5568;
     font-weight: 600;
     font-size: 0.8125rem;
     text-transform: uppercase;

@@ -66,8 +66,8 @@
     }
     
     .table-modern thead th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+        color: #4a5568;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
