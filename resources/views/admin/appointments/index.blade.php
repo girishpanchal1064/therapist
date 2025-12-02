@@ -999,7 +999,7 @@
                               class="btn-action btn-action-cancel"
                               data-bs-toggle="tooltip"
                               title="Cancel"
-                              onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                              data-title="Cancel Appointment" data-text="Are you sure you want to cancel this appointment?" data-confirm-text="Yes, cancel it!" data-cancel-text="No, keep it" class="cancel-appointment-btn">
                         <i class="ri-close-line"></i>
                       </button>
                     </form>
@@ -1031,10 +1031,10 @@
                       <li>
                         <form action="{{ route('admin.appointments.destroy', $appointment) }}"
                               method="POST"
-                              onsubmit="return confirm('Are you sure you want to delete this appointment? This action cannot be undone.');">
+                              class="delete-form">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="dropdown-item text-danger">
+                          <button type="submit" class="dropdown-item text-danger" data-title="Delete Appointment" data-text="Are you sure you want to delete this appointment? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                             <i class="ri-delete-bin-line me-2"></i> Delete Appointment
                           </button>
                         </form>
@@ -1126,7 +1126,47 @@
 
     // Export functionality placeholder
     document.getElementById('exportBtn')?.addEventListener('click', function() {
-      alert('Export functionality would be implemented here. You can export to CSV, Excel, or PDF.');
+      Swal.fire({
+        icon: 'info',
+        title: 'Export',
+        text: 'Export functionality would be implemented here. You can export to CSV, Excel, or PDF.',
+        confirmButtonColor: '#667eea',
+        confirmButtonText: 'OK'
+      });
+    });
+
+    // Handle cancel appointment buttons
+    document.querySelectorAll('.cancel-appointment-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const form = this.closest('form');
+        const title = this.dataset.title || 'Cancel Appointment';
+        const text = this.dataset.text || 'Are you sure you want to cancel this appointment?';
+        const confirmText = this.dataset.confirmText || 'Yes, cancel it!';
+        const cancelText = this.dataset.cancelText || 'No, keep it';
+
+        Swal.fire({
+          title: title,
+          text: text,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#ffc107',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: confirmText,
+          cancelButtonText: cancelText,
+          reverseButtons: true,
+          customClass: {
+            confirmButton: 'btn btn-warning',
+            cancelButton: 'btn btn-secondary',
+            actions: 'swal2-actions'
+          },
+          buttonsStyling: false
+        }).then((result) => {
+          if (result.isConfirmed && form) {
+            form.submit();
+          }
+        });
+      });
     });
   });
 </script>

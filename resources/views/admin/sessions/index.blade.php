@@ -513,10 +513,10 @@
                                             <i class="ri-pencil-line me-2"></i> Edit
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <form action="{{ route('admin.sessions.destroy', $session->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.sessions.destroy', $session->id) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this session?')">
+                                            <button type="submit" class="dropdown-item text-danger" data-title="Delete Session" data-text="Are you sure you want to delete this session? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                                                 <i class="ri-delete-bin-line me-2"></i> Delete
                                             </button>
                                         </form>

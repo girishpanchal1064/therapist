@@ -422,10 +422,10 @@
                                     <a href="{{ route('admin.areas-of-expertise.edit', $area) }}" class="btn-action edit" title="Edit">
                                         <i class="ri-pencil-line"></i>
                                     </a>
-                                    <form action="{{ route('admin.areas-of-expertise.destroy', $area) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.areas-of-expertise.destroy', $area) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-action delete" title="Delete" onclick="return confirm('Are you sure you want to delete this area?')">
+                                        <button type="submit" class="btn-action delete" title="Delete" data-title="Delete Area of Expertise" data-text="Are you sure you want to delete this area? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                                             <i class="ri-delete-bin-line"></i>
                                         </button>
                                     </form>

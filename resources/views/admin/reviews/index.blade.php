@@ -635,9 +635,9 @@
                                                 <i class="ri-check-line"></i>
                                             </button>
                                         </form>
-                                        <form action="{{ route('admin.reviews.reject', $review) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.reviews.reject', $review) }}" method="POST" class="d-inline delete-form">
                                             @csrf
-                                            <button type="submit" class="btn-action reject" title="Reject" onclick="return confirm('Are you sure you want to reject this review?')">
+                                            <button type="submit" class="btn-action reject" title="Reject" data-title="Reject Review" data-text="Are you sure you want to reject this review?" data-confirm-text="Yes, reject it!" data-cancel-text="Cancel">
                                                 <i class="ri-close-line"></i>
                                             </button>
                                         </form>
@@ -645,10 +645,10 @@
                                     <a href="{{ route('admin.reviews.edit', $review) }}" class="btn-action edit" title="Edit">
                                         <i class="ri-pencil-line"></i>
                                     </a>
-                                    <form action="{{ route('admin.reviews.destroy', $review) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.reviews.destroy', $review) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-action delete" title="Delete" onclick="return confirm('Are you sure you want to delete this review?')">
+                                        <button type="submit" class="btn-action delete" title="Delete" data-title="Delete Review" data-text="Are you sure you want to delete this review? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                                             <i class="ri-delete-bin-line"></i>
                                         </button>
                                     </form>

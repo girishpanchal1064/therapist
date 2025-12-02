@@ -47,10 +47,10 @@
                       data-description="{{ $award->description }}">
                 <i class="ri-edit-line"></i>
               </button>
-              <form method="POST" action="{{ route('therapist.profile.award.delete', $award) }}" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this award?')">
+              <form method="POST" action="{{ route('therapist.profile.award.delete', $award) }}" class="d-inline delete-form">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger">
+                <button type="submit" class="btn btn-sm btn-danger" data-title="Delete Award" data-text="Are you sure you want to delete this award? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                   <i class="ri-delete-bin-line"></i>
                 </button>
               </form>

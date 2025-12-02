@@ -747,10 +747,10 @@
                           ]) }}">
                           <i class="ri-edit-line"></i> Edit
                         </button>
-                        <form method="POST" action="{{ route('therapist.availability.set.destroy', $availability) }}" onsubmit="return confirm('Are you sure you want to delete this availability?')">
+                        <form method="POST" action="{{ route('therapist.availability.set.destroy', $availability) }}" class="delete-form">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn btn-action btn-delete">
+                          <button type="submit" class="btn btn-action btn-delete" data-title="Delete Availability" data-text="Are you sure you want to delete this availability? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                             <i class="ri-delete-bin-line"></i> Delete
                           </button>
                         </form>

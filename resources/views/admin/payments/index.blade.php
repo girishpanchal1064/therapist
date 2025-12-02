@@ -780,9 +780,9 @@
                       <i class="ri-eye-line"></i>
                     </a>
                     @if($payment->status === 'completed' && $payment->status !== 'refunded')
-                      <form action="{{ route('admin.payments.refund', $payment) }}" method="POST" class="d-inline">
+                      <form action="{{ route('admin.payments.refund', $payment) }}" method="POST" class="d-inline delete-form">
                         @csrf
-                        <button type="submit" class="btn-action refund" title="Refund" onclick="return confirm('Are you sure you want to refund this payment?')">
+                        <button type="submit" class="btn-action refund" title="Refund" data-title="Refund Payment" data-text="Are you sure you want to refund this payment?" data-confirm-text="Yes, refund it!" data-cancel-text="Cancel">
                           <i class="ri-refund-line"></i>
                         </button>
                       </form>

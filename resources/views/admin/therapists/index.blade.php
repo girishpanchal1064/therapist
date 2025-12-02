@@ -578,10 +578,10 @@
                   <a href="{{ route('admin.therapists.edit', $therapist) }}" class="btn-action edit" title="Edit">
                     <i class="ri-pencil-line"></i>
                   </a>
-                  <form action="{{ route('admin.therapists.destroy', $therapist) }}" method="POST" class="d-inline">
+                  <form action="{{ route('admin.therapists.destroy', $therapist) }}" method="POST" class="d-inline delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn-action delete" title="Delete" onclick="return confirm('Are you sure you want to delete this therapist?')">
+                    <button type="submit" class="btn-action delete" title="Delete" data-title="Delete Therapist" data-text="Are you sure you want to delete this therapist? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                       <i class="ri-delete-bin-line"></i>
                     </button>
                   </form>
@@ -617,6 +617,7 @@ $(document).ready(function() {
             searchPlaceholder: "Search therapists..."
         }
     });
+
 });
 </script>
 @endsection

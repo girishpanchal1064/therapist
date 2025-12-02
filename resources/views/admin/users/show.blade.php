@@ -68,25 +68,25 @@
           </a>
 
           @if($user->status === 'active')
-            <form action="{{ route('admin.users.suspend', $user) }}" method="POST" class="d-inline">
+            <form action="{{ route('admin.users.suspend', $user) }}" method="POST" class="d-inline delete-form">
               @csrf
-              <button type="submit" class="btn btn-warning w-100" onclick="return confirm('Are you sure you want to suspend this user?')">
+              <button type="submit" class="btn btn-warning w-100" data-title="Suspend User" data-text="Are you sure you want to suspend this user?" data-confirm-text="Yes, suspend!" data-cancel-text="Cancel">
                 <i class="ri-pause-line me-2"></i>Suspend User
               </button>
             </form>
           @else
-            <form action="{{ route('admin.users.activate', $user) }}" method="POST" class="d-inline">
+            <form action="{{ route('admin.users.activate', $user) }}" method="POST" class="d-inline delete-form">
               @csrf
-              <button type="submit" class="btn btn-success w-100" onclick="return confirm('Are you sure you want to activate this user?')">
+              <button type="submit" class="btn btn-success w-100" data-title="Activate User" data-text="Are you sure you want to activate this user?" data-confirm-text="Yes, activate!" data-cancel-text="Cancel">
                 <i class="ri-play-line me-2"></i>Activate User
               </button>
             </form>
           @endif
 
-          <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline">
+          <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline delete-form">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Are you sure you want to delete this user? This action cannot be undone.')">
+            <button type="submit" class="btn btn-danger w-100" data-title="Delete User" data-text="Are you sure you want to delete this user? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
               <i class="ri-delete-bin-line me-2"></i>Delete User
             </button>
           </form>

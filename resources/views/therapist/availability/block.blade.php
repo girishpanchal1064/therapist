@@ -741,10 +741,10 @@
                             <i class="ri-{{ $block->is_active ? 'checkbox-circle-line' : 'close-circle-line' }}"></i>
                           </button>
                         </form>
-                        <form method="POST" action="{{ route('therapist.availability.block.destroy', $block) }}" onsubmit="return confirm('Are you sure you want to delete this block?')" class="d-inline">
+                        <form method="POST" action="{{ route('therapist.availability.block.destroy', $block) }}" class="d-inline delete-form">
                           @csrf
                           @method('DELETE')
-                          <button class="btn btn-action btn-delete" type="submit">
+                          <button class="btn btn-action btn-delete" type="submit" data-title="Delete Block" data-text="Are you sure you want to delete this block? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                             <i class="ri-delete-bin-line"></i>
                           </button>
                         </form>

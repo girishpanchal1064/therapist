@@ -50,10 +50,10 @@
                       data-percentage="{{ $qualification->percentage_cgpa }}">
                 <i class="ri-edit-line"></i>
               </button>
-              <form method="POST" action="{{ route('therapist.profile.qualification.delete', $qualification) }}" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this qualification?')">
+              <form method="POST" action="{{ route('therapist.profile.qualification.delete', $qualification) }}" class="d-inline delete-form">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger">
+                <button type="submit" class="btn btn-sm btn-danger" data-title="Delete Qualification" data-text="Are you sure you want to delete this qualification? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                   <i class="ri-delete-bin-line"></i>
                 </button>
               </form>

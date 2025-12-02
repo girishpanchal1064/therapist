@@ -654,10 +654,10 @@
                                     <a href="{{ route('admin.blog.edit', $post) }}" class="btn-action edit" title="Edit">
                                         <i class="ri-pencil-line"></i>
                                     </a>
-                                    <form action="{{ route('admin.blog.destroy', $post) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.blog.destroy', $post) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-action delete" title="Delete" onclick="return confirm('Are you sure you want to delete this post?')">
+                                        <button type="submit" class="btn-action delete" title="Delete" data-title="Delete Blog Post" data-text="Are you sure you want to delete this post? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                                             <i class="ri-delete-bin-line"></i>
                                         </button>
                                     </form>

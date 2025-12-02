@@ -634,10 +634,10 @@
                                     <a href="{{ route('admin.assessments.edit', $assessment) }}" class="btn-action edit" title="Edit">
                                         <i class="ri-pencil-line"></i>
                                     </a>
-                                    <form action="{{ route('admin.assessments.destroy', $assessment) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.assessments.destroy', $assessment) }}" method="POST" class="d-inline delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-action delete" title="Delete" onclick="return confirm('Are you sure you want to delete this assessment?')">
+                                        <button type="submit" class="btn-action delete" title="Delete" data-title="Delete Assessment" data-text="Are you sure you want to delete this assessment? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
                                             <i class="ri-delete-bin-line"></i>
                                         </button>
                                     </form>
