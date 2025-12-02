@@ -127,6 +127,7 @@ Route::middleware(['auth', 'role:Client'])->prefix('client')->name('client.')->g
     Route::get('/appointments/{appointment}', [App\Http\Controllers\Client\AppointmentController::class, 'show'])->name('appointments.show');
     
     // Online Sessions
+    Route::get('/sessions', [App\Http\Controllers\Client\SessionController::class, 'index'])->name('sessions.index');
     Route::get('/sessions/join/{appointment}', [App\Http\Controllers\Client\SessionController::class, 'join'])->name('sessions.join');
     Route::get('/sessions/{appointment}', [App\Http\Controllers\Client\SessionController::class, 'show'])->name('sessions.show');
     

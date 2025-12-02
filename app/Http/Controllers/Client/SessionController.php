@@ -9,6 +9,22 @@ use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
+    public function index()
+    {
+        $userId = Auth::id();
+        
+        // Get upcoming and active sessions (confirmed or in_progress)
+        $sessions = Appointment::with(['therapist.therapistProfile', 'payment'])
+            ->where('client_id', $userId)
+            ->whereIn('status', ['confirmed', 'in_progress', 'scheduled'])
+            ->where('appointment_date', '>=', now()->toDateString())
+            ->orderBy('appointment_date', 'asc')
+            ->orderBy('appointment_time', 'asc')
+            ->paginate(10);
+
+        return view('client.sessions.index', compact('sessions'));
+    }
+
     public function join($appointmentId)
     {
         $appointment = Appointment::with(['therapist.therapistProfile', 'client'])
