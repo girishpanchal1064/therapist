@@ -1,58 +1,90 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Create Appointment')
+@section('title', 'Schedule New Appointment')
 
 @section('vendor-style')
 <style>
-  .stats-card {
-    transition: all 0.3s ease;
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
+  /* Page Header */
+  .page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
   }
-  .stats-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  }
-  .stats-icon {
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
+  .page-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: white;
     font-size: 1.5rem;
   }
+  .page-header p {
+    color: rgba(255, 255, 255, 0.85);
+    margin: 4px 0 0 0;
+  }
+  .page-header .btn-header {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .page-header .btn-header:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+  }
 
+  /* Form Card */
   .form-card {
-    border-radius: 12px;
+    border-radius: 16px;
     border: none;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .form-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   }
   .form-card .card-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
     border-bottom: 1px solid #e9ecef;
     padding: 20px 24px;
   }
-  .form-card .card-body { padding: 24px; }
+  .form-card .card-body { 
+    padding: 24px; 
+  }
 
   .section-title {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 0;
   }
   .section-title .icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   }
-  .section-title h5 { margin: 0; font-weight: 600; }
-  .section-title small { color: #697a8d; }
+  .section-title h5 { 
+    margin: 0; 
+    font-weight: 700; 
+    color: #2d3748;
+  }
+  .section-title small { 
+    color: #718096; 
+    font-size: 0.85rem;
+  }
 
   /* User Selection */
   .user-select-wrapper {
@@ -63,84 +95,98 @@
     margin-bottom: 16px;
   }
   .user-search input {
-    padding-left: 40px;
-    border-radius: 10px;
-    border: 2px solid #e9ecef;
+    padding-left: 44px;
+    border-radius: 12px;
+    border: 2px solid #e4e6eb;
     transition: all 0.3s ease;
+    height: 48px;
   }
   .user-search input:focus {
-    border-color: #696cff;
-    box-shadow: 0 0 0 3px rgba(105, 108, 255, 0.1);
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
   }
   .user-search i {
     position: absolute;
-    left: 14px;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #697a8d;
+    color: #8e9baa;
+    font-size: 1.1rem;
   }
 
   .user-list {
-    max-height: 280px;
+    max-height: 300px;
     overflow-y: auto;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 8px;
+    border: 2px solid #e4e6eb;
+    border-radius: 14px;
+    padding: 10px;
+    background: #fafbfc;
   }
   .user-list::-webkit-scrollbar { width: 6px; }
   .user-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 3px; }
   .user-list::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 3px; }
+  .user-list::-webkit-scrollbar-thumb:hover { background: #a1a1a1; }
 
   .user-option {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 10px;
+    gap: 14px;
+    padding: 14px;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
     border: 2px solid transparent;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    background: white;
   }
   .user-option:last-child { margin-bottom: 0; }
   .user-option:hover {
-    background: rgba(105, 108, 255, 0.04);
-    border-color: rgba(105, 108, 255, 0.2);
+    background: rgba(102, 126, 234, 0.04);
+    border-color: rgba(102, 126, 234, 0.2);
+    transform: translateX(4px);
   }
   .user-option.selected {
-    background: rgba(105, 108, 255, 0.08);
-    border-color: #696cff;
+    background: rgba(102, 126, 234, 0.08);
+    border-color: #667eea;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.15);
   }
   .user-option input { display: none; }
 
   .user-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     object-fit: cover;
     flex-shrink: 0;
+    border: 2px solid #f0f0f5;
   }
   .user-initials {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 1rem;
     flex-shrink: 0;
   }
-  .user-initials.client { background: rgba(105, 108, 255, 0.12); color: #696cff; }
-  .user-initials.therapist { background: rgba(40, 199, 111, 0.12); color: #28c76f; }
+  .user-initials.client { 
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); 
+    color: #667eea; 
+  }
+  .user-initials.therapist { 
+    background: linear-gradient(135deg, rgba(40, 199, 111, 0.15) 0%, rgba(30, 157, 88, 0.15) 100%); 
+    color: #28c76f; 
+  }
 
   .user-info { flex: 1; }
-  .user-info h6 { margin: 0 0 2px; font-size: 0.9rem; font-weight: 600; }
-  .user-info small { color: #697a8d; font-size: 0.8rem; }
+  .user-info h6 { margin: 0 0 3px; font-size: 0.95rem; font-weight: 600; color: #2d3748; }
+  .user-info small { color: #718096; font-size: 0.8rem; }
 
   .user-check {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     border: 2px solid #e0e5ec;
     display: flex;
@@ -151,9 +197,10 @@
     flex-shrink: 0;
   }
   .user-option.selected .user-check {
-    background: #28c76f;
-    border-color: #28c76f;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
     color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
   }
 
   /* Option Cards */
@@ -163,62 +210,118 @@
     gap: 16px;
   }
   .option-card {
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 20px;
+    border: 2px solid #e4e6eb;
+    border-radius: 14px;
+    padding: 24px 16px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     background: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .option-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
   .option-card:hover {
-    border-color: #696cff;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(105, 108, 255, 0.12);
+    border-color: #667eea;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+  }
+  .option-card:hover::before {
+    opacity: 1;
   }
   .option-card.selected {
-    border-color: #696cff;
-    background: rgba(105, 108, 255, 0.04);
-    box-shadow: 0 4px 15px rgba(105, 108, 255, 0.15);
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+  }
+  .option-card.selected::before {
+    opacity: 1;
   }
   .option-card input { display: none; }
   .option-card .option-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
-    margin: 0 auto 12px;
+    font-size: 1.6rem;
+    margin: 0 auto 14px;
+    transition: all 0.3s ease;
   }
-  .option-card h6 { margin: 0 0 4px; font-weight: 600; }
-  .option-card small { color: #697a8d; font-size: 0.8rem; }
+  .option-card:hover .option-icon,
+  .option-card.selected .option-icon {
+    transform: scale(1.1);
+  }
+  .option-card h6 { 
+    margin: 0 0 6px; 
+    font-weight: 700; 
+    color: #2d3748;
+    font-size: 1rem;
+  }
+  .option-card small { 
+    color: #718096; 
+    font-size: 0.8rem; 
+  }
+
+  .option-icon.bg-purple { 
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); 
+    color: #667eea; 
+  }
+  .option-icon.bg-green { 
+    background: linear-gradient(135deg, rgba(40, 199, 111, 0.15) 0%, rgba(30, 157, 88, 0.15) 100%); 
+    color: #28c76f; 
+  }
+  .option-icon.bg-orange { 
+    background: linear-gradient(135deg, rgba(255, 159, 67, 0.15) 0%, rgba(255, 133, 16, 0.15) 100%); 
+    color: #ff9f43; 
+  }
+  .option-icon.bg-blue { 
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%); 
+    color: #3b82f6; 
+  }
+  .option-icon.bg-pink { 
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(219, 39, 119, 0.15) 100%); 
+    color: #ec4899; 
+  }
 
   /* Duration Options */
   .duration-grid {
     display: flex;
-    gap: 12px;
+    gap: 14px;
     flex-wrap: wrap;
   }
   .duration-option {
     flex: 1;
-    min-width: 80px;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 16px 12px;
+    min-width: 90px;
+    border: 2px solid #e4e6eb;
+    border-radius: 14px;
+    padding: 20px 14px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     background: white;
+    position: relative;
   }
   .duration-option:hover {
-    border-color: #696cff;
-    transform: translateY(-2px);
+    border-color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.12);
   }
   .duration-option.selected {
-    border-color: #696cff;
-    background: rgba(105, 108, 255, 0.08);
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
   }
   .duration-option.popular {
     position: relative;
@@ -226,21 +329,40 @@
   .duration-option.popular::after {
     content: 'Popular';
     position: absolute;
-    top: -8px;
+    top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    background: #28c76f;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     font-size: 0.65rem;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
   }
   .duration-option input { display: none; }
-  .duration-option .time { font-size: 1.5rem; font-weight: 700; color: #566a7f; }
-  .duration-option.selected .time { color: #696cff; }
-  .duration-option .unit { font-size: 0.75rem; color: #697a8d; }
+  .duration-option .time { 
+    font-size: 1.8rem; 
+    font-weight: 800; 
+    color: #566a7f;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .duration-option.selected .time { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .duration-option .unit { 
+    font-size: 0.75rem; 
+    color: #8e9baa; 
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 
   /* Schedule Inputs */
   .schedule-input {
@@ -250,121 +372,148 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-weight: 600;
-    color: #566a7f;
+    color: #4a5568;
+    font-size: 0.9rem;
   }
   .schedule-input label i {
-    color: #696cff;
+    color: #667eea;
+    font-size: 1.1rem;
   }
   .schedule-input input,
   .schedule-input select {
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 12px 16px;
+    border: 2px solid #e4e6eb;
+    border-radius: 12px;
+    padding: 14px 18px;
     transition: all 0.3s ease;
+    font-size: 0.95rem;
+    width: 100%;
   }
   .schedule-input input:focus,
   .schedule-input select:focus {
-    border-color: #696cff;
-    box-shadow: 0 0 0 3px rgba(105, 108, 255, 0.1);
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
   }
 
   /* Meeting Details */
   .meeting-input label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #566a7f;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.9rem;
   }
   .meeting-input input,
   .meeting-input textarea {
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 12px 16px;
+    border: 2px solid #e4e6eb;
+    border-radius: 12px;
+    padding: 14px 18px;
     transition: all 0.3s ease;
     width: 100%;
+    font-size: 0.95rem;
   }
   .meeting-input input:focus,
   .meeting-input textarea:focus {
-    border-color: #696cff;
-    box-shadow: 0 0 0 3px rgba(105, 108, 255, 0.1);
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
   }
   .meeting-input small {
     display: block;
-    margin-top: 6px;
-    color: #8f9bb3;
+    margin-top: 8px;
+    color: #8e9baa;
     font-size: 0.8rem;
   }
 
   /* Preview Sidebar */
   .preview-card {
-    border-radius: 12px;
+    border-radius: 16px;
     border: none;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 100px;
     overflow: hidden;
   }
   .preview-header {
-    background: linear-gradient(135deg, #696cff 0%, #8592ff 100%);
-    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 28px 24px;
     color: white;
     text-align: center;
   }
-  .preview-header i { font-size: 2rem; margin-bottom: 8px; display: block; }
-  .preview-header h5 { margin: 0; color: white; font-weight: 600; }
-  .preview-header small { opacity: 0.8; }
+  .preview-header i { 
+    font-size: 2.5rem; 
+    margin-bottom: 12px; 
+    display: block;
+    opacity: 0.9;
+  }
+  .preview-header h5 { 
+    margin: 0; 
+    color: white; 
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+  .preview-header small { 
+    opacity: 0.85; 
+    font-size: 0.85rem;
+  }
 
-  .preview-body { padding: 20px; }
+  .preview-body { 
+    padding: 24px; 
+    background: white;
+  }
   .preview-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    padding: 14px 0;
     border-bottom: 1px dashed #e9ecef;
   }
   .preview-item:last-child { border-bottom: none; }
   .preview-item .label {
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: #697a8d;
+    gap: 10px;
+    color: #718096;
     font-size: 0.875rem;
+    font-weight: 500;
   }
   .preview-item .label i {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f5f5f9;
-    color: #696cff;
-    font-size: 0.85rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    color: #667eea;
+    font-size: 0.95rem;
   }
   .preview-item .value {
     font-weight: 600;
-    color: #566a7f;
+    color: #2d3748;
     text-align: right;
-    max-width: 140px;
+    max-width: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .preview-footer {
-    padding: 16px 20px;
-    background: #f8f9fa;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
     border-top: 1px solid #e9ecef;
   }
   .preview-footer p {
     margin: 0;
     font-size: 0.8rem;
-    color: #8f9bb3;
+    color: #718096;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+  }
+  .preview-footer p i {
+    color: #667eea;
+    font-size: 1rem;
   }
 
   /* Action Buttons */
@@ -372,9 +521,66 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 24px;
+    padding-top: 28px;
     border-top: 1px solid #e9ecef;
-    margin-top: 24px;
+    margin-top: 28px;
+  }
+  .btn-cancel {
+    background: white;
+    border: 2px solid #e4e6eb;
+    color: #566a7f;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  .btn-cancel:hover {
+    border-color: #ea5455;
+    color: #ea5455;
+    background: rgba(234, 84, 85, 0.05);
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  .btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  /* Alert Styling */
+  .alert-error {
+    background: linear-gradient(135deg, rgba(234, 84, 85, 0.1) 0%, rgba(234, 84, 85, 0.05) 100%);
+    border: 1px solid rgba(234, 84, 85, 0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+  }
+  .alert-error i {
+    color: #ea5455;
+  }
+
+  /* Form Labels */
+  .form-label-styled {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.95rem;
+  }
+  .form-label-styled i {
+    color: #667eea;
+    font-size: 1.1rem;
   }
 
   @media (max-width: 991px) {
@@ -382,40 +588,47 @@
   }
   @media (max-width: 575px) {
     .option-grid { grid-template-columns: 1fr; }
-    .duration-option { min-width: 70px; }
+    .duration-option { min-width: 75px; }
+    .form-actions {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .form-actions .btn-cancel,
+    .form-actions .btn-submit {
+      width: 100%;
+    }
   }
 </style>
 @endsection
 
 @section('content')
 <!-- Page Header -->
-<div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
-  <div>
-    <h4 class="fw-bold mb-1">
-      <i class="ri-calendar-check-line me-2 text-primary"></i>Schedule New Appointment
-    </h4>
-    <p class="text-muted mb-0">Create a therapy session between client and therapist</p>
-  </div>
-  <div class="d-flex gap-2 flex-wrap">
-    <a href="{{ route('admin.appointments.index') }}" class="btn btn-outline-secondary">
-      <i class="ri-arrow-left-line me-1"></i> Back to Appointments
-    </a>
+<div class="page-header">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h4><i class="ri-calendar-check-line me-2"></i>Schedule New Appointment</h4>
+      <p>Create a therapy session between client and therapist</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="{{ route('admin.appointments.index') }}" class="btn btn-header">
+        <i class="ri-arrow-left-line me-1"></i> Back to Appointments
+      </a>
+    </div>
   </div>
 </div>
 
 <!-- Error Messages -->
 @if($errors->any())
-  <div class="alert alert-danger alert-dismissible d-flex align-items-start mb-4" role="alert">
+  <div class="alert alert-error d-flex align-items-start mb-4" role="alert">
     <i class="ri-error-warning-line me-3 mt-1 ri-xl"></i>
     <div>
-      <strong>Please fix the following errors:</strong>
-      <ul class="mb-0 mt-2">
+      <strong class="text-danger">Please fix the following errors:</strong>
+      <ul class="mb-0 mt-2 text-danger">
         @foreach($errors->all() as $error)
           <li>{{ $error }}</li>
         @endforeach
       </ul>
     </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 @endif
 
@@ -428,7 +641,7 @@
       <div class="card form-card mb-4">
         <div class="card-header">
           <div class="section-title">
-            <div class="icon bg-label-primary">
+            <div class="icon">
               <i class="ri-user-add-line"></i>
             </div>
             <div>
@@ -441,13 +654,13 @@
           <div class="row g-4">
             <!-- Client Selection -->
             <div class="col-md-6">
-              <label class="form-label fw-semibold mb-3">
-                <i class="ri-user-heart-line me-1 text-primary"></i>Client <span class="text-danger">*</span>
+              <label class="form-label-styled">
+                <i class="ri-user-heart-line"></i>Client <span class="text-danger">*</span>
               </label>
               <div class="user-select-wrapper">
                 <div class="user-search">
                   <i class="ri-search-line"></i>
-                  <input type="text" class="form-control" id="searchClient" placeholder="Search clients...">
+                  <input type="text" class="form-control" id="searchClient" placeholder="Search clients by name or email...">
                 </div>
                 <div class="user-list" id="clientsList">
                   @forelse($clients as $client)
@@ -468,7 +681,7 @@
                     </label>
                   @empty
                     <div class="text-center py-4 text-muted">
-                      <i class="ri-user-unfollow-line ri-2x mb-2"></i>
+                      <i class="ri-user-unfollow-line ri-2x mb-2 d-block"></i>
                       <p class="mb-0">No clients found</p>
                     </div>
                   @endforelse
@@ -481,13 +694,13 @@
 
             <!-- Therapist Selection -->
             <div class="col-md-6">
-              <label class="form-label fw-semibold mb-3">
-                <i class="ri-user-star-line me-1 text-success"></i>Therapist <span class="text-danger">*</span>
+              <label class="form-label-styled">
+                <i class="ri-user-star-line" style="color: #28c76f;"></i>Therapist <span class="text-danger">*</span>
               </label>
               <div class="user-select-wrapper">
                 <div class="user-search">
                   <i class="ri-search-line"></i>
-                  <input type="text" class="form-control" id="searchTherapist" placeholder="Search therapists...">
+                  <input type="text" class="form-control" id="searchTherapist" placeholder="Search therapists by name...">
                 </div>
                 <div class="user-list" id="therapistsList">
                   @forelse($therapists as $therapist)
@@ -508,7 +721,7 @@
                     </label>
                   @empty
                     <div class="text-center py-4 text-muted">
-                      <i class="ri-user-unfollow-line ri-2x mb-2"></i>
+                      <i class="ri-user-unfollow-line ri-2x mb-2 d-block"></i>
                       <p class="mb-0">No therapists found</p>
                     </div>
                   @endforelse
@@ -526,7 +739,7 @@
       <div class="card form-card mb-4">
         <div class="card-header">
           <div class="section-title">
-            <div class="icon bg-label-info">
+            <div class="icon">
               <i class="ri-settings-4-line"></i>
             </div>
             <div>
@@ -537,50 +750,50 @@
         </div>
         <div class="card-body">
           <!-- Appointment Type -->
-          <label class="form-label fw-semibold mb-3">
-            <i class="ri-group-line me-1 text-info"></i>Appointment Type <span class="text-danger">*</span>
+          <label class="form-label-styled mb-3">
+            <i class="ri-group-line"></i>Appointment Type <span class="text-danger">*</span>
           </label>
           <div class="option-grid mb-4">
             <label class="option-card {{ old('appointment_type', 'individual') === 'individual' ? 'selected' : '' }}">
               <input type="radio" name="appointment_type" value="individual" {{ old('appointment_type', 'individual') === 'individual' ? 'checked' : '' }} required>
-              <div class="option-icon bg-label-primary"><i class="ri-user-line"></i></div>
+              <div class="option-icon bg-purple"><i class="ri-user-line"></i></div>
               <h6>Individual</h6>
               <small>One-on-one session</small>
             </label>
             <label class="option-card {{ old('appointment_type') === 'couple' ? 'selected' : '' }}">
               <input type="radio" name="appointment_type" value="couple" {{ old('appointment_type') === 'couple' ? 'checked' : '' }}>
-              <div class="option-icon bg-label-success"><i class="ri-hearts-line"></i></div>
+              <div class="option-icon bg-pink"><i class="ri-hearts-line"></i></div>
               <h6>Couple</h6>
               <small>Couples counseling</small>
             </label>
             <label class="option-card {{ old('appointment_type') === 'family' ? 'selected' : '' }}">
               <input type="radio" name="appointment_type" value="family" {{ old('appointment_type') === 'family' ? 'checked' : '' }}>
-              <div class="option-icon bg-label-warning"><i class="ri-parent-line"></i></div>
+              <div class="option-icon bg-orange"><i class="ri-parent-line"></i></div>
               <h6>Family</h6>
               <small>Family therapy</small>
             </label>
           </div>
 
           <!-- Session Mode -->
-          <label class="form-label fw-semibold mb-3">
-            <i class="ri-webcam-line me-1 text-warning"></i>Session Mode <span class="text-danger">*</span>
+          <label class="form-label-styled mb-3">
+            <i class="ri-webcam-line"></i>Session Mode <span class="text-danger">*</span>
           </label>
           <div class="option-grid">
             <label class="option-card {{ old('session_mode', 'video') === 'video' ? 'selected' : '' }}">
               <input type="radio" name="session_mode" value="video" {{ old('session_mode', 'video') === 'video' ? 'checked' : '' }} required>
-              <div class="option-icon bg-label-primary"><i class="ri-video-chat-line"></i></div>
+              <div class="option-icon bg-purple"><i class="ri-video-chat-line"></i></div>
               <h6>Video Call</h6>
               <small>Face-to-face video</small>
             </label>
             <label class="option-card {{ old('session_mode') === 'audio' ? 'selected' : '' }}">
               <input type="radio" name="session_mode" value="audio" {{ old('session_mode') === 'audio' ? 'checked' : '' }}>
-              <div class="option-icon bg-label-success"><i class="ri-phone-line"></i></div>
+              <div class="option-icon bg-green"><i class="ri-phone-line"></i></div>
               <h6>Voice Call</h6>
               <small>Audio only session</small>
             </label>
             <label class="option-card {{ old('session_mode') === 'chat' ? 'selected' : '' }}">
               <input type="radio" name="session_mode" value="chat" {{ old('session_mode') === 'chat' ? 'checked' : '' }}>
-              <div class="option-icon bg-label-info"><i class="ri-chat-3-line"></i></div>
+              <div class="option-icon bg-blue"><i class="ri-chat-3-line"></i></div>
               <h6>Text Chat</h6>
               <small>Messaging session</small>
             </label>
@@ -592,7 +805,7 @@
       <div class="card form-card mb-4">
         <div class="card-header">
           <div class="section-title">
-            <div class="icon bg-label-success">
+            <div class="icon">
               <i class="ri-calendar-schedule-line"></i>
             </div>
             <div>
@@ -634,8 +847,8 @@
             </div>
           </div>
 
-          <label class="form-label fw-semibold mb-3">
-            <i class="ri-timer-line me-1 text-warning"></i>Session Duration <span class="text-danger">*</span>
+          <label class="form-label-styled mb-3">
+            <i class="ri-timer-line"></i>Session Duration <span class="text-danger">*</span>
           </label>
           <div class="duration-grid">
             <label class="duration-option {{ old('duration_minutes') == '30' ? 'selected' : '' }}">
@@ -671,7 +884,7 @@
       <div class="card form-card">
         <div class="card-header">
           <div class="section-title">
-            <div class="icon bg-label-warning">
+            <div class="icon">
               <i class="ri-video-add-line"></i>
             </div>
             <div>
@@ -687,7 +900,7 @@
                 <label>Meeting Link</label>
                 <input type="url" name="meeting_link" id="meeting_link" 
                        value="{{ old('meeting_link') }}" placeholder="https://meet.example.com/room-id">
-                <small>Auto-generated if left empty</small>
+                <small><i class="ri-information-line me-1"></i>Auto-generated if left empty</small>
               </div>
             </div>
             <div class="col-md-3">
@@ -707,17 +920,17 @@
             <div class="col-12">
               <div class="meeting-input">
                 <label>Session Notes</label>
-                <textarea name="session_notes" rows="3" placeholder="Add any special notes for this appointment...">{{ old('session_notes') }}</textarea>
+                <textarea name="session_notes" rows="3" placeholder="Add any special notes or instructions for this appointment...">{{ old('session_notes') }}</textarea>
               </div>
             </div>
           </div>
 
           <!-- Action Buttons -->
           <div class="form-actions">
-            <a href="{{ route('admin.appointments.index') }}" class="btn btn-outline-secondary btn-lg">
+            <a href="{{ route('admin.appointments.index') }}" class="btn btn-cancel">
               <i class="ri-close-line me-1"></i> Cancel
             </a>
-            <button type="submit" class="btn btn-primary btn-lg">
+            <button type="submit" class="btn btn-submit">
               <i class="ri-calendar-check-line me-1"></i> Create Appointment
             </button>
           </div>

@@ -2,281 +2,276 @@
 
 @section('title', 'Create Assessment')
 
+@section('vendor-style')
+<style>
+  .page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  }
+  .page-header h4 { margin: 0; font-weight: 700; color: white; font-size: 1.5rem; }
+  .page-header p { color: rgba(255, 255, 255, 0.85); margin: 4px 0 0 0; }
+  .page-header .btn-header {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .page-header .btn-header:hover { background: rgba(255, 255, 255, 0.3); color: white; }
+
+  .form-card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+  .form-card .card-header {
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    border-bottom: 1px solid #e9ecef;
+    padding: 20px 24px;
+  }
+  .form-card .card-body { padding: 24px; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-title .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  .section-title h5 { margin: 0; font-weight: 700; color: #2d3748; }
+  .section-title small { color: #718096; font-size: 0.85rem; }
+
+  .form-label-styled { font-weight: 600; color: #4a5568; margin-bottom: 8px; font-size: 0.9rem; }
+  .form-control, .form-select {
+    border: 2px solid #e4e6eb;
+    border-radius: 10px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  }
+  .form-text { color: #8e9baa; font-size: 0.8rem; margin-top: 6px; }
+
+  .color-picker-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .color-picker-wrapper input[type="color"] {
+    width: 50px;
+    height: 46px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .icon-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    transition: all 0.3s ease;
+  }
+
+  .form-check-input:checked { background-color: #667eea; border-color: #667eea; }
+
+  .btn-cancel {
+    background: white;
+    border: 2px solid #e4e6eb;
+    color: #566a7f;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-cancel:hover { border-color: #ea5455; color: #ea5455; }
+  .btn-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); color: white; }
+</style>
+@endsection
+
 @section('content')
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Create New Assessment</h5>
-        <a href="{{ route('admin.assessments.index') }}" class="btn btn-outline-secondary">
-          <i class="ri-arrow-left-line me-1"></i> Back to Assessments
-        </a>
-      </div>
-      <div class="card-body">
-        @if($errors->any())
-          <div class="alert alert-danger alert-dismissible" role="alert">
-            <i class="ri-error-warning-line me-2"></i>
-            <ul class="mb-0">
-              @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="page-header">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h4><i class="ri-file-list-3-line me-2"></i>Create New Assessment</h4>
+      <p>Design a new assessment for your platform</p>
+    </div>
+    <a href="{{ route('admin.assessments.index') }}" class="btn btn-header">
+      <i class="ri-arrow-left-line me-1"></i> Back to Assessments
+    </a>
+  </div>
+</div>
+
+@if($errors->any())
+  <div class="alert alert-danger alert-dismissible mb-4" role="alert">
+    <i class="ri-error-warning-line me-2"></i>
+    <ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+@endif
+
+<form action="{{ route('admin.assessments.store') }}" method="POST">
+  @csrf
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card form-card mb-4">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon"><i class="ri-information-line"></i></div>
+            <div>
+              <h5>Basic Information</h5>
+              <small>Enter assessment details</small>
+            </div>
           </div>
-        @endif
-
-        <form action="{{ route('admin.assessments.store') }}" method="POST">
-          @csrf
-
-          <div class="row">
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
             <div class="col-md-8">
-              <div class="mb-3">
-                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('title') is-invalid @enderror" 
-                       id="title" name="title" value="{{ old('title') }}" 
-                       placeholder="Assessment Title" required>
-                @error('title')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
+              <label class="form-label-styled">Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Assessment Title" required>
             </div>
-
             <div class="col-md-4">
-              <div class="mb-3">
-                <label for="slug" class="form-label">Slug <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('slug') is-invalid @enderror" 
-                       id="slug" name="slug" value="{{ old('slug') }}" 
-                       placeholder="assessment-slug" required>
-                <small class="text-muted">URL-friendly identifier (auto-generated from title)</small>
-                @error('slug')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
+              <label class="form-label-styled">Slug <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}" placeholder="auto-generated" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label-styled">Description <span class="text-danger">*</span></label>
+              <textarea class="form-control" name="description" rows="4" placeholder="Describe what this assessment measures..." required>{{ old('description') }}</textarea>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label-styled">Category <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="category" value="{{ old('category') }}" placeholder="e.g., Mental Health" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label-styled">Duration (Minutes) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" name="duration_minutes" value="{{ old('duration_minutes', 10) }}" min="1" max="300" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label-styled">Sort Order</label>
+              <input type="number" class="form-control" name="sort_order" value="{{ old('sort_order', 0) }}" min="0">
             </div>
           </div>
+        </div>
+      </div>
 
+      <div class="card form-card">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon"><i class="ri-search-eye-line"></i></div>
+            <div>
+              <h5>SEO Settings</h5>
+              <small>Optional SEO optimization</small>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label-styled">Meta Title</label>
+              <input type="text" class="form-control" name="meta_title" value="{{ old('meta_title') }}" maxlength="60">
+            </div>
+            <div class="col-12">
+              <label class="form-label-styled">Meta Description</label>
+              <textarea class="form-control" name="meta_description" rows="2" maxlength="160">{{ old('meta_description') }}</textarea>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center pt-4 mt-4 border-top">
+            <a href="{{ route('admin.assessments.index') }}" class="btn btn-cancel"><i class="ri-close-line me-1"></i> Cancel</a>
+            <button type="submit" class="btn btn-submit"><i class="ri-save-line me-1"></i> Create Assessment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card form-card">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon"><i class="ri-palette-line"></i></div>
+            <div>
+              <h5>Appearance</h5>
+              <small>Icon and color settings</small>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <div class="icon-preview mx-auto" id="icon-preview">
+              <i class="{{ old('icon', 'ri-heart-line') }}"></i>
+            </div>
+          </div>
           <div class="mb-3">
-            <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
-            <textarea class="form-control @error('description') is-invalid @enderror" 
-                      id="description" name="description" rows="4" 
-                      placeholder="Assessment description..." required>{{ old('description') }}</textarea>
-            @error('description')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label class="form-label-styled">Icon Class</label>
+            <input type="text" class="form-control" id="icon" name="icon" value="{{ old('icon') }}" placeholder="ri-heart-line">
+            <div class="form-text">Use Remix Icon classes</div>
           </div>
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('category') is-invalid @enderror" 
-                       id="category" name="category" value="{{ old('category') }}" 
-                       placeholder="e.g., Mental Health, Wellness" required>
-                @error('category')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="duration_minutes" class="form-label">Duration (Minutes) <span class="text-danger">*</span></label>
-                <input type="number" class="form-control @error('duration_minutes') is-invalid @enderror" 
-                       id="duration_minutes" name="duration_minutes" 
-                       value="{{ old('duration_minutes', 10) }}" 
-                       min="1" max="300" required>
-                @error('duration_minutes')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="question_count" class="form-label">Question Count</label>
-                <input type="number" class="form-control @error('question_count') is-invalid @enderror" 
-                       id="question_count" name="question_count" 
-                       value="{{ old('question_count', 0) }}" 
-                       min="0" readonly>
-                <small class="text-muted">Auto-calculated from questions</small>
-                @error('question_count')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="icon" class="form-label">Icon (Remix Icon Class)</label>
-                <input type="text" class="form-control @error('icon') is-invalid @enderror" 
-                       id="icon" name="icon" value="{{ old('icon') }}" 
-                       placeholder="ri-heart-line">
-                <small class="text-muted">e.g., ri-heart-line, ri-user-line</small>
-                <div class="mt-2" id="icon-preview" style="font-size: 2rem;"></div>
-                @error('icon')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="color" class="form-label">Color</label>
-                <div class="d-flex gap-2">
-                  <input type="color" class="form-control form-control-color @error('color') is-invalid @enderror" 
-                         id="color" name="color" value="{{ old('color', '#3B82F6') }}">
-                  <input type="text" class="form-control @error('color') is-invalid @enderror" 
-                         id="color-hex" value="{{ old('color', '#3B82F6') }}" 
-                         placeholder="#3B82F6" maxlength="7">
-                </div>
-                <small class="text-muted">Choose a color for the assessment</small>
-                @error('color')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="sort_order" class="form-label">Sort Order</label>
-                <input type="number" class="form-control @error('sort_order') is-invalid @enderror" 
-                       id="sort_order" name="sort_order" 
-                       value="{{ old('sort_order', 0) }}" 
-                       min="0">
-                <small class="text-muted">Lower numbers appear first</small>
-                @error('sort_order')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="is_active" 
-                     name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
-              <label class="form-check-label" for="is_active">
-                Active
-              </label>
-            </div>
-            <small class="text-muted">Only active assessments are visible to users</small>
-          </div>
-
-          <!-- SEO Fields -->
           <div class="mb-4">
-            <h6 class="text-muted mb-3">
-              <i class="ri-search-line me-2"></i>SEO Settings (Optional)
-            </h6>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="meta_title" class="form-label">Meta Title</label>
-                  <input type="text" class="form-control @error('meta_title') is-invalid @enderror" 
-                         id="meta_title" name="meta_title" 
-                         value="{{ old('meta_title') }}" 
-                         placeholder="SEO meta title" maxlength="60">
-                  <small class="text-muted">Recommended: 50-60 characters</small>
-                  @error('meta_title')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="meta_description" class="form-label">Meta Description</label>
-              <textarea class="form-control @error('meta_description') is-invalid @enderror" 
-                        id="meta_description" name="meta_description" rows="2" 
-                        placeholder="SEO meta description" maxlength="160">{{ old('meta_description') }}</textarea>
-              <small class="text-muted">Recommended: 150-160 characters</small>
-              @error('meta_description')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
+            <label class="form-label-styled">Color</label>
+            <div class="color-picker-wrapper">
+              <input type="color" id="color" name="color" value="{{ old('color', '#667eea') }}">
+              <input type="text" class="form-control flex-grow-1" id="color-hex" value="{{ old('color', '#667eea') }}" maxlength="7">
             </div>
           </div>
-
-          <div class="d-flex justify-content-end gap-2">
-            <a href="{{ route('admin.assessments.index') }}" class="btn btn-outline-secondary">
-              <i class="ri-close-line me-2"></i>Cancel
-            </a>
-            <button type="submit" class="btn btn-primary">
-              <i class="ri-save-line me-2"></i>Create Assessment
-            </button>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+            <label class="form-check-label fw-semibold" for="is_active">Active Assessment</label>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>
 @endsection
 
 @section('page-script')
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Auto-generate slug from title
-    const titleInput = document.getElementById('title');
-    const slugInput = document.getElementById('slug');
-    
-    if (titleInput && slugInput) {
-      titleInput.addEventListener('input', function() {
-        if (!slugInput.dataset.manualEdit) {
-          const slug = this.value
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-          slugInput.value = slug;
-        }
-      });
-
-      slugInput.addEventListener('input', function() {
-        this.dataset.manualEdit = 'true';
-      });
-    }
-
-    // Icon preview
-    const iconInput = document.getElementById('icon');
-    const iconPreview = document.getElementById('icon-preview');
-    
-    if (iconInput && iconPreview) {
-      function updateIconPreview() {
-        const iconClass = iconInput.value.trim();
-        if (iconClass) {
-          iconPreview.innerHTML = `<i class="${iconClass}"></i>`;
-          iconPreview.style.color = document.getElementById('color').value;
-        } else {
-          iconPreview.innerHTML = '';
-        }
-      }
-      
-      iconInput.addEventListener('input', updateIconPreview);
-      updateIconPreview();
-    }
-
-    // Color picker sync
-    const colorPicker = document.getElementById('color');
-    const colorHex = document.getElementById('color-hex');
-    
-    if (colorPicker && colorHex) {
-      colorPicker.addEventListener('input', function() {
-        colorHex.value = this.value.toUpperCase();
-        if (iconPreview) {
-          iconPreview.style.color = this.value;
-        }
-      });
-      
-      colorHex.addEventListener('input', function() {
-        const hex = this.value.replace('#', '');
-        if (/^[0-9A-F]{6}$/i.test(hex)) {
-          colorPicker.value = '#' + hex;
-          if (iconPreview) {
-            iconPreview.style.color = '#' + hex;
-          }
-        }
-      });
-    }
+document.addEventListener('DOMContentLoaded', function() {
+  const title = document.getElementById('title');
+  const slug = document.getElementById('slug');
+  title?.addEventListener('input', function() {
+    if (!slug.dataset.manual) slug.value = this.value.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
   });
+  slug?.addEventListener('input', () => slug.dataset.manual = 'true');
+
+  const icon = document.getElementById('icon');
+  const preview = document.getElementById('icon-preview');
+  const color = document.getElementById('color');
+  const colorHex = document.getElementById('color-hex');
+
+  icon?.addEventListener('input', () => preview.innerHTML = `<i class="${icon.value || 'ri-heart-line'}"></i>`);
+  color?.addEventListener('input', () => { colorHex.value = color.value; preview.style.color = color.value; });
+  colorHex?.addEventListener('input', () => { if (/^#[0-9A-F]{6}$/i.test(colorHex.value)) { color.value = colorHex.value; preview.style.color = colorHex.value; }});
+});
 </script>
 @endsection

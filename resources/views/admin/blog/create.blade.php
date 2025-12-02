@@ -2,420 +2,455 @@
 
 @section('title', 'Create Blog Post')
 
+@section('vendor-style')
+<style>
+  /* Page Header */
+  .page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  }
+  .page-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: white;
+    font-size: 1.5rem;
+  }
+  .page-header p {
+    color: rgba(255, 255, 255, 0.85);
+    margin: 4px 0 0 0;
+  }
+  .page-header .btn-header {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .page-header .btn-header:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  /* Form Card */
+  .form-card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+  .form-card .card-header {
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    border-bottom: 1px solid #e9ecef;
+    padding: 20px 24px;
+  }
+  .form-card .card-body { padding: 24px; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 0;
+  }
+  .section-title .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  .section-title h5 { margin: 0; font-weight: 700; color: #2d3748; }
+  .section-title small { color: #718096; font-size: 0.85rem; }
+
+  /* Form Styling */
+  .form-label-styled {
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .form-control, .form-select {
+    border: 2px solid #e4e6eb;
+    border-radius: 10px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  }
+  textarea.form-control {
+    min-height: 120px;
+  }
+  .form-text {
+    color: #8e9baa;
+    font-size: 0.8rem;
+    margin-top: 6px;
+  }
+
+  /* Character Counter */
+  .char-counter {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-top: 6px;
+  }
+  .char-counter.warning { background: rgba(255, 159, 67, 0.15); color: #ff9f43; }
+  .char-counter.success { background: rgba(40, 199, 111, 0.15); color: #28c76f; }
+  .char-counter.danger { background: rgba(234, 84, 85, 0.15); color: #ea5455; }
+
+  /* Form Check/Switch */
+  .form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+  }
+  .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  }
+
+  /* File Input */
+  .file-input-wrapper {
+    border: 2px dashed #e4e6eb;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .file-input-wrapper:hover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.02);
+  }
+  .file-input-wrapper i {
+    font-size: 2.5rem;
+    color: #667eea;
+    margin-bottom: 12px;
+  }
+
+  /* Action Buttons */
+  .btn-cancel {
+    background: white;
+    border: 2px solid #e4e6eb;
+    color: #566a7f;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-cancel:hover {
+    border-color: #ea5455;
+    color: #ea5455;
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  /* Alert */
+  .alert-modern {
+    border-radius: 12px;
+    border: none;
+    padding: 16px 20px;
+  }
+  .alert-modern.alert-danger {
+    background: linear-gradient(135deg, rgba(234, 84, 85, 0.1) 0%, rgba(234, 84, 85, 0.05) 100%);
+    border-left: 4px solid #ea5455;
+  }
+</style>
+@endsection
+
 @section('content')
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Create New Blog Post</h5>
-        <a href="{{ route('admin.blog.index') }}" class="btn btn-outline-secondary">
-          <i class="ri-arrow-left-line me-1"></i> Back to Posts
-        </a>
-      </div>
-      <div class="card-body">
-        @if($errors->any())
-          <div class="alert alert-danger alert-dismissible" role="alert">
-            <i class="ri-error-warning-line me-2"></i>
-            <ul class="mb-0">
-              @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        @endif
+<!-- Page Header -->
+<div class="page-header">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h4><i class="ri-article-line me-2"></i>Create New Blog Post</h4>
+      <p>Publish engaging content for your audience</p>
+    </div>
+    <a href="{{ route('admin.blog.index') }}" class="btn btn-header">
+      <i class="ri-arrow-left-line me-1"></i> Back to Posts
+    </a>
+  </div>
+</div>
 
-        <form action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
-          @csrf
-
-          <!-- Basic Information -->
-          <div class="mb-4">
-            <h6 class="text-muted mb-3">
-              <i class="ri-file-text-line me-2"></i>Basic Information
-            </h6>
-            
-            <div class="row">
-              <div class="col-md-8">
-                <div class="mb-3">
-                  <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control @error('title') is-invalid @enderror" 
-                         id="title" name="title" value="{{ old('title') }}" 
-                         placeholder="Blog Post Title" required>
-                  @error('title')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label for="slug" class="form-label">Slug <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control @error('slug') is-invalid @enderror" 
-                         id="slug" name="slug" value="{{ old('slug') }}" 
-                         placeholder="blog-post-slug" required>
-                  <small class="text-muted">URL-friendly identifier (auto-generated from title)</small>
-                  @error('slug')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="excerpt" class="form-label">Excerpt <span class="text-danger">*</span></label>
-              <textarea class="form-control @error('excerpt') is-invalid @enderror" 
-                        id="excerpt" name="excerpt" rows="3" 
-                        placeholder="Brief description of the blog post..." required>{{ old('excerpt') }}</textarea>
-              <small class="text-muted">Recommended: 150-160 characters for SEO</small>
-              <div class="mt-1">
-                <small id="excerpt-count" class="text-muted">0 characters</small>
-              </div>
-              @error('excerpt')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-
-            <div class="mb-3">
-              <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
-              <textarea class="form-control @error('content') is-invalid @enderror" 
-                        id="content" name="content" rows="15" 
-                        placeholder="Blog post content..." required>{{ old('content') }}</textarea>
-              @error('content')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-          </div>
-
-          <!-- Media & Settings -->
-          <div class="mb-4">
-            <h6 class="text-muted mb-3">
-              <i class="ri-image-line me-2"></i>Media & Settings
-            </h6>
-            
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="featured_image" class="form-label">Featured Image</label>
-                  <input type="file" class="form-control @error('featured_image') is-invalid @enderror" 
-                         id="featured_image" name="featured_image" accept="image/*">
-                  <small class="text-muted">Recommended: 1200x630px for optimal SEO</small>
-                  @error('featured_image')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
-                      <select class="form-select @error('category_id') is-invalid @enderror" 
-                              id="category_id" name="category_id" required>
-                        <option value="">Select Category</option>
-                        @foreach($categories as $category)
-                          <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                          </option>
-                        @endforeach
-                      </select>
-                      @error('category_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                      @enderror
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="author_id" class="form-label">Author <span class="text-danger">*</span></label>
-                      <select class="form-select @error('author_id') is-invalid @enderror" 
-                              id="author_id" name="author_id" required>
-                        <option value="">Select Author</option>
-                        @foreach($authors as $user)
-                          <option value="{{ $user->id }}" {{ old('author_id', auth()->id()) == $user->id ? 'selected' : '' }}>
-                            {{ $user->name }}
-                          </option>
-                        @endforeach
-                      </select>
-                      @error('author_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                      @enderror
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                      <select class="form-select @error('status') is-invalid @enderror" 
-                              id="status" name="status" required>
-                        <option value="draft" {{ old('status', 'draft') === 'draft' ? 'selected' : '' }}>Draft</option>
-                        <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>Published</option>
-                        <option value="archived" {{ old('status') === 'archived' ? 'selected' : '' }}>Archived</option>
-                      </select>
-                      @error('status')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                      @enderror
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="published_at" class="form-label">Published At</label>
-                      <input type="datetime-local" class="form-control @error('published_at') is-invalid @enderror" 
-                             id="published_at" name="published_at" 
-                             value="{{ old('published_at') }}">
-                      @error('published_at')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                      @enderror
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="is_featured" 
-                           name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="is_featured">
-                      Featured Post
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SEO Settings -->
-          <div class="mb-4">
-            <h6 class="text-muted mb-3">
-              <i class="ri-search-line me-2"></i>SEO Settings
-            </h6>
-            
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="focus_keyword" class="form-label">Focus Keyword</label>
-                  <input type="text" class="form-control @error('focus_keyword') is-invalid @enderror" 
-                         id="focus_keyword" name="focus_keyword" 
-                         value="{{ old('focus_keyword') }}" 
-                         placeholder="Primary keyword for this post">
-                  <small class="text-muted">The main keyword you want to rank for</small>
-                  @error('focus_keyword')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="meta_title" class="form-label">Meta Title</label>
-                  <input type="text" class="form-control @error('meta_title') is-invalid @enderror" 
-                         id="meta_title" name="meta_title" 
-                         value="{{ old('meta_title') }}" 
-                         placeholder="SEO optimized title" maxlength="60">
-                  <small class="text-muted">Recommended: 50-60 characters</small>
-                  <div class="mt-1">
-                    <small id="meta-title-count" class="text-muted">0 / 60 characters</small>
-                  </div>
-                  @error('meta_title')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="meta_description" class="form-label">Meta Description</label>
-              <textarea class="form-control @error('meta_description') is-invalid @enderror" 
-                        id="meta_description" name="meta_description" rows="3" 
-                        placeholder="SEO meta description" maxlength="160">{{ old('meta_description') }}</textarea>
-              <small class="text-muted">Recommended: 150-160 characters</small>
-              <div class="mt-1">
-                <small id="meta-desc-count" class="text-muted">0 / 160 characters</small>
-              </div>
-              @error('meta_description')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-
-            <div class="mb-3">
-              <label for="meta_keywords" class="form-label">Meta Keywords</label>
-              <input type="text" class="form-control @error('meta_keywords') is-invalid @enderror" 
-                     id="meta_keywords" name="meta_keywords" 
-                     value="{{ old('meta_keywords') }}" 
-                     placeholder="keyword1, keyword2, keyword3">
-              <small class="text-muted">Comma-separated keywords (optional, less important for modern SEO)</small>
-              @error('meta_keywords')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-
-            <div class="mb-3">
-              <label for="canonical_url" class="form-label">Canonical URL</label>
-              <input type="url" class="form-control @error('canonical_url') is-invalid @enderror" 
-                     id="canonical_url" name="canonical_url" 
-                     value="{{ old('canonical_url') }}" 
-                     placeholder="https://your-domain.com/blog/post-slug">
-              <small class="text-muted">Leave empty to use default URL. Use for duplicate content prevention.</small>
-              @error('canonical_url')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-          </div>
-
-          <!-- Open Graph & Social Media -->
-          <div class="mb-4">
-            <h6 class="text-muted mb-3">
-              <i class="ri-share-line me-2"></i>Open Graph & Social Media
-            </h6>
-            
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="og_title" class="form-label">OG Title</label>
-                  <input type="text" class="form-control @error('og_title') is-invalid @enderror" 
-                         id="og_title" name="og_title" 
-                         value="{{ old('og_title') }}" 
-                         placeholder="Open Graph title">
-                  <small class="text-muted">Leave empty to use meta title</small>
-                  @error('og_title')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="og_image" class="form-label">OG Image</label>
-                  <input type="file" class="form-control @error('og_image') is-invalid @enderror" 
-                         id="og_image" name="og_image" accept="image/*">
-                  <small class="text-muted">Recommended: 1200x630px. Leave empty to use featured image</small>
-                  @error('og_image')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="og_description" class="form-label">OG Description</label>
-              <textarea class="form-control @error('og_description') is-invalid @enderror" 
-                        id="og_description" name="og_description" rows="2" 
-                        placeholder="Open Graph description">{{ old('og_description') }}</textarea>
-              <small class="text-muted">Leave empty to use meta description</small>
-              @error('og_description')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-
-            <div class="mb-3">
-              <label for="twitter_card" class="form-label">Twitter Card Type</label>
-              <select class="form-select @error('twitter_card') is-invalid @enderror" 
-                      id="twitter_card" name="twitter_card">
-                <option value="summary" {{ old('twitter_card', 'summary_large_image') === 'summary' ? 'selected' : '' }}>Summary</option>
-                <option value="summary_large_image" {{ old('twitter_card', 'summary_large_image') === 'summary_large_image' ? 'selected' : '' }}>Summary with Large Image</option>
-              </select>
-              @error('twitter_card')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-end gap-2">
-            <a href="{{ route('admin.blog.index') }}" class="btn btn-outline-secondary">
-              <i class="ri-close-line me-2"></i>Cancel
-            </a>
-            <button type="submit" class="btn btn-primary">
-              <i class="ri-save-line me-2"></i>Create Blog Post
-            </button>
-          </div>
-        </form>
+@if($errors->any())
+  <div class="alert alert-modern alert-danger mb-4">
+    <div class="d-flex">
+      <i class="ri-error-warning-line me-3 ri-xl text-danger"></i>
+      <div>
+        <strong class="text-danger">Please fix the following errors:</strong>
+        <ul class="mb-0 mt-2">
+          @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
       </div>
     </div>
   </div>
-</div>
+@endif
+
+<form action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
+  @csrf
+  
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <!-- Basic Information -->
+      <div class="card form-card mb-4">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon"><i class="ri-file-text-line"></i></div>
+            <div>
+              <h5>Basic Information</h5>
+              <small>Enter the main content details</small>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label-styled">Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control @error('title') is-invalid @enderror" 
+                     id="title" name="title" value="{{ old('title') }}" 
+                     placeholder="Enter an engaging blog post title" required>
+              @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="col-md-4">
+              <label class="form-label-styled">Slug <span class="text-danger">*</span></label>
+              <input type="text" class="form-control @error('slug') is-invalid @enderror" 
+                     id="slug" name="slug" value="{{ old('slug') }}" 
+                     placeholder="auto-generated-slug" required>
+              <div class="form-text">URL-friendly identifier</div>
+              @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="col-12">
+              <label class="form-label-styled">Excerpt <span class="text-danger">*</span></label>
+              <textarea class="form-control @error('excerpt') is-invalid @enderror" 
+                        id="excerpt" name="excerpt" rows="3" 
+                        placeholder="Write a brief, compelling summary..." required>{{ old('excerpt') }}</textarea>
+              <span class="char-counter warning" id="excerpt-count">0 characters</span>
+              @error('excerpt')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="col-12">
+              <label class="form-label-styled">Content <span class="text-danger">*</span></label>
+              <textarea class="form-control @error('content') is-invalid @enderror" 
+                        id="content" name="content" rows="12" 
+                        placeholder="Write your blog post content here..." required>{{ old('content') }}</textarea>
+              @error('content')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO Settings -->
+      <div class="card form-card mb-4">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon"><i class="ri-search-eye-line"></i></div>
+            <div>
+              <h5>SEO Settings</h5>
+              <small>Optimize for search engines</small>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label-styled">Focus Keyword</label>
+              <input type="text" class="form-control" name="focus_keyword" 
+                     value="{{ old('focus_keyword') }}" placeholder="Primary keyword">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-styled">Meta Title</label>
+              <input type="text" class="form-control" id="meta_title" name="meta_title" 
+                     value="{{ old('meta_title') }}" placeholder="SEO title" maxlength="60">
+              <span class="char-counter warning" id="meta-title-count">0 / 60</span>
+            </div>
+            <div class="col-12">
+              <label class="form-label-styled">Meta Description</label>
+              <textarea class="form-control" id="meta_description" name="meta_description" 
+                        rows="2" placeholder="SEO description" maxlength="160">{{ old('meta_description') }}</textarea>
+              <span class="char-counter warning" id="meta-desc-count">0 / 160</span>
+            </div>
+            <div class="col-12">
+              <label class="form-label-styled">Meta Keywords</label>
+              <input type="text" class="form-control" name="meta_keywords" 
+                     value="{{ old('meta_keywords') }}" placeholder="keyword1, keyword2, keyword3">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media -->
+      <div class="card form-card">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon"><i class="ri-share-line"></i></div>
+            <div>
+              <h5>Social Media</h5>
+              <small>Open Graph settings for sharing</small>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label-styled">OG Title</label>
+              <input type="text" class="form-control" name="og_title" 
+                     value="{{ old('og_title') }}" placeholder="Leave empty to use meta title">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-styled">Twitter Card Type</label>
+              <select class="form-select" name="twitter_card">
+                <option value="summary_large_image" selected>Summary with Large Image</option>
+                <option value="summary">Summary</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label-styled">OG Description</label>
+              <textarea class="form-control" name="og_description" rows="2" 
+                        placeholder="Leave empty to use meta description">{{ old('og_description') }}</textarea>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center pt-4 mt-4 border-top">
+            <a href="{{ route('admin.blog.index') }}" class="btn btn-cancel">
+              <i class="ri-close-line me-1"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-submit">
+              <i class="ri-save-line me-1"></i> Create Blog Post
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- Media & Settings -->
+      <div class="card form-card mb-4">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon"><i class="ri-image-line"></i></div>
+            <div>
+              <h5>Media & Settings</h5>
+              <small>Images and publish options</small>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mb-4">
+            <label class="form-label-styled">Featured Image</label>
+            <div class="file-input-wrapper">
+              <i class="ri-image-add-line d-block"></i>
+              <p class="mb-2 text-muted">Click to upload or drag & drop</p>
+              <small class="text-muted">Recommended: 1200x630px</small>
+              <input type="file" class="form-control mt-3" name="featured_image" accept="image/*">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-styled">Category <span class="text-danger">*</span></label>
+            <select class="form-select" name="category_id" required>
+              <option value="">Select Category</option>
+              @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                  {{ $category->name }}
+                </option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-styled">Author <span class="text-danger">*</span></label>
+            <select class="form-select" name="author_id" required>
+              <option value="">Select Author</option>
+              @foreach($authors as $user)
+                <option value="{{ $user->id }}" {{ old('author_id', auth()->id()) == $user->id ? 'selected' : '' }}>
+                  {{ $user->name }}
+                </option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-styled">Status <span class="text-danger">*</span></label>
+            <select class="form-select" name="status" required>
+              <option value="draft" {{ old('status', 'draft') === 'draft' ? 'selected' : '' }}>📝 Draft</option>
+              <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>✅ Published</option>
+              <option value="archived" {{ old('status') === 'archived' ? 'selected' : '' }}>📦 Archived</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-styled">Published At</label>
+            <input type="datetime-local" class="form-control" name="published_at" value="{{ old('published_at') }}">
+          </div>
+
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
+            <label class="form-check-label fw-semibold" for="is_featured">⭐ Featured Post</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 @endsection
 
 @section('page-script')
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Auto-generate slug from title
-    const titleInput = document.getElementById('title');
-    const slugInput = document.getElementById('slug');
-    
-    if (titleInput && slugInput) {
-      titleInput.addEventListener('input', function() {
-        if (!slugInput.dataset.manualEdit) {
-          const slug = this.value
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-          slugInput.value = slug;
-        }
-      });
-
-      slugInput.addEventListener('input', function() {
-        this.dataset.manualEdit = 'true';
-      });
-    }
-
-    // Character counters
-    const excerptInput = document.getElementById('excerpt');
-    const excerptCount = document.getElementById('excerpt-count');
-    if (excerptInput && excerptCount) {
-      function updateExcerptCount() {
-        const length = excerptInput.value.length;
-        excerptCount.textContent = length + ' characters';
-        if (length < 150) {
-          excerptCount.className = 'text-warning';
-        } else if (length > 160) {
-          excerptCount.className = 'text-danger';
-        } else {
-          excerptCount.className = 'text-success';
-        }
-      }
-      excerptInput.addEventListener('input', updateExcerptCount);
-      updateExcerptCount();
-    }
-
-    const metaTitleInput = document.getElementById('meta_title');
-    const metaTitleCount = document.getElementById('meta-title-count');
-    if (metaTitleInput && metaTitleCount) {
-      function updateMetaTitleCount() {
-        const length = metaTitleInput.value.length;
-        metaTitleCount.textContent = length + ' / 60 characters';
-        if (length < 50) {
-          metaTitleCount.className = 'text-warning';
-        } else if (length > 60) {
-          metaTitleCount.className = 'text-danger';
-        } else {
-          metaTitleCount.className = 'text-success';
-        }
-      }
-      metaTitleInput.addEventListener('input', updateMetaTitleCount);
-      updateMetaTitleCount();
-    }
-
-    const metaDescInput = document.getElementById('meta_description');
-    const metaDescCount = document.getElementById('meta-desc-count');
-    if (metaDescInput && metaDescCount) {
-      function updateMetaDescCount() {
-        const length = metaDescInput.value.length;
-        metaDescCount.textContent = length + ' / 160 characters';
-        if (length < 150) {
-          metaDescCount.className = 'text-warning';
-        } else if (length > 160) {
-          metaDescCount.className = 'text-danger';
-        } else {
-          metaDescCount.className = 'text-success';
-        }
-      }
-      metaDescInput.addEventListener('input', updateMetaDescCount);
-      updateMetaDescCount();
+document.addEventListener('DOMContentLoaded', function() {
+  // Auto-generate slug
+  const title = document.getElementById('title');
+  const slug = document.getElementById('slug');
+  title?.addEventListener('input', function() {
+    if (!slug.dataset.manual) {
+      slug.value = this.value.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
     }
   });
+  slug?.addEventListener('input', () => slug.dataset.manual = 'true');
+
+  // Character counters
+  function setupCounter(inputId, counterId, max) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    if (input && counter) {
+      function update() {
+        const len = input.value.length;
+        counter.textContent = max ? `${len} / ${max}` : `${len} characters`;
+        counter.className = 'char-counter ' + (len < (max || 150) * 0.9 ? 'warning' : len > (max || 160) ? 'danger' : 'success');
+      }
+      input.addEventListener('input', update);
+      update();
+    }
+  }
+  setupCounter('excerpt', 'excerpt-count');
+  setupCounter('meta_title', 'meta-title-count', 60);
+  setupCounter('meta_description', 'meta-desc-count', 160);
+});
 </script>
 @endsection
