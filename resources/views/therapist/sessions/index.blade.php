@@ -2,200 +2,648 @@
 
 @section('title', 'Online Sessions')
 
+@section('page-style')
+<style>
+  /* === Sessions Page Custom Styles === */
+  .page-header {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .page-header h4 {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-header p {
+    opacity: 0.9;
+    margin: 0;
+    font-size: 0.9375rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Tab Navigation */
+  .session-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+
+  .session-tab {
+    padding: 0.625rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid transparent;
+  }
+
+  .session-tab:not(.active) {
+    background: #f3f4f6;
+    color: #6b7280;
+    border-color: #e5e7eb;
+  }
+
+  .session-tab:not(.active):hover {
+    background: #e5e7eb;
+    color: #374151;
+    transform: translateY(-2px);
+  }
+
+  .session-tab.active {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+  }
+
+  .session-tab i {
+    font-size: 1rem;
+  }
+
+  .tab-count {
+    background: rgba(255,255,255,0.2);
+    padding: 0.125rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .session-tab:not(.active) .tab-count {
+    background: #e5e7eb;
+  }
+
+  /* Main Card */
+  .sessions-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .sessions-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid #f3f4f6;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .sessions-card .card-body {
+    padding: 1.5rem;
+  }
+
+  /* Search & Filters */
+  .filters-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-box {
+    display: flex;
+    gap: 0.5rem;
+    flex: 1;
+    max-width: 400px;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+    background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat 0.875rem center;
+    background-size: 18px;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #059669;
+    background-color: white;
+    box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+  }
+
+  .btn-search {
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+    color: white;
+  }
+
+  .btn-refresh {
+    padding: 0.75rem 1.25rem;
+    background: white;
+    color: #059669;
+    border: 2px solid #059669;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-refresh:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Table Styles */
+  .sessions-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .sessions-table thead th {
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 1.25rem;
+    border-bottom: 2px solid #e5e7eb;
+    text-align: left;
+  }
+
+  .sessions-table tbody td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+    font-size: 0.9375rem;
+  }
+
+  .sessions-table tbody tr {
+    transition: all 0.2s ease;
+  }
+
+  .sessions-table tbody tr:hover {
+    background: #f0fdf4;
+  }
+
+  .sessions-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Client Cell */
+  .client-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .client-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+  }
+
+  .client-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.8125rem;
+  }
+
+  .client-name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.9375rem;
+  }
+
+  /* Mode Badge */
+  .mode-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .mode-badge.video {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+    color: #2563eb;
+  }
+
+  .mode-badge.audio {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+    color: #d97706;
+  }
+
+  .mode-badge.chat {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.1) 100%);
+    color: #4b5563;
+  }
+
+  /* Status Badge */
+  .status-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .status-badge.pending {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+    color: #d97706;
+  }
+
+  .status-badge.upcoming {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+    color: #2563eb;
+  }
+
+  .status-badge.completed {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+    color: #059669;
+  }
+
+  .status-badge.cancelled, .status-badge.cancel {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+    color: #dc2626;
+  }
+
+  .status-badge.expired {
+    background: linear-gradient(135deg, rgba(75, 85, 99, 0.1) 0%, rgba(55, 65, 81, 0.1) 100%);
+    color: #374151;
+  }
+
+  /* Pagination */
+  .pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f3f4f6;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .pagination-info {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .page-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    border-color: #059669;
+    color: #059669;
+    background: #f0fdf4;
+  }
+
+  .page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .per-page-select {
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #374151;
+    background: white;
+    cursor: pointer;
+  }
+
+  .per-page-select:focus {
+    outline: none;
+    border-color: #059669;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .empty-state-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2.5rem;
+    color: #059669;
+  }
+
+  .empty-state h5 {
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    color: #6b7280;
+    font-size: 0.9375rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .filters-row {
+      flex-direction: column;
+    }
+
+    .search-box {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .session-tabs {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding: 0.75rem;
+    }
+
+    .session-tab {
+      white-space: nowrap;
+      font-size: 0.75rem;
+      padding: 0.5rem 1rem;
+    }
+
+    .sessions-table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+</style>
+@endsection
+
 @section('content')
-<div class="row">
-  <div class="col-12 mb-4">
-    @if(session('success'))
-      <div class="alert alert-success">{{ session('success') }}</div>
+<!-- Page Header -->
+<div class="page-header">
+  <h4>
+    <i class="ri-video-line me-2"></i>
+    @if($status === 'pending')
+      Pending Sessions
+    @elseif($status === 'upcoming')
+      Upcoming Sessions
+    @elseif($status === 'completed')
+      Completed Sessions
+    @elseif($status === 'cancel_by_me')
+      Cancelled By Me
+    @elseif($status === 'cancelled_by_user')
+      Cancelled By Client
+    @elseif($status === 'expired')
+      Expired Sessions
+    @else
+      Online Sessions
     @endif
+  </h4>
+  <p>Manage and track all your therapy sessions in one place</p>
+</div>
 
-    <div class="card">
-      <div class="card-body">
-        <!-- Status Filter Tabs -->
-        <div class="d-flex flex-wrap gap-2 mb-4 session-filter-tabs">
-          <a href="{{ route('therapist.sessions.index', ['status' => 'pending']) }}"
-             class="btn {{ $status === 'pending' ? 'btn-primary' : 'btn-outline-secondary' }} session-tab-btn">
-            <i class="ri-file-text-line me-1"></i> PENDING
-          </a>
-          <a href="{{ route('therapist.sessions.index', ['status' => 'upcoming']) }}"
-             class="btn {{ $status === 'upcoming' ? 'btn-primary' : 'btn-outline-secondary' }} session-tab-btn">
-            <i class="ri-user-line me-1"></i> UPCOMING
-          </a>
-          <a href="{{ route('therapist.sessions.index', ['status' => 'completed']) }}"
-             class="btn {{ $status === 'completed' ? 'btn-primary' : 'btn-outline-secondary' }} session-tab-btn">
-            <i class="ri-calendar-check-line me-1"></i> COMPLETED
-          </a>
-          <a href="{{ route('therapist.sessions.index', ['status' => 'cancel_by_me']) }}"
-             class="btn {{ $status === 'cancel_by_me' ? 'btn-primary' : 'btn-outline-secondary' }} session-tab-btn">
-            <i class="ri-checkbox-circle-line me-1"></i> CANCEL BY ME
-          </a>
-          <a href="{{ route('therapist.sessions.index', ['status' => 'cancelled_by_user']) }}"
-             class="btn {{ $status === 'cancelled_by_user' ? 'btn-primary' : 'btn-outline-secondary' }} session-tab-btn">
-            <i class="ri-settings-3-line me-1"></i> CANCELLED BY USER
-          </a>
-          <a href="{{ route('therapist.sessions.index', ['status' => 'expired']) }}"
-             class="btn {{ $status === 'expired' ? 'btn-primary' : 'btn-outline-secondary' }} session-tab-btn">
-            <i class="ri-rocket-line me-1"></i> EXPIRED
-          </a>
-        </div>
+@if(session('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 12px; border-left: 4px solid #059669;">
+    <i class="ri-checkbox-circle-line me-2"></i>
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif
 
-        <!-- Page Title -->
-        <h4 class="mb-4 fw-bold">
-          @if($status === 'pending')
-            Pending Sessions
-          @elseif($status === 'upcoming')
-            Upcoming Sessions
-          @elseif($status === 'completed')
-            Completed Sessions
-          @elseif($status === 'cancel_by_me')
-            Cancelled By Me Sessions
-          @elseif($status === 'cancelled_by_user')
-            Cancelled By User Sessions
-          @elseif($status === 'expired')
-            Expired Sessions
-          @else
-            Online Sessions
-          @endif
-        </h4>
+<!-- Session Tabs -->
+<div class="session-tabs">
+  <a href="{{ route('therapist.sessions.index', ['status' => 'pending']) }}"
+     class="session-tab {{ $status === 'pending' ? 'active' : '' }}">
+    <i class="ri-time-line"></i>
+    Pending
+  </a>
+  <a href="{{ route('therapist.sessions.index', ['status' => 'upcoming']) }}"
+     class="session-tab {{ $status === 'upcoming' ? 'active' : '' }}">
+    <i class="ri-calendar-check-line"></i>
+    Upcoming
+  </a>
+  <a href="{{ route('therapist.sessions.index', ['status' => 'completed']) }}"
+     class="session-tab {{ $status === 'completed' ? 'active' : '' }}">
+    <i class="ri-checkbox-circle-line"></i>
+    Completed
+  </a>
+  <a href="{{ route('therapist.sessions.index', ['status' => 'cancel_by_me']) }}"
+     class="session-tab {{ $status === 'cancel_by_me' ? 'active' : '' }}">
+    <i class="ri-close-circle-line"></i>
+    Cancel by Me
+  </a>
+  <a href="{{ route('therapist.sessions.index', ['status' => 'cancelled_by_user']) }}"
+     class="session-tab {{ $status === 'cancelled_by_user' ? 'active' : '' }}">
+    <i class="ri-user-unfollow-line"></i>
+    Cancelled by Client
+  </a>
+  <a href="{{ route('therapist.sessions.index', ['status' => 'expired']) }}"
+     class="session-tab {{ $status === 'expired' ? 'active' : '' }}">
+    <i class="ri-history-line"></i>
+    Expired
+  </a>
+</div>
 
-        <!-- Search and Refresh -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="col-md-4">
-            <form method="GET" action="{{ route('therapist.sessions.index') }}" class="d-flex gap-2">
-              <input type="hidden" name="status" value="{{ $status }}">
-              <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ $search }}">
-              <button type="submit" class="btn btn-outline-primary">
-                <i class="ri-search-line"></i>
-              </button>
-            </form>
-          </div>
-          <div>
-            <button type="button" class="btn btn-success" onclick="location.reload()">
-              <i class="ri-refresh-line me-1"></i> REFRESH
-            </button>
-          </div>
-        </div>
-
-        <!-- Sessions Table -->
-        <div class="table-responsive">
-          <table class="table table-bordered sessions-table">
-            <thead class="table-primary">
-              <tr>
-                <th>Sr. No.</th>
-                <th>Session ID</th>
-                <th>User Name</th>
-                <th>Mode</th>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              @forelse($sessions as $index => $session)
-                <tr>
-                  <td>{{ $sessions->firstItem() + $index }}</td>
-                  <td>S-{{ $session->created_at ? $session->created_at->timestamp : $session->id }}</td>
-                  <td>{{ $session->client->name ?? 'N/A' }}</td>
-                  <td>
-                    @if($session->session_mode === 'video')
-                      <span class="badge bg-info">VIDEO</span>
-                    @elseif($session->session_mode === 'audio')
-                      <span class="badge bg-warning">AUDIO</span>
-                    @elseif($session->session_mode === 'chat')
-                      <span class="badge bg-secondary">CHAT</span>
-                    @else
-                      <span class="badge bg-light text-dark">{{ strtoupper($session->session_mode) }}</span>
-                    @endif
-                  </td>
-                  <td>{{ $session->appointment_date->format('d-m-Y') }}</td>
-                  <td>{{ \Carbon\Carbon::parse($session->appointment_time)->format('g:i A') }}</td>
-                  <td>
-                    @if($session->status === 'scheduled')
-                      <span class="badge bg-warning">PENDING</span>
-                    @elseif($session->status === 'confirmed')
-                      <span class="badge bg-info">UPCOMING</span>
-                    @elseif($session->status === 'completed')
-                      <span class="badge bg-success">COMPLETED</span>
-                    @elseif($session->status === 'cancelled')
-                      @if($session->cancelled_by == auth()->id())
-                        <span class="badge bg-danger">CANCEL BY ME</span>
-                      @else
-                        <span class="badge bg-danger">CANCELLED BY USER</span>
-                      @endif
-                    @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
-                      <span class="badge bg-dark">EXPIRED</span>
-                    @else
-                      <span class="badge bg-secondary">{{ strtoupper($session->status) }}</span>
-                    @endif
-                  </td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="7" class="text-center text-muted py-4">No sessions found.</td>
-                </tr>
-              @endforelse
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Pagination -->
-        @if($sessions->hasPages() || $sessions->total() > 0)
-          <div class="d-flex justify-content-between align-items-center mt-4">
-            <div>
-              @if($sessions->total() > 0)
-                <span class="text-muted">
-                  Showing {{ $sessions->firstItem() }} to {{ $sessions->lastItem() }} of {{ $sessions->total() }} entries
-                </span>
-              @endif
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              @if($sessions->hasPages())
-                <span class="text-muted me-2">Page {{ $sessions->currentPage() }} of {{ $sessions->lastPage() }}</span>
-                <div class="btn-group" role="group">
-                  @if($sessions->onFirstPage())
-                    <button class="btn btn-outline-primary btn-sm" disabled>
-                      <i class="ri-arrow-left-double-line"></i>
-                    </button>
-                    <button class="btn btn-outline-primary btn-sm" disabled>
-                      <i class="ri-arrow-left-line"></i>
-                    </button>
-                  @else
-                    <a href="{{ $sessions->url(1) }}" class="btn btn-outline-primary btn-sm">
-                      <i class="ri-arrow-left-double-line"></i>
-                    </a>
-                    <a href="{{ $sessions->previousPageUrl() }}" class="btn btn-outline-primary btn-sm">
-                      <i class="ri-arrow-left-line"></i>
-                    </a>
-                  @endif
-                  @if($sessions->hasMorePages())
-                    <a href="{{ $sessions->nextPageUrl() }}" class="btn btn-outline-primary btn-sm">
-                      <i class="ri-arrow-right-line"></i>
-                    </a>
-                    <a href="{{ $sessions->url($sessions->lastPage()) }}" class="btn btn-outline-primary btn-sm">
-                      <i class="ri-arrow-right-double-line"></i>
-                    </a>
-                  @else
-                    <button class="btn btn-outline-primary btn-sm" disabled>
-                      <i class="ri-arrow-right-line"></i>
-                    </button>
-                    <button class="btn btn-outline-primary btn-sm" disabled>
-                      <i class="ri-arrow-right-double-line"></i>
-                    </button>
-                  @endif
-                </div>
-              @endif
-              <select class="form-select form-select-sm" style="width: auto;" onchange="updatePerPage(this.value)">
-                <option value="10" {{ $sessions->perPage() == 10 ? 'selected' : '' }}>10 rows</option>
-                <option value="25" {{ $sessions->perPage() == 25 ? 'selected' : '' }}>25 rows</option>
-                <option value="50" {{ $sessions->perPage() == 50 ? 'selected' : '' }}>50 rows</option>
-                <option value="100" {{ $sessions->perPage() == 100 ? 'selected' : '' }}>100 rows</option>
-              </select>
-              <span class="text-muted ms-2">per page</span>
-            </div>
-          </div>
-        @endif
-      </div>
+<!-- Sessions Card -->
+<div class="sessions-card">
+  <div class="card-body">
+    <!-- Filters Row -->
+    <div class="filters-row">
+      <form method="GET" action="{{ route('therapist.sessions.index') }}" class="search-box">
+        <input type="hidden" name="status" value="{{ $status }}">
+        <input type="text" name="search" class="search-input" placeholder="Search by client name..." value="{{ $search }}">
+        <button type="submit" class="btn-search">
+          <i class="ri-search-line"></i>
+        </button>
+      </form>
+      <button type="button" class="btn-refresh" onclick="location.reload()">
+        <i class="ri-refresh-line"></i>
+        Refresh
+      </button>
     </div>
+
+    <!-- Sessions Table -->
+    <div class="table-responsive">
+      <table class="sessions-table">
+        <thead>
+          <tr>
+            <th style="width: 60px;">#</th>
+            <th>Session ID</th>
+            <th>Client</th>
+            <th>Mode</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse($sessions as $index => $session)
+            <tr>
+              <td style="font-weight: 500; color: #6b7280;">{{ $sessions->firstItem() + $index }}</td>
+              <td>
+                <span style="font-family: monospace; font-weight: 600; color: #059669;">
+                  S-{{ $session->created_at ? $session->created_at->timestamp : $session->id }}
+                </span>
+              </td>
+              <td>
+                <div class="client-cell">
+                  @if($session->client?->avatar)
+                    <img src="{{ $session->client->avatar }}" alt="{{ $session->client->name }}" class="client-avatar">
+                  @else
+                    <div class="client-avatar-placeholder">
+                      {{ strtoupper(substr($session->client?->name ?? 'N', 0, 2)) }}
+                    </div>
+                  @endif
+                  <span class="client-name">{{ $session->client->name ?? 'N/A' }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="mode-badge {{ $session->session_mode }}">
+                  {{ strtoupper($session->session_mode) }}
+                </span>
+              </td>
+              <td style="font-weight: 500;">{{ $session->appointment_date->format('d M, Y') }}</td>
+              <td style="color: #6b7280;">{{ \Carbon\Carbon::parse($session->appointment_time)->format('g:i A') }}</td>
+              <td>
+                @if($session->status === 'scheduled')
+                  <span class="status-badge pending">Pending</span>
+                @elseif($session->status === 'confirmed')
+                  <span class="status-badge upcoming">Upcoming</span>
+                @elseif($session->status === 'completed')
+                  <span class="status-badge completed">Completed</span>
+                @elseif($session->status === 'cancelled')
+                  @if($session->cancelled_by == auth()->id())
+                    <span class="status-badge cancel">Cancel by Me</span>
+                  @else
+                    <span class="status-badge cancelled">Cancelled by Client</span>
+                  @endif
+                @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
+                  <span class="status-badge expired">Expired</span>
+                @else
+                  <span class="status-badge">{{ strtoupper($session->status) }}</span>
+                @endif
+              </td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-state-icon">
+                    <i class="ri-calendar-line"></i>
+                  </div>
+                  <h5>No sessions found</h5>
+                  <p>There are no sessions matching your current filter criteria.</p>
+                </div>
+              </td>
+            </tr>
+          @endforelse
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    @if($sessions->hasPages() || $sessions->total() > 0)
+      <div class="pagination-wrapper">
+        <div class="pagination-info">
+          @if($sessions->total() > 0)
+            Showing {{ $sessions->firstItem() }} to {{ $sessions->lastItem() }} of {{ $sessions->total() }} sessions
+          @endif
+        </div>
+        <div class="pagination-controls">
+          @if($sessions->hasPages())
+            <span style="font-size: 0.875rem; color: #6b7280; margin-right: 0.5rem;">
+              Page {{ $sessions->currentPage() }} of {{ $sessions->lastPage() }}
+            </span>
+            @if($sessions->onFirstPage())
+              <button class="page-btn" disabled><i class="ri-arrow-left-double-line"></i></button>
+              <button class="page-btn" disabled><i class="ri-arrow-left-line"></i></button>
+            @else
+              <a href="{{ $sessions->url(1) }}" class="page-btn"><i class="ri-arrow-left-double-line"></i></a>
+              <a href="{{ $sessions->previousPageUrl() }}" class="page-btn"><i class="ri-arrow-left-line"></i></a>
+            @endif
+            @if($sessions->hasMorePages())
+              <a href="{{ $sessions->nextPageUrl() }}" class="page-btn"><i class="ri-arrow-right-line"></i></a>
+              <a href="{{ $sessions->url($sessions->lastPage()) }}" class="page-btn"><i class="ri-arrow-right-double-line"></i></a>
+            @else
+              <button class="page-btn" disabled><i class="ri-arrow-right-line"></i></button>
+              <button class="page-btn" disabled><i class="ri-arrow-right-double-line"></i></button>
+            @endif
+          @endif
+          <select class="per-page-select" onchange="updatePerPage(this.value)">
+            <option value="10" {{ $sessions->perPage() == 10 ? 'selected' : '' }}>10 rows</option>
+            <option value="25" {{ $sessions->perPage() == 25 ? 'selected' : '' }}>25 rows</option>
+            <option value="50" {{ $sessions->perPage() == 50 ? 'selected' : '' }}>50 rows</option>
+            <option value="100" {{ $sessions->perPage() == 100 ? 'selected' : '' }}>100 rows</option>
+          </select>
+        </div>
+      </div>
+    @endif
   </div>
 </div>
 @endsection
@@ -208,49 +656,4 @@
     window.location.href = url.toString();
   }
 </script>
-@endsection
-
-@section('page-style')
-<style>
-  .session-filter-tabs {
-    border-bottom: 2px solid #e0e6ed;
-    padding-bottom: 1rem;
-  }
-
-  .session-tab-btn {
-    border-radius: 8px;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    text-decoration: none;
-  }
-
-  .session-tab-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .sessions-table {
-    margin-top: 1rem;
-  }
-
-  .sessions-table thead th {
-    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-    color: white;
-    font-weight: 600;
-    padding: 1rem;
-    border: none;
-    text-align: center;
-  }
-
-  .sessions-table tbody td {
-    padding: 1rem;
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  .sessions-table tbody tr:hover {
-    background-color: #f8f9fa;
-  }
-</style>
 @endsection
