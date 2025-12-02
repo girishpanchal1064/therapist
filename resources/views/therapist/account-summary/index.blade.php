@@ -6,7 +6,7 @@
 <style>
   /* === Account Summary Page Custom Styles === */
   .page-header {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 16px;
     padding: 1.5rem 2rem;
     margin-bottom: 1.5rem;
@@ -30,6 +30,7 @@
     font-weight: 700;
     margin-bottom: 0.25rem;
     position: relative;
+    color: white;
     z-index: 1;
     display: flex;
     align-items: center;
@@ -56,12 +57,83 @@
     padding: 1.5rem;
   }
 
+  /* Filter Card */
+  .filter-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: 24px;
+  }
+  .filter-card .filter-title {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 20px;
+  }
+  .filter-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 1rem;
+  }
+  .btn-filter-toggle {
+    background: transparent;
+    border: 2px solid #e4e6eb;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .btn-filter-toggle:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+  }
+  .btn-filter-toggle i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  .btn-filter-toggle.active i {
+    transform: rotate(180deg);
+  }
+  .filter-content {
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .filter-content.collapsed {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    padding-top: 0;
+  }
+  .filter-content:not(.collapsed) {
+    max-height: 1000px;
+    opacity: 1;
+  }
+
   /* Filters */
   .filters-section {
     background: #f9fafb;
     border-radius: 12px;
     padding: 1.25rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     border: 1px solid #e5e7eb;
   }
 
@@ -146,40 +218,56 @@
     transform: translateY(-2px);
   }
 
-  /* Table Styles */
+  /* Table Styles - Enhanced */
   .summary-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
 
   .summary-table thead th {
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-    color: #374151;
-    font-weight: 600;
-    font-size: 0.6875rem;
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    color: #4a5568;
+    font-weight: 700;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 1rem 0.75rem;
-    border-bottom: 2px solid #e5e7eb;
+    letter-spacing: 0.5px;
+    padding: 18px 16px;
+    border: none;
     text-align: center;
     white-space: nowrap;
   }
 
+  .summary-table thead th:first-child {
+    border-radius: 12px 0 0 0;
+  }
+
+  .summary-table thead th:last-child {
+    border-radius: 0 12px 0 0;
+  }
+
   .summary-table tbody td {
-    padding: 1rem 0.75rem;
-    border-bottom: 1px solid #f3f4f6;
+    padding: 18px 16px;
+    border-bottom: 1px solid #f0f2f5;
     vertical-align: middle;
-    font-size: 0.875rem;
+    color: #2d3748;
+    font-size: 0.9rem;
     text-align: center;
   }
 
   .summary-table tbody tr {
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    background: white;
   }
 
   .summary-table tbody tr:hover {
-    background: #eff6ff;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+    transform: scale(1.001);
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
   }
 
   .summary-table tbody tr:last-child td {
@@ -417,8 +505,21 @@
 <div class="summary-card">
   <div class="card-body">
     <!-- Filters -->
-    <div class="filters-section">
-      <div class="filters-row">
+    <div class="filter-card mb-4">
+      <div class="filter-title">
+        <div class="d-flex align-items-center gap-2">
+          <div class="filter-icon-wrapper">
+            <i class="ri-filter-3-line"></i>
+          </div>
+          <span>Filter & Search</span>
+        </div>
+        <button type="button" class="btn-filter-toggle" onclick="toggleFilterSection()">
+          <i class="ri-arrow-down-s-line" id="filterToggleIcon"></i>
+        </button>
+      </div>
+      <div class="filter-content" id="filterContent">
+        <div class="filters-section">
+          <div class="filters-row">
         <form method="GET" action="{{ route('therapist.account-summary.index') }}" class="d-contents" style="display: contents;">
           <div class="filter-group">
             <label class="filter-label">Start Date</label>
@@ -444,6 +545,8 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
       </div>
     </div>
 
@@ -566,6 +669,33 @@
 
 @section('page-script')
 <script>
+  // Toggle filter section
+  function toggleFilterSection() {
+    const filterContent = document.getElementById('filterContent');
+    const toggleIcon = document.getElementById('filterToggleIcon');
+    const toggleBtn = document.querySelector('.btn-filter-toggle');
+    
+    filterContent.classList.toggle('collapsed');
+    toggleBtn.classList.toggle('active');
+    
+    // Save state to localStorage
+    const isCollapsed = filterContent.classList.contains('collapsed');
+    localStorage.setItem('filterSectionCollapsed_therapist_account', isCollapsed);
+  }
+
+  // Restore filter state on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedState = localStorage.getItem('filterSectionCollapsed_therapist_account');
+    if (savedState === 'true') {
+      const filterContent = document.getElementById('filterContent');
+      const toggleBtn = document.querySelector('.btn-filter-toggle');
+      if (filterContent && toggleBtn) {
+        filterContent.classList.add('collapsed');
+        toggleBtn.classList.add('active');
+      }
+    }
+  });
+
   function updatePerPage(value) {
     const url = new URL(window.location.href);
     url.searchParams.set('per_page', value);

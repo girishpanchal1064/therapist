@@ -597,15 +597,18 @@
                         <!-- Therapist Info -->
                         <div class="col-lg-3 col-md-4 mb-3 mb-lg-0">
                             <div class="d-flex align-items-center gap-3">
-                                @if($appointment->therapist->avatar)
-                                    <img src="{{ $appointment->therapist->avatar }}" 
+                                @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+                                    <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" 
                                          alt="{{ $appointment->therapist->name }}" 
-                                         class="therapist-avatar"
-                                         onerror="this.src='{{ asset('assets/img/avatars/1.png') }}'">
+                                         class="therapist-avatar">
+                                @elseif($appointment->therapist->avatar)
+                                    <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" 
+                                         alt="{{ $appointment->therapist->name }}" 
+                                         class="therapist-avatar">
                                 @else
-                                    <div class="therapist-avatar-placeholder">
-                                        {{ strtoupper(substr($appointment->therapist->name, 0, 2)) }}
-                                    </div>
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" 
+                                         alt="{{ $appointment->therapist->name }}" 
+                                         class="therapist-avatar">
                                 @endif
                                 <div class="therapist-info">
                                     <h6>{{ $appointment->therapist->name }}</h6>

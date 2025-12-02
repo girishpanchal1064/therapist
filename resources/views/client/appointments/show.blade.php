@@ -543,15 +543,18 @@
             </div>
             <div class="info-card-body">
                 <div class="therapist-profile">
-                    @if($appointment->therapist->avatar)
-                        <img src="{{ $appointment->therapist->avatar }}" 
+                    @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+                        <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" 
                              alt="{{ $appointment->therapist->name }}" 
-                             class="therapist-avatar-large"
-                             onerror="this.src='{{ asset('assets/img/avatars/1.png') }}'">
+                             class="therapist-avatar-large">
+                    @elseif($appointment->therapist->avatar)
+                        <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" 
+                             alt="{{ $appointment->therapist->name }}" 
+                             class="therapist-avatar-large">
                     @else
-                        <div class="therapist-avatar-placeholder-large">
-                            {{ strtoupper(substr($appointment->therapist->name, 0, 2)) }}
-                        </div>
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" 
+                             alt="{{ $appointment->therapist->name }}" 
+                             class="therapist-avatar-large">
                     @endif
                     <h5>{{ $appointment->therapist->name }}</h5>
                     <p>{{ $appointment->therapist->email }}</p>

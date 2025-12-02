@@ -116,34 +116,64 @@
     padding: 1rem 1.25rem;
   }
 
-  /* Table Styling */
+  /* Table Styling - Enhanced */
   #therapistsTable {
     width: 100% !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
 
   #therapistsTable thead th {
     background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
     color: #4a5568;
-    font-weight: 600;
-    font-size: 0.75rem;
+    font-weight: 700;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 1rem;
+    padding: 18px 20px;
     border: none;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  #therapistsTable thead th:first-child {
+    border-radius: 12px 0 0 0;
+  }
+
+  #therapistsTable thead th:last-child {
+    border-radius: 0 12px 0 0;
   }
 
   #therapistsTable tbody tr {
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    background: white;
+    border-bottom: 1px solid #f0f2f5;
   }
 
   #therapistsTable tbody tr:hover {
-    background: #f8fafc;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+    transform: scale(1.001);
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+  }
+
+  #therapistsTable tbody tr:last-child {
+    border-bottom: none;
   }
 
   #therapistsTable tbody td {
-    padding: 1rem;
+    padding: 18px 20px;
     vertical-align: middle;
+    color: #2d3748;
+    font-size: 0.9rem;
     border-bottom: 1px solid #f0f2f5;
+  }
+
+  #therapistsTable tbody tr:last-child td {
+    border-bottom: none;
   }
 
   /* Therapist Avatar */

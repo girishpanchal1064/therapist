@@ -54,7 +54,13 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mb-3">
                   <div class="avatar avatar-md me-3">
-                    <img src="{{ $appointment->therapist->avatar }}" alt="{{ $appointment->therapist->name }}" class="rounded-circle">
+                    @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+                      <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="rounded-circle">
+                    @elseif($appointment->therapist->avatar)
+                      <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="rounded-circle">
+                    @else
+                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="rounded-circle">
+                    @endif
                   </div>
                   <div>
                     <h6 class="mb-0">{{ $appointment->therapist->name }}</h6>

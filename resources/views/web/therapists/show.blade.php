@@ -11,14 +11,18 @@
                 <!-- Therapist Info -->
                 <div class="flex items-center space-x-6 mb-8 lg:mb-0">
                     <div class="relative">
-                        @if($therapist->profile && $therapist->profile->profile_image)
-                            <img src="{{ Storage::url($therapist->profile->profile_image) }}"
+                        @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
+                            <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}"
+                                 alt="{{ $therapist->name }}"
+                                 class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
+                        @elseif($therapist->avatar)
+                            <img src="{{ asset('storage/' . $therapist->avatar) }}"
                                  alt="{{ $therapist->name }}"
                                  class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
                         @else
-                            <div class="w-24 h-24 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white text-3xl font-bold border-4 border-white shadow-lg">
-                                {{ substr($therapist->name, 0, 1) }}
-                            </div>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=192&bold=true&format=svg"
+                                 alt="{{ $therapist->name }}"
+                                 class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
                         @endif
                         <!-- Online Status -->
                         <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white"></div>

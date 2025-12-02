@@ -806,7 +806,13 @@
   <div class="col-lg-6 mb-3 animate-fade-in animation-delay-4">
     <div class="session-card today">
       <div class="session-therapist">
-        <img src="{{ $appointment->therapist->avatar ?? asset('assets/img/avatars/default.png') }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+        @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+          <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+        @elseif($appointment->therapist->avatar)
+          <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+        @else
+          <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=100&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+        @endif
         <div class="therapist-info">
           <h6>{{ $appointment->therapist->name }}</h6>
           <span>{{ $appointment->therapist->therapistProfile->specializations ?? 'Therapist' }}</span>
@@ -864,7 +870,13 @@
           @foreach($upcomingAppointments->take(4) as $appointment)
           <div class="session-card upcoming mb-3">
             <div class="session-therapist">
-              <img src="{{ $appointment->therapist->avatar ?? asset('assets/img/avatars/default.png') }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+              @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+          <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+        @elseif($appointment->therapist->avatar)
+          <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+        @else
+          <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=100&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+        @endif
               <div class="therapist-info">
                 <h6>{{ $appointment->therapist->name }}</h6>
                 <span>{{ $appointment->appointment_date->format('D, M d, Y') }}</span>

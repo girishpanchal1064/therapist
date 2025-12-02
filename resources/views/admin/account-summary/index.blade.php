@@ -102,12 +102,17 @@
   .filter-card .filter-title {
     font-weight: 700;
     color: #2d3748;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+    cursor: pointer;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 20px;
   }
-  .filter-card .filter-title i {
+  .filter-icon-wrapper {
     width: 36px;
     height: 36px;
     border-radius: 10px;
@@ -117,6 +122,44 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     font-size: 1rem;
+  }
+  .btn-filter-toggle {
+    background: transparent;
+    border: 2px solid #e4e6eb;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .btn-filter-toggle:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+  }
+  .btn-filter-toggle i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  .btn-filter-toggle.active i {
+    transform: rotate(180deg);
+  }
+  .filter-content {
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .filter-content.collapsed {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    padding-top: 0;
+  }
+  .filter-content:not(.collapsed) {
+    max-height: 1000px;
+    opacity: 1;
   }
 
   .filter-group { margin-bottom: 0; }
@@ -432,10 +475,18 @@
 <!-- Filters -->
 <div class="filter-card">
   <div class="filter-title">
-    <i class="ri-filter-3-line"></i>
-    <span>Filter & Search</span>
+    <div class="d-flex align-items-center gap-2">
+      <div class="filter-icon-wrapper">
+        <i class="ri-filter-3-line"></i>
+      </div>
+      <span>Filter & Search</span>
+    </div>
+    <button type="button" class="btn-filter-toggle" onclick="toggleFilterSection()">
+      <i class="ri-arrow-down-s-line" id="filterToggleIcon"></i>
+    </button>
   </div>
-  <div class="row g-3 align-items-end">
+  <div class="filter-content" id="filterContent">
+    <div class="row g-3 align-items-end">
     <div class="col-md-3">
       <div class="filter-group">
         <label>Therapist</label>
@@ -483,6 +534,7 @@
         </a>
       </div>
     </div>
+    </div>
   </div>
 </div>
 
@@ -524,10 +576,12 @@
             <td><span class="session-id">#{{ str_pad($summary->id, 6, '0', STR_PAD_LEFT) }}</span></td>
             <td>
               <div class="user-info">
-                @if($summary->therapist->avatar)
+                @if($summary->therapist->therapistProfile && $summary->therapist->therapistProfile->profile_image)
+                  <img src="{{ asset('storage/' . $summary->therapist->therapistProfile->profile_image) }}" alt="{{ $summary->therapist->name }}" class="user-avatar">
+                @elseif($summary->therapist->avatar)
                   <img src="{{ asset('storage/' . $summary->therapist->avatar) }}" alt="{{ $summary->therapist->name }}" class="user-avatar">
                 @else
-                  <div class="user-initials therapist">{{ strtoupper(substr($summary->therapist->name, 0, 2)) }}</div>
+                  <img src="https://ui-avatars.com/api/?name={{ urlencode($summary->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $summary->therapist->name }}" class="user-avatar">
                 @endif
                 <div class="user-details">
                   <div class="name">{{ $summary->therapist->name }}</div>
@@ -619,6 +673,31 @@
 
 @section('page-script')
 <script>
+  // Toggle filter section
+  function toggleFilterSection() {
+    const filterContent = document.getElementById('filterContent');
+    const toggleIcon = document.getElementById('filterToggleIcon');
+    const toggleBtn = document.querySelector('.btn-filter-toggle');
+    
+    filterContent.classList.toggle('collapsed');
+    toggleBtn.classList.toggle('active');
+    
+    // Save state to localStorage
+    const isCollapsed = filterContent.classList.contains('collapsed');
+    localStorage.setItem('filterSectionCollapsed', isCollapsed);
+  }
+
+  // Restore filter state on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedState = localStorage.getItem('filterSectionCollapsed');
+    if (savedState === 'true') {
+      const filterContent = document.getElementById('filterContent');
+      const toggleBtn = document.querySelector('.btn-filter-toggle');
+      filterContent.classList.add('collapsed');
+      toggleBtn.classList.add('active');
+    }
+  });
+
   function applyFilters() {
     const url = new URL(window.location.href);
     url.searchParams.set('start_date', document.getElementById('start_date').value);

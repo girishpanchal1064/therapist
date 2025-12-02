@@ -117,29 +117,54 @@
   /* Table Styling */
   .table-today {
     margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    width: 100%;
   }
   .table-today thead th {
     background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
     color: #4a5568;
-    font-weight: 600;
-    font-size: 0.75rem;
+    font-weight: 700;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     padding: 14px 16px;
     border: none;
     white-space: nowrap;
   }
+  .table-today thead th:first-child {
+    border-radius: 12px 0 0 0;
+  }
+  .table-today thead th:last-child {
+    border-radius: 0 12px 0 0;
+  }
   .table-today tbody tr {
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    background: white;
     border-left: 4px solid transparent;
+    border-bottom: 1px solid #f0f2f5;
   }
   .table-today tbody tr:hover {
-    background-color: rgba(102, 126, 234, 0.04);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+    transform: scale(1.001);
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+  }
+  .table-today tbody tr:last-child {
+    border-bottom: none;
   }
   .table-today tbody td {
-    padding: 16px;
+    padding: 18px 20px;
     vertical-align: middle;
-    border-bottom: 1px solid #f0f0f0;
+    color: #2d3748;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f0f2f5;
+  }
+  .table-today tbody tr:last-child td {
+    border-bottom: none;
   }
   .table-today tbody tr.status-scheduled { border-left-color: #667eea; }
   .table-today tbody tr.status-confirmed { border-left-color: #28c76f; }
@@ -713,12 +738,16 @@
               </td>
               <td>
                 <div class="user-info">
-                  @if($appointment->therapist && $appointment->therapist->getRawOriginal('avatar'))
-                    <img src="{{ $appointment->therapist->avatar }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                  @if($appointment->therapist)
+                    @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+                      <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                    @elseif($appointment->therapist->avatar)
+                      <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                    @else
+                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                    @endif
                   @else
-                    <div class="user-avatar-initials therapist">
-                      {{ $appointment->therapist ? strtoupper(substr($appointment->therapist->name, 0, 2)) : 'NA' }}
-                    </div>
+                    <div class="user-avatar-initials therapist">NA</div>
                   @endif
                   <div class="user-details">
                     <h6>{{ $appointment->therapist->name ?? 'N/A' }}</h6>

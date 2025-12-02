@@ -106,39 +106,59 @@
     .table-modern {
         border-collapse: separate;
         border-spacing: 0;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        width: 100%;
     }
     
     .table-modern thead th {
         background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
         color: #4a5568;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         letter-spacing: 0.5px;
-        padding: 1rem;
+        padding: 18px 20px;
         border: none;
+        white-space: nowrap;
     }
     
     .table-modern thead th:first-child {
-        border-radius: 8px 0 0 0;
+        border-radius: 12px 0 0 0;
     }
     
     .table-modern thead th:last-child {
-        border-radius: 0 8px 0 0;
+        border-radius: 0 12px 0 0;
     }
     
     .table-modern tbody tr {
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
+        background: white;
+        border-bottom: 1px solid #f0f2f5;
     }
     
     .table-modern tbody tr:hover {
-        background-color: rgba(102, 126, 234, 0.05);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+        transform: scale(1.001);
+        box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+    }
+    
+    .table-modern tbody tr:last-child {
+        border-bottom: none;
     }
     
     .table-modern tbody td {
-        padding: 1rem;
+        padding: 18px 20px;
         vertical-align: middle;
-        border-bottom: 1px solid #f0f0f0;
+        color: #2d3748;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #f0f2f5;
+    }
+    
+    .table-modern tbody tr:last-child td {
+        border-bottom: none;
     }
     
     .assessment-info {

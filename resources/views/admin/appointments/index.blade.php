@@ -105,6 +105,68 @@
   .filter-card .card-body {
     padding: 24px;
   }
+  .filter-card .filter-title {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 20px;
+  }
+  .filter-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 1rem;
+  }
+  .btn-filter-toggle {
+    background: transparent;
+    border: 2px solid #e4e6eb;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .btn-filter-toggle:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+  }
+  .btn-filter-toggle i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  .btn-filter-toggle.active i {
+    transform: rotate(180deg);
+  }
+  .filter-content {
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .filter-content.collapsed {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    padding-top: 0;
+  }
+  .filter-content:not(.collapsed) {
+    max-height: 1000px;
+    opacity: 1;
+  }
   .filter-card .form-label {
     font-size: 0.7rem;
     text-transform: uppercase;
@@ -643,9 +705,21 @@
 <!-- Filters Card -->
 <div class="card filter-card mb-4">
   <div class="card-body">
-    <form method="GET" action="{{ route('admin.appointments.index') }}" id="filterForm">
-      <div class="row g-3 align-items-end">
-        <!-- Search -->
+    <div class="filter-title mb-3">
+      <div class="d-flex align-items-center gap-2">
+        <div class="filter-icon-wrapper">
+          <i class="ri-filter-3-line"></i>
+        </div>
+        <span>Filter & Search</span>
+      </div>
+      <button type="button" class="btn-filter-toggle" onclick="toggleFilterSection()">
+        <i class="ri-arrow-down-s-line" id="filterToggleIcon"></i>
+      </button>
+    </div>
+    <div class="filter-content" id="filterContent">
+      <form method="GET" action="{{ route('admin.appointments.index') }}" id="filterForm">
+        <div class="row g-3 align-items-end">
+          <!-- Search -->
         <div class="col-md-3">
           <label class="form-label small text-uppercase fw-semibold text-muted">Search</label>
           <div class="input-group input-group-merge">
@@ -714,6 +788,7 @@
         </div>
       </div>
     </form>
+    </div>
   </div>
 </div>
 
@@ -821,12 +896,16 @@
               </td>
               <td>
                 <div class="user-info">
-                  @if($appointment->therapist && $appointment->therapist->getRawOriginal('avatar'))
-                    <img src="{{ $appointment->therapist->avatar }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                  @if($appointment->therapist)
+                    @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+                      <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                    @elseif($appointment->therapist->avatar)
+                      <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                    @else
+                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                    @endif
                   @else
-                    <div class="user-avatar-initials therapist">
-                      {{ $appointment->therapist ? strtoupper(substr($appointment->therapist->name, 0, 2)) : 'NA' }}
-                    </div>
+                    <div class="user-avatar-initials therapist">NA</div>
                   @endif
                   <div class="user-details">
                     <h6>{{ $appointment->therapist->name ?? 'N/A' }}</h6>
@@ -1012,6 +1091,32 @@
 
 @section('page-script')
 <script>
+  // Toggle filter section
+  function toggleFilterSection() {
+    const filterContent = document.getElementById('filterContent');
+    const toggleIcon = document.getElementById('filterToggleIcon');
+    const toggleBtn = document.querySelector('.btn-filter-toggle');
+
+    filterContent.classList.toggle('collapsed');
+    toggleBtn.classList.toggle('active');
+
+    // Save state to localStorage
+    const isCollapsed = filterContent.classList.contains('collapsed');
+    localStorage.setItem('filterSectionCollapsed_appointments', isCollapsed);
+  }
+
+  // Restore filter state on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedState = localStorage.getItem('filterSectionCollapsed_appointments');
+    if (savedState === 'true') {
+      const filterContent = document.getElementById('filterContent');
+      const toggleBtn = document.querySelector('.btn-filter-toggle');
+      if (filterContent && toggleBtn) {
+        filterContent.classList.add('collapsed');
+        toggleBtn.classList.add('active');
+      }
+    }
+  });
   document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

@@ -469,15 +469,18 @@
                         <div class="col-lg-8">
                             <!-- Therapist Info -->
                             <div class="therapist-info-section">
-                                @if($review->therapist->avatar)
-                                    <img src="{{ $review->therapist->avatar }}" 
+                                @if($review->therapist->therapistProfile && $review->therapist->therapistProfile->profile_image)
+                                    <img src="{{ asset('storage/' . $review->therapist->therapistProfile->profile_image) }}" 
                                          alt="{{ $review->therapist->name }}" 
-                                         class="therapist-avatar"
-                                         onerror="this.src='{{ asset('assets/img/avatars/1.png') }}'">
+                                         class="therapist-avatar">
+                                @elseif($review->therapist->avatar)
+                                    <img src="{{ asset('storage/' . $review->therapist->avatar) }}" 
+                                         alt="{{ $review->therapist->name }}" 
+                                         class="therapist-avatar">
                                 @else
-                                    <div class="therapist-avatar-placeholder">
-                                        {{ strtoupper(substr($review->therapist->name, 0, 2)) }}
-                                    </div>
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($review->therapist->name) }}&background=667eea&color=fff&size=120&bold=true&format=svg" 
+                                         alt="{{ $review->therapist->name }}" 
+                                         class="therapist-avatar">
                                 @endif
                                 <div class="therapist-details">
                                     <h6>{{ $review->therapist->name }}</h6>

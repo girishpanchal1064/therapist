@@ -6,7 +6,7 @@
 <style>
   /* === Sessions Page Custom Styles === */
   .page-header {
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 16px;
     padding: 1.5rem 2rem;
     margin-bottom: 1.5rem;
@@ -30,6 +30,7 @@
     font-weight: 700;
     margin-bottom: 0.25rem;
     position: relative;
+    color: white;
     z-index: 1;
   }
 
@@ -193,33 +194,50 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
 
   .sessions-table thead th {
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-    color: #374151;
-    font-weight: 600;
-    font-size: 0.75rem;
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    color: #4a5568;
+    font-weight: 700;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 1rem 1.25rem;
-    border-bottom: 2px solid #e5e7eb;
+    letter-spacing: 0.5px;
+    padding: 18px 20px;
+    border: none;
     text-align: left;
+    white-space: nowrap;
+  }
+
+  .sessions-table thead th:first-child {
+    border-radius: 12px 0 0 0;
+  }
+
+  .sessions-table thead th:last-child {
+    border-radius: 0 12px 0 0;
   }
 
   .sessions-table tbody td {
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid #f3f4f6;
+    padding: 18px 20px;
+    border-bottom: 1px solid #f0f2f5;
     vertical-align: middle;
-    font-size: 0.9375rem;
+    color: #2d3748;
+    font-size: 0.9rem;
   }
 
   .sessions-table tbody tr {
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    background: white;
   }
 
   .sessions-table tbody tr:hover {
-    background: #f0fdf4;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+    transform: scale(1.001);
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
   }
 
   .sessions-table tbody tr:last-child td {

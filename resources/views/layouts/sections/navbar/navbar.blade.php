@@ -110,15 +110,21 @@ $currentUser = Auth::user();
             </a>
             <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
               <li>
-                <a class="dropdown-item pb-2 mb-1" href="@if($currentUser && $currentUser->hasRole('Therapist')){{ route('therapist.profile.index') }}@elseif($currentUser && $currentUser->hasRole('Client')){{ route('client.dashboard') }}@else{{ route('admin.profile.index') }}@endif">
+                <a class="dropdown-item pb-2 mb-1 waves-effect" href="@if($currentUser && $currentUser->hasRole('Therapist')){{ route('therapist.profile.index') }}@elseif($currentUser && $currentUser->hasRole('Client')){{ route('client.dashboard') }}@else{{ route('admin.profile.index') }}@endif">
                   <div class="d-flex align-items-center">
                     <div class="flex-shrink-0 me-2">
                       <div class="avatar avatar-online">
-                        @if($currentUser && $currentUser->getRawOriginal('avatar'))
-                          <img src="{{ $currentUser->avatar }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
+                        @if($currentUser)
+                          @if($currentUser->hasRole('Therapist') && $currentUser->therapistProfile && $currentUser->therapistProfile->profile_image)
+                            <img src="{{ asset('storage/' . $currentUser->therapistProfile->profile_image) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
+                          @elseif($currentUser->avatar)
+                            <img src="{{ asset('storage/' . $currentUser->avatar) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
+                          @else
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($currentUser->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
+                          @endif
                         @else
                           <span class="avatar-initial rounded-circle bg-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;">
-                            {{ $currentUser ? strtoupper(substr($currentUser->name, 0, 2)) : 'NA' }}
+                            NA
                           </span>
                         @endif
                       </div>

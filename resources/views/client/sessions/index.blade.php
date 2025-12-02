@@ -392,15 +392,18 @@
                     <!-- Header with Status -->
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="d-flex align-items-center gap-3">
-                            @if($session->therapist->avatar)
-                                <img src="{{ $session->therapist->avatar }}" 
+                            @if($session->therapist->therapistProfile && $session->therapist->therapistProfile->profile_image)
+                                <img src="{{ asset('storage/' . $session->therapist->therapistProfile->profile_image) }}" 
                                      alt="{{ $session->therapist->name }}" 
-                                     class="therapist-avatar"
-                                     onerror="this.src='{{ asset('assets/img/avatars/1.png') }}'">
+                                     class="therapist-avatar">
+                            @elseif($session->therapist->avatar)
+                                <img src="{{ asset('storage/' . $session->therapist->avatar) }}" 
+                                     alt="{{ $session->therapist->name }}" 
+                                     class="therapist-avatar">
                             @else
-                                <div class="therapist-avatar-placeholder">
-                                    {{ strtoupper(substr($session->therapist->name, 0, 2)) }}
-                                </div>
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=667eea&color=fff&size=120&bold=true&format=svg" 
+                                     alt="{{ $session->therapist->name }}" 
+                                     class="therapist-avatar">
                             @endif
                             <div>
                                 <h6 class="fw-bold mb-1">{{ $session->therapist->name }}</h6>
