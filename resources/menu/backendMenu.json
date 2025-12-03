@@ -152,6 +152,23 @@
       ]
     },
     {
+      "name": "Rewards",
+      "icon": "menu-icon tf-icons ri-gift-line",
+      "slug": "admin.rewards",
+      "submenu": [
+        {
+          "url": "/admin/rewards",
+          "name": "All Rewards",
+          "slug": "admin.rewards.index"
+        },
+        {
+          "url": "/admin/rewards/create",
+          "name": "Create Reward",
+          "slug": "admin.rewards.create"
+        }
+      ]
+    },
+    {
       "name": "Settings",
       "icon": "menu-icon tf-icons ri-settings-3-line",
       "slug": "admin.settings",

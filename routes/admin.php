@@ -123,6 +123,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::post('reviews/{review}/reject', [ReviewController::class, 'reject'])->name('reviews.reject');
     Route::resource('reviews', ReviewController::class);
 
+    // Rewards Management
+    Route::resource('rewards', \App\Http\Controllers\Admin\RewardController::class);
+
     // Settings
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('general', [SettingsController::class, 'general'])->name('general');

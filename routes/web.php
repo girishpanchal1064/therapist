@@ -104,6 +104,11 @@ Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therap
     // Agreements module
     Route::resource('agreements', AgreementController::class);
 
+    // Rewards module
+    Route::get('/rewards', [App\Http\Controllers\Therapist\RewardController::class, 'index'])->name('rewards.index');
+    Route::get('/rewards/{id}', [App\Http\Controllers\Therapist\RewardController::class, 'show'])->name('rewards.show');
+    Route::post('/rewards/{id}/claim', [App\Http\Controllers\Therapist\RewardController::class, 'claim'])->name('rewards.claim');
+
     // Profile module
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [TherapistProfileController::class, 'index'])->name('index');
@@ -156,6 +161,11 @@ Route::middleware(['auth', 'role:Client'])->prefix('client')->name('client.')->g
     Route::post('/reviews', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('reviews.store');
     Route::post('/reviews/{appointment}', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('reviews.store.appointment');
     Route::get('/reviews', [App\Http\Controllers\Client\ReviewController::class, 'index'])->name('reviews.index');
+    
+    // Rewards module
+    Route::get('/rewards', [App\Http\Controllers\Client\RewardController::class, 'index'])->name('rewards.index');
+    Route::get('/rewards/{id}', [App\Http\Controllers\Client\RewardController::class, 'show'])->name('rewards.show');
+    Route::post('/rewards/{id}/claim', [App\Http\Controllers\Client\RewardController::class, 'claim'])->name('rewards.claim');
 });
 
 // Therapist listing and booking routes

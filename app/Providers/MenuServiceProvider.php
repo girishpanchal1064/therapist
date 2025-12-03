@@ -99,6 +99,12 @@ class MenuServiceProvider extends ServiceProvider
                     'slug' => 'client.profile.index'
                 ],
                 [
+                    'url' => '/client/rewards',
+                    'name' => 'Rewards',
+                    'icon' => 'menu-icon tf-icons ri-gift-line',
+                    'slug' => 'client.rewards.index'
+                ],
+                [
                     'url' => '/',
                     'name' => 'Visit Website',
                     'icon' => 'menu-icon tf-icons ri-global-line',
@@ -184,6 +190,12 @@ class MenuServiceProvider extends ServiceProvider
                     'name' => 'Agreements',
                     'icon' => 'menu-icon tf-icons ri-file-paper-2-line',
                     'slug' => 'therapist.agreements.index'
+                ],
+                [
+                    'url' => '/therapist/rewards',
+                    'name' => 'Rewards',
+                    'icon' => 'menu-icon tf-icons ri-gift-line',
+                    'slug' => 'therapist.rewards.index'
                 ],
                 [
                     'name' => 'Availability',
