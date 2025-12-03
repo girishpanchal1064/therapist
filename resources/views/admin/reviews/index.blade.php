@@ -540,11 +540,19 @@
                             <td><span class="fw-bold text-muted">{{ $loop->iteration }}</span></td>
                             <td>
                                 <div class="user-info">
-                                    @if($review->client->avatar)
-                                        <img src="{{ asset('storage/' . $review->client->avatar) }}" 
+                                    @if($review->client->profile && $review->client->profile->profile_image)
+                                        <img src="{{ asset('storage/' . $review->client->profile->profile_image) }}" 
+                                             alt="{{ $review->client->name }}" 
+                                             class="user-avatar">
+                                    @elseif($review->client->getRawOriginal('avatar'))
+                                        <img src="{{ asset('storage/' . $review->client->getRawOriginal('avatar')) }}" 
                                              alt="{{ $review->client->name }}" 
                                              class="user-avatar">
                                     @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" 
+                                             alt="{{ $review->client->name }}" 
+                                             class="user-avatar">
+                                    @endif
                                         <div class="user-avatar-initial" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                                             {{ strtoupper(substr($review->client->name, 0, 2)) }}
                                         </div>

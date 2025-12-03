@@ -359,6 +359,31 @@
               </select>
             </div>
           </div>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="commission-setting-card">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-wrapper me-3" style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                    <i class="ri-percent-line"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">Therapist Commission Percentage</h6>
+                    <small class="text-muted">Set the percentage therapists receive from payments</small>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <input type="number" class="form-control" name="therapist_commission_percentage" 
+                         value="{{ old('therapist_commission_percentage', \App\Models\Setting::getCommissionPercentage()) }}" 
+                         min="0" max="100" step="0.1" required>
+                  <span class="input-group-text">%</span>
+                </div>
+                <small class="text-muted mt-2 d-block">
+                  <i class="ri-information-line me-1"></i>
+                  Current setting: Therapist gets <strong>{{ \App\Models\Setting::getCommissionPercentage() }}%</strong>, Platform keeps <strong>{{ 100 - \App\Models\Setting::getCommissionPercentage() }}%</strong>
+                </small>
+              </div>
+            </div>
+          </div>
 
           <div class="d-flex justify-content-between align-items-center pt-4 border-top">
             <a href="{{ route('admin.dashboard') }}" class="btn btn-cancel"><i class="ri-close-line me-1"></i> Cancel</a>

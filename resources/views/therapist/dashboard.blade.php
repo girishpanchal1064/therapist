@@ -636,11 +636,17 @@
           @foreach($todayAppointments as $appointment)
           <div class="session-card today">
             <div class="session-client">
-              @if($appointment->client?->avatar)
-                <img src="{{ $appointment->client->avatar }}" alt="{{ $appointment->client->name }}" class="client-avatar">
+              @if($appointment->client)
+                @if($appointment->client->profile && $appointment->client->profile->profile_image)
+                  <img src="{{ asset('storage/' . $appointment->client->profile->profile_image) }}" alt="{{ $appointment->client->name }}" class="client-avatar">
+                @elseif($appointment->client->getRawOriginal('avatar'))
+                  <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="{{ $appointment->client->name }}" class="client-avatar">
+                @else
+                  <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name ?? 'U') }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->client->name }}" class="client-avatar">
+                @endif
               @else
                 <div class="client-avatar-placeholder">
-                  {{ strtoupper(substr($appointment->client?->name ?? 'U', 0, 2)) }}
+                  U
                 </div>
               @endif
               <div class="client-info">
@@ -706,11 +712,17 @@
               <tr>
                 <td>
                   <div class="d-flex align-items-center">
-                    @if($appointment->client?->avatar)
-                      <img src="{{ $appointment->client->avatar }}" alt="{{ $appointment->client->name }}" class="client-avatar me-3" style="width: 40px; height: 40px;">
+                    @if($appointment->client)
+                      @if($appointment->client->profile && $appointment->client->profile->profile_image)
+                        <img src="{{ asset('storage/' . $appointment->client->profile->profile_image) }}" alt="{{ $appointment->client->name }}" class="client-avatar me-3" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                      @elseif($appointment->client->getRawOriginal('avatar'))
+                        <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="{{ $appointment->client->name }}" class="client-avatar me-3" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                      @else
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name ?? 'U') }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->client->name }}" class="client-avatar me-3" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                      @endif
                     @else
                       <div class="client-avatar-placeholder me-3" style="width: 40px; height: 40px; font-size: 0.875rem;">
-                        {{ strtoupper(substr($appointment->client?->name ?? 'U', 0, 2)) }}
+                        U
                       </div>
                     @endif
                     <div>

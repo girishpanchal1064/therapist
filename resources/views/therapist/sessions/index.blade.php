@@ -571,11 +571,17 @@
               </td>
               <td>
                 <div class="client-cell">
-                  @if($session->client?->avatar)
-                    <img src="{{ $session->client->avatar }}" alt="{{ $session->client->name }}" class="client-avatar">
+                  @if($session->client)
+                    @if($session->client->profile && $session->client->profile->profile_image)
+                      <img src="{{ asset('storage/' . $session->client->profile->profile_image) }}" alt="{{ $session->client->name }}" class="client-avatar">
+                    @elseif($session->client->getRawOriginal('avatar'))
+                      <img src="{{ asset('storage/' . $session->client->getRawOriginal('avatar')) }}" alt="{{ $session->client->name }}" class="client-avatar">
+                    @else
+                      <img src="https://ui-avatars.com/api/?name={{ urlencode($session->client->name ?? 'N') }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $session->client->name }}" class="client-avatar">
+                    @endif
                   @else
                     <div class="client-avatar-placeholder">
-                      {{ strtoupper(substr($session->client?->name ?? 'N', 0, 2)) }}
+                      N
                     </div>
                   @endif
                   <span class="client-name">{{ $session->client->name ?? 'N/A' }}</span>

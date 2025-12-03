@@ -88,11 +88,17 @@
           <div class="info-value">
             <div class="d-flex align-items-center">
               <div class="avatar avatar-sm me-2">
-                @if($agreement->client->avatar)
-                  <img src="{{ $agreement->client->avatar }}" alt="{{ $agreement->client->name }}" class="rounded-circle">
+                @if($agreement->client)
+                  @if($agreement->client->profile && $agreement->client->profile->profile_image)
+                    <img src="{{ asset('storage/' . $agreement->client->profile->profile_image) }}" alt="{{ $agreement->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                  @elseif($agreement->client->getRawOriginal('avatar'))
+                    <img src="{{ asset('storage/' . $agreement->client->getRawOriginal('avatar')) }}" alt="{{ $agreement->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                  @else
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($agreement->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $agreement->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                  @endif
                 @else
                   <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 0.75rem;">
-                    {{ strtoupper(substr($agreement->client->name, 0, 2)) }}
+                    G
                   </div>
                 @endif
               </div>

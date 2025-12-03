@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Therapist;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Payment;
+use App\Models\TherapistEarning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +22,8 @@ class AccountSummaryController extends Controller
         $search = $request->get('search');
         $perPage = $request->get('per_page', 10);
 
-        // Build query for appointments with payments
-        $query = Appointment::with(['client', 'payment'])
+        // Build query for appointments with payments and earnings
+        $query = Appointment::with(['client', 'payment', 'therapistEarning'])
             ->where('therapist_id', $therapist->id)
             ->whereHas('payment', function($q) {
                 $q->where('status', 'completed');
@@ -49,12 +50,18 @@ class AccountSummaryController extends Controller
                           ->orderBy('appointment_time', 'desc')
                           ->paginate($perPage);
 
-        // Calculate totals
+        // Calculate totals from earnings
         $totalDue = $summaries->sum(function($appointment) {
-            return $appointment->payment ? $appointment->payment->amount : 0;
+            return $appointment->therapistEarning ? $appointment->therapistEarning->due_amount : 0;
         });
-        $totalAvailable = $totalDue; // For now, available = due (can be customized)
-        $totalDisbursed = 0; // Track disbursed amounts separately
+        
+        $totalAvailable = $summaries->sum(function($appointment) {
+            return $appointment->therapistEarning ? $appointment->therapistEarning->available_amount : 0;
+        });
+        
+        $totalDisbursed = $summaries->sum(function($appointment) {
+            return $appointment->therapistEarning ? $appointment->therapistEarning->disbursed_amount : 0;
+        });
 
         return view('therapist.account-summary.index', compact(
             'summaries',

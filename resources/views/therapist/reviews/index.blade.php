@@ -642,12 +642,12 @@
               <td style="font-weight: 500; color: #6b7280;">{{ $reviews->firstItem() + $index }}</td>
               <td>
                 <div class="client-cell">
-                  @if($review->client->avatar)
-                    <img src="{{ asset('storage/' . $review->client->avatar) }}" alt="{{ $review->client->name }}" class="client-avatar">
+                  @if($review->client->profile && $review->client->profile->profile_image)
+                    <img src="{{ asset('storage/' . $review->client->profile->profile_image) }}" alt="{{ $review->client->name }}" class="client-avatar">
+                  @elseif($review->client->getRawOriginal('avatar'))
+                    <img src="{{ asset('storage/' . $review->client->getRawOriginal('avatar')) }}" alt="{{ $review->client->name }}" class="client-avatar">
                   @else
-                    <div class="client-avatar-placeholder">
-                      {{ strtoupper(substr($review->client->name, 0, 2)) }}
-                    </div>
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $review->client->name }}" class="client-avatar">
                   @endif
                   <div>
                     <div class="client-name">{{ $review->client->name }}</div>

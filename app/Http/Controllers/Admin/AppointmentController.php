@@ -159,7 +159,26 @@ class AppointmentController extends Controller
 
     public function update(Request $request, Appointment $appointment)
     {
-        // Implementation for updating appointments
+        $validated = $request->validate([
+            'status' => 'sometimes|in:scheduled,confirmed,in_progress,completed,cancelled,no_show',
+            // Add other fields as needed
+        ]);
+
+        // If status is being changed to completed, use the complete method
+        if (isset($validated['status']) && $validated['status'] === 'completed' && $appointment->status !== 'completed') {
+            try {
+                $appointment->complete();
+                return redirect()->back()
+                    ->with('success', 'Appointment completed successfully. Payment has been deducted from client wallet.');
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->with('error', 'Failed to complete appointment: ' . $e->getMessage());
+            }
+        }
+
+        // For other status changes, update normally
+        $appointment->update($validated);
+        return redirect()->back()->with('success', 'Appointment updated successfully.');
     }
 
     public function destroy(Appointment $appointment)
@@ -185,7 +204,13 @@ class AppointmentController extends Controller
 
     public function complete(Appointment $appointment)
     {
-        $appointment->update(['status' => 'completed']);
-        return redirect()->back();
+        try {
+            $appointment->complete();
+            return redirect()->back()
+                ->with('success', 'Appointment completed successfully. Payment has been deducted from client wallet.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to complete appointment: ' . $e->getMessage());
+        }
     }
 }

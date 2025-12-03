@@ -723,11 +723,17 @@
               </td>
               <td>
                 <div class="user-info">
-                  @if($appointment->client && $appointment->client->getRawOriginal('avatar'))
-                    <img src="{{ $appointment->client->avatar }}" alt="{{ $appointment->client->name }}" class="user-avatar">
+                  @if($appointment->client)
+                    @if($appointment->client->profile && $appointment->client->profile->profile_image)
+                      <img src="{{ asset('storage/' . $appointment->client->profile->profile_image) }}" alt="{{ $appointment->client->name }}" class="user-avatar">
+                    @elseif($appointment->client->getRawOriginal('avatar'))
+                      <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="{{ $appointment->client->name }}" class="user-avatar">
+                    @else
+                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->client->name }}" class="user-avatar">
+                    @endif
                   @else
                     <div class="user-avatar-initials bg-label-primary">
-                      {{ $appointment->client ? strtoupper(substr($appointment->client->name, 0, 2)) : 'NA' }}
+                      NA
                     </div>
                   @endif
                   <div class="user-details">

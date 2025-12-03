@@ -153,11 +153,17 @@
           <td>
             <div class="d-flex align-items-center">
               <div class="avatar avatar-sm me-2">
-                @if($note->client && $note->client->avatar)
-                  <img src="{{ $note->client->avatar }}" alt="{{ $note->client->name }}" class="rounded-circle">
+                @if($note->client)
+                  @if($note->client->profile && $note->client->profile->profile_image)
+                    <img src="{{ asset('storage/' . $note->client->profile->profile_image) }}" alt="{{ $note->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                  @elseif($note->client->getRawOriginal('avatar'))
+                    <img src="{{ asset('storage/' . $note->client->getRawOriginal('avatar')) }}" alt="{{ $note->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                  @else
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($note->client->name ?? 'U') }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $note->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                  @endif
                 @else
                   <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 0.75rem;">
-                    {{ strtoupper(substr($note->client->name ?? 'U', 0, 2)) }}
+                    U
                   </div>
                 @endif
               </div>

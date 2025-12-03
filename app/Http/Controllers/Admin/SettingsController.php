@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller
@@ -14,7 +15,17 @@ class SettingsController extends Controller
 
     public function updateGeneral(Request $request)
     {
-        // Implementation for updating general settings
+        // Handle commission percentage update
+        if ($request->has('therapist_commission_percentage')) {
+            $commission = (float) $request->therapist_commission_percentage;
+            if ($commission >= 0 && $commission <= 100) {
+                Setting::setCommissionPercentage($commission);
+            }
+        }
+
+        // Add other general settings updates here
+        return redirect()->route('admin.settings.general')
+            ->with('success', 'Settings updated successfully.');
     }
 
     public function roles()

@@ -457,18 +457,25 @@
   </div>
   <div class="stat-card green">
     <div class="stat-icon"><i class="ri-money-dollar-circle-line"></i></div>
-    <div class="stat-label">Total Due Amount</div>
-    <div class="stat-value">₹{{ number_format($summaries->sum(fn($s) => $s->payment ? $s->payment->amount : 0), 2) }}</div>
+    <div class="stat-label">Total Payment Amount</div>
+    <div class="stat-value">₹{{ number_format($totalPaymentAmount ?? 0, 2) }}</div>
   </div>
   <div class="stat-card blue">
-    <div class="stat-icon"><i class="ri-wallet-3-line"></i></div>
-    <div class="stat-label">Available Amount</div>
-    <div class="stat-value">₹{{ number_format($summaries->sum(fn($s) => $s->payment ? $s->payment->amount : 0), 2) }}</div>
+    <div class="stat-icon"><i class="ri-user-heart-line"></i></div>
+    <div class="stat-label">Therapist Earnings</div>
+    <div class="stat-value">₹{{ number_format($totalTherapistEarning ?? 0, 2) }}</div>
+    <small style="color: #718096; font-size: 0.75rem;">{{ \App\Models\Setting::getCommissionPercentage() }}% commission</small>
   </div>
   <div class="stat-card orange">
-    <div class="stat-icon"><i class="ri-hand-coin-line"></i></div>
+    <div class="stat-icon"><i class="ri-building-line"></i></div>
+    <div class="stat-label">Platform Earnings</div>
+    <div class="stat-value">₹{{ number_format(($totalPlatformEarning ?? 0), 2) }}</div>
+    <small style="color: #718096; font-size: 0.75rem;">{{ 100 - \App\Models\Setting::getCommissionPercentage() }}% commission</small>
+  </div>
+  <div class="stat-card" style="border-top: 4px solid #6b7280;">
+    <div class="stat-icon" style="background: rgba(107, 114, 128, 0.12); color: #6b7280;"><i class="ri-hand-coin-line"></i></div>
     <div class="stat-label">Disbursed Amount</div>
-    <div class="stat-value">₹0.00</div>
+    <div class="stat-value">₹{{ number_format($totalDisbursed ?? 0, 2) }}</div>
   </div>
 </div>
 
@@ -564,8 +571,9 @@
           <th>Date & Time</th>
           <th>Mode</th>
           <th>Transaction Date</th>
-          <th>Due Amount</th>
-          <th>Available</th>
+          <th>Total Payment</th>
+          <th>Therapist Earning</th>
+          <th>Platform Earning</th>
           <th>Disbursed</th>
         </tr>
       </thead>
@@ -591,10 +599,12 @@
             </td>
             <td>
               <div class="user-info">
-                @if($summary->client->avatar)
-                  <img src="{{ asset('storage/' . $summary->client->avatar) }}" alt="{{ $summary->client->name }}" class="user-avatar">
+                @if($summary->client->profile && $summary->client->profile->profile_image)
+                  <img src="{{ asset('storage/' . $summary->client->profile->profile_image) }}" alt="{{ $summary->client->name }}" class="user-avatar">
+                @elseif($summary->client->getRawOriginal('avatar'))
+                  <img src="{{ asset('storage/' . $summary->client->getRawOriginal('avatar')) }}" alt="{{ $summary->client->name }}" class="user-avatar">
                 @else
-                  <div class="user-initials client">{{ strtoupper(substr($summary->client->name, 0, 2)) }}</div>
+                  <img src="https://ui-avatars.com/api/?name={{ urlencode($summary->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $summary->client->name }}" class="user-avatar">
                 @endif
                 <div class="user-details">
                   <div class="name">{{ $summary->client->name }}</div>
@@ -627,13 +637,14 @@
                 <span class="text-muted">—</span>
               @endif
             </td>
-            <td><span class="amount due">₹{{ number_format($summary->payment ? $summary->payment->amount : 0, 2) }}</span></td>
-            <td><span class="amount available">₹{{ number_format($summary->payment ? $summary->payment->amount : 0, 2) }}</span></td>
-            <td><span class="amount disbursed">₹0.00</span></td>
+            <td><span class="amount" style="font-weight: 700; color: #059669;">₹{{ number_format($summary->payment ? $summary->payment->total_amount : 0, 2) }}</span></td>
+            <td><span class="amount" style="font-weight: 600; color: #3b82f6;">₹{{ number_format($summary->therapistEarning ? $summary->therapistEarning->due_amount : 0, 2) }}</span></td>
+            <td><span class="amount" style="font-weight: 600; color: #f59e0b;">₹{{ number_format(($summary->payment ? $summary->payment->total_amount : 0) - ($summary->therapistEarning ? $summary->therapistEarning->due_amount : 0), 2) }}</span></td>
+            <td><span class="amount disbursed">₹{{ number_format($summary->therapistEarning ? $summary->therapistEarning->disbursed_amount : 0, 2) }}</span></td>
           </tr>
         @empty
           <tr>
-            <td colspan="10">
+            <td colspan="11">
               <div class="empty-state">
                 <i class="ri-file-search-line"></i>
                 <h5>No Records Found</h5>

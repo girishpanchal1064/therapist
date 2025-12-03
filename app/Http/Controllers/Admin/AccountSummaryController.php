@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Payment;
+use App\Models\TherapistEarning;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -61,8 +63,9 @@ class AccountSummaryController extends Controller
             });
         }
 
-        // Get account summaries
-        $summaries = $query->orderBy('appointment_date', 'desc')
+        // Get account summaries with earnings
+        $summaries = $query->with('therapistEarning')
+                          ->orderBy('appointment_date', 'desc')
                           ->orderBy('appointment_time', 'desc')
                           ->paginate($perPage);
 
@@ -72,11 +75,18 @@ class AccountSummaryController extends Controller
         })->orderBy('name')->get();
 
         // Calculate totals
-        $totalDue = $summaries->sum(function($appointment) {
-            return $appointment->payment ? $appointment->payment->amount : 0;
+        $totalPaymentAmount = $summaries->sum(function($appointment) {
+            return $appointment->payment ? $appointment->payment->total_amount : 0;
         });
-        $totalAvailable = $totalDue;
-        $totalDisbursed = 0;
+        
+        $totalTherapistEarning = $summaries->sum(function($appointment) {
+            return $appointment->therapistEarning ? $appointment->therapistEarning->due_amount : 0;
+        });
+        
+        $totalPlatformEarning = $totalPaymentAmount - $totalTherapistEarning;
+        $totalDisbursed = $summaries->sum(function($appointment) {
+            return $appointment->therapistEarning ? $appointment->therapistEarning->disbursed_amount : 0;
+        });
 
         return view('admin.account-summary.index', compact(
             'summaries',
@@ -86,8 +96,9 @@ class AccountSummaryController extends Controller
             'endDate',
             'search',
             'perPage',
-            'totalDue',
-            'totalAvailable',
+            'totalPaymentAmount',
+            'totalTherapistEarning',
+            'totalPlatformEarning',
             'totalDisbursed'
         ));
     }

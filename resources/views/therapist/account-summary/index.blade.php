@@ -577,12 +577,12 @@
               </td>
               <td>
                 <div class="client-cell">
-                  @if($summary->client->avatar)
-                    <img src="{{ asset('storage/' . $summary->client->avatar) }}" alt="{{ $summary->client->name }}" class="client-avatar">
+                  @if($summary->client->profile && $summary->client->profile->profile_image)
+                    <img src="{{ asset('storage/' . $summary->client->profile->profile_image) }}" alt="{{ $summary->client->name }}" class="client-avatar">
+                  @elseif($summary->client->getRawOriginal('avatar'))
+                    <img src="{{ asset('storage/' . $summary->client->getRawOriginal('avatar')) }}" alt="{{ $summary->client->name }}" class="client-avatar">
                   @else
-                    <div class="client-avatar-placeholder">
-                      {{ strtoupper(substr($summary->client->name, 0, 2)) }}
-                    </div>
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($summary->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $summary->client->name }}" class="client-avatar">
                   @endif
                   <div>
                     <div class="client-name">{{ $summary->client->name }}</div>
@@ -611,9 +611,9 @@
                   <span style="color: #d1d5db;">—</span>
                 @endif
               </td>
-              <td class="amount-due">₹{{ number_format($summary->payment ? $summary->payment->amount : 0, 2) }}</td>
-              <td class="amount-available">₹{{ number_format($summary->payment ? $summary->payment->amount : 0, 2) }}</td>
-              <td class="amount-disbursed">₹0.00</td>
+              <td class="amount-due">₹{{ number_format($summary->therapistEarning ? $summary->therapistEarning->due_amount : 0, 2) }}</td>
+              <td class="amount-available">₹{{ number_format($summary->therapistEarning ? $summary->therapistEarning->available_amount : 0, 2) }}</td>
+              <td class="amount-disbursed">₹{{ number_format($summary->therapistEarning ? $summary->therapistEarning->disbursed_amount : 0, 2) }}</td>
             </tr>
           @empty
             <tr>

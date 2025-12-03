@@ -93,6 +93,12 @@ class MenuServiceProvider extends ServiceProvider
                     'slug' => 'client.reviews.index'
                 ],
                 [
+                    'url' => '/client/profile',
+                    'name' => 'My Profile',
+                    'icon' => 'menu-icon tf-icons ri-user-line',
+                    'slug' => 'client.profile.index'
+                ],
+                [
                     'url' => '/',
                     'name' => 'Visit Website',
                     'icon' => 'menu-icon tf-icons ri-global-line',

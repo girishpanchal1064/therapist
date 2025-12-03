@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Appointment;
+use App\Models\TherapistEarning;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -97,6 +99,9 @@ class PaymentController extends Controller
             'gateway_response' => ['status' => 'success', 'method' => 'card'],
         ]);
 
+        // Create therapist earning record
+        $this->createTherapistEarning($payment);
+
         return response()->json([
             'success' => true,
             'payment_id' => $payment->id,
@@ -123,6 +128,9 @@ class PaymentController extends Controller
             'paid_at' => now(),
             'gateway_response' => ['status' => 'succeeded', 'method' => 'card'],
         ]);
+
+        // Create therapist earning record
+        $this->createTherapistEarning($payment);
 
         return response()->json([
             'success' => true,
@@ -160,6 +168,9 @@ class PaymentController extends Controller
                 'status' => 'completed',
                 'paid_at' => now(),
             ]);
+
+            // Create therapist earning record
+            $this->createTherapistEarning($payment);
         }
 
         // Update appointment status
@@ -187,6 +198,46 @@ class PaymentController extends Controller
 
         return redirect()->route('client.dashboard')
             ->with('error', 'Payment failed. Please try again.');
+    }
+
+    /**
+     * Create therapist earning record when payment is completed
+     */
+    private function createTherapistEarning(Payment $payment)
+    {
+        // Only process if payment is for an appointment
+        if ($payment->payable_type !== Appointment::class) {
+            return;
+        }
+
+        $appointment = $payment->payable;
+        if (!$appointment || !$appointment->therapist_id) {
+            return;
+        }
+
+        // Check if earning already exists
+        $existingEarning = TherapistEarning::where('payment_id', $payment->id)->first();
+        if ($existingEarning) {
+            return;
+        }
+
+        // Get commission percentage (default 50%)
+        $commissionPercentage = Setting::getCommissionPercentage();
+        
+        // Calculate therapist earning (commission percentage of total amount)
+        $therapistAmount = ($payment->total_amount * $commissionPercentage) / 100;
+        
+        // Create therapist earning record
+        TherapistEarning::create([
+            'therapist_id' => $appointment->therapist_id,
+            'appointment_id' => $appointment->id,
+            'payment_id' => $payment->id,
+            'due_amount' => $therapistAmount,
+            'available_amount' => $therapistAmount,
+            'disbursed_amount' => 0,
+            'status' => 'available',
+            'description' => "Commission from payment #{$payment->id} - {$commissionPercentage}% of ₹{$payment->total_amount}",
+        ]);
     }
 
     public function refundPayment(Request $request)

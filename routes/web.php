@@ -146,6 +146,13 @@ Route::middleware(['auth', 'role:Client'])->prefix('client')->name('client.')->g
     
     // Reviews
     Route::get('/reviews/create/{appointment}', [App\Http\Controllers\Client\ReviewController::class, 'create'])->name('reviews.create');
+    
+    // Profile
+    Route::get('/profile', [App\Http\Controllers\Client\ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [App\Http\Controllers\Client\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [App\Http\Controllers\Client\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [App\Http\Controllers\Client\ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::delete('/profile/image', [App\Http\Controllers\Client\ProfileController::class, 'deleteProfileImage'])->name('profile.image.delete');
     Route::post('/reviews', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('reviews.store');
     Route::post('/reviews/{appointment}', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('reviews.store.appointment');
     Route::get('/reviews', [App\Http\Controllers\Client\ReviewController::class, 'index'])->name('reviews.index');

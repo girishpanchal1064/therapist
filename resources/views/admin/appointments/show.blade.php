@@ -557,11 +557,17 @@
       <div class="info-card-body">
         <!-- Client -->
         <div class="participant-card">
-          @if($appointment->client && $appointment->client->getRawOriginal('avatar'))
-            <img src="{{ $appointment->client->avatar }}" alt="{{ $appointment->client->name }}" class="participant-avatar">
+          @if($appointment->client)
+            @if($appointment->client->profile && $appointment->client->profile->profile_image)
+              <img src="{{ asset('storage/' . $appointment->client->profile->profile_image) }}" alt="{{ $appointment->client->name }}" class="participant-avatar">
+            @elseif($appointment->client->getRawOriginal('avatar'))
+              <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="{{ $appointment->client->name }}" class="participant-avatar">
+            @else
+              <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name) }}&background=3b82f6&color=fff&size=200&bold=true&format=svg" alt="{{ $appointment->client->name }}" class="participant-avatar">
+            @endif
           @else
             <div class="participant-initials client">
-              {{ $appointment->client ? strtoupper(substr($appointment->client->name, 0, 2)) : 'NA' }}
+              NA
             </div>
           @endif
           <div class="participant-info">

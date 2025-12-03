@@ -666,10 +666,12 @@
                   @forelse($clients as $client)
                     <label class="user-option {{ old('client_id') == $client->id ? 'selected' : '' }}" data-search="{{ strtolower($client->name . ' ' . $client->email) }}">
                       <input type="radio" name="client_id" value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'checked' : '' }} required>
-                      @if($client->getRawOriginal('avatar'))
-                        <img src="{{ $client->avatar }}" alt="{{ $client->name }}" class="user-avatar">
+                      @if($client->profile && $client->profile->profile_image)
+                        <img src="{{ asset('storage/' . $client->profile->profile_image) }}" alt="{{ $client->name }}" class="user-avatar">
+                      @elseif($client->getRawOriginal('avatar'))
+                        <img src="{{ asset('storage/' . $client->getRawOriginal('avatar')) }}" alt="{{ $client->name }}" class="user-avatar">
                       @else
-                        <div class="user-initials client">{{ strtoupper(substr($client->name, 0, 2)) }}</div>
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $client->name }}" class="user-avatar">
                       @endif
                       <div class="user-info">
                         <h6>{{ $client->name }}</h6>
