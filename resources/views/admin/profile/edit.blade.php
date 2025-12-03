@@ -475,13 +475,9 @@
                                     <i class="ri-upload-2-line me-1"></i>Choose File
                                 </label>
                                 @if($user->getRawOriginal('avatar'))
-                                    <form action="{{ route('admin.profile.avatar.delete') }}" method="POST" class="d-inline" id="removeAvatarForm">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-remove btn-sm" onclick="return confirm('Are you sure you want to remove your avatar?')">
-                                            <i class="ri-delete-bin-line me-1"></i>Remove
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-remove btn-sm" id="removeAvatarBtn" data-title="Remove Avatar" data-text="Are you sure you want to remove your avatar? This action cannot be undone." data-confirm-text="Yes, remove it!" data-cancel-text="Cancel">
+                                        <i class="ri-delete-bin-line me-1"></i>Remove
+                                    </button>
                                 @endif
                             </div>
                         </div>
@@ -722,6 +718,15 @@
         </div>
     </div>
 </form>
+
+<!-- Hidden form for avatar deletion (outside main form to avoid nesting) -->
+@if($user->getRawOriginal('avatar'))
+<form action="{{ route('admin.profile.avatar.delete') }}" method="POST" class="d-none" id="removeAvatarForm">
+    @csrf
+    @method('DELETE')
+</form>
+@endif
+
 @endsection
 
 @section('page-script')
@@ -856,6 +861,41 @@ document.addEventListener('DOMContentLoaded', function() {
             matchText.textContent = '';
         }
     });
+
+    // Handle avatar removal button
+    const removeAvatarBtn = document.getElementById('removeAvatarBtn');
+    const removeAvatarForm = document.getElementById('removeAvatarForm');
+    
+    if (removeAvatarBtn && removeAvatarForm) {
+        removeAvatarBtn.addEventListener('click', function() {
+            const title = this.dataset.title || 'Remove Avatar';
+            const text = this.dataset.text || 'Are you sure you want to remove your avatar? This action cannot be undone.';
+            const confirmText = this.dataset.confirmText || 'Yes, remove it!';
+            const cancelText = this.dataset.cancelText || 'Cancel';
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: confirmText,
+                cancelButtonText: cancelText,
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                    cancelButton: 'btn btn-secondary',
+                    actions: 'swal2-actions'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    removeAvatarForm.submit();
+                }
+            });
+        });
+    }
 });
 </script>
 @endsection

@@ -168,6 +168,18 @@ class MenuServiceProvider extends ServiceProvider
                     'slug' => 'therapist.account-summary.index'
                 ],
                 [
+                    'url' => '/therapist/session-notes',
+                    'name' => 'Session Notes',
+                    'icon' => 'menu-icon tf-icons ri-file-text-line',
+                    'slug' => 'therapist.session-notes.index'
+                ],
+                [
+                    'url' => '/therapist/agreements',
+                    'name' => 'Agreements',
+                    'icon' => 'menu-icon tf-icons ri-file-paper-2-line',
+                    'slug' => 'therapist.agreements.index'
+                ],
+                [
                     'name' => 'Availability',
                     'icon' => 'menu-icon tf-icons ri-calendar-check-line',
                     'slug' => 'therapist.availability',

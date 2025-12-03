@@ -1,0 +1,161 @@
+@extends('layouts/contentNavbarLayout')
+
+@section('title', 'Edit Agreement')
+
+@section('page-style')
+<style>
+  .page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    color: white;
+  }
+  .page-header h4 {
+    font-weight: 700;
+    color: white;
+  }
+  .form-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: none;
+  }
+  .form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+  .form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid #e4e6eb;
+    padding: 0.75rem 1rem;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .btn-cancel {
+    background: #f3f4f6;
+    border: none;
+    color: #6b7280;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+</style>
+@endsection
+
+@section('content')
+<div class="page-header">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <h4>
+        <i class="ri-file-edit-line"></i>
+        Edit Agreement
+      </h4>
+      <p class="mb-0">Update agreement details</p>
+    </div>
+    <a href="{{ route('therapist.agreements.index') }}" class="btn btn-light">
+      <i class="ri-arrow-left-line me-1"></i>Back
+    </a>
+  </div>
+</div>
+
+<div class="card form-card">
+  <div class="card-body p-4">
+    <form action="{{ route('therapist.agreements.update', $agreement->id) }}" method="POST">
+      @csrf
+      @method('PUT')
+
+      <div class="mb-4">
+        <label for="type" class="form-label">Agreement Type <span class="text-danger">*</span></label>
+        <select name="type" id="type" class="form-select" required>
+          <option value="general" {{ $agreement->type == 'general' ? 'selected' : '' }}>General</option>
+          <option value="client_specific" {{ $agreement->type == 'client_specific' ? 'selected' : '' }}>Client Specific</option>
+        </select>
+      </div>
+
+      <div class="mb-4" id="client_select_wrapper" style="display: {{ $agreement->type == 'client_specific' ? 'block' : 'none' }};">
+        <label for="client_id" class="form-label">Client <span class="text-danger">*</span></label>
+        <select name="client_id" id="client_id" class="form-select" {{ $agreement->type == 'client_specific' ? 'required' : '' }}>
+          <option value="">Select Client</option>
+          @foreach($clients as $client)
+            <option value="{{ $client->id }}" {{ $agreement->client_id == $client->id ? 'selected' : '' }}>
+              {{ $client->name }} ({{ $client->email }})
+            </option>
+          @endforeach
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $agreement->title) }}" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
+        <textarea name="content" id="content" class="form-control" rows="10" required>{{ old('content', $agreement->content) }}</textarea>
+      </div>
+
+      <div class="mb-4">
+        <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+        <select name="status" id="status" class="form-select" required>
+          <option value="draft" {{ $agreement->status == 'draft' ? 'selected' : '' }}>Draft</option>
+          <option value="active" {{ $agreement->status == 'active' ? 'selected' : '' }}>Active</option>
+          <option value="signed" {{ $agreement->status == 'signed' ? 'selected' : '' }}>Signed</option>
+          <option value="expired" {{ $agreement->status == 'expired' ? 'selected' : '' }}>Expired</option>
+        </select>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <label for="effective_date" class="form-label">Effective Date</label>
+          <input type="date" name="effective_date" id="effective_date" class="form-control" value="{{ old('effective_date', $agreement->effective_date ? $agreement->effective_date->format('Y-m-d') : '') }}">
+        </div>
+        <div class="col-md-6">
+          <label for="expiry_date" class="form-label">Expiry Date</label>
+          <input type="date" name="expiry_date" id="expiry_date" class="form-control" value="{{ old('expiry_date', $agreement->expiry_date ? $agreement->expiry_date->format('Y-m-d') : '') }}">
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <a href="{{ route('therapist.agreements.index') }}" class="btn btn-cancel">
+          <i class="ri-close-line me-1"></i>Cancel
+        </a>
+        <button type="submit" class="btn btn-submit">
+          <i class="ri-save-line me-1"></i>Update Agreement
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+@endsection
+
+@section('page-script')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const typeSelect = document.getElementById('type');
+  const clientSelectWrapper = document.getElementById('client_select_wrapper');
+  const clientSelect = document.getElementById('client_id');
+
+  typeSelect.addEventListener('change', function() {
+    if (this.value === 'client_specific') {
+      clientSelectWrapper.style.display = 'block';
+      clientSelect.setAttribute('required', 'required');
+    } else {
+      clientSelectWrapper.style.display = 'none';
+      clientSelect.removeAttribute('required');
+      clientSelect.value = '';
+    }
+  });
+});
+</script>
+@endsection

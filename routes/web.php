@@ -14,6 +14,8 @@ use App\Http\Controllers\Therapist\SessionController as TherapistSessionControll
 use App\Http\Controllers\Therapist\TherapistProfileController;
 use App\Http\Controllers\Therapist\ReviewController as TherapistReviewController;
 use App\Http\Controllers\Therapist\AccountSummaryController as TherapistAccountSummaryController;
+use App\Http\Controllers\Therapist\SessionNoteController;
+use App\Http\Controllers\Therapist\AgreementController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -95,6 +97,12 @@ Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therap
     Route::prefix('account-summary')->name('account-summary.')->group(function () {
         Route::get('/', [TherapistAccountSummaryController::class, 'index'])->name('index');
     });
+
+    // Session Notes module
+    Route::resource('session-notes', SessionNoteController::class);
+
+    // Agreements module
+    Route::resource('agreements', AgreementController::class);
 
     // Profile module
     Route::prefix('profile')->name('profile.')->group(function () {
