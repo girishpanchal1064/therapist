@@ -9,6 +9,7 @@ use App\Models\TherapistProfile;
 use App\Services\TherapistAvailabilityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class BookingController extends Controller
@@ -32,34 +33,64 @@ class BookingController extends Controller
 
     public function getAvailableSlots(Request $request)
     {
-        $request->validate([
-            'therapist_id' => 'required|exists:users,id',
-            'date' => 'required|date',
-            'session_mode' => 'nullable|in:online,offline',
-            'duration_minutes' => 'nullable|integer|min:30|max:120'
-        ]);
+        try {
+            $request->validate([
+                'therapist_id' => 'required|exists:users,id',
+                'date' => 'required|date',
+                'session_mode' => 'nullable|in:online,offline',
+                'duration_minutes' => 'nullable|integer|min:30|max:120'
+            ]);
 
-        $therapistId = $request->therapist_id;
-        $date = $request->date;
-        $sessionMode = $request->session_mode; // 'online' or 'offline'
-        $durationMinutes = $request->duration_minutes ?? 60;
+            $therapistId = $request->therapist_id;
+            $dateInput = $request->date;
+            
+            // Parse date and ensure it's in YYYY-MM-DD format
+            try {
+                $date = Carbon::parse($dateInput)->format('Y-m-d');
+            } catch (\Exception $e) {
+                Log::error('Date parsing error in getAvailableSlots', [
+                    'date_input' => $dateInput,
+                    'error' => $e->getMessage()
+                ]);
+                return response()->json(['error' => 'Invalid date format', 'details' => $e->getMessage()], 400);
+            }
+            
+            $sessionMode = $request->session_mode; // 'online' or 'offline' or null
+            $durationMinutes = (int) ($request->duration_minutes ?? 60);
 
-        $therapist = User::findOrFail($therapistId);
+            $therapist = User::findOrFail($therapistId);
 
-        if (!$therapist->isTherapist()) {
-            return response()->json(['error' => 'Therapist not found'], 404);
+            if (!$therapist->isTherapist()) {
+                return response()->json(['error' => 'Therapist not found'], 404);
+            }
+
+            $availabilityService = new TherapistAvailabilityService();
+            $slots = $availabilityService->getAvailableSlots($therapistId, $date, $sessionMode, $durationMinutes);
+
+            return response()->json([
+                'slots' => $slots,
+                'date' => $date,
+                'formatted_date' => Carbon::parse($date)->format('M d, Y'),
+                'day_name' => Carbon::parse($date)->format('l'),
+                'slot_count' => count($slots)
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'error' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error in getAvailableSlots', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => $request->all()
+            ]);
+            
+            return response()->json([
+                'error' => 'An error occurred while loading time slots',
+                'message' => config('app.debug') ? $e->getMessage() : 'Please try again later'
+            ], 500);
         }
-
-        $availabilityService = new TherapistAvailabilityService();
-        $slots = $availabilityService->getAvailableSlots($therapistId, $date, $sessionMode, $durationMinutes);
-
-        return response()->json([
-            'slots' => $slots,
-            'date' => $date,
-            'formatted_date' => Carbon::parse($date)->format('M d, Y'),
-            'day_name' => Carbon::parse($date)->format('l'),
-            'slot_count' => count($slots)
-        ]);
     }
 
     public function bookAppointment(Request $request)
@@ -80,15 +111,40 @@ class BookingController extends Controller
             return back()->withErrors(['error' => 'Therapist not found']);
         }
 
-        // Check if slot is still available
-        $isBooked = Appointment::where('therapist_id', $request->therapist_id)
-            ->where('appointment_date', $request->appointment_date)
-            ->where('appointment_time', $request->appointment_time)
-            ->whereIn('status', ['scheduled', 'confirmed'])
-            ->exists();
+        // Check if slot is still available (check for overlapping appointments)
+        $appointmentDate = Carbon::parse($request->appointment_date);
+        $appointmentTime = $request->appointment_time;
+        $durationMinutes = (int) $request->duration_minutes;
+        
+        // Normalize time format
+        $timeFormatted = strlen($appointmentTime) === 5 ? $appointmentTime . ':00' : $appointmentTime;
+        $slotStart = Carbon::parse($appointmentDate->toDateString() . ' ' . $timeFormatted);
+        $slotEnd = $slotStart->copy()->addMinutes($durationMinutes);
 
-        if ($isBooked) {
-            return back()->withErrors(['error' => 'This time slot is no longer available']);
+        // Get all active appointments for this therapist on this date
+        $existingAppointments = Appointment::where('therapist_id', $request->therapist_id)
+            ->where('appointment_date', $appointmentDate->toDateString())
+            ->whereIn('status', ['scheduled', 'confirmed', 'in_progress'])
+            ->get();
+
+        foreach ($existingAppointments as $existing) {
+            // Parse existing appointment time
+            $existingTime = is_string($existing->appointment_time) 
+                ? $existing->appointment_time 
+                : Carbon::parse($existing->appointment_time)->format('H:i:s');
+            
+            // Normalize time format
+            if (strlen($existingTime) === 5) {
+                $existingTime .= ':00';
+            }
+            
+            $existingStart = Carbon::parse($appointmentDate->toDateString() . ' ' . $existingTime);
+            $existingEnd = $existingStart->copy()->addMinutes($existing->duration_minutes ?? 60);
+
+            // Check if slots overlap
+            if ($slotStart->lt($existingEnd) && $slotEnd->gt($existingStart)) {
+                return back()->withErrors(['appointment_time' => 'This time slot overlaps with an existing appointment and is no longer available.']);
+            }
         }
 
         // Create appointment

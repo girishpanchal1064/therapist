@@ -593,7 +593,21 @@
                 </span>
               </td>
               <td style="font-weight: 500;">{{ $session->appointment_date->format('d M, Y') }}</td>
-              <td style="color: #6b7280;">{{ \Carbon\Carbon::parse($session->appointment_time)->format('g:i A') }}</td>
+              <td style="color: #6b7280;">
+                @php
+                  $startTime = \Carbon\Carbon::parse($session->appointment_time);
+                  $endTime = $startTime->copy()->addMinutes($session->duration_minutes ?? 60);
+                  $duration = $session->duration_minutes ?? 60;
+                @endphp
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <span style="font-weight: 500;">
+                    {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}
+                  </span>
+                  <span style="font-size: 0.75rem; color: #9ca3af;">
+                    <i class="ri-timer-line" style="margin-right: 4px;"></i>{{ $duration }} mins
+                  </span>
+                </div>
+              </td>
               <td>
                 @if($session->status === 'scheduled')
                   <span class="status-badge pending">Pending</span>

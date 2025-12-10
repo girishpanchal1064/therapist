@@ -927,7 +927,14 @@
                   </span>
                   <span class="appointment-time">
                     <i class="ri-time-line"></i>
-                    {{ date('g:i A', strtotime($appointment->appointment_time)) }}
+                    @php
+                      $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                      $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
+                    @endphp
+                    {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}
+                    <small style="display: block; font-size: 0.75rem; color: #6b7280; margin-top: 2px;">
+                      <i class="ri-timer-line"></i> {{ $appointment->duration_minutes ?? 60 }} mins
+                    </small>
                   </span>
                 </div>
               </td>

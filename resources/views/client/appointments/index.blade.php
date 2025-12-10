@@ -631,13 +631,16 @@
                                 <div class="detail-icon">
                                     <i class="ri-time-line"></i>
                                 </div>
-                                <span class="detail-text">{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-icon">
-                                    <i class="ri-timer-line"></i>
+                                <div>
+                                    @php
+                                      $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                                      $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
+                                    @endphp
+                                    <span class="detail-text">{{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}</span>
+                                    <small class="text-muted d-block" style="font-size: 0.75rem; margin-top: 2px;">
+                                      <i class="ri-timer-line"></i> {{ $appointment->duration_minutes }} mins
+                                    </small>
                                 </div>
-                                <span class="detail-text">{{ $appointment->duration_minutes }} minutes</span>
                             </div>
                         </div>
 

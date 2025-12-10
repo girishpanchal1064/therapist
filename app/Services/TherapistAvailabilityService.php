@@ -16,6 +16,12 @@ class TherapistAvailabilityService
      */
     public function getAvailableSlots($therapistId, $date, $mode = null, $durationMinutes = 60)
     {
+        // Ensure durationMinutes is an integer
+        $durationMinutes = (int) $durationMinutes;
+        if ($durationMinutes <= 0) {
+            $durationMinutes = 60; // Default to 60 minutes
+        }
+        
         $date = Carbon::parse($date);
         $dayOfWeek = strtolower($date->format('l')); // e.g., 'monday'
         
@@ -66,8 +72,17 @@ class TherapistAvailabilityService
             foreach ($weeklyAvailabilities as $weeklyAvailability) {
                 $days = $weeklyAvailability->days ?? [];
                 
+                // Ensure days is an array
+                if (!is_array($days) || empty($days)) {
+                    continue;
+                }
+                
                 // Check if this day is in the availability
-                $dayNames = array_map('strtolower', $days);
+                // Normalize day names to lowercase for comparison
+                $dayNames = array_map(function($day) {
+                    return strtolower(trim($day));
+                }, $days);
+                
                 if (!in_array($dayOfWeek, $dayNames)) {
                     continue;
                 }
@@ -128,8 +143,8 @@ class TherapistAvailabilityService
                 continue;
             }
 
-            // Check if slot is already booked
-            if ($this->isSlotBooked($therapistId, $date, $current->format('H:i'))) {
+            // Check if slot is already booked (pass duration to check for overlaps)
+            if ($this->isSlotBooked($therapistId, $date, $current->format('H:i'), $durationMinutes)) {
                 $current->addMinutes($durationMinutes);
                 continue;
             }
@@ -209,15 +224,43 @@ class TherapistAvailabilityService
     }
 
     /**
-     * Check if a slot is already booked
+     * Check if a slot is already booked (checks for overlapping appointments)
      */
-    private function isSlotBooked($therapistId, $date, $time)
+    private function isSlotBooked($therapistId, $date, $time, $durationMinutes = 60)
     {
-        return Appointment::where('therapist_id', $therapistId)
+        // Get all active appointments for this therapist on this date
+        $appointments = Appointment::where('therapist_id', $therapistId)
             ->where('appointment_date', $date->toDateString())
-            ->where('appointment_time', $time . ':00')
             ->whereIn('status', ['scheduled', 'confirmed', 'in_progress'])
-            ->exists();
+            ->get();
+
+        // Normalize time format
+        $timeFormatted = strlen($time) === 5 ? $time . ':00' : $time;
+        $slotStart = Carbon::parse($date->toDateString() . ' ' . $timeFormatted);
+        $slotEnd = $slotStart->copy()->addMinutes($durationMinutes);
+
+        foreach ($appointments as $appointment) {
+            // Parse appointment time
+            $appointmentTime = is_string($appointment->appointment_time) 
+                ? $appointment->appointment_time 
+                : Carbon::parse($appointment->appointment_time)->format('H:i:s');
+            
+            // Normalize appointment time format
+            if (strlen($appointmentTime) === 5) {
+                $appointmentTime .= ':00';
+            }
+            
+            $appointmentStart = Carbon::parse($date->toDateString() . ' ' . $appointmentTime);
+            $appointmentEnd = $appointmentStart->copy()->addMinutes($appointment->duration_minutes ?? 60);
+
+            // Check if slots overlap
+            // Two time slots overlap if: slotStart < appointmentEnd AND slotEnd > appointmentStart
+            if ($slotStart->lt($appointmentEnd) && $slotEnd->gt($appointmentStart)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -246,12 +289,20 @@ class TherapistAvailabilityService
     {
         $startDate = $startDate ? Carbon::parse($startDate) : Carbon::today();
         $calendar = [];
+        $minDaysToShow = min($days, 7); // Always show at least the requested days up to 7
 
         for ($i = 0; $i < $days; $i++) {
             $date = $startDate->copy()->addDays($i);
-            $slots = $this->getAvailableSlots($therapistId, $date, $mode);
+            
+            try {
+                $slots = $this->getAvailableSlots($therapistId, $date, $mode);
+            } catch (\Exception $e) {
+                // If there's an error, still include the day with empty slots
+                $slots = [];
+            }
 
-            if (!empty($slots) || $i < 7) { // Always show next 7 days
+            // Always include days up to minDaysToShow, or if there are slots
+            if ($i < $minDaysToShow || !empty($slots)) {
                 $calendar[] = [
                     'date' => $date->toDateString(),
                     'formatted_date' => $date->format('M d, Y'),
@@ -263,6 +314,26 @@ class TherapistAvailabilityService
                     'slots' => $slots,
                     'slot_count' => count($slots),
                     'is_available' => !empty($slots)
+                ];
+            }
+        }
+
+        // Ensure we always return at least the minimum days requested
+        if (count($calendar) < $minDaysToShow) {
+            // Fill in any missing days
+            for ($i = count($calendar); $i < $minDaysToShow; $i++) {
+                $date = $startDate->copy()->addDays($i);
+                $calendar[] = [
+                    'date' => $date->toDateString(),
+                    'formatted_date' => $date->format('M d, Y'),
+                    'day_name' => $date->format('l'),
+                    'day_short' => $date->format('D'),
+                    'is_today' => $date->isToday(),
+                    'is_tomorrow' => $date->isTomorrow(),
+                    'is_past' => $date->isPast() && !$date->isToday(),
+                    'slots' => [],
+                    'slot_count' => 0,
+                    'is_available' => false
                 ];
             }
         }

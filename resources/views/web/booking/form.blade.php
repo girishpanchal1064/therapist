@@ -358,8 +358,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.getElementById('summaryType').textContent = sessionType.charAt(0).toUpperCase() + sessionType.slice(1);
         document.getElementById('summaryMode').textContent = sessionMode.charAt(0).toUpperCase() + sessionMode.slice(1) + ' Call';
-        document.getElementById('summaryDate').textContent = date ? new Date(date).toLocaleDateString() : '-';
-        document.getElementById('summaryTime').textContent = selectedTime ? selectedTime.nextElementSibling.textContent : '-';
+        
+        // Format date consistently (DD/MM/YYYY) to match selected date format
+        if (date) {
+            const dateObj = new Date(date + 'T00:00:00');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const year = dateObj.getFullYear();
+            document.getElementById('summaryDate').textContent = `${day}/${month}/${year}`;
+        } else {
+            document.getElementById('summaryDate').textContent = '-';
+        }
+        
+        document.getElementById('summaryTime').textContent = selectedTime ? selectedTime.nextElementSibling.querySelector('.font-semibold').textContent : '-';
         document.getElementById('summaryDuration').textContent = duration + ' minutes';
 
         // Update pricing based on duration
@@ -429,7 +440,26 @@ document.addEventListener('DOMContentLoaded', function() {
         if (this.value) {
             loadTimeSlots(this.value);
             updateSummary();
+        } else {
+            timeSlotsContainer.innerHTML = `
+                <div class="col-span-full text-center py-8 text-gray-500 bg-gray-50 rounded-xl">
+                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Please select a date first
+                </div>
+            `;
+            updateSummary();
         }
+    });
+
+    // Also load slots when session mode or duration changes
+    document.querySelectorAll('input[name="session_mode"], #duration_minutes').forEach(input => {
+        input.addEventListener('change', function() {
+            if (dateInput.value) {
+                loadTimeSlots(dateInput.value);
+            }
+        });
     });
 
     // Update summary when other fields change
@@ -438,6 +468,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function loadTimeSlots(date) {
+        if (!date) {
+            timeSlotsContainer.innerHTML = `
+                <div class="col-span-full text-center py-8 text-gray-500 bg-gray-50 rounded-xl">
+                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Please select a date first
+                </div>
+            `;
+            return;
+        }
+
         timeSlotsContainer.innerHTML = `
             <div class="col-span-full text-center py-8 text-gray-500 bg-gray-50 rounded-xl">
                 <svg class="w-8 h-8 mx-auto mb-2 text-gray-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -447,9 +489,42 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        fetch(`{{ route('booking.slots') }}?therapist_id=${therapistId}&date=${date}`)
-            .then(response => response.json())
+        // Get session mode and duration
+        const sessionMode = document.querySelector('input[name="session_mode"]:checked')?.value || 'video';
+        const duration = document.getElementById('duration_minutes')?.value || 60;
+        
+        // Convert session_mode to match API expectations (video -> online, audio -> online, chat -> online)
+        const apiMode = sessionMode === 'video' || sessionMode === 'audio' || sessionMode === 'chat' ? 'online' : 'offline';
+
+        // Ensure date is in YYYY-MM-DD format
+        const dateFormatted = date.includes('T') ? date.split('T')[0] : date;
+
+        fetch(`{{ route('booking.slots') }}?therapist_id=${therapistId}&date=${dateFormatted}&session_mode=${apiMode}&duration_minutes=${duration}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                // Check if response is ok
+                if (!response.ok) {
+                    // Try to parse error response
+                    return response.json().then(err => {
+                        throw new Error(err.error || err.message || 'Network response was not ok');
+                    }).catch(() => {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
+                // Check if there's an error in the response
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
                 if (data.slots && data.slots.length > 0) {
                     timeSlotsContainer.innerHTML = '';
                     data.slots.forEach(slot => {
@@ -458,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         slotElement.innerHTML = `
                             <input type="radio" name="appointment_time" value="${slot.time}" class="sr-only peer">
                             <div class="p-4 text-center border-2 border-gray-200 rounded-xl peer-checked:border-primary-500 peer-checked:bg-primary-50 group-hover:border-primary-300 transition-all duration-200">
-                                <div class="font-semibold text-gray-900">${slot.formatted_time}</div>
+                                <div class="font-semibold text-gray-900">${slot.formatted_time} - ${slot.formatted_end_time ?? ''}</div>
                                 <div class="text-xs text-gray-500 mt-1">Available</div>
                             </div>
                         `;
@@ -477,15 +552,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
+                console.error('Error loading time slots:', error);
+                const errorMessage = error.message || 'An error occurred while loading time slots';
                 timeSlotsContainer.innerHTML = `
                     <div class="col-span-full text-center py-8 text-red-500 bg-red-50 rounded-xl">
                         <svg class="w-8 h-8 mx-auto mb-2 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
                         </svg>
-                        Error loading time slots
+                        <div class="text-sm font-medium">${errorMessage}</div>
+                        <div class="text-xs text-red-400 mt-1">Please try again or select a different date</div>
                     </div>
                 `;
             });
+    }
+
+    // Load slots on page load if date is already selected
+    if (dateInput.value) {
+        loadTimeSlots(dateInput.value);
+        updateSummary();
     }
 });
 </script>
