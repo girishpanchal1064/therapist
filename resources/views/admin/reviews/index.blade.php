@@ -549,10 +549,6 @@
                                              alt="{{ $review->client->name }}" 
                                              class="user-avatar">
                                     @else
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" 
-                                             alt="{{ $review->client->name }}" 
-                                             class="user-avatar">
-                                    @endif
                                         <div class="user-avatar-initial" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                                             {{ strtoupper(substr($review->client->name, 0, 2)) }}
                                         </div>
@@ -639,7 +635,7 @@
                                     @if(!$review->is_verified)
                                         <form action="{{ route('admin.reviews.approve', $review) }}" method="POST" class="d-inline">
                                             @csrf
-                                            <button type="submit" class="btn-action approve" title="Approve">
+                                            <button type="submit" class="btn-action approve" title="Approve & Publish">
                                                 <i class="ri-check-line"></i>
                                             </button>
                                         </form>
@@ -649,6 +645,22 @@
                                                 <i class="ri-close-line"></i>
                                             </button>
                                         </form>
+                                    @else
+                                        @if($review->is_public)
+                                            <form action="{{ route('admin.reviews.unpublish', $review) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn-action" title="Unpublish" style="background-color: #f59e0b; color: white;">
+                                                    <i class="ri-eye-off-line"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('admin.reviews.publish', $review) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn-action approve" title="Publish">
+                                                    <i class="ri-global-line"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     @endif
                                     <a href="{{ route('admin.reviews.edit', $review) }}" class="btn-action edit" title="Edit">
                                         <i class="ri-pencil-line"></i>

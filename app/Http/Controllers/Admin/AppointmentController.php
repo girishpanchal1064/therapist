@@ -176,6 +176,15 @@ class AppointmentController extends Controller
             }
         }
 
+        // Check if trying to set status to in_progress and therapist already has an active session
+        if (isset($validated['status']) && $validated['status'] === 'in_progress' && $appointment->status !== 'in_progress') {
+            if (Appointment::therapistHasActiveSession($appointment->therapist_id, $appointment->id)) {
+                $activeSession = Appointment::getActiveSessionForTherapist($appointment->therapist_id);
+                return redirect()->back()
+                    ->with('error', "Cannot activate this appointment. Therapist already has an active session (Appointment #{$activeSession->id}). Please complete that session first.");
+            }
+        }
+
         // For other status changes, update normally
         $appointment->update($validated);
         return redirect()->back()->with('success', 'Appointment updated successfully.');

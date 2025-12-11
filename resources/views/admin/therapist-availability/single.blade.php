@@ -208,7 +208,7 @@
     const singleSlotsContainer = document.getElementById('single-slots');
     const addSlotBtn = document.getElementById('single-add-slot');
     const singleAvailabilityForm = document.getElementById('single-availability-form');
-    const updateRouteBase = '{{ route("therapist.availability.single.update", 0) }}'.replace('/0', '');
+    const updateRouteBase = '{{ route("admin.therapist-availability.single.update", 0) }}'.replace('/0', '');
     let editSingleSlotData = null; // Store edit data for single availability
 
     function populateTimes(container) {

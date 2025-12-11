@@ -15,9 +15,9 @@
 /* Page Header */
 .page-header {
     background: var(--theme-gradient);
-    border-radius: 20px;
-    padding: 2rem 2.5rem;
-    margin-bottom: 2rem;
+    border-radius: 14px;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.25rem;
     position: relative;
     overflow: hidden;
 }
@@ -27,8 +27,8 @@
     position: absolute;
     top: -50%;
     right: -20%;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
 }
@@ -38,21 +38,21 @@
     position: absolute;
     bottom: -30%;
     left: -10%;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
 }
 
 .header-icon {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 18px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
     backdrop-filter: blur(10px);
 }
@@ -60,9 +60,10 @@
 .page-header h4 {
     color: white;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     position: relative;
     z-index: 1;
+    font-size: 1.35rem;
 }
 
 .page-header p {
@@ -70,15 +71,17 @@
     margin-bottom: 0;
     position: relative;
     z-index: 1;
+    font-size: 0.875rem;
 }
 
 .btn-book-new {
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.3);
     color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 12px;
+    padding: 0.6rem 1.25rem;
+    border-radius: 10px;
     font-weight: 600;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
@@ -120,16 +123,17 @@
 .filter-card {
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
     border: 1px solid rgba(102, 126, 234, 0.15);
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
 }
 
 .filter-card .form-select,
 .filter-card input {
-    border-radius: 10px;
+    border-radius: 8px;
     border: 2px solid #e5e7eb;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.9rem;
 }
 
 .filter-card .form-select:focus,
@@ -156,10 +160,10 @@
 /* Appointment Cards */
 .appointment-card {
     background: white;
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
     overflow: hidden;
     position: relative;
 }
@@ -169,16 +173,17 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 5px;
+    width: 4px;
     height: 100%;
     background: var(--theme-gradient);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
 }
 
 .appointment-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-color: #667eea;
 }
 
 .appointment-card:hover::before {
@@ -186,54 +191,57 @@
 }
 
 .appointment-card .card-body {
-    padding: 1.5rem;
+    padding: 0.75rem 1rem;
 }
 
 /* Therapist Avatar */
 .therapist-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     object-fit: cover;
-    border: 3px solid #f0f2ff;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    border: 2px solid #f0f2ff;
+    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.1);
 }
 
 .therapist-avatar-placeholder {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     background: var(--theme-gradient);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 0.875rem;
     font-weight: 700;
     color: white;
 }
 
 .therapist-info h6 {
-    font-weight: 700;
+    font-weight: 600;
     color: #1f2937;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.1rem;
+    font-size: 0.875rem;
+    line-height: 1.2;
 }
 
 .therapist-info small {
     color: #6b7280;
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.2rem;
+    font-size: 0.7rem;
 }
 
 /* Appointment Details */
 .detail-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
-    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    padding: 0.3rem 0.5rem;
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    border-radius: 10px;
+    border-radius: 6px;
 }
 
 .detail-item:last-child {
@@ -241,32 +249,35 @@
 }
 
 .detail-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--theme-gradient);
     color: white;
-    font-size: 1rem;
+    font-size: 0.8rem;
+    flex-shrink: 0;
 }
 
 .detail-text {
     font-weight: 600;
     color: #374151;
+    font-size: 0.8rem;
+    line-height: 1.3;
 }
 
 /* Session Type Badges */
 .session-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.8rem;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
 }
 
 .session-badge.video {
@@ -287,9 +298,9 @@
 .type-badge {
     background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.1) 100%);
     color: #4b5563;
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 18px;
+    font-size: 0.7rem;
     font-weight: 600;
 }
 
@@ -297,10 +308,10 @@
 .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.85rem;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
@@ -331,15 +342,16 @@
 
 /* Action Buttons */
 .action-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
     border: none;
+    text-decoration: none;
 }
 
 .action-btn.view {
@@ -356,13 +368,18 @@
 .action-btn.join {
     background: var(--success-gradient);
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.85rem;
     width: auto;
+    height: auto;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .action-btn.join:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    color: white;
 }
 
 .action-btn.review {
@@ -379,9 +396,9 @@
 /* Payment Section */
 .payment-section {
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    border-radius: 12px;
-    padding: 1rem;
-    margin-top: 1rem;
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    margin-top: 0.6rem;
 }
 
 .payment-status {
@@ -405,7 +422,7 @@
 }
 
 .payment-amount {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     background: var(--theme-gradient);
     -webkit-background-clip: text;
@@ -490,15 +507,41 @@
 /* Responsive */
 @media (max-width: 768px) {
     .page-header {
-        padding: 1.5rem;
+        padding: 1rem 1.25rem;
+    }
+    
+    .header-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.25rem;
+    }
+    
+    .page-header h4 {
+        font-size: 1.15rem;
     }
     
     .appointment-card .card-body {
-        padding: 1rem;
+        padding: 0.85rem 1rem;
     }
     
     .detail-item {
         padding: 0.35rem 0.5rem;
+    }
+    
+    .therapist-avatar {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+    
+    .action-btn.join {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.75rem;
     }
 }
 </style>
@@ -586,17 +629,44 @@
     </form>
 </div>
 
+<!-- Appointments Summary -->
+@if($appointments->count() > 0)
+    @php
+        $totalAppointments = $appointments->total();
+        $upcomingCount = $appointments->whereIn('status', ['scheduled', 'confirmed'])->where('appointment_date', '>=', today())->count();
+        $completedCount = $appointments->where('status', 'completed')->count();
+    @endphp
+    <div class="card mb-2" style="background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); border: none; border-radius: 10px;">
+        <div class="card-body" style="padding: 0.5rem 0.75rem;">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center" style="gap: 0.75rem;">
+                    <i class="ri-calendar-check-line text-primary" style="font-size: 0.95rem;"></i>
+                    <span class="text-dark fw-semibold" style="font-size: 0.85rem;">Total: <strong>{{ $totalAppointments }}</strong></span>
+                </div>
+                <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                    <span class="badge bg-success" style="font-size: 0.7rem; padding: 0.3rem 0.55rem;">
+                        <i class="ri-calendar-todo-line me-1"></i>{{ $upcomingCount }} Upcoming
+                    </span>
+                    <span class="badge bg-primary" style="font-size: 0.7rem; padding: 0.3rem 0.55rem;">
+                        <i class="ri-checkbox-circle-line me-1"></i>{{ $completedCount }} Completed
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 <!-- Appointments List -->
 @if($appointments->count() > 0)
-    <div class="row g-4">
+    <div class="row g-2">
         @foreach($appointments as $appointment)
         <div class="col-12">
             <div class="card appointment-card">
                 <div class="card-body">
-                    <div class="row align-items-center">
+                    <div class="row align-items-center g-2">
                         <!-- Therapist Info -->
-                        <div class="col-lg-3 col-md-4 mb-3 mb-lg-0">
-                            <div class="d-flex align-items-center gap-3">
+                        <div class="col-lg-3 col-md-4 mb-1 mb-lg-0">
+                            <div class="d-flex align-items-center" style="gap: 0.5rem;">
                                 @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
                                     <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" 
                                          alt="{{ $appointment->therapist->name }}" 
@@ -620,33 +690,35 @@
                         </div>
 
                         <!-- Appointment Details -->
-                        <div class="col-lg-4 col-md-4 mb-3 mb-lg-0">
-                            <div class="detail-item">
-                                <div class="detail-icon">
-                                    <i class="ri-calendar-line"></i>
+                        <div class="col-lg-4 col-md-4 mb-1 mb-lg-0">
+                            <div class="d-flex flex-column" style="gap: 0.25rem;">
+                                <div class="detail-item mb-0">
+                                    <div class="detail-icon">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                    <span class="detail-text">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}</span>
                                 </div>
-                                <span class="detail-text">{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-icon">
-                                    <i class="ri-time-line"></i>
-                                </div>
-                                <div>
-                                    @php
-                                      $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
-                                      $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
-                                    @endphp
-                                    <span class="detail-text">{{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}</span>
-                                    <small class="text-muted d-block" style="font-size: 0.75rem; margin-top: 2px;">
-                                      <i class="ri-timer-line"></i> {{ $appointment->duration_minutes }} mins
-                                    </small>
+                                <div class="detail-item mb-0">
+                                    <div class="detail-icon">
+                                        <i class="ri-time-line"></i>
+                                    </div>
+                                    <div>
+                                        @php
+                                          $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                                          $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
+                                        @endphp
+                                        <span class="detail-text">{{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}</span>
+                                        <small class="text-muted d-block" style="font-size: 0.65rem; margin-top: 1px; line-height: 1.2;">
+                                          <i class="ri-timer-line"></i> {{ $appointment->duration_minutes }} mins
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Session Type -->
-                        <div class="col-lg-2 col-md-4 mb-3 mb-lg-0">
-                            <div class="d-flex flex-column gap-2">
+                        <div class="col-lg-2 col-md-4 mb-1 mb-lg-0">
+                            <div class="d-flex flex-column" style="gap: 0.25rem;">
                                 <span class="session-badge {{ $appointment->session_mode }}">
                                     <i class="ri-{{ $appointment->session_mode === 'video' ? 'video' : ($appointment->session_mode === 'audio' ? 'mic' : 'chat-3') }}-line"></i>
                                     {{ ucfirst($appointment->session_mode) }}
@@ -657,22 +729,44 @@
 
                         <!-- Status & Actions -->
                         <div class="col-lg-3 col-md-12">
-                            <div class="d-flex flex-column align-items-lg-end align-items-start gap-3">
+                            <div class="d-flex flex-column align-items-lg-end align-items-start" style="gap: 0.5rem;">
                                 <span class="status-badge {{ $appointment->status }}">
                                     <i class="ri-{{ $appointment->status === 'completed' ? 'checkbox-circle' : ($appointment->status === 'cancelled' ? 'close-circle' : ($appointment->status === 'confirmed' ? 'check-double' : 'time')) }}-line"></i>
                                     {{ ucfirst(str_replace('_', ' ', $appointment->status)) }}
                                 </span>
-                                <div class="d-flex gap-2">
+                                <div class="d-flex" style="gap: 0.5rem;">
                                     <a href="{{ route('client.appointments.show', $appointment->id) }}" 
                                        class="action-btn view" 
                                        title="View Details">
                                         <i class="ri-eye-line"></i>
                                     </a>
-                                    @if(in_array($appointment->status, ['confirmed', 'in_progress']))
-                                        <a href="{{ route('client.sessions.join', $appointment->id) }}" 
+                                    @php
+                                      // Handle appointment_time - it might be a datetime or time string
+                                      $timeString = is_string($appointment->appointment_time) 
+                                        ? $appointment->appointment_time 
+                                        : (is_object($appointment->appointment_time) 
+                                            ? $appointment->appointment_time->format('H:i:s') 
+                                            : $appointment->appointment_time);
+                                      
+                                      // Extract just time if it's a full datetime string
+                                      if (strlen($timeString) > 8) {
+                                        $timeString = \Carbon\Carbon::parse($timeString)->format('H:i:s');
+                                      }
+                                      
+                                      $appointmentDateTime = \Carbon\Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString);
+                                      // Allow joining 5 minutes before appointment time or anytime after
+                                      $canJoin = $appointmentDateTime->diffInMinutes(now(), false) >= -5;
+                                      // Show join button if time has arrived (or within 5 min) AND status allows it OR if manually confirmed
+                                      $isActive = $canJoin && in_array($appointment->session_mode, ['video', 'audio']) && (
+                                        in_array($appointment->status, ['confirmed', 'in_progress']) || 
+                                        ($appointment->status === 'scheduled' && $appointmentDateTime->isPast())
+                                      );
+                                    @endphp
+                                    @if($isActive)
+                                        <a href="{{ route('sessions.join', $appointment->id) }}" 
                                            class="action-btn join" 
                                            title="Join Session">
-                                            <i class="ri-video-line me-1"></i>Join
+                                            <i class="ri-{{ $appointment->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>Join Session
                                         </a>
                                     @endif
                                     @if($appointment->status === 'completed')

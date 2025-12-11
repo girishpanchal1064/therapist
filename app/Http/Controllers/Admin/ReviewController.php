@@ -115,7 +115,27 @@ class ReviewController extends Controller
 
     public function update(Request $request, Review $review)
     {
-        // Implementation for updating reviews
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:1000',
+            'is_verified' => 'boolean',
+            'is_public' => 'boolean',
+        ]);
+
+        $review->update([
+            'rating' => $validated['rating'],
+            'comment' => $validated['comment'] ?? null,
+            'is_verified' => $request->has('is_verified'),
+            'is_public' => $request->has('is_public'),
+        ]);
+
+        // Update therapist rating if review is published
+        if ($review->is_verified && $review->is_public && $review->therapist->therapistProfile) {
+            $review->therapist->therapistProfile->updateRating();
+        }
+
+        return redirect()->route('admin.reviews.index')
+            ->with('success', 'Review updated successfully.');
     }
 
     public function destroy(Review $review)
@@ -153,8 +173,29 @@ class ReviewController extends Controller
 
     public function approve(Review $review)
     {
-        $review->update(['is_verified' => true]);
-        return redirect()->back()->with('success', 'Review approved successfully.');
+        // Approve and publish the review (set both flags so it shows on front-end)
+        $review->update([
+            'is_verified' => true,
+            'is_public' => true
+        ]);
+        return redirect()->back()->with('success', 'Review approved and published successfully.');
+    }
+
+    public function publish(Review $review)
+    {
+        // Publish the review (make it visible on front-end)
+        $review->update([
+            'is_verified' => true,
+            'is_public' => true
+        ]);
+        return redirect()->back()->with('success', 'Review published successfully.');
+    }
+
+    public function unpublish(Review $review)
+    {
+        // Unpublish the review (hide it from front-end but keep it verified)
+        $review->update(['is_public' => false]);
+        return redirect()->back()->with('success', 'Review unpublished successfully.');
     }
 
     public function reject(Review $review)

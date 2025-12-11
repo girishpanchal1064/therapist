@@ -52,7 +52,13 @@ class SessionController extends Controller
         }
 
         // Update status to in_progress if it's confirmed
+        // But first check if therapist already has an active session
         if ($appointment->status === 'confirmed') {
+            if (Appointment::therapistHasActiveSession($appointment->therapist_id, $appointment->id)) {
+                $activeSession = Appointment::getActiveSessionForTherapist($appointment->therapist_id);
+                return redirect()->route('client.dashboard')
+                    ->with('error', "The therapist is currently in another session (Appointment #{$activeSession->id}). Please wait for that session to complete.");
+            }
             $appointment->update(['status' => 'in_progress']);
         }
 

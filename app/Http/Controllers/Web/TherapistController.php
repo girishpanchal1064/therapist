@@ -205,13 +205,12 @@ class TherapistController extends Controller
             abort(404, 'Therapist profile not found');
         }
 
-        // Get recent reviews
+        // Get only published reviews (approved by superadmin)
         $reviews = $therapist->reviewsAsTherapist()
             ->where('is_verified', true)
             ->where('is_public', true)
             ->with('client.profile')
             ->orderBy('created_at', 'desc')
-            ->limit(10)
             ->get();
 
         // Get available time slots for next 7 days

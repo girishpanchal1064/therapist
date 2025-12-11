@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Appointment;
 use App\Models\TherapistProfile;
 use App\Services\TherapistAvailabilityService;
+use App\Services\TwilioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -147,6 +148,19 @@ class BookingController extends Controller
             }
         }
 
+        // Generate Twilio room for the session
+        $twilioService = new TwilioService();
+        $roomName = $twilioService->generateRoomName(uniqid()); // Temporary, will update with appointment ID
+        
+        try {
+            // Create Twilio room
+            $room = $twilioService->createRoom($roomName);
+            $meetingId = $room->sid;
+        } catch (\Exception $e) {
+            Log::error('Error creating Twilio room: ' . $e->getMessage());
+            $meetingId = 'twilio-' . uniqid();
+        }
+
         // Create appointment
         $appointment = Appointment::create([
             'client_id' => Auth::id(),
@@ -157,7 +171,21 @@ class BookingController extends Controller
             'appointment_time' => $request->appointment_time,
             'duration_minutes' => $request->duration_minutes,
             'status' => 'scheduled',
-            'meeting_link' => $this->generateMeetingLink($request->session_mode),
+            'meeting_id' => $meetingId,
+            'meeting_link' => route('sessions.join', ['appointment' => 'temp']), // Will update after creation
+        ]);
+
+        // Update room name with actual appointment ID and meeting link
+        $finalRoomName = $twilioService->generateRoomName($appointment->id);
+        try {
+            // Try to update room or create new one with correct name
+            $twilioService->createRoom($finalRoomName);
+        } catch (\Exception $e) {
+            // Room might already exist, that's okay
+        }
+
+        $appointment->update([
+            'meeting_link' => route('sessions.join', ['appointment' => $appointment->id]),
         ]);
 
         // Redirect to payment page
@@ -165,18 +193,4 @@ class BookingController extends Controller
             ->with('success', 'Appointment created! Please complete payment to confirm your booking.');
     }
 
-    private function generateMeetingLink($sessionMode)
-    {
-        // In a real application, integrate with video calling services
-        switch ($sessionMode) {
-            case 'video':
-                return 'https://meet.google.com/' . uniqid();
-            case 'audio':
-                return 'https://zoom.us/j/' . uniqid();
-            case 'chat':
-                return route('chat.session', ['id' => uniqid()]);
-            default:
-                return 'https://meet.google.com/' . uniqid();
-        }
-    }
 }

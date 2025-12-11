@@ -33,17 +33,27 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>
                     <div class="d-flex align-items-center">
-                      @if($therapist->avatar)
-                        <img src="{{ asset('storage/' . $therapist->avatar) }}" 
+                      @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
+                        <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}" 
                              alt="{{ $therapist->name }}" 
                              class="rounded-circle me-2" 
-                             width="32" 
-                             height="32">
+                             width="40" 
+                             height="40"
+                             style="object-fit: cover;">
+                      @elseif($therapist->getRawOriginal('avatar'))
+                        <img src="{{ asset('storage/' . $therapist->getRawOriginal('avatar')) }}" 
+                             alt="{{ $therapist->name }}" 
+                             class="rounded-circle me-2" 
+                             width="40" 
+                             height="40"
+                             style="object-fit: cover;">
                       @else
-                        <div class="avatar-initial rounded-circle bg-label-primary me-2 d-flex align-items-center justify-content-center" 
-                             style="width: 32px; height: 32px;">
-                          {{ strtoupper(substr($therapist->name, 0, 2)) }}
-                        </div>
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" 
+                             alt="{{ $therapist->name }}" 
+                             class="rounded-circle me-2" 
+                             width="40" 
+                             height="40"
+                             style="object-fit: cover;">
                       @endif
                       <span>{{ $therapist->name }}</span>
                     </div>

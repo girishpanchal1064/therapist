@@ -308,7 +308,7 @@
     const blockDateForm = document.getElementById('block-date-form');
     const blockStart = document.getElementById('block-start');
     const blockEnd = document.getElementById('block-end');
-    const updateDateRouteBase = '{{ route("therapist.availability.block.date.update", 0) }}'.replace('/0', '');
+    const updateDateRouteBase = '{{ route("admin.therapist-availability.block.date.update", 0) }}'.replace('/0', '');
 
     // Block by Slot Modal
     const blockSlotModal = document.getElementById('blockSlotModal');
@@ -316,7 +316,7 @@
     const blockedSlotsContainer = document.getElementById('blocked-slots');
     const addBlockSlotBtn = document.getElementById('add-block-slot');
     const slotDate = document.getElementById('slot-date');
-    const updateSlotRouteBase = '{{ route("therapist.availability.block.slot.update", 0) }}'.replace('/0', '');
+    const updateSlotRouteBase = '{{ route("admin.therapist-availability.block.slot.update", 0) }}'.replace('/0', '');
     let editSlotData = null; // Store edit data for slot blocks
 
     // Function to populate time dropdowns

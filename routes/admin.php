@@ -120,6 +120,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     // Review Management
     Route::get('reviews/pending', [ReviewController::class, 'pending'])->name('reviews.pending');
     Route::post('reviews/{review}/approve', [ReviewController::class, 'approve'])->name('reviews.approve');
+    Route::post('reviews/{review}/publish', [ReviewController::class, 'publish'])->name('reviews.publish');
+    Route::post('reviews/{review}/unpublish', [ReviewController::class, 'unpublish'])->name('reviews.unpublish');
     Route::post('reviews/{review}/reject', [ReviewController::class, 'reject'])->name('reviews.reject');
     Route::resource('reviews', ReviewController::class);
 

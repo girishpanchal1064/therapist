@@ -609,23 +609,55 @@
                 </div>
               </td>
               <td>
-                @if($session->status === 'scheduled')
-                  <span class="status-badge pending">Pending</span>
-                @elseif($session->status === 'confirmed')
-                  <span class="status-badge upcoming">Upcoming</span>
-                @elseif($session->status === 'completed')
-                  <span class="status-badge completed">Completed</span>
-                @elseif($session->status === 'cancelled')
-                  @if($session->cancelled_by == auth()->id())
-                    <span class="status-badge cancel">Cancel by Me</span>
+                @php
+                  // Handle appointment_time - it might be a datetime or time string
+                  $timeString = is_string($session->appointment_time) 
+                    ? $session->appointment_time 
+                    : (is_object($session->appointment_time) 
+                        ? $session->appointment_time->format('H:i:s') 
+                        : $session->appointment_time);
+                  
+                  // Extract just time if it's a full datetime string
+                  if (strlen($timeString) > 8) {
+                    $timeString = \Carbon\Carbon::parse($timeString)->format('H:i:s');
+                  }
+                  
+                  $appointmentDateTime = \Carbon\Carbon::parse($session->appointment_date->format('Y-m-d') . ' ' . $timeString);
+                  // Allow joining 5 minutes before appointment time or anytime after
+                  $canJoin = $appointmentDateTime->diffInMinutes(now(), false) >= -5;
+                  // Show join button if time has arrived (or within 5 min) AND status allows it OR if manually confirmed
+                  $isActive = $canJoin && (
+                    in_array($session->status, ['confirmed', 'in_progress']) || 
+                    ($session->status === 'scheduled' && $appointmentDateTime->isPast())
+                  );
+                @endphp
+                
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  @if($session->status === 'scheduled')
+                    <span class="status-badge pending">Pending</span>
+                  @elseif($session->status === 'confirmed')
+                    <span class="status-badge upcoming">Upcoming</span>
+                  @elseif($session->status === 'completed')
+                    <span class="status-badge completed">Completed</span>
+                  @elseif($session->status === 'cancelled')
+                    @if($session->cancelled_by == auth()->id())
+                      <span class="status-badge cancel">Cancel by Me</span>
+                    @else
+                      <span class="status-badge cancelled">Cancelled by Client</span>
+                    @endif
+                  @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
+                    <span class="status-badge expired">Expired</span>
                   @else
-                    <span class="status-badge cancelled">Cancelled by Client</span>
+                    <span class="status-badge">{{ strtoupper($session->status) }}</span>
                   @endif
-                @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
-                  <span class="status-badge expired">Expired</span>
-                @else
-                  <span class="status-badge">{{ strtoupper($session->status) }}</span>
-                @endif
+                  
+                  @if($isActive && in_array($session->session_mode, ['video', 'audio']))
+                    <a href="{{ route('sessions.join', $session->id) }}" class="btn btn-sm btn-success" style="white-space: nowrap;">
+                      <i class="ri-{{ $session->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>
+                      Join Session
+                    </a>
+                  @endif
+                </div>
               </td>
             </tr>
           @empty

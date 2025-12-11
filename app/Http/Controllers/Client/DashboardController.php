@@ -42,7 +42,7 @@ class DashboardController extends Controller
 
         // Get upcoming appointments
         $upcomingAppointments = $user->appointmentsAsClient()
-            ->with(['therapist.therapistProfile', 'payment'])
+            ->with(['therapist.therapistProfile.specializations', 'payment'])
             ->whereIn('status', ['scheduled', 'confirmed'])
             ->where('appointment_date', '>=', today())
             ->orderBy('appointment_date')
@@ -52,7 +52,7 @@ class DashboardController extends Controller
 
         // Get today's appointments
         $todayAppointments = $user->appointmentsAsClient()
-            ->with(['therapist.therapistProfile', 'payment'])
+            ->with(['therapist.therapistProfile.specializations', 'payment'])
             ->whereDate('appointment_date', today())
             ->whereIn('status', ['scheduled', 'confirmed', 'in_progress'])
             ->orderBy('appointment_time')
@@ -60,7 +60,7 @@ class DashboardController extends Controller
 
         // Get recent completed appointments
         $recentAppointments = $user->appointmentsAsClient()
-            ->with(['therapist.therapistProfile', 'payment'])
+            ->with(['therapist.therapistProfile.specializations', 'payment'])
             ->where('status', 'completed')
             ->orderBy('appointment_date', 'desc')
             ->limit(10)

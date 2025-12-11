@@ -14,9 +14,9 @@
 /* Page Header */
 .page-header {
     background: var(--theme-gradient);
-    border-radius: 20px;
-    padding: 2rem 2.5rem;
-    margin-bottom: 2rem;
+    border-radius: 14px;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.25rem;
     position: relative;
     overflow: hidden;
 }
@@ -26,8 +26,8 @@
     position: absolute;
     top: -50%;
     right: -20%;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
 }
@@ -37,21 +37,21 @@
     position: absolute;
     bottom: -30%;
     left: -10%;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
 }
 
 .header-icon {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 18px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
     backdrop-filter: blur(10px);
 }
@@ -59,9 +59,10 @@
 .page-header h4 {
     color: white;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     position: relative;
     z-index: 1;
+    font-size: 1.35rem;
 }
 
 .page-header p {
@@ -69,15 +70,17 @@
     margin-bottom: 0;
     position: relative;
     z-index: 1;
+    font-size: 0.875rem;
 }
 
 .btn-back {
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.3);
     color: white;
-    padding: 0.625rem 1.25rem;
-    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
     font-weight: 600;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
@@ -91,30 +94,30 @@
 /* Info Cards */
 .info-card {
     background: white;
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     overflow: hidden;
-    height: 100%;
+    height: 60%;
 }
 
 .info-card-header {
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    padding: 1.25rem 1.5rem;
+    padding: 0.7rem 1rem;
     border-bottom: 1px solid rgba(102, 126, 234, 0.1);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .info-card-header .icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: white;
 }
 
@@ -124,13 +127,14 @@
 .info-card-header .icon.info { background: var(--info-gradient); }
 
 .info-card-header h6 {
-    font-weight: 700;
+    font-weight: 600;
     color: #1f2937;
     margin: 0;
+    font-size: 0.95rem;
 }
 
 .info-card-body {
-    padding: 1.5rem;
+    padding: 0.75rem 1rem;
 }
 
 /* Therapist Profile */
@@ -139,52 +143,54 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 1rem 0;
+    padding: 0;
 }
 
 .therapist-avatar-large {
-    width: 100px;
-    height: 100px;
-    border-radius: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
     object-fit: cover;
-    border: 4px solid #f0f2ff;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
-    margin-bottom: 1rem;
+    border: 2px solid #f0f2ff;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+    margin-bottom: 0.5rem;
 }
 
 .therapist-avatar-placeholder-large {
-    width: 100px;
-    height: 100px;
-    border-radius: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
     background: var(--theme-gradient);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: white;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .therapist-profile h5 {
-    font-weight: 700;
+    font-weight: 600;
     color: #1f2937;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
+    font-size: 0.9rem;
 }
 
 .therapist-profile p {
     color: #6b7280;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .btn-view-profile {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
     color: #667eea;
     border: none;
-    padding: 0.625rem 1.5rem;
-    border-radius: 12px;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
     font-weight: 600;
+    font-size: 0.8rem;
     transition: all 0.3s ease;
 }
 
@@ -198,10 +204,10 @@
 .detail-row {
     display: flex;
     align-items: center;
-    padding: 1rem;
-    border-radius: 14px;
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.4rem;
 }
 
 .detail-row:last-child {
@@ -209,44 +215,46 @@
 }
 
 .detail-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--theme-gradient);
     color: white;
-    font-size: 1.1rem;
-    margin-right: 1rem;
+    font-size: 0.85rem;
+    margin-right: 0.6rem;
     flex-shrink: 0;
 }
 
 .detail-content strong {
     display: block;
     color: #6b7280;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.2;
 }
 
 .detail-content span {
     color: #1f2937;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.8rem;
+    line-height: 1.3;
 }
 
 /* Status Badge Large */
 .status-badge-large {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: 30px;
-    font-size: 1rem;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 600;
-    margin-top: 1rem;
+    margin-top: 0;
 }
 
 .status-badge-large.scheduled {
@@ -278,10 +286,10 @@
 .session-type-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.85rem;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: 600;
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
     color: #2563eb;
@@ -290,10 +298,10 @@
 .appointment-type-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.85rem;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: 600;
     background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.1) 100%);
     color: #4b5563;
@@ -303,40 +311,41 @@
 .meeting-card {
     background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.08) 100%);
     border: 2px solid rgba(16, 185, 129, 0.2);
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
 }
 
 .meeting-info {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
 .meeting-info code {
     background: white;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.85rem;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #059669;
     font-weight: 600;
 }
 
 .meeting-link {
     background: white;
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
     overflow: hidden;
 }
 
 .meeting-link a {
     color: #059669;
     font-weight: 500;
+    font-size: 0.85rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -346,9 +355,10 @@
     background: var(--success-gradient);
     border: none;
     color: white;
-    padding: 0.875rem 2rem;
-    border-radius: 14px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
     font-weight: 600;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     width: 100%;
 }
@@ -363,8 +373,8 @@
 .payment-card {
     background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
     border: 2px solid #86efac;
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
 }
 
 .payment-card.pending {
@@ -373,7 +383,7 @@
 }
 
 .payment-amount-large {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     background: var(--theme-gradient);
     -webkit-background-clip: text;
@@ -385,8 +395,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.85rem;
 }
 
 .payment-detail:last-child {
@@ -396,10 +407,10 @@
 .payment-status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.85rem;
+    gap: 0.3rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
@@ -417,32 +428,34 @@
 .notes-card {
     background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
     border: 2px solid #93c5fd;
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
 }
 
 .notes-card p {
     color: #1e40af;
-    line-height: 1.7;
+    line-height: 1.6;
     margin: 0;
+    font-size: 0.9rem;
 }
 
 /* Action Buttons */
 .action-buttons {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
-    margin-top: 2rem;
+    margin-top: 1.25rem;
 }
 
 .btn-action {
-    padding: 0.875rem 1.75rem;
-    border-radius: 14px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
     font-weight: 600;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .btn-action.primary {
@@ -493,19 +506,63 @@
     color: #374151;
 }
 
+.footer{
+  margin-top: 30px !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .page-header {
-        padding: 1.5rem;
+        padding: 1rem 1.25rem;
     }
-    
+
+    .header-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.25rem;
+    }
+
+    .page-header h4 {
+        font-size: 1.15rem;
+    }
+
+    .info-card-body {
+        padding: 0.85rem 1rem;
+    }
+
+    .info-card-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .therapist-avatar-large {
+        width: 60px;
+        height: 60px;
+    }
+
+    .detail-row {
+        padding: 0.5rem 0.7rem;
+    }
+
+    .detail-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+    }
+
     .action-buttons {
         flex-direction: column;
+        gap: 0.5rem;
     }
-    
+
     .btn-action {
         width: 100%;
         justify-content: center;
+    }
+
+    .meeting-card,
+    .payment-card,
+    .notes-card {
+        padding: 0.85rem 1rem;
     }
 }
 </style>
@@ -530,30 +587,30 @@
     </div>
 </div>
 
-<div class="row g-4">
+<div class="row g-3">
     <!-- Left Column -->
     <div class="col-lg-4">
         <!-- Therapist Card -->
-        <div class="info-card mb-4">
+        <div class="info-card mb-3">
             <div class="info-card-header">
                 <div class="icon primary">
                     <i class="ri-user-heart-line"></i>
                 </div>
                 <h6>Your Therapist</h6>
             </div>
-            <div class="info-card-body">
+            <div class="info-card-body" style="padding-top: 0.75rem; padding-bottom: 0.75rem;">
                 <div class="therapist-profile">
                     @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
-                        <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" 
-                             alt="{{ $appointment->therapist->name }}" 
+                        <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}"
+                             alt="{{ $appointment->therapist->name }}"
                              class="therapist-avatar-large">
                     @elseif($appointment->therapist->avatar)
-                        <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" 
-                             alt="{{ $appointment->therapist->name }}" 
+                        <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}"
+                             alt="{{ $appointment->therapist->name }}"
                              class="therapist-avatar-large">
                     @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" 
-                             alt="{{ $appointment->therapist->name }}" 
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg"
+                             alt="{{ $appointment->therapist->name }}"
                              class="therapist-avatar-large">
                     @endif
                     <h5>{{ $appointment->therapist->name }}</h5>
@@ -575,7 +632,7 @@
                 </div>
                 <h6>Session Status</h6>
             </div>
-            <div class="info-card-body text-center">
+            <div class="info-card-body text-center" style="padding-top: 0.5rem; padding-bottom: 0.75rem;">
                 @php
                     $statusColors = [
                         'scheduled' => 'warning',
@@ -590,8 +647,8 @@
                     <i class="ri-{{ $appointment->status === 'completed' ? 'checkbox-circle' : ($appointment->status === 'cancelled' ? 'close-circle' : ($appointment->status === 'confirmed' ? 'check-double' : 'time')) }}-line"></i>
                     {{ ucfirst(str_replace('_', ' ', $appointment->status)) }}
                 </span>
-                
-                <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
+
+                <div class="d-flex justify-content-center mt-1.5 flex-wrap" style="gap: 0.4rem; margin-top: 0.5rem;">
                     <span class="session-type-badge">
                         <i class="ri-{{ $appointment->session_mode === 'video' ? 'video' : ($appointment->session_mode === 'audio' ? 'mic' : 'chat-3') }}-line"></i>
                         {{ ucfirst($appointment->session_mode) }}
@@ -607,15 +664,15 @@
     <!-- Right Column -->
     <div class="col-lg-8">
         <!-- Appointment Info Card -->
-        <div class="info-card mb-4">
+        <div class="info-card mb-3">
             <div class="info-card-header">
                 <div class="icon primary">
                     <i class="ri-calendar-line"></i>
                 </div>
                 <h6>Appointment Information</h6>
             </div>
-            <div class="info-card-body">
-                <div class="row g-3">
+            <div class="info-card-body" style="padding-top: 0.75rem;">
+                <div class="row g-2">
                     <div class="col-md-6">
                         <div class="detail-row">
                             <div class="detail-icon">
@@ -666,8 +723,8 @@
 
         <!-- Meeting Information -->
         @if($appointment->meeting_id || $appointment->meeting_link)
-        <div class="meeting-card mb-4">
-            <h6 class="fw-bold mb-3">
+        <div class="meeting-card mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 0.95rem;">
                 <i class="ri-video-chat-line me-2 text-success"></i>Meeting Information
             </h6>
             @if($appointment->meeting_id)
@@ -695,10 +752,10 @@
 
         <!-- Payment Information -->
         @if($appointment->payment)
-        <div class="payment-card {{ $appointment->payment->status !== 'completed' ? 'pending' : '' }} mb-4">
+        <div class="payment-card {{ $appointment->payment->status !== 'completed' ? 'pending' : '' }} mb-3">
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                    <h6 class="fw-bold mb-1">
+                    <h6 class="fw-bold mb-1" style="font-size: 0.95rem;">
                         <i class="ri-money-rupee-circle-line me-2"></i>Payment Information
                     </h6>
                     <span class="payment-status-badge {{ $appointment->payment->status === 'completed' ? 'completed' : 'pending' }}">
@@ -708,7 +765,7 @@
                 </div>
                 <span class="payment-amount-large">₹{{ number_format($appointment->payment->total_amount ?? 0, 2) }}</span>
             </div>
-            
+
             <div class="payment-details">
                 @if($appointment->payment->payment_method)
                 <div class="payment-detail">
@@ -734,8 +791,8 @@
 
         <!-- Notes -->
         @if($appointment->notes)
-        <div class="notes-card mb-4">
-            <h6 class="fw-bold mb-3">
+        <div class="notes-card mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 0.95rem;">
                 <i class="ri-file-text-line me-2"></i>Session Notes
             </h6>
             <p>{{ $appointment->notes }}</p>

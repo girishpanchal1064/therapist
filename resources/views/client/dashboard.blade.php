@@ -815,7 +815,13 @@
         @endif
         <div class="therapist-info">
           <h6>{{ $appointment->therapist->name }}</h6>
-          <span>{{ $appointment->therapist->therapistProfile->specializations ?? 'Therapist' }}</span>
+          <span>
+            @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->specializations->count() > 0)
+              {{ $appointment->therapist->therapistProfile->specializations->pluck('name')->take(2)->implode(', ') }}
+            @else
+              Therapist
+            @endif
+          </span>
         </div>
         <span class="status-badge {{ $appointment->status }} ms-auto">{{ ucfirst(str_replace('_', ' ', $appointment->status)) }}</span>
       </div>

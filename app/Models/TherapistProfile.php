@@ -118,7 +118,7 @@ class TherapistProfile extends Model
      */
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'therapist_id');
+        return $this->hasMany(Review::class, 'therapist_id', 'user_id');
     }
 
     /**
@@ -170,11 +170,12 @@ class TherapistProfile extends Model
     }
 
     /**
-     * Update rating based on reviews.
+     * Update rating based on published reviews (only reviews approved and published by superadmin).
      */
     public function updateRating()
     {
-        $reviews = $this->reviews()->where('is_approved', true);
+        // Only count reviews that are verified AND public (published by superadmin)
+        $reviews = $this->reviews()->where('is_verified', true)->where('is_public', true);
         $this->rating_average = $reviews->avg('rating') ?? 0;
         $this->total_reviews = $reviews->count();
         $this->save();

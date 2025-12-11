@@ -14,9 +14,9 @@
 /* Page Header */
 .page-header {
     background: var(--theme-gradient);
-    border-radius: 20px;
-    padding: 2rem 2.5rem;
-    margin-bottom: 2rem;
+    border-radius: 16px;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
 }
@@ -26,8 +26,8 @@
     position: absolute;
     top: -50%;
     right: -20%;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
 }
@@ -37,21 +37,21 @@
     position: absolute;
     bottom: -30%;
     left: -10%;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
 }
 
 .header-icon {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 18px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
     backdrop-filter: blur(10px);
 }
@@ -100,10 +100,10 @@
 /* Review Cards */
 .review-card {
     background: white;
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
     overflow: hidden;
     position: relative;
 }
@@ -113,16 +113,17 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 5px;
+    width: 4px;
     height: 100%;
     background: var(--warning-gradient);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
 }
 
 .review-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-color: #fbbf24;
 }
 
 .review-card:hover::before {
@@ -130,45 +131,46 @@
 }
 
 .review-card .card-body {
-    padding: 1.5rem;
+    padding: 1rem 1.25rem;
 }
 
 /* Therapist Info */
 .therapist-info-section {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.08);
 }
 
 .therapist-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     object-fit: cover;
-    border: 3px solid #f0f2ff;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    border: 2px solid #f0f2ff;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
 }
 
 .therapist-avatar-placeholder {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
     background: var(--theme-gradient);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 700;
     color: white;
 }
 
 .therapist-details h6 {
-    font-weight: 700;
+    font-weight: 600;
     color: #1f2937;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
+    font-size: 0.95rem;
 }
 
 .therapist-details small {
@@ -176,42 +178,44 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    font-size: 0.8rem;
 }
 
 /* Rating Section */
 .rating-section {
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.75rem;
 }
 
 .star-rating {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-    margin-bottom: 0.5rem;
+    gap: 0.2rem;
+    margin-bottom: 0.35rem;
 }
 
 .star-rating i {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     color: #fbbf24;
 }
 
 .rating-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    gap: 0.25rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%);
     color: #d97706;
-    margin-left: 0.75rem;
+    margin-left: 0.5rem;
 }
 
 .review-comment {
     color: #4b5563;
-    line-height: 1.7;
-    font-size: 0.95rem;
+    line-height: 1.6;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
 }
 
 .review-comment.empty {
@@ -223,17 +227,17 @@
 .status-badges {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
 }
 
 .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.85rem;
-    border-radius: 25px;
-    font-size: 0.8rem;
+    gap: 0.3rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
@@ -261,22 +265,23 @@
 .meta-info {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.35rem;
     color: #6b7280;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .meta-info i {
     color: #667eea;
-    margin-right: 0.5rem;
+    margin-right: 0.4rem;
+    font-size: 0.85rem;
 }
 
 /* Read More Section */
 .read-more-section {
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    border-radius: 12px;
-    padding: 1rem;
-    margin-top: 1rem;
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 .btn-read-more {
@@ -284,11 +289,11 @@
     border: none;
     color: #667eea;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
     transition: all 0.2s ease;
 }
 
@@ -299,21 +304,21 @@
 /* Action Buttons */
 .review-actions {
     display: flex;
-    gap: 0.75rem;
-    margin-top: 1.25rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(102, 126, 234, 0.1);
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(102, 126, 234, 0.08);
 }
 
 .btn-action {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-    font-size: 0.85rem;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     border: none;
 }
 
@@ -341,22 +346,22 @@
 /* Empty State */
 .empty-state {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
 }
 
 .empty-state-icon {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     background: linear-gradient(135deg, #f0f2ff 0%, #e8e9ff 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 1.25rem;
 }
 
 .empty-state-icon i {
-    font-size: 3rem;
+    font-size: 2.5rem;
     background: var(--warning-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -366,12 +371,14 @@
 .empty-state h5 {
     color: #1f2937;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
 }
 
 .empty-state p {
     color: #6b7280;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
 }
 
 .btn-view-appointments {
@@ -457,9 +464,33 @@
     </div>
 @endif
 
+<!-- Reviews Summary -->
+@if($reviews->count() > 0)
+    <div class="card mb-3" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: none; border-radius: 12px;">
+        <div class="card-body py-2 px-3">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="ri-star-fill text-warning" style="font-size: 1.1rem;"></i>
+                    <span class="text-dark fw-semibold" style="font-size: 0.9rem;">Total Reviews: <strong>{{ $totalReviews }}</strong></span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-success" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;">
+                        <i class="ri-checkbox-circle-line me-1"></i>{{ $publishedCount }} Published
+                    </span>
+                    @if($verifiedCount > $publishedCount)
+                        <span class="badge bg-warning text-dark" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;">
+                            <i class="ri-time-line me-1"></i>{{ $verifiedCount - $publishedCount }} Pending
+                        </span>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 <!-- Reviews List -->
 @if($reviews->count() > 0)
-    <div class="row g-4">
+    <div class="row g-3">
         @foreach($reviews as $review)
         <div class="col-12">
             <div class="card review-card">
@@ -507,29 +538,33 @@
 
                             <!-- Comment -->
                             @if($review->comment)
-                                <p class="review-comment">{{ Str::limit($review->comment, 200) }}</p>
+                                <p class="review-comment mb-2">{{ Str::limit($review->comment, 150) }}</p>
                                 
-                                @if(strlen($review->comment) > 200)
+                                @if(strlen($review->comment) > 150)
                                 <div class="collapse" id="commentCollapse{{ $review->id }}">
                                     <div class="read-more-section">
-                                        <p class="mb-0">{{ $review->comment }}</p>
+                                        <p class="mb-0 text-sm">{{ $review->comment }}</p>
                                     </div>
                                 </div>
-                                <button class="btn btn-read-more mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapse{{ $review->id }}">
+                                <button class="btn btn-read-more mt-1" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapse{{ $review->id }}">
                                     <i class="ri-arrow-down-s-line"></i>Read full review
                                 </button>
                                 @endif
                             @else
-                                <p class="review-comment empty">No comment provided</p>
+                                <p class="review-comment empty mb-2">No comment provided</p>
                             @endif
                         </div>
 
                         <!-- Status & Meta -->
                         <div class="col-lg-4">
-                            <div class="d-flex flex-column align-items-lg-end">
+                            <div class="d-flex flex-column align-items-lg-end h-100">
                                 <!-- Status Badges -->
-                                <div class="status-badges mb-3">
-                                    @if($review->is_verified)
+                                <div class="status-badges mb-2">
+                                    @if($review->is_verified && $review->is_public)
+                                        <span class="status-badge verified">
+                                            <i class="ri-checkbox-circle-line"></i>Published
+                                        </span>
+                                    @elseif($review->is_verified)
                                         <span class="status-badge verified">
                                             <i class="ri-checkbox-circle-line"></i>Verified
                                         </span>
@@ -558,7 +593,7 @@
                                     @if($review->appointment)
                                     <div>
                                         <i class="ri-calendar-check-line"></i>
-                                        Session: {{ \Carbon\Carbon::parse($review->appointment->appointment_date)->format('M d, Y') }}
+                                        {{ \Carbon\Carbon::parse($review->appointment->appointment_date)->format('M d, Y') }}
                                     </div>
                                     @endif
                                 </div>

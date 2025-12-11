@@ -194,7 +194,19 @@ class Appointment extends Model
      */
     public function canBeCancelled()
     {
-        $appointmentDateTime = $this->appointment_date . ' ' . $this->appointment_time;
+        // Handle appointment_time - extract just time portion
+        $timeString = is_string($this->appointment_time) 
+            ? $this->appointment_time 
+            : (is_object($this->appointment_time) 
+                ? $this->appointment_time->format('H:i:s') 
+                : $this->appointment_time);
+        
+        // Extract just time if it's a full datetime string
+        if (strlen($timeString) > 8) {
+            $timeString = \Carbon\Carbon::parse($timeString)->format('H:i:s');
+        }
+        
+        $appointmentDateTime = $this->appointment_date->format('Y-m-d') . ' ' . $timeString;
         $appointmentTime = strtotime($appointmentDateTime);
         $currentTime = time();
         $hoursUntilAppointment = ($appointmentTime - $currentTime) / 3600;
@@ -376,7 +388,19 @@ class Appointment extends Model
      */
     public function getAppointmentDateTimeAttribute()
     {
-        return $this->appointment_date . ' ' . $this->appointment_time;
+        // Handle appointment_time - extract just time portion
+        $timeString = is_string($this->appointment_time) 
+            ? $this->appointment_time 
+            : (is_object($this->appointment_time) 
+                ? $this->appointment_time->format('H:i:s') 
+                : $this->appointment_time);
+        
+        // Extract just time if it's a full datetime string
+        if (strlen($timeString) > 8) {
+            $timeString = \Carbon\Carbon::parse($timeString)->format('H:i:s');
+        }
+        
+        return $this->appointment_date->format('Y-m-d') . ' ' . $timeString;
     }
 
     /**
@@ -409,5 +433,39 @@ class Appointment extends Model
             'no_show' => 'bg-orange-100 text-orange-800',
             default => 'bg-gray-100 text-gray-800',
         };
+    }
+
+    /**
+     * Check if therapist has an active session (in_progress)
+     * 
+     * @param int $therapistId
+     * @param int|null $excludeAppointmentId Optional appointment ID to exclude from check
+     * @return bool
+     */
+    public static function therapistHasActiveSession($therapistId, $excludeAppointmentId = null)
+    {
+        $query = static::where('therapist_id', $therapistId)
+            ->where('status', 'in_progress')
+            ->whereIn('session_mode', ['video', 'audio']); // Only check video/audio sessions
+        
+        if ($excludeAppointmentId) {
+            $query->where('id', '!=', $excludeAppointmentId);
+        }
+        
+        return $query->exists();
+    }
+
+    /**
+     * Get active session for a therapist
+     * 
+     * @param int $therapistId
+     * @return Appointment|null
+     */
+    public static function getActiveSessionForTherapist($therapistId)
+    {
+        return static::where('therapist_id', $therapistId)
+            ->where('status', 'in_progress')
+            ->whereIn('session_mode', ['video', 'audio'])
+            ->first();
     }
 }

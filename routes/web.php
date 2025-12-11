@@ -190,6 +190,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/payment/success', [App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('payment.success');
 Route::get('/payment/failure', [App\Http\Controllers\PaymentController::class, 'paymentFailure'])->name('payment.failure');
 
+// Session routes (Twilio Video/Audio)
+Route::middleware('auth')->group(function () {
+    Route::get('/sessions/join/{appointment}', [App\Http\Controllers\SessionController::class, 'join'])->name('sessions.join');
+    Route::get('/sessions/token/{appointment}', [App\Http\Controllers\SessionController::class, 'getToken'])->name('sessions.token');
+    Route::post('/sessions/end/{appointment}', [App\Http\Controllers\SessionController::class, 'end'])->name('sessions.end');
+});
+
 // Chat routes
 Route::middleware('auth')->group(function () {
     Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');

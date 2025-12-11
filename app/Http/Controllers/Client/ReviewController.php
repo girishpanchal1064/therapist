@@ -19,7 +19,12 @@ class ReviewController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return view('client.reviews.index', compact('reviews'));
+        // Get summary statistics
+        $totalReviews = Review::where('client_id', $user->id)->count();
+        $verifiedCount = Review::where('client_id', $user->id)->where('is_verified', true)->count();
+        $publishedCount = Review::where('client_id', $user->id)->where('is_verified', true)->where('is_public', true)->count();
+
+        return view('client.reviews.index', compact('reviews', 'totalReviews', 'verifiedCount', 'publishedCount'));
     }
 
     public function create($appointmentId)

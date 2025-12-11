@@ -257,53 +257,133 @@
                     </div>
                 @endif
 
-                <!-- Reviews -->
-                @if($reviews->count() > 0)
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                            <h2 class="text-xl font-semibold text-gray-900 flex items-center">
-                                <svg class="w-6 h-6 mr-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                                </svg>
-                                Client Reviews
-                            </h2>
+                <!-- Reviews Section -->
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden flex flex-col" style="max-height: 600px;">
+                    <div class="px-4 py-3 bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 border-b border-yellow-100 flex-shrink-0">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="p-1.5 bg-yellow-400 rounded-lg shadow-sm">
+                                    <svg class="w-4 h-4 text-yellow-900" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-bold text-gray-900">Client Reviews</h2>
+                                    <p class="text-xs text-gray-600">{{ $reviews->count() }} {{ Str::plural('review', $reviews->count()) }}</p>
+                                </div>
+                            </div>
+                            @if($reviews->count() > 0)
+                            <div class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-white rounded-lg shadow-sm">
+                                <span class="text-lg font-bold text-yellow-500">{{ number_format($therapist->therapistProfile->rating_average ?? 0, 1) }}</span>
+                                <div class="flex items-center">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <svg class="w-3 h-3 {{ $i <= floor($therapist->therapistProfile->rating_average ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                        </svg>
+                                    @endfor
+                                </div>
+                            </div>
+                            @endif
                         </div>
-                        <div class="px-6 py-6">
-                            <div class="space-y-6">
+                    </div>
+                    
+                    @if($reviews->count() > 0)
+                        <div class="overflow-y-auto flex-1" style="scrollbar-width: thin; scrollbar-color: #fbbf24 #fef3c7;">
+                            <div class="p-4 space-y-3">
                                 @foreach($reviews as $review)
-                                    <div class="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
-                                        <div class="flex items-start justify-between mb-3">
-                                            <div class="flex items-center">
-                                                @if($review->client->profile && $review->client->profile->profile_image)
-                                                    <img src="{{ Storage::url($review->client->profile->profile_image) }}"
-                                                         alt="{{ $review->client->name }}"
-                                                         class="h-10 w-10 rounded-full object-cover">
-                                                @else
-                                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-semibold">
-                                                        {{ substr($review->client->name, 0, 1) }}
-                                                    </div>
-                                                @endif
-                                                <div class="ml-3">
-                                                    <p class="font-semibold text-gray-900">{{ $review->client->name }}</p>
-                                                    <div class="flex items-center mt-1">
-                                                        @for($i = 1; $i <= 5; $i++)
-                                                            <svg class="w-4 h-4 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}"
-                                                                 fill="currentColor" viewBox="0 0 20 20">
-                                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    <div class="review-card group hover:shadow-sm transition-all duration-200 bg-gradient-to-br from-white to-gray-50 rounded-lg p-3 border border-gray-100 hover:border-yellow-200">
+                                        <div class="flex items-start space-x-3">
+                                            <!-- Avatar -->
+                                            <div class="flex-shrink-0">
+                                                <div class="relative">
+                                                    @if($review->client->profile && $review->client->profile->profile_image)
+                                                        <img src="{{ Storage::url($review->client->profile->profile_image) }}"
+                                                             alt="{{ $review->client->name }}"
+                                                             class="h-10 w-10 rounded-full object-cover ring-1 ring-yellow-200 shadow-sm">
+                                                    @elseif($review->client->avatar)
+                                                        <img src="{{ Storage::url($review->client->avatar) }}"
+                                                             alt="{{ $review->client->name }}"
+                                                             class="h-10 w-10 rounded-full object-cover ring-1 ring-yellow-200 shadow-sm">
+                                                    @else
+                                                        <div class="h-10 w-10 rounded-full bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-400 flex items-center justify-center text-white font-bold text-sm shadow-sm ring-1 ring-yellow-200">
+                                                            {{ strtoupper(substr($review->client->name, 0, 1)) }}
+                                                        </div>
+                                                    @endif
+                                                    @if($review->is_verified)
+                                                        <div class="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border border-white">
+                                                            <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                                             </svg>
-                                                        @endfor
-                                                    </div>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
-                                            <span class="text-sm text-gray-500">{{ $review->created_at->format('M d, Y') }}</span>
+                                            
+                                            <!-- Review Content -->
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-start justify-between mb-1.5">
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-center space-x-1.5 mb-1">
+                                                            <h4 class="font-semibold text-gray-900 text-sm truncate">{{ $review->client->name }}</h4>
+                                                            @if($review->is_verified)
+                                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 flex-shrink-0">
+                                                                    <svg class="w-2.5 h-2.5 mr-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                    Verified
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="flex items-center space-x-1.5 mb-1.5">
+                                                            <div class="flex items-center">
+                                                                @for($i = 1; $i <= 5; $i++)
+                                                                    <svg class="w-3.5 h-3.5 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-200' }}"
+                                                                         fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                                    </svg>
+                                                                @endfor
+                                                            </div>
+                                                            <span class="text-xs font-semibold text-gray-700">{{ $review->rating }}.0</span>
+                                                            <span class="text-xs text-gray-500">•</span>
+                                                            <span class="text-xs text-gray-500">{{ $review->created_at->format('M d, Y') }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                @if($review->comment)
+                                                    <p class="text-gray-700 leading-snug text-sm mb-2 line-clamp-3">{{ $review->comment }}</p>
+                                                @else
+                                                    <p class="text-gray-500 italic text-xs mb-2">No comment provided</p>
+                                                @endif
+                                                
+                                                @if($review->appointment)
+                                                    <div class="flex items-center text-xs text-gray-500 space-x-1 pt-1.5 border-t border-gray-100">
+                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                                        </svg>
+                                                        <span>{{ $review->appointment->appointment_date->format('M d, Y') }}</span>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                        <p class="text-gray-700 leading-relaxed">{{ $review->comment }}</p>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
-                    </div>
-                @endif
+                    @else
+                        <div class="p-8 text-center flex-1 flex items-center justify-center">
+                            <div>
+                                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-3">
+                                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-base font-semibold text-gray-900 mb-1">No Reviews Yet</h3>
+                                <p class="text-sm text-gray-600 max-w-xs mx-auto">Be the first to share your experience!</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
 
             <!-- Booking Sidebar -->
