@@ -141,7 +141,6 @@ Route::middleware(['auth', 'role:Client'])->prefix('client')->name('client.')->g
     
     // Online Sessions
     Route::get('/sessions', [App\Http\Controllers\Client\SessionController::class, 'index'])->name('sessions.index');
-    Route::get('/sessions/join/{appointment}', [App\Http\Controllers\Client\SessionController::class, 'join'])->name('sessions.join');
     Route::get('/sessions/{appointment}', [App\Http\Controllers\Client\SessionController::class, 'show'])->name('sessions.show');
     
     // Wallet

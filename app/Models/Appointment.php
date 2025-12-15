@@ -68,6 +68,9 @@ class Appointment extends Model
         'cancelled_by',
         'cancelled_at',
         'payment_id',
+        'is_activated_by_admin',
+        'activated_by',
+        'activated_at',
     ];
 
     protected function casts(): array
@@ -76,6 +79,8 @@ class Appointment extends Model
             'appointment_date' => 'date',
             'appointment_time' => 'datetime',
             'cancelled_at' => 'datetime',
+            'is_activated_by_admin' => 'boolean',
+            'activated_at' => 'datetime',
         ];
     }
 

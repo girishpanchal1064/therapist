@@ -172,6 +172,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'backend.access'])->
     Route::get('sessions/{id}/edit', [SessionController::class, 'edit'])->name('sessions.edit');
     Route::put('sessions/{id}', [SessionController::class, 'update'])->name('sessions.update');
     Route::delete('sessions/{id}', [SessionController::class, 'destroy'])->name('sessions.destroy');
+    Route::post('sessions/{id}/activate', [SessionController::class, 'activate'])->name('sessions.activate');
+    Route::post('sessions/{id}/deactivate', [SessionController::class, 'deactivate'])->name('sessions.deactivate');
 
     // Therapist Availability Management (SuperAdmin Only)
     Route::prefix('therapist-availability')->name('therapist-availability.')->group(function () {

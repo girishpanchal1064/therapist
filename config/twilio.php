@@ -9,7 +9,7 @@ return [
     | Your Twilio Account SID. You can find this in your Twilio Console.
     |
     */
-    'account_sid' => env('TWILIO_ACCOUNT_SID', 'ACdf76bcf3163dc4b983ff5be3345d7745'),
+    'account_sid' => env('TWILIO_ACCOUNT_SID', 'ACb555a00de306594fd2107f6058a0df12'),
 
     /*
     |--------------------------------------------------------------------------
@@ -19,7 +19,7 @@ return [
     | Your Twilio Auth Token. You can find this in your Twilio Console.
     |
     */
-    'auth_token' => env('TWILIO_AUTH_TOKEN', 'f27785ad27674513e7bebf9c8faafe3a'),
+    'auth_token' => env('TWILIO_AUTH_TOKEN', 'ff55d5dd6ba063ad46185248a6c5e232'),
 
     /*
     |--------------------------------------------------------------------------

@@ -22,5 +22,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
       Schema::defaultStringLength(191);
+      
+      // Set default timezone to IST (Indian Standard Time)
+      $timezone = config('app.timezone', 'Asia/Kolkata');
+      date_default_timezone_set($timezone);
     }
 }

@@ -44,7 +44,7 @@ class BookingController extends Controller
 
             $therapistId = $request->therapist_id;
             $dateInput = $request->date;
-            
+
             // Parse date and ensure it's in YYYY-MM-DD format
             try {
                 $date = Carbon::parse($dateInput)->format('Y-m-d');
@@ -55,7 +55,7 @@ class BookingController extends Controller
                 ]);
                 return response()->json(['error' => 'Invalid date format', 'details' => $e->getMessage()], 400);
             }
-            
+
             $sessionMode = $request->session_mode; // 'online' or 'offline' or null
             $durationMinutes = (int) ($request->duration_minutes ?? 60);
 
@@ -86,7 +86,7 @@ class BookingController extends Controller
                 'trace' => $e->getTraceAsString(),
                 'request' => $request->all()
             ]);
-            
+
             return response()->json([
                 'error' => 'An error occurred while loading time slots',
                 'message' => config('app.debug') ? $e->getMessage() : 'Please try again later'
@@ -116,7 +116,7 @@ class BookingController extends Controller
         $appointmentDate = Carbon::parse($request->appointment_date);
         $appointmentTime = $request->appointment_time;
         $durationMinutes = (int) $request->duration_minutes;
-        
+
         // Normalize time format
         $timeFormatted = strlen($appointmentTime) === 5 ? $appointmentTime . ':00' : $appointmentTime;
         $slotStart = Carbon::parse($appointmentDate->toDateString() . ' ' . $timeFormatted);
@@ -130,15 +130,15 @@ class BookingController extends Controller
 
         foreach ($existingAppointments as $existing) {
             // Parse existing appointment time
-            $existingTime = is_string($existing->appointment_time) 
-                ? $existing->appointment_time 
+            $existingTime = is_string($existing->appointment_time)
+                ? $existing->appointment_time
                 : Carbon::parse($existing->appointment_time)->format('H:i:s');
-            
+
             // Normalize time format
             if (strlen($existingTime) === 5) {
                 $existingTime .= ':00';
             }
-            
+
             $existingStart = Carbon::parse($appointmentDate->toDateString() . ' ' . $existingTime);
             $existingEnd = $existingStart->copy()->addMinutes($existing->duration_minutes ?? 60);
 
@@ -151,7 +151,7 @@ class BookingController extends Controller
         // Generate Twilio room for the session
         $twilioService = new TwilioService();
         $roomName = $twilioService->generateRoomName(uniqid()); // Temporary, will update with appointment ID
-        
+
         try {
             // Create Twilio room
             $room = $twilioService->createRoom($roomName);

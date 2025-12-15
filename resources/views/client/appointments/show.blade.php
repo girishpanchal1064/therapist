@@ -691,7 +691,7 @@
                             </div>
                             <div class="detail-content">
                                 <strong>Time</strong>
-                                <span>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
+                                <span>{{ \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST</span>
                             </div>
                         </div>
                     </div>
@@ -742,10 +742,66 @@
                 <i class="ri-external-link-line text-muted"></i>
             </div>
             @endif
-            @if(in_array($appointment->status, ['confirmed', 'in_progress']))
-            <a href="{{ route('client.sessions.join', $appointment->id) }}" class="btn btn-join-session">
+            @php
+                // Handle appointment_time - it might be a datetime or time string
+                $timeString = is_string($appointment->appointment_time) 
+                    ? $appointment->appointment_time 
+                    : (is_object($appointment->appointment_time) 
+                        ? $appointment->appointment_time->format('H:i:s') 
+                        : $appointment->appointment_time);
+                
+                // Extract just time if it's a full datetime string (contains date part)
+                if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
+                    // If it contains a date (has dashes or is longer than time format), extract just time
+                    try {
+                        $parsedTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata');
+                        $timeString = $parsedTime->format('H:i:s');
+                    } catch (\Exception $e) {
+                        // If parsing fails, try to extract time manually
+                        if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
+                            $timeString = $matches[1];
+                        } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
+                            $timeString = $matches[1] . ':00';
+                        }
+                    }
+                }
+                
+                // Ensure we have a valid time string (HH:MM:SS format)
+                if (strlen($timeString) <= 5) {
+                    $timeString = $timeString . ':00'; // Add seconds if missing
+                }
+                
+                $appointmentDateTime = \Carbon\Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
+                // Allow joining 5 minutes before appointment time or anytime after
+                // diffInMinutes(now(), false) returns negative for future times, positive for past times
+                $minutesDiff = $appointmentDateTime->diffInMinutes(now(), false);
+                $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
+                
+                // Show join button if time has arrived (or within 5 min) AND status allows it AND admin activated
+                // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
+                $isVideoOrAudio = in_array($appointment->session_mode, ['video', 'audio']);
+                $isActivated = $appointment->is_activated_by_admin;
+                $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress']) || 
+                    ($appointment->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
+                
+                $isActive = $canJoin && $isVideoOrAudio && $isActivated && $statusCheck;
+            @endphp
+            @if($isActive)
+            <a href="{{ route('sessions.join', $appointment->id) }}" class="btn btn-join-session" target="_blank">
                 <i class="ri-video-line me-2"></i>Join Session Now
             </a>
+            @elseif(!$appointment->is_activated_by_admin)
+            <button class="btn btn-join-session" disabled style="opacity: 0.6; cursor: not-allowed;">
+                <i class="ri-time-line me-2"></i>Waiting for Admin Activation
+            </button>
+            @elseif(!$canJoin)
+            @php
+                $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
+                $timeUntilJoin = $joinAvailableAt->diffForHumans(now(), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+            @endphp
+            <button class="btn btn-join-session" disabled style="opacity: 0.6; cursor: not-allowed;">
+                <i class="ri-time-line me-2"></i>Join button will be available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }})
+            </button>
             @endif
         </div>
         @endif
@@ -801,10 +857,22 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-            @if(in_array($appointment->status, ['confirmed', 'in_progress']))
-                <a href="{{ route('client.sessions.join', $appointment->id) }}" class="btn btn-action success">
+            @if(isset($isActive) && $isActive)
+                <a href="{{ route('sessions.join', $appointment->id) }}" class="btn btn-action success" target="_blank">
                     <i class="ri-video-line"></i>Join Session
                 </a>
+            @elseif(!$appointment->is_activated_by_admin)
+                <button class="btn btn-action" disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="ri-time-line"></i>Waiting for Admin Activation
+                </button>
+            @elseif(isset($canJoin) && !$canJoin)
+                @php
+                    $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
+                    $timeUntilJoin = $joinAvailableAt->diffForHumans(now(), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+                @endphp
+                <button class="btn btn-action" disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="ri-time-line"></i>Available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }})
+                </button>
             @endif
             @if($appointment->status === 'completed')
                 <a href="{{ route('client.reviews.create', $appointment->id) }}" class="btn btn-action warning">

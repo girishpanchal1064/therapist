@@ -229,4 +229,58 @@ class SessionController extends Controller
         return redirect()->route('admin.sessions.index')
             ->with('success', 'Session deleted successfully.');
     }
+
+    /**
+     * Activate a session (SuperAdmin only)
+     */
+    public function activate($id)
+    {
+        $this->checkSuperAdmin();
+        
+        $session = Appointment::findOrFail($id);
+        
+        if ($session->is_activated_by_admin) {
+            return redirect()->back()
+                ->with('info', 'Session is already activated.');
+        }
+
+        // Use direct assignment to bypass mass assignment protection
+        $session->is_activated_by_admin = true;
+        $session->activated_by = Auth::id();
+        $session->activated_at = now();
+        $session->save();
+
+        return redirect()->back()
+            ->with('success', 'Session activated successfully. Therapist can now see this session.');
+    }
+
+    /**
+     * Deactivate a session (SuperAdmin only)
+     */
+    public function deactivate($id)
+    {
+        $this->checkSuperAdmin();
+        
+        $session = Appointment::findOrFail($id);
+        
+        if (!$session->is_activated_by_admin) {
+            return redirect()->back()
+                ->with('info', 'Session is not activated.');
+        }
+
+        // Only allow deactivation if session hasn't started
+        if (in_array($session->status, ['in_progress', 'completed'])) {
+            return redirect()->back()
+                ->with('error', 'Cannot deactivate a session that is in progress or completed.');
+        }
+
+        // Use direct assignment to bypass mass assignment protection
+        $session->is_activated_by_admin = false;
+        $session->activated_by = null;
+        $session->activated_at = null;
+        $session->save();
+
+        return redirect()->back()
+            ->with('success', 'Session deactivated successfully.');
+    }
 }

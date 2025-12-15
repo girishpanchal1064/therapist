@@ -58,6 +58,26 @@ class DashboardController extends Controller
             ->orderBy('appointment_time')
             ->get();
 
+        // Get online/active sessions (in_progress or can be joined)
+        $onlineSessions = $user->appointmentsAsClient()
+            ->with(['therapist.therapistProfile', 'payment'])
+            ->whereIn('status', ['in_progress', 'confirmed'])
+            ->where('is_activated_by_admin', true)
+            ->whereIn('session_mode', ['video', 'audio'])
+            ->where(function($query) {
+                $query->where('status', 'in_progress')
+                    ->orWhere(function($q) {
+                        // Include confirmed sessions that are within joinable time window
+                        $q->where('status', 'confirmed')
+                          ->whereRaw("CONCAT(appointment_date, ' ', appointment_time) <= DATE_ADD(NOW(), INTERVAL 5 MINUTE)")
+                          ->whereRaw("CONCAT(appointment_date, ' ', appointment_time) >= DATE_SUB(NOW(), INTERVAL 60 MINUTE)");
+                    });
+            })
+            ->orderBy('appointment_date', 'asc')
+            ->orderBy('appointment_time', 'asc')
+            ->limit(10)
+            ->get();
+
         // Get recent completed appointments
         $recentAppointments = $user->appointmentsAsClient()
             ->with(['therapist.therapistProfile.specializations', 'payment'])
@@ -131,7 +151,8 @@ class DashboardController extends Controller
             'walletTransactions',
             'recentPayments',
             'unreadMessagesCount',
-            'monthlySpending'
+            'monthlySpending',
+            'onlineSessions'
         ));
     }
 }

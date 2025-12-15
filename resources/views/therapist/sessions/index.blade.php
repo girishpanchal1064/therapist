@@ -595,13 +595,13 @@
               <td style="font-weight: 500;">{{ $session->appointment_date->format('d M, Y') }}</td>
               <td style="color: #6b7280;">
                 @php
-                  $startTime = \Carbon\Carbon::parse($session->appointment_time);
+                  $startTime = \Carbon\Carbon::parse($session->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
                   $endTime = $startTime->copy()->addMinutes($session->duration_minutes ?? 60);
                   $duration = $session->duration_minutes ?? 60;
                 @endphp
                 <div style="display: flex; flex-direction: column; gap: 4px;">
                   <span style="font-weight: 500;">
-                    {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}
+                    {{ $startTime->format('g:i A') }} IST - {{ $endTime->format('g:i A') }} IST
                   </span>
                   <span style="font-size: 0.75rem; color: #9ca3af;">
                     <i class="ri-timer-line" style="margin-right: 4px;"></i>{{ $duration }} mins
@@ -617,26 +617,66 @@
                         ? $session->appointment_time->format('H:i:s') 
                         : $session->appointment_time);
                   
-                  // Extract just time if it's a full datetime string
-                  if (strlen($timeString) > 8) {
-                    $timeString = \Carbon\Carbon::parse($timeString)->format('H:i:s');
+                  // Extract just time if it's a full datetime string (contains date part)
+                  if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
+                    // If it contains a date (has dashes or is longer than time format), extract just time
+                    try {
+                        $parsedTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata');
+                        $timeString = $parsedTime->format('H:i:s');
+                    } catch (\Exception $e) {
+                        // If parsing fails, try to extract time manually
+                        if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
+                            $timeString = $matches[1];
+                        } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
+                            $timeString = $matches[1] . ':00';
+                        }
+                    }
                   }
                   
-                  $appointmentDateTime = \Carbon\Carbon::parse($session->appointment_date->format('Y-m-d') . ' ' . $timeString);
+                  // Ensure we have a valid time string (HH:MM:SS format)
+                  if (strlen($timeString) <= 5) {
+                      $timeString = $timeString . ':00'; // Add seconds if missing
+                  }
+                  
+                  $appointmentDateTime = \Carbon\Carbon::parse($session->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
                   // Allow joining 5 minutes before appointment time or anytime after
-                  $canJoin = $appointmentDateTime->diffInMinutes(now(), false) >= -5;
-                  // Show join button if time has arrived (or within 5 min) AND status allows it OR if manually confirmed
-                  $isActive = $canJoin && (
-                    in_array($session->status, ['confirmed', 'in_progress']) || 
-                    ($session->status === 'scheduled' && $appointmentDateTime->isPast())
-                  );
+                  // diffInMinutes(now(), false) returns negative for future times, positive for past times
+                  $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
+                  $minutesDiff = $appointmentDateTime->diffInMinutes($nowIST, false);
+                  $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
+                  $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
+                  $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
+                  
+                  // Show join button if time has arrived (or within 5 min) AND status allows it AND admin activated
+                  // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
+                  $isVideoOrAudio = in_array($session->session_mode, ['video', 'audio']);
+                  $isActivated = $session->is_activated_by_admin;
+                  $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) || 
+                    ($session->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
+                  
+                  $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $isActivated && $statusCheck;
                 @endphp
                 
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                   @if($session->status === 'scheduled')
-                    <span class="status-badge pending">Pending</span>
+                    @if($session->is_activated_by_admin)
+                      <span class="status-badge upcoming">Activated</span>
+                      <small class="text-success" style="font-size: 0.7rem;">
+                        <i class="ri-checkbox-circle-line"></i> Ready
+                      </small>
+                    @else
+                      <span class="status-badge pending">Pending</span>
+                      <small class="text-warning" style="font-size: 0.7rem;">
+                        <i class="ri-time-line"></i> Waiting Activation
+                      </small>
+                    @endif
                   @elseif($session->status === 'confirmed')
                     <span class="status-badge upcoming">Upcoming</span>
+                    @if($session->is_activated_by_admin)
+                      <small class="text-success" style="font-size: 0.7rem;">
+                        <i class="ri-checkbox-circle-line"></i> Activated
+                      </small>
+                    @endif
                   @elseif($session->status === 'completed')
                     <span class="status-badge completed">Completed</span>
                   @elseif($session->status === 'cancelled')
@@ -652,10 +692,25 @@
                   @endif
                   
                   @if($isActive && in_array($session->session_mode, ['video', 'audio']))
-                    <a href="{{ route('sessions.join', $session->id) }}" class="btn btn-sm btn-success" style="white-space: nowrap;">
+                    <a href="{{ route('sessions.join', $session->id) }}" class="btn btn-sm btn-success" style="white-space: nowrap;" target="_blank">
                       <i class="ri-{{ $session->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>
                       Join Session
                     </a>
+                  @elseif(!empty($isSessionExpired) && $isSessionExpired)
+                    <button class="btn btn-sm btn-outline-secondary" disabled style="white-space: nowrap; font-size: 0.75rem;">
+                      <i class="ri-timer-line me-1"></i>
+                      Session Expired
+                    </button>
+                  @elseif($session->is_activated_by_admin && $session->status === 'scheduled' && !$isActive)
+                    <button class="btn btn-sm btn-outline-secondary" disabled style="white-space: nowrap; font-size: 0.75rem;">
+                      <i class="ri-time-line me-1"></i>
+                      Available {{ $appointmentDateTime->copy()->subMinutes(5)->diffForHumans() }}
+                    </button>
+                  @elseif(!$session->is_activated_by_admin)
+                    <button class="btn btn-sm btn-outline-warning" disabled style="white-space: nowrap; font-size: 0.75rem;">
+                      <i class="ri-time-line me-1"></i>
+                      Waiting Activation
+                    </button>
                   @endif
                 </div>
               </td>

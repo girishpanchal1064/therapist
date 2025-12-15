@@ -6,6 +6,7 @@ use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
 use Twilio\Jwt\Grants\VoiceGrant;
 use Twilio\Rest\Client;
+use Twilio\Http\CurlClient;
 use Illuminate\Support\Facades\Log;
 
 class TwilioService
@@ -25,7 +26,14 @@ class TwilioService
 
         if ($this->accountSid && $this->authToken) {
             try {
-                $this->client = new Client($this->accountSid, $this->authToken);
+                // For local dev without a trusted CA bundle, disable SSL verification.
+                // Do NOT use this in production; configure proper CA certificates instead.
+                $httpClient = new CurlClient([
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false,
+                ]);
+
+                $this->client = new Client($this->accountSid, $this->authToken, null, null, $httpClient);
             } catch (\Exception $e) {
                 Log::error('Error initializing Twilio client: ' . $e->getMessage());
             }
@@ -113,9 +121,7 @@ class TwilioService
                 'maxParticipants' => config('twilio.video.max_participants', 2),
                 'recordParticipantsOnConnect' => config('twilio.video.enable_recording', false),
             ];
-
             $roomOptions = array_merge($defaultOptions, $options);
-
             $room = $this->client->video->v1->rooms->create($roomOptions);
 
             return $room;

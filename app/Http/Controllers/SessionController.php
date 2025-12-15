@@ -23,7 +23,7 @@ class SessionController extends Controller
     public function join(Request $request, $appointmentId)
     {
         $appointment = Appointment::with(['client', 'therapist'])->findOrFail($appointmentId);
-        
+
         // Check if user is authorized (either client or therapist)
         $user = Auth::user();
         if ($appointment->client_id !== $user->id && $appointment->therapist_id !== $user->id) {
@@ -41,21 +41,27 @@ class SessionController extends Controller
 
         // Check if session time has arrived
         // Handle appointment_time - it might be a datetime or time string
-        $timeString = is_string($appointment->appointment_time) 
-            ? $appointment->appointment_time 
-            : (is_object($appointment->appointment_time) 
-                ? $appointment->appointment_time->format('H:i:s') 
+        $timeString = is_string($appointment->appointment_time)
+            ? $appointment->appointment_time
+            : (is_object($appointment->appointment_time)
+                ? $appointment->appointment_time->format('H:i:s')
                 : $appointment->appointment_time);
-        
+
         // Extract just time if it's a full datetime string
         if (strlen($timeString) > 8) {
             $timeString = Carbon::parse($timeString)->format('H:i:s');
         }
-        
+
         $appointmentDateTime = Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString);
         // Allow joining 5 minutes before appointment time or anytime after
         $canJoin = $appointmentDateTime->diffInMinutes(now(), false) >= -5;
-        
+
+        // Check if session is activated by admin (required for joining)
+        if (!$appointment->is_activated_by_admin) {
+            return redirect()->back()
+                ->with('error', 'This session has not been activated by admin yet. Please wait for admin activation.');
+        }
+
         // Update status automatically if session time has arrived
         if ($canJoin) {
             if ($appointment->status === 'scheduled') {
@@ -77,7 +83,7 @@ class SessionController extends Controller
         // Generate Twilio access token
         $roomName = $this->twilioService->generateRoomName($appointment->id);
         $identity = $user->id . '-' . $user->name;
-        
+
         try {
             // Ensure room exists
             $room = $this->twilioService->getRoom($roomName);
@@ -97,7 +103,7 @@ class SessionController extends Controller
         }
 
         $role = $appointment->client_id === $user->id ? 'client' : 'therapist';
-        
+
         return view('sessions.join', compact('appointment', 'token', 'roomName', 'role', 'canJoin'));
     }
 

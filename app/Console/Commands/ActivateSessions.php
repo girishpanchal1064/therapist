@@ -31,9 +31,10 @@ class ActivateSessions extends Command
         $force = $this->option('force');
         $appointmentId = $this->option('id');
         
-        // Find appointments that should be activated (only video/audio sessions)
+        // Find appointments that should be activated (only video/audio sessions that are activated by admin)
         $query = Appointment::whereIn('status', ['scheduled', 'confirmed'])
-            ->whereIn('session_mode', ['video', 'audio']); // Only activate video/audio sessions
+            ->whereIn('session_mode', ['video', 'audio']) // Only activate video/audio sessions
+            ->where('is_activated_by_admin', true); // Only activate sessions approved by admin
         
         // If specific ID provided, get that appointment
         if ($appointmentId) {

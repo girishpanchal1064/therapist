@@ -704,10 +704,10 @@
                                     </div>
                                     <div>
                                         @php
-                                          $startTime = \Carbon\Carbon::parse($appointment->appointment_time);
+                                          $startTime = \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
                                           $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
                                         @endphp
-                                        <span class="detail-text">{{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }}</span>
+                                        <span class="detail-text">{{ $startTime->format('g:i A') }} IST - {{ $endTime->format('g:i A') }} IST</span>
                                         <small class="text-muted d-block" style="font-size: 0.65rem; margin-top: 1px; line-height: 1.2;">
                                           <i class="ri-timer-line"></i> {{ $appointment->duration_minutes }} mins
                                         </small>
@@ -748,26 +748,65 @@
                                             ? $appointment->appointment_time->format('H:i:s') 
                                             : $appointment->appointment_time);
                                       
-                                      // Extract just time if it's a full datetime string
-                                      if (strlen($timeString) > 8) {
-                                        $timeString = \Carbon\Carbon::parse($timeString)->format('H:i:s');
+                                      // Extract just time if it's a full datetime string (contains date part)
+                                      if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
+                                        // If it contains a date (has dashes or is longer than time format), extract just time
+                                        try {
+                                            $parsedTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata');
+                                            $timeString = $parsedTime->format('H:i:s');
+                                        } catch (\Exception $e) {
+                                            // If parsing fails, try to extract time manually
+                                            if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
+                                                $timeString = $matches[1];
+                                            } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
+                                                $timeString = $matches[1] . ':00';
+                                            }
+                                        }
                                       }
                                       
-                                      $appointmentDateTime = \Carbon\Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString);
+                                      // Ensure we have a valid time string (HH:MM:SS format)
+                                      if (strlen($timeString) <= 5) {
+                                          $timeString = $timeString . ':00'; // Add seconds if missing
+                                      }
+                                      
+                                      $appointmentDateTime = \Carbon\Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
                                       // Allow joining 5 minutes before appointment time or anytime after
-                                      $canJoin = $appointmentDateTime->diffInMinutes(now(), false) >= -5;
-                                      // Show join button if time has arrived (or within 5 min) AND status allows it OR if manually confirmed
-                                      $isActive = $canJoin && in_array($appointment->session_mode, ['video', 'audio']) && (
-                                        in_array($appointment->status, ['confirmed', 'in_progress']) || 
-                                        ($appointment->status === 'scheduled' && $appointmentDateTime->isPast())
-                                      );
+                                      // diffInMinutes(now(), false) returns negative for future times, positive for past times
+                                      $minutesDiff = $appointmentDateTime->diffInMinutes(now(), false);
+                                      $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
+                                      
+                                      // Show join button if time has arrived (or within 5 min) AND status allows it AND admin activated
+                                      // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
+                                      $isVideoOrAudio = in_array($appointment->session_mode, ['video', 'audio']);
+                                      $isActivated = $appointment->is_activated_by_admin;
+                                      $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress']) || 
+                                        ($appointment->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
+                                      
+                                      $isActive = $canJoin && $isVideoOrAudio && $isActivated && $statusCheck;
                                     @endphp
                                     @if($isActive)
                                         <a href="{{ route('sessions.join', $appointment->id) }}" 
                                            class="action-btn join" 
-                                           title="Join Session">
+                                           title="Join Session"
+                                           target="_blank">
                                             <i class="ri-{{ $appointment->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>Join Session
                                         </a>
+                                    @elseif(!$appointment->is_activated_by_admin)
+                                        <button class="action-btn disabled" disabled title="Waiting for Admin Activation">
+                                            <i class="ri-time-line"></i>
+                                        </button>
+                                    @elseif(!$canJoin)
+                                        @php
+                                            $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
+                                            $timeUntilJoin = $joinAvailableAt->diffForHumans(now(), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+                                        @endphp
+                                        <button class="action-btn disabled" disabled title="Join button will be available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }})">
+                                            <i class="ri-time-line"></i>
+                                        </button>
+                                    @else
+                                        <button class="action-btn disabled" disabled title="Not available yet">
+                                            <i class="ri-time-line"></i>
+                                        </button>
                                     @endif
                                     @if($appointment->status === 'completed')
                                         <a href="{{ route('client.reviews.create', $appointment->id) }}" 
