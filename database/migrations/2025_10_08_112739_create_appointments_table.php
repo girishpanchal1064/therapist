@@ -29,7 +29,8 @@ return new class extends Migration
             $table->text('cancellation_reason')->nullable();
             $table->foreignId('cancelled_by')->nullable()->constrained('users');
             $table->timestamp('cancelled_at')->nullable();
-            $table->foreignId('payment_id')->nullable()->constrained('payments');
+            $table->unsignedBigInteger('payment_id')->nullable();
+            // Foreign key added in 2025_10_08_112826 after payments table exists
             $table->timestamps();
             $table->softDeletes();
             
