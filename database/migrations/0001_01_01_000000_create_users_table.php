@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('role_id')->nullable()->index();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
+            // Foreign key added in 2025_10_08_104246 after roles table exists
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
