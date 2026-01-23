@@ -669,14 +669,13 @@
             $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
             $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
             
-            // Show join button if time has arrived (or within 5 min) AND status allows it AND session mode is video/audio AND admin activated
+            // Show join button if time has arrived (or within 5 min) AND status allows it AND session mode is video/audio
             // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
             $isVideoOrAudio = in_array($session->session_mode, ['video', 'audio']);
-            $isActivated = $session->is_activated_by_admin;
             $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) || 
                 ($session->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
             
-            $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $isActivated && $statusCheck;
+            $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
             $isLive = $session->status === 'in_progress';
             $isToday = $session->appointment_date->isToday();
         @endphp
@@ -780,11 +779,6 @@
                                         <button class="action-btn disabled expired" disabled title="Session Expired - This session has ended">
                                             <i class="ri-time-off-line"></i>
                                             <span>Session Expired</span>
-                                        </button>
-                                    @elseif(!$session->is_activated_by_admin)
-                                        <button class="action-btn disabled waiting" disabled title="Waiting for Admin Activation - Your session is pending approval">
-                                            <i class="ri-hourglass-line"></i>
-                                            <span>Waiting for Confirmation</span>
                                         </button>
                                     @elseif(!$isVideoOrAudio)
                                         <button class="action-btn disabled not-available" disabled title="Session mode is {{ $session->session_mode }} (only video/audio sessions can be joined)">

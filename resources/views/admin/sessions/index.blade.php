@@ -502,60 +502,29 @@
                                     {{ \Carbon\Carbon::parse($session->appointment_time)->format('g:i A') }}
                                 </span>
                             </td>
-                            <td>
-                                <div class="d-flex flex-column align-items-center gap-1">
-                                    @if($session->status === 'scheduled')
-                                        <span class="status-badge badge-pending">PENDING</span>
-                                    @elseif($session->status === 'confirmed')
-                                        <span class="status-badge badge-upcoming">UPCOMING</span>
-                                    @elseif($session->status === 'completed')
-                                        <span class="status-badge badge-completed">COMPLETED</span>
-                                    @elseif($session->status === 'cancelled')
-                                        <span class="status-badge badge-cancelled">CANCELLED</span>
-                                    @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
-                                        <span class="status-badge badge-expired">EXPIRED</span>
-                                    @else
-                                        <span class="status-badge" style="background: #6c757d; color: white;">{{ strtoupper($session->status) }}</span>
-                                    @endif
-                                    @if($session->is_activated_by_admin)
-                                        <small class="text-success" style="font-size: 0.7rem;">
-                                            <i class="ri-checkbox-circle-line"></i> Activated
-                                        </small>
-                                    @else
-                                        <small class="text-warning" style="font-size: 0.7rem;">
-                                            <i class="ri-time-line"></i> Not Activated
-                                        </small>
-                                    @endif
-                                </div>
-                            </td>
+                                <td>
+                                                <div class="d-flex flex-column align-items-center gap-1">
+                                                    @if($session->status === 'scheduled')
+                                                        <span class="status-badge badge-pending">PENDING</span>
+                                                    @elseif($session->status === 'confirmed')
+                                                        <span class="status-badge badge-upcoming">UPCOMING</span>
+                                                    @elseif($session->status === 'completed')
+                                                        <span class="status-badge badge-completed">COMPLETED</span>
+                                                    @elseif($session->status === 'cancelled')
+                                                        <span class="status-badge badge-cancelled">CANCELLED</span>
+                                                    @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
+                                                        <span class="status-badge badge-expired">EXPIRED</span>
+                                                    @else
+                                                        <span class="status-badge" style="background: #6c757d; color: white;">{{ strtoupper($session->status) }}</span>
+                                                    @endif
+                                                </div>
+                                            </td>
                             <td>
                                 <div class="dropdown action-dropdown">
                                     <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown">
                                         <i class="ri-more-2-line"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        @if(!$session->is_activated_by_admin && in_array($session->status, ['scheduled', 'confirmed']))
-                                            <form action="{{ route('admin.sessions.activate', $session->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button type="submit" class="dropdown-item text-success">
-                                                    <i class="ri-check-double-line me-2"></i> Activate Session
-                                                </button>
-                                            </form>
-                                        @elseif($session->is_activated_by_admin && !in_array($session->status, ['in_progress', 'completed']))
-                                            <form action="{{ route('admin.sessions.deactivate', $session->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button type="submit" class="dropdown-item text-warning">
-                                                    <i class="ri-close-double-line me-2"></i> Deactivate Session
-                                                </button>
-                                            </form>
-                                        @endif
-                                        @if($session->is_activated_by_admin)
-                                            <div class="dropdown-divider"></div>
-                                            <span class="dropdown-item-text text-success">
-                                                <i class="ri-checkbox-circle-line me-2"></i> Activated by Admin
-                                            </span>
-                                        @endif
-                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ route('admin.sessions.edit', $session->id) }}">
                                             <i class="ri-pencil-line me-2"></i> Edit
                                         </a>

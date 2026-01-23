@@ -56,12 +56,6 @@ class SessionController extends Controller
         // Allow joining 5 minutes before appointment time or anytime after
         $canJoin = $appointmentDateTime->diffInMinutes(now(), false) >= -5;
 
-        // Check if session is activated by admin (required for joining)
-        if (!$appointment->is_activated_by_admin) {
-            return redirect()->back()
-                ->with('error', 'This session has not been activated by admin yet. Please wait for admin activation.');
-        }
-
         // Update status automatically if session time has arrived
         if ($canJoin) {
             if ($appointment->status === 'scheduled') {

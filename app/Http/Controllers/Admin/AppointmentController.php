@@ -139,6 +139,11 @@ class AppointmentController extends Controller
             $validated['meeting_link'] = config('app.url') . '/session/' . $meetingId;
             $validated['meeting_password'] = $validated['meeting_password'] ?? str()->random(8);
         }
+        
+        // Auto-activate session (no separate activation needed)
+        $validated['is_activated_by_admin'] = true;
+        $validated['activated_by'] = \Illuminate\Support\Facades\Auth::id();
+        $validated['activated_at'] = now();
 
         Appointment::create($validated);
 

@@ -860,7 +860,7 @@
         </div>
         <div class="session-detail-item">
           <i class="ri-timer-line"></i>
-          <span>{{ $appointment->duration ?? 60 }} mins</span>
+          <span>{{ $appointment->duration_minutes ?? 60 }} mins</span>
         </div>
       </div>
       @php
@@ -902,11 +902,10 @@
         
         // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
         $isVideoOrAudio = in_array($appointment->session_mode, ['video', 'audio']);
-        $isActivated = $appointment->is_activated_by_admin;
         $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress']) || 
             ($appointment->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
         
-        $isActive = $canJoin && $isVideoOrAudio && $isActivated && $statusCheck && !$isSessionExpired;
+        $isActive = $canJoin && $isVideoOrAudio && $statusCheck && !$isSessionExpired;
       @endphp
       @if($isActive)
       <div class="session-actions">
@@ -923,16 +922,6 @@
         <button class="join-session-btn" disabled style="opacity: 0.6; cursor: not-allowed;">
           <i class="ri-timer-line"></i>
           Session Expired
-        </button>
-        <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-outline-secondary btn-sm" style="border-radius: 10px;">
-          <i class="ri-eye-line"></i>
-        </a>
-      </div>
-      @elseif(!$appointment->is_activated_by_admin)
-      <div class="session-actions">
-        <button class="join-session-btn" disabled style="opacity: 0.6; cursor: not-allowed;">
-          <i class="ri-time-line"></i>
-          Waiting for Admin Activation
         </button>
         <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-outline-secondary btn-sm" style="border-radius: 10px;">
           <i class="ri-eye-line"></i>
@@ -1009,7 +998,7 @@
             $canJoin = $minutesDiff >= -5;
             $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
             $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
-            $isActive = $canJoin && !$isSessionExpired && in_array($session->session_mode, ['video', 'audio']) && $session->is_activated_by_admin;
+            $isActive = $canJoin && !$isSessionExpired && in_array($session->session_mode, ['video', 'audio']);
           @endphp
           <div class="col-md-6">
             <div class="session-card" style="border-left: 3px solid #10b981; background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);">
@@ -1145,7 +1134,7 @@
                 $nowISTUpcoming = \Carbon\Carbon::now('Asia/Kolkata');
                 $canJoinUpcoming = $appointmentDateTime->diffInMinutes($nowISTUpcoming, false) >= -5;
                 // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
-                $isActiveUpcoming = $canJoinUpcoming && in_array($appointment->session_mode, ['video', 'audio']) && $appointment->is_activated_by_admin && (
+                $isActiveUpcoming = $canJoinUpcoming && in_array($appointment->session_mode, ['video', 'audio']) && (
                     in_array($appointment->status, ['confirmed', 'in_progress']) || 
                     ($appointment->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoinUpcoming))
                 );
@@ -1154,10 +1143,6 @@
               <a href="{{ route('sessions.join', $appointment->id) }}" class="btn btn-sm btn-success" style="border-radius: 10px;" target="_blank">
                 <i class="ri-vidicon-line me-1"></i>Join
               </a>
-              @elseif(!$appointment->is_activated_by_admin)
-              <button class="btn btn-sm btn-outline-warning" disabled style="border-radius: 10px; font-size: 0.7rem;">
-                <i class="ri-time-line me-1"></i>Waiting Activation
-              </button>
               @elseif(!$canJoinUpcoming)
               @php
                   $joinAvailableAtUpcoming = $appointmentDateTime->copy()->subMinutes(5);

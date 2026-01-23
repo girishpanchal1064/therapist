@@ -161,7 +161,7 @@ class BookingController extends Controller
             $meetingId = 'twilio-' . uniqid();
         }
 
-        // Create appointment
+        // Create appointment (auto-activated - no admin approval needed)
         $appointment = Appointment::create([
             'client_id' => Auth::id(),
             'therapist_id' => $request->therapist_id,
@@ -173,6 +173,8 @@ class BookingController extends Controller
             'status' => 'scheduled',
             'meeting_id' => $meetingId,
             'meeting_link' => route('sessions.join', ['appointment' => 'temp']), // Will update after creation
+            'is_activated_by_admin' => true, // Auto-activate session
+            'activated_at' => now(),
         ]);
 
         // Update room name with actual appointment ID and meeting link

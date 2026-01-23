@@ -665,7 +665,7 @@
               </div>
               <div class="session-detail-item">
                 <i class="ri-timer-line"></i>
-                <span>{{ $appointment->duration ?? 60 }} mins</span>
+                <span>{{ $appointment->duration_minutes ?? 60 }} mins</span>
               </div>
             </div>
             @php
@@ -702,7 +702,7 @@
               $canJoin = $appointmentDateTime->diffInMinutes($nowIST, false) >= -5;
               $sessionEndTime = $appointmentDateTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
               $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
-              $isActiveTherapist = $canJoin && !$isSessionExpired && in_array($appointment->session_mode, ['video', 'audio']) && $appointment->is_activated_by_admin && (
+              $isActiveTherapist = $canJoin && !$isSessionExpired && in_array($appointment->session_mode, ['video', 'audio']) && (
                   in_array($appointment->status, ['confirmed', 'in_progress']) || 
                   ($appointment->status === 'scheduled' && $appointmentDateTime->isPast())
               );
@@ -721,18 +721,11 @@
                 Session Expired
               </button>
             </div>
-            @elseif($appointment->is_activated_by_admin && !$isActiveTherapist)
+            @elseif(!$isActiveTherapist)
             <div class="session-actions mt-2">
               <button class="btn btn-sm btn-outline-secondary w-100" disabled style="border-radius: 8px; font-size: 0.75rem;">
                 <i class="ri-time-line me-1"></i>
                 Available {{ $appointmentDateTime->copy()->subMinutes(5)->diffForHumans() }}
-              </button>
-            </div>
-            @elseif(!$appointment->is_activated_by_admin)
-            <div class="session-actions mt-2">
-              <button class="btn btn-sm btn-outline-warning w-100" disabled style="border-radius: 8px; font-size: 0.75rem;">
-                <i class="ri-time-line me-1"></i>
-                Waiting Activation
               </button>
             </div>
             @endif

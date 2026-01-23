@@ -647,36 +647,20 @@
                   $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
                   $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
                   
-                  // Show join button if time has arrived (or within 5 min) AND status allows it AND admin activated
+                  // Show join button if time has arrived (or within 5 min) AND status allows it
                   // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
                   $isVideoOrAudio = in_array($session->session_mode, ['video', 'audio']);
-                  $isActivated = $session->is_activated_by_admin;
                   $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) || 
                     ($session->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
                   
-                  $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $isActivated && $statusCheck;
+                  $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
                 @endphp
                 
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                   @if($session->status === 'scheduled')
-                    @if($session->is_activated_by_admin)
-                      <span class="status-badge upcoming">Activated</span>
-                      <small class="text-success" style="font-size: 0.7rem;">
-                        <i class="ri-checkbox-circle-line"></i> Ready
-                      </small>
-                    @else
-                      <span class="status-badge pending">Pending</span>
-                      <small class="text-warning" style="font-size: 0.7rem;">
-                        <i class="ri-time-line"></i> Waiting Activation
-                      </small>
-                    @endif
+                    <span class="status-badge pending">Scheduled</span>
                   @elseif($session->status === 'confirmed')
                     <span class="status-badge upcoming">Upcoming</span>
-                    @if($session->is_activated_by_admin)
-                      <small class="text-success" style="font-size: 0.7rem;">
-                        <i class="ri-checkbox-circle-line"></i> Activated
-                      </small>
-                    @endif
                   @elseif($session->status === 'completed')
                     <span class="status-badge completed">Completed</span>
                   @elseif($session->status === 'cancelled')
@@ -701,15 +685,10 @@
                       <i class="ri-timer-line me-1"></i>
                       Session Expired
                     </button>
-                  @elseif($session->is_activated_by_admin && $session->status === 'scheduled' && !$isActive)
+                  @elseif($session->status === 'scheduled' && !$isActive)
                     <button class="btn btn-sm btn-outline-secondary" disabled style="white-space: nowrap; font-size: 0.75rem;">
                       <i class="ri-time-line me-1"></i>
                       Available {{ $appointmentDateTime->copy()->subMinutes(5)->diffForHumans() }}
-                    </button>
-                  @elseif(!$session->is_activated_by_admin)
-                    <button class="btn btn-sm btn-outline-warning" disabled style="white-space: nowrap; font-size: 0.75rem;">
-                      <i class="ri-time-line me-1"></i>
-                      Waiting Activation
                     </button>
                   @endif
                 </div>

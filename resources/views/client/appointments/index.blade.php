@@ -775,14 +775,13 @@
                                       $minutesDiff = $appointmentDateTime->diffInMinutes(now(), false);
                                       $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
                                       
-                                      // Show join button if time has arrived (or within 5 min) AND status allows it AND admin activated
+                                      // Show join button if time has arrived (or within 5 min) AND status allows it
                                       // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
                                       $isVideoOrAudio = in_array($appointment->session_mode, ['video', 'audio']);
-                                      $isActivated = $appointment->is_activated_by_admin;
                                       $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress']) || 
                                         ($appointment->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
                                       
-                                      $isActive = $canJoin && $isVideoOrAudio && $isActivated && $statusCheck;
+                                      $isActive = $canJoin && $isVideoOrAudio && $statusCheck;
                                     @endphp
                                     @if($isActive)
                                         <a href="{{ route('sessions.join', $appointment->id) }}" 
@@ -791,10 +790,6 @@
                                            target="_blank">
                                             <i class="ri-{{ $appointment->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>Join Session
                                         </a>
-                                    @elseif(!$appointment->is_activated_by_admin)
-                                        <button class="action-btn disabled" disabled title="Waiting for Admin Activation">
-                                            <i class="ri-time-line"></i>
-                                        </button>
                                     @elseif(!$canJoin)
                                         @php
                                             $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
