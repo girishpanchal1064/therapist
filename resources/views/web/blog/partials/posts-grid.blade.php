@@ -49,16 +49,16 @@
             <!-- Meta Information -->
             <div class="flex items-center justify-between text-sm text-gray-500">
                 <div class="flex items-center">
-                    @if($post->author->profile && $post->author->profile->profile_image)
+                    @if($post->author && $post->author->profile && $post->author->profile->profile_image)
                         <img src="{{ asset('storage/' . $post->author->profile->profile_image) }}"
-                             alt="{{ $post->author->name }}"
+                             alt="{{ $post->author ? $post->author->name : 'Author' }}"
                              class="w-8 h-8 rounded-full object-cover mr-2">
                     @else
                         <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white text-sm font-semibold mr-2">
-                            {{ substr($post->author->name, 0, 1) }}
+                            {{ $post->author ? substr($post->author->name, 0, 1) : 'A' }}
                         </div>
                     @endif
-                    <span class="font-medium">{{ $post->author->name }}</span>
+                    <span class="font-medium">{{ $post->author ? $post->author->name : 'Anonymous' }}</span>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="flex items-center">

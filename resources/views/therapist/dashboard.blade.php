@@ -143,20 +143,20 @@
     margin-bottom: 1rem;
   }
 
-  .stat-icon.primary { 
-    background: linear-gradient(135deg, rgba(5, 150, 105, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%); 
+  .stat-icon.primary {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
     color: #059669;
   }
-  .stat-icon.success { 
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.15) 100%); 
+  .stat-icon.success {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.15) 100%);
     color: #16a34a;
   }
-  .stat-icon.warning { 
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%); 
+  .stat-icon.warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
     color: #d97706;
   }
-  .stat-icon.info { 
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%); 
+  .stat-icon.info {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
     color: #2563eb;
   }
 
@@ -524,7 +524,7 @@
     <div class="welcome-text">
       <h1>
         @php
-          $hour = now()->hour;
+          $hour = \Carbon\Carbon::now('Asia/Kolkata')->hour;
           $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good Evening');
         @endphp
         {{ $greeting }}, Dr. {{ auth()->user()->name }}! 👋
@@ -670,12 +670,12 @@
             </div>
             @php
               // Check if join button should be shown
-              $timeString = is_string($appointment->appointment_time) 
-                  ? $appointment->appointment_time 
-                  : (is_object($appointment->appointment_time) 
-                      ? $appointment->appointment_time->format('H:i:s') 
+              $timeString = is_string($appointment->appointment_time)
+                  ? $appointment->appointment_time
+                  : (is_object($appointment->appointment_time)
+                      ? $appointment->appointment_time->format('H:i:s')
                       : $appointment->appointment_time);
-              
+
               // Extract just time if it's a full datetime string (contains date part)
               if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
                   // If it contains a date (has dashes or is longer than time format), extract just time
@@ -691,20 +691,20 @@
                       }
                   }
               }
-              
+
               // Ensure we have a valid time string (HH:MM:SS format)
               if (strlen($timeString) <= 5) {
                   $timeString = $timeString . ':00'; // Add seconds if missing
               }
-              
+
               $appointmentDateTime = \Carbon\Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
               $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
               $canJoin = $appointmentDateTime->diffInMinutes($nowIST, false) >= -5;
               $sessionEndTime = $appointmentDateTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
               $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
               $isActiveTherapist = $canJoin && !$isSessionExpired && in_array($appointment->session_mode, ['video', 'audio']) && (
-                  in_array($appointment->status, ['confirmed', 'in_progress']) || 
-                  ($appointment->status === 'scheduled' && $appointmentDateTime->isPast())
+                  in_array($appointment->status, ['confirmed', 'in_progress']) ||
+                  ($appointment->status === 'scheduled' && $appointmentDateTime->lessThan(\Carbon\Carbon::now('Asia/Kolkata')))
               );
             @endphp
             @if($isActiveTherapist)
@@ -797,7 +797,7 @@
                     {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}
                   </div>
                   <div style="font-size: 0.8125rem; color: #6b7280;">
-                    {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
+                    {{ \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST
                   </div>
                 </td>
                 <td>

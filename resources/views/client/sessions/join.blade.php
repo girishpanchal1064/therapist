@@ -71,7 +71,7 @@
                 <div class="mb-2">
                   <small class="text-muted d-block">Date & Time</small>
                   <strong>{{ $appointment->appointment_date->format('M d, Y') }}</strong><br>
-                  <strong>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</strong>
+                  <strong>{{ \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST</strong>
                 </div>
                 <div class="mb-2">
                   <small class="text-muted d-block">Duration</small>
@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Toggle Video
   document.getElementById('toggleVideo').addEventListener('click', function() {
     videoEnabled = !videoEnabled;
-    this.innerHTML = videoEnabled 
-      ? '<i class="ri-video-line me-1"></i>Video' 
+    this.innerHTML = videoEnabled
+      ? '<i class="ri-video-line me-1"></i>Video'
       : '<i class="ri-video-off-line me-1"></i>Video Off';
     this.classList.toggle('btn-outline-primary', !videoEnabled);
     this.classList.toggle('btn-primary', videoEnabled);
@@ -129,8 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Toggle Audio
   document.getElementById('toggleAudio').addEventListener('click', function() {
     audioEnabled = !audioEnabled;
-    this.innerHTML = audioEnabled 
-      ? '<i class="ri-mic-line me-1"></i>Audio' 
+    this.innerHTML = audioEnabled
+      ? '<i class="ri-mic-line me-1"></i>Audio'
       : '<i class="ri-mic-off-line me-1"></i>Audio Off';
     this.classList.toggle('btn-outline-primary', !audioEnabled);
     this.classList.toggle('btn-primary', audioEnabled);

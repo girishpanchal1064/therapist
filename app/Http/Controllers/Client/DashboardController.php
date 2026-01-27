@@ -102,7 +102,7 @@ class DashboardController extends Controller
             ->get();
 
         // Get wallet transactions
-        $walletTransactions = $user->wallet 
+        $walletTransactions = $user->wallet
             ? $user->wallet->transactions()
                 ->orderBy('created_at', 'desc')
                 ->limit(10)

@@ -36,9 +36,9 @@
                     {{ $featuredPost->excerpt }}
                 </p>
                 <div class="flex items-center text-primary-100">
-                    @if($featuredPost->author->profile && $featuredPost->author->profile->profile_image)
+                    @if($featuredPost->author && $featuredPost->author->profile && $featuredPost->author->profile->profile_image)
                         <img src="{{ Storage::url($featuredPost->author->profile->profile_image) }}"
-                             alt="{{ $featuredPost->author->name }}"
+                             alt="{{ $featuredPost->author ? $featuredPost->author->name : 'Author' }}"
                              class="w-10 h-10 rounded-full object-cover mr-3">
                     @else
                         <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
@@ -48,10 +48,18 @@
                         </div>
                     @endif
                     <div>
-                        <p class="font-medium">{{ $featuredPost->author->name }}</p>
-                        <p class="text-sm">{{ $featuredPost->author->therapistProfile->qualification ?? 'Licensed Therapist' }}</p>
+                        <p class="font-medium">{{ $featuredPost->author ? $featuredPost->author->name : 'Anonymous' }}</p>
+                        <p class="text-sm">
+                            @if($featuredPost->author && $featuredPost->author->therapistProfile)
+                                {{ $featuredPost->author->therapistProfile->qualification ?? 'Licensed Therapist' }}
+                            @elseif($featuredPost->author && $featuredPost->author->profile && $featuredPost->author->profile->qualification)
+                                {{ $featuredPost->author->profile->qualification }}
+                            @else
+                                Licensed Therapist
+                            @endif
+                        </p>
                     </div>
-                    <span class="ml-auto text-sm">{{ $featuredPost->reading_time }} min read</span>
+                    <span class="ml-auto text-sm">{{ $featuredPost->reading_time ?? 5 }} min read</span>
                 </div>
                 <div class="mt-6">
                     <a href="{{ route('blog.show', $featuredPost->slug) }}"

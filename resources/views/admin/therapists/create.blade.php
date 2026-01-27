@@ -7,9 +7,9 @@
   /* Page Header */
   .page-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
+    border-radius: 14px;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.25rem;
     position: relative;
     overflow: hidden;
   }
@@ -19,18 +19,43 @@
     position: absolute;
     top: -50%;
     right: -20%;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
+  }
+
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+  }
+
+  .header-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    backdrop-filter: blur(10px);
   }
 
   .page-header h4 {
     color: white;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     position: relative;
     z-index: 1;
+    font-size: 1.35rem;
   }
 
   .page-header p {
@@ -38,34 +63,23 @@
     margin-bottom: 0;
     position: relative;
     z-index: 1;
-  }
-
-  .header-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.75rem;
-    color: white;
-    backdrop-filter: blur(10px);
+    font-size: 0.875rem;
   }
 
   /* Form Card */
   .form-card {
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     overflow: hidden;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    background: white;
   }
 
   .form-card .card-header {
     background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    border-bottom: 1px solid #e2e8f0;
-    padding: 1.25rem 1.5rem;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 1rem 1.25rem;
   }
 
   .form-card .card-header h6 {
@@ -90,7 +104,7 @@
   }
 
   .form-card .card-body {
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem;
   }
 
   /* Form Styling */
@@ -172,11 +186,13 @@
 
   /* Alert Styling */
   .alert-danger {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border: 1px solid #fecaca;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border: none;
+    border-left: 5px solid #ef4444;
     color: #991b1b;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 1rem 1.25rem;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
   }
 
   /* Action Buttons */
@@ -190,7 +206,7 @@
     transition: all 0.2s ease;
   }
 
-  .btn-cancel:hover {
+  .btn-cancel:active {
     background: #e2e8f0;
     border-color: #cbd5e1;
     color: #334155;
@@ -207,9 +223,8 @@
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   }
 
-  .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  .btn-submit:active {
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
     color: white;
   }
 
@@ -253,7 +268,7 @@
 @section('content')
 <!-- Page Header -->
 <div class="page-header">
-  <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 position-relative" style="z-index: 1;">
     <div class="d-flex align-items-center gap-3">
       <div class="header-icon">
         <i class="ri-user-add-line"></i>
@@ -263,7 +278,7 @@
         <p class="mb-0">Create a new therapist account with profile details</p>
       </div>
     </div>
-    <a href="{{ route('admin.therapists.index') }}" class="btn btn-light">
+    <a href="{{ route('admin.therapists.index') }}" class="btn" style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); color: white; padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; backdrop-filter: blur(10px);">
       <i class="ri-arrow-left-line me-2"></i>Back to List
     </a>
   </div>

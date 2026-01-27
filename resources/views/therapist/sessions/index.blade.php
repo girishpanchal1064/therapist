@@ -4,13 +4,20 @@
 
 @section('page-style')
 <style>
+:root {
+    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --info-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
   /* === Sessions Page Custom Styles === */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 1.5rem;
-    color: white;
+    background: var(--theme-gradient);
+    border-radius: 14px;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.25rem;
     position: relative;
     overflow: hidden;
   }
@@ -19,27 +26,52 @@
     content: '';
     position: absolute;
     top: -50%;
-    right: -10%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
   }
 
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+  }
+
+  .header-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    backdrop-filter: blur(10px);
+  }
+
   .page-header h4 {
+    color: white;
     font-weight: 700;
     margin-bottom: 0.25rem;
     position: relative;
-    color: white;
     z-index: 1;
+    font-size: 1.35rem;
   }
 
   .page-header p {
-    opacity: 0.9;
-    margin: 0;
-    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0;
     position: relative;
     z-index: 1;
+    font-size: 0.875rem;
   }
 
   /* Tab Navigation */
@@ -73,10 +105,9 @@
     border-color: #e5e7eb;
   }
 
-  .session-tab:not(.active):hover {
+  .session-tab:not(.active):active {
     background: #e5e7eb;
     color: #374151;
-    transform: translateY(-2px);
   }
 
   .session-tab.active {
@@ -103,20 +134,18 @@
 
   /* Main Card */
   .sessions-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    overflow: hidden;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
   }
 
   .sessions-card .card-header {
-    background: transparent;
-    border-bottom: 1px solid #f3f4f6;
-    padding: 1.25rem 1.5rem;
+    display: none;
   }
 
   .sessions-card .card-body {
-    padding: 1.5rem;
+    padding: 0;
   }
 
   /* Search & Filters */
@@ -164,9 +193,8 @@
     transition: all 0.3s ease;
   }
 
-  .btn-search:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+  .btn-search:active {
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
     color: white;
   }
 
@@ -183,159 +211,261 @@
     gap: 0.5rem;
   }
 
-  .btn-refresh:hover {
+  .btn-refresh:active {
     background: #059669;
     color: white;
-    transform: translateY(-2px);
   }
 
-  /* Table Styles */
-  .sessions-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+  /* Session Cards */
+  .session-card {
     background: white;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    position: relative;
+    margin-bottom: 0.5rem;
+    border-left: 4px solid transparent;
   }
 
-  .sessions-table thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 18px 20px;
-    border: none;
-    text-align: left;
-    white-space: nowrap;
+  .session-card:nth-child(even) {
+    background: #fafbfc;
+    border-left-color: #667eea;
   }
 
-  .sessions-table thead th:first-child {
-    border-radius: 12px 0 0 0;
+  .session-card:nth-child(odd) {
+    border-left-color: #764ba2;
   }
 
-  .sessions-table thead th:last-child {
-    border-radius: 0 12px 0 0;
+  .session-card .card-body {
+    padding: 0.875rem 1.25rem;
   }
 
-  .sessions-table tbody td {
-    padding: 18px 20px;
-    border-bottom: 1px solid #f0f2f5;
-    vertical-align: middle;
-    color: #2d3748;
-    font-size: 0.9rem;
-  }
-
-  .sessions-table tbody tr {
-    transition: all 0.3s ease;
-    background: white;
-  }
-
-  .sessions-table tbody tr:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
-    transform: scale(1.001);
-    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
-  }
-
-  .sessions-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-
-  /* Client Cell */
-  .client-cell {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
+  /* Client Avatar */
   .client-avatar {
     width: 40px;
     height: 40px;
     border-radius: 10px;
     object-fit: cover;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #f0f2ff;
+    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.1);
   }
 
   .client-avatar-placeholder {
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    background: var(--theme-gradient);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
     color: white;
-    font-weight: 600;
-    font-size: 0.8125rem;
   }
 
-  .client-name {
+  .client-info h6 {
     font-weight: 600;
     color: #1f2937;
-    font-size: 0.9375rem;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    line-height: 1.2;
   }
 
-  /* Mode Badge */
-  .mode-badge {
-    padding: 0.375rem 0.75rem;
+  .client-info small {
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+  }
+
+  /* Session Details */
+  .detail-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.35rem 0.65rem;
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    margin-right: 0.5rem;
+  }
+
+  .detail-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--theme-gradient);
+    color: white;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(102, 126, 234, 0.2);
+  }
+
+  .detail-text {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.8rem;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  /* Session Type Badges */
+  .session-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
     border-radius: 8px;
     font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
+    font-weight: 600;
+    margin: 0;
+    margin-right: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
   }
 
-  .mode-badge.video {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+  .session-badge.video {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
     color: #2563eb;
   }
 
-  .mode-badge.audio {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
-    color: #d97706;
+  .session-badge.audio {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+    color: #059669;
   }
 
-  .mode-badge.chat {
+  .session-badge.chat {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+    color: #7c3aed;
+  }
+
+  .type-badge {
     background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.1) 100%);
     color: #4b5563;
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 1px solid rgba(107, 114, 128, 0.15);
+    display: inline-block;
   }
 
   /* Status Badge */
   .status-badge {
-    padding: 0.375rem 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
     border-radius: 8px;
     font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
   }
 
-  .status-badge.pending {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+  .status-badge.scheduled {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
     color: #d97706;
   }
 
-  .status-badge.upcoming {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+  .status-badge.confirmed {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+    color: #059669;
+  }
+
+  .status-badge.in_progress {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
     color: #2563eb;
   }
 
   .status-badge.completed {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
-    color: #059669;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    color: #667eea;
   }
 
   .status-badge.cancelled, .status-badge.cancel {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
     color: #dc2626;
   }
 
   .status-badge.expired {
-    background: linear-gradient(135deg, rgba(75, 85, 99, 0.1) 0%, rgba(55, 65, 81, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(75, 85, 99, 0.15) 0%, rgba(55, 65, 81, 0.15) 100%);
     color: #374151;
+  }
+
+  .status-badge.pending {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
+    color: #d97706;
+  }
+
+  .status-badge.upcoming {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+    color: #2563eb;
+  }
+
+  /* Action Buttons */
+  .action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    cursor: pointer;
+  }
+
+  .action-btn.join {
+    background: var(--success-gradient);
+    color: white;
+    padding: 0.4rem 0.85rem;
+    width: auto;
+    height: auto;
+    font-size: 0.8rem;
+    font-weight: 600;
+    gap: 0.35rem;
+    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.25);
+  }
+
+  .action-btn.view {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    color: #667eea;
+  }
+
+  .action-btn.disabled {
+    background: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+    padding: 0.4rem 0.85rem;
+    width: auto;
+    height: auto;
+    font-size: 0.75rem;
+  }
+
+  .action-btn.disabled.expired {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+  }
+
+  .action-btn.disabled.waiting {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border: 1px solid #fcd34d;
+  }
+
+  .action-btn.disabled.not-available {
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+    color: #4b5563;
+    border: 1px solid #9ca3af;
   }
 
   /* Pagination */
@@ -375,7 +505,7 @@
     text-decoration: none;
   }
 
-  .page-btn:hover:not(:disabled) {
+  .page-btn:active:not(:disabled) {
     border-color: #059669;
     color: #059669;
     background: #f0fdf4;
@@ -420,6 +550,35 @@
     color: #059669;
   }
 
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+    margin-right: 0.5rem;
+  }
+
+  .live-indicator::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+  }
+
   .empty-state h5 {
     font-weight: 600;
     color: #1f2937;
@@ -454,9 +613,8 @@
       padding: 0.5rem 1rem;
     }
 
-    .sessions-table {
-      display: block;
-      overflow-x: auto;
+    .session-card .card-body {
+      padding: 0.75rem 1rem;
     }
   }
 </style>
@@ -465,25 +623,33 @@
 @section('content')
 <!-- Page Header -->
 <div class="page-header">
-  <h4>
-    <i class="ri-video-line me-2"></i>
-    @if($status === 'pending')
-      Pending Sessions
-    @elseif($status === 'upcoming')
-      Upcoming Sessions
-    @elseif($status === 'completed')
-      Completed Sessions
-    @elseif($status === 'cancel_by_me')
-      Cancelled By Me
-    @elseif($status === 'cancelled_by_user')
-      Cancelled By Client
-    @elseif($status === 'expired')
-      Expired Sessions
-    @else
-      Online Sessions
-    @endif
-  </h4>
-  <p>Manage and track all your therapy sessions in one place</p>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 position-relative" style="z-index: 1;">
+    <div class="d-flex align-items-center gap-3">
+      <div class="header-icon">
+        <i class="ri-video-chat-line"></i>
+      </div>
+      <div>
+        <h4 class="mb-1">
+          @if($status === 'pending')
+            Pending Sessions
+          @elseif($status === 'upcoming')
+            Upcoming Sessions
+          @elseif($status === 'completed')
+            Completed Sessions
+          @elseif($status === 'cancel_by_me')
+            Cancelled By Me
+          @elseif($status === 'cancelled_by_user')
+            Cancelled By Client
+          @elseif($status === 'expired')
+            Expired Sessions
+          @else
+            Online Sessions
+          @endif
+        </h4>
+        <p class="mb-0">Manage and track all your therapy sessions in one place</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 @if(session('success'))
@@ -532,7 +698,7 @@
 <div class="sessions-card">
   <div class="card-body">
     <!-- Filters Row -->
-    <div class="filters-row">
+    <div class="filters-row mb-3">
       <form method="GET" action="{{ route('therapist.sessions.index') }}" class="search-box">
         <input type="hidden" name="status" value="{{ $status }}">
         <input type="text" name="search" class="search-input" placeholder="Search by client name..." value="{{ $search }}">
@@ -546,206 +712,207 @@
       </button>
     </div>
 
-    <!-- Sessions Table -->
-    <div class="table-responsive">
-      <table class="sessions-table">
-        <thead>
-          <tr>
-            <th style="width: 60px;">#</th>
-            <th>Session ID</th>
-            <th>Client</th>
-            <th>Mode</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse($sessions as $index => $session)
-            <tr>
-              <td style="font-weight: 500; color: #6b7280;">{{ $sessions->firstItem() + $index }}</td>
-              <td>
-                <span style="font-family: monospace; font-weight: 600; color: #059669;">
-                  S-{{ $session->created_at ? $session->created_at->timestamp : $session->id }}
-                </span>
-              </td>
-              <td>
-                <div class="client-cell">
-                  @if($session->client)
-                    @if($session->client->profile && $session->client->profile->profile_image)
-                      <img src="{{ asset('storage/' . $session->client->profile->profile_image) }}" alt="{{ $session->client->name }}" class="client-avatar">
-                    @elseif($session->client->getRawOriginal('avatar'))
-                      <img src="{{ asset('storage/' . $session->client->getRawOriginal('avatar')) }}" alt="{{ $session->client->name }}" class="client-avatar">
-                    @else
-                      <img src="https://ui-avatars.com/api/?name={{ urlencode($session->client->name ?? 'N') }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $session->client->name }}" class="client-avatar">
-                    @endif
-                  @else
-                    <div class="client-avatar-placeholder">
-                      N
-                    </div>
-                  @endif
-                  <span class="client-name">{{ $session->client->name ?? 'N/A' }}</span>
-                </div>
-              </td>
-              <td>
-                <span class="mode-badge {{ $session->session_mode }}">
-                  {{ strtoupper($session->session_mode) }}
-                </span>
-              </td>
-              <td style="font-weight: 500;">{{ $session->appointment_date->format('d M, Y') }}</td>
-              <td style="color: #6b7280;">
-                @php
-                  $startTime = \Carbon\Carbon::parse($session->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
-                  $endTime = $startTime->copy()->addMinutes($session->duration_minutes ?? 60);
-                  $duration = $session->duration_minutes ?? 60;
-                @endphp
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <span style="font-weight: 500;">
-                    {{ $startTime->format('g:i A') }} IST - {{ $endTime->format('g:i A') }} IST
-                  </span>
-                  <span style="font-size: 0.75rem; color: #9ca3af;">
-                    <i class="ri-timer-line" style="margin-right: 4px;"></i>{{ $duration }} mins
-                  </span>
-                </div>
-              </td>
-              <td>
-                @php
-                  // Handle appointment_time - it might be a datetime or time string
-                  $timeString = is_string($session->appointment_time) 
-                    ? $session->appointment_time 
-                    : (is_object($session->appointment_time) 
-                        ? $session->appointment_time->format('H:i:s') 
-                        : $session->appointment_time);
-                  
-                  // Extract just time if it's a full datetime string (contains date part)
-                  if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
-                    // If it contains a date (has dashes or is longer than time format), extract just time
-                    try {
-                        $parsedTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata');
-                        $timeString = $parsedTime->format('H:i:s');
-                    } catch (\Exception $e) {
-                        // If parsing fails, try to extract time manually
-                        if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
-                            $timeString = $matches[1];
-                        } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
-                            $timeString = $matches[1] . ':00';
-                        }
+    <!-- Sessions List -->
+    @if($sessions->count() > 0)
+      <div class="row g-2">
+        @foreach($sessions as $session)
+        @php
+            // Handle appointment_time - it might be a datetime or time string
+            $timeString = is_string($session->appointment_time)
+                ? $session->appointment_time
+                : (is_object($session->appointment_time)
+                    ? $session->appointment_time->format('H:i:s')
+                    : $session->appointment_time);
+
+            // Extract just time if it's a full datetime string (contains date part)
+            if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
+                // If it contains a date (has dashes or is longer than time format), extract just time
+                try {
+                    $parsedTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata');
+                    $timeString = $parsedTime->format('H:i:s');
+                } catch (\Exception $e) {
+                    // If parsing fails, try to extract time manually
+                    if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
+                        $timeString = $matches[1];
+                    } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
+                        $timeString = $matches[1] . ':00';
                     }
-                  }
-                  
-                  // Ensure we have a valid time string (HH:MM:SS format)
-                  if (strlen($timeString) <= 5) {
-                      $timeString = $timeString . ':00'; // Add seconds if missing
-                  }
-                  
-                  $appointmentDateTime = \Carbon\Carbon::parse($session->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
-                  // Allow joining 5 minutes before appointment time or anytime after
-                  // diffInMinutes(now(), false) returns negative for future times, positive for past times
-                  $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
-                  $minutesDiff = $appointmentDateTime->diffInMinutes($nowIST, false);
-                  $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
-                  $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
-                  $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
-                  
-                  // Show join button if time has arrived (or within 5 min) AND status allows it
-                  // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
-                  $isVideoOrAudio = in_array($session->session_mode, ['video', 'audio']);
-                  $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) || 
-                    ($session->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
-                  
-                  $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
-                @endphp
-                
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                  @if($session->status === 'scheduled')
-                    <span class="status-badge pending">Scheduled</span>
-                  @elseif($session->status === 'confirmed')
-                    <span class="status-badge upcoming">Upcoming</span>
-                  @elseif($session->status === 'completed')
-                    <span class="status-badge completed">Completed</span>
-                  @elseif($session->status === 'cancelled')
-                    @if($session->cancelled_by == auth()->id())
-                      <span class="status-badge cancel">Cancel by Me</span>
-                    @else
-                      <span class="status-badge cancelled">Cancelled by Client</span>
-                    @endif
-                  @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
-                    <span class="status-badge expired">Expired</span>
-                  @else
-                    <span class="status-badge">{{ strtoupper($session->status) }}</span>
-                  @endif
-                  
-                  @if($isActive && in_array($session->session_mode, ['video', 'audio']))
-                    <a href="{{ route('sessions.join', $session->id) }}" class="btn btn-sm btn-success" style="white-space: nowrap;" target="_blank">
-                      <i class="ri-{{ $session->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>
-                      Join Session
-                    </a>
-                  @elseif(!empty($isSessionExpired) && $isSessionExpired)
-                    <button class="btn btn-sm btn-outline-secondary" disabled style="white-space: nowrap; font-size: 0.75rem;">
-                      <i class="ri-timer-line me-1"></i>
-                      Session Expired
-                    </button>
-                  @elseif($session->status === 'scheduled' && !$isActive)
-                    <button class="btn btn-sm btn-outline-secondary" disabled style="white-space: nowrap; font-size: 0.75rem;">
-                      <i class="ri-time-line me-1"></i>
-                      Available {{ $appointmentDateTime->copy()->subMinutes(5)->diffForHumans() }}
-                    </button>
-                  @endif
+                }
+            }
+
+            // Ensure we have a valid time string (HH:MM:SS format)
+            if (strlen($timeString) <= 5) {
+                $timeString = $timeString . ':00'; // Add seconds if missing
+            }
+
+            $appointmentDateTime = \Carbon\Carbon::parse($session->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
+            // Allow joining 5 minutes before appointment time or anytime after
+            $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
+            $minutesDiff = $appointmentDateTime->diffInMinutes($nowIST, false);
+            $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
+            $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
+            $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
+
+            // Show join button if time has arrived (or within 5 min) AND status allows it AND session mode is video/audio
+            $isVideoOrAudio = in_array($session->session_mode, ['video', 'audio']);
+            $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) ||
+                ($session->status === 'scheduled' && ($appointmentDateTime->lessThan($nowIST) || $canJoin));
+
+            $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
+            $isLive = $session->status === 'in_progress';
+            $isToday = $session->appointment_date->isToday();
+        @endphp
+        <div class="col-12">
+            <div class="card session-card">
+                <div class="card-body">
+                    <div class="row align-items-center g-2">
+                        <!-- Client Info -->
+                        <div class="col-lg-2 col-md-3 mb-0">
+                            <div class="d-flex align-items-center" style="gap: 0.5rem;">
+                                @if($session->client)
+                                    @if($session->client->profile && $session->client->profile->profile_image)
+                                        <img src="{{ asset('storage/' . $session->client->profile->profile_image) }}" alt="{{ $session->client->name }}" class="client-avatar">
+                                    @elseif($session->client->getRawOriginal('avatar'))
+                                        <img src="{{ asset('storage/' . $session->client->getRawOriginal('avatar')) }}" alt="{{ $session->client->name }}" class="client-avatar">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($session->client->name ?? 'N') }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $session->client->name }}" class="client-avatar">
+                                    @endif
+                                @else
+                                    <div class="client-avatar-placeholder">
+                                        N
+                                    </div>
+                                @endif
+                                <div class="client-info">
+                                    <h6>{{ $session->client->name ?? 'N/A' }}</h6>
+                                    <small>
+                                        <i class="ri-user-line"></i>Client
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Session Details -->
+                        <div class="col-lg-3 col-md-4 mb-0">
+                            <div class="d-flex align-items-center flex-wrap" style="gap: 0.25rem;">
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                    <span class="detail-text">
+                                        @if($isToday)
+                                            <span class="text-success fw-bold">Today</span>
+                                        @else
+                                            {{ $session->appointment_date->format('M d, Y') }}
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="ri-time-line"></i>
+                                    </div>
+                                    <span class="detail-text">
+                                        @php
+                                          $startTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
+                                          $endTime = $startTime->copy()->addMinutes($session->duration_minutes ?? 60);
+                                        @endphp
+                                        {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }} IST
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Session Mode & Status -->
+                        <div class="col-lg-2 col-md-3 mb-0">
+                            <div class="d-flex align-items-center flex-wrap" style="gap: 0.5rem;">
+                                @if($isLive)
+                                    <span class="live-indicator">Live</span>
+                                @endif
+                                <span class="session-badge {{ $session->session_mode }}">
+                                    <i class="ri-{{ $session->session_mode === 'video' ? 'video' : ($session->session_mode === 'audio' ? 'mic' : 'chat-3') }}-line"></i>
+                                    {{ ucfirst($session->session_mode) }}
+                                </span>
+                                <span class="status-badge {{ $session->status }}">
+                                    <i class="ri-{{ $session->status === 'in_progress' ? 'broadcast' : ($session->status === 'confirmed' ? 'check-double' : ($session->status === 'completed' ? 'checkbox-circle' : ($session->status === 'cancelled' ? 'close-circle' : 'time'))) }}-line"></i>
+                                    @if($session->status === 'scheduled')
+                                        Scheduled
+                                    @elseif($session->status === 'confirmed')
+                                        Upcoming
+                                    @elseif($session->status === 'completed')
+                                        Completed
+                                    @elseif($session->status === 'cancelled')
+                                        @if($session->cancelled_by == auth()->id())
+                                            Cancel by Me
+                                        @else
+                                            Cancelled by Client
+                                        @endif
+                                    @elseif($session->appointment_date < \Carbon\Carbon::now('Asia/Kolkata')->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
+                                        Expired
+                                    @else
+                                        {{ ucfirst(str_replace('_', ' ', $session->status)) }}
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Session Type -->
+                        <div class="col-lg-2 col-md-2 mb-0">
+                            <span class="type-badge">{{ ucfirst($session->appointment_type ?? 'Session') }}</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="col-lg-3 col-md-12 mb-0">
+                            <div class="d-flex align-items-center justify-content-lg-end justify-content-start" style="gap: 0.5rem;">
+                                @if($isSessionExpired)
+                                    <span class="status-badge expired">
+                                        <i class="ri-time-off-line"></i>Expired
+                                    </span>
+                                @elseif($isActive && in_array($session->session_mode, ['video', 'audio']))
+                                    <a href="{{ route('sessions.join', $session->id) }}" class="action-btn join" title="Join Session" target="_blank">
+                                        <i class="ri-{{ $session->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>Join Session
+                                    </a>
+                                @elseif(!$isVideoOrAudio)
+                                    <button class="action-btn disabled not-available" disabled title="Session mode is {{ $session->session_mode }} (only video/audio sessions can be joined)">
+                                        <i class="ri-video-off-line"></i>
+                                        <span>Not Available</span>
+                                    </button>
+                                @elseif(!$canJoin)
+                                    @php
+                                        $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
+                                        $timeUntilJoin = $joinAvailableAt->diffForHumans($nowIST, ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+                                    @endphp
+                                    <button class="action-btn disabled waiting" disabled title="Join button will be available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }} IST)">
+                                        <i class="ri-time-line"></i>
+                                        <span>Available {{ $timeUntilJoin }}</span>
+                                    </button>
+                                @else
+                                    <button class="action-btn disabled not-available" disabled title="Session not available at this time">
+                                        <i class="ri-information-line"></i>
+                                        <span>Not Available</span>
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </td>
-            </tr>
-          @empty
-            <tr>
-              <td colspan="7">
-                <div class="empty-state">
-                  <div class="empty-state-icon">
-                    <i class="ri-calendar-line"></i>
-                  </div>
-                  <h5>No sessions found</h5>
-                  <p>There are no sessions matching your current filter criteria.</p>
-                </div>
-              </td>
-            </tr>
-          @endforelse
-        </tbody>
-      </table>
-    </div>
+            </div>
+        </div>
+        @endforeach
+      </div>
+    @else
+      <!-- Empty State -->
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="ri-calendar-line"></i>
+        </div>
+        <h5>No sessions found</h5>
+        <p>There are no sessions matching your current filter criteria.</p>
+      </div>
+    @endif
 
     <!-- Pagination -->
     @if($sessions->hasPages() || $sessions->total() > 0)
-      <div class="pagination-wrapper">
-        <div class="pagination-info">
-          @if($sessions->total() > 0)
-            Showing {{ $sessions->firstItem() }} to {{ $sessions->lastItem() }} of {{ $sessions->total() }} sessions
-          @endif
-        </div>
-        <div class="pagination-controls">
-          @if($sessions->hasPages())
-            <span style="font-size: 0.875rem; color: #6b7280; margin-right: 0.5rem;">
-              Page {{ $sessions->currentPage() }} of {{ $sessions->lastPage() }}
-            </span>
-            @if($sessions->onFirstPage())
-              <button class="page-btn" disabled><i class="ri-arrow-left-double-line"></i></button>
-              <button class="page-btn" disabled><i class="ri-arrow-left-line"></i></button>
-            @else
-              <a href="{{ $sessions->url(1) }}" class="page-btn"><i class="ri-arrow-left-double-line"></i></a>
-              <a href="{{ $sessions->previousPageUrl() }}" class="page-btn"><i class="ri-arrow-left-line"></i></a>
-            @endif
-            @if($sessions->hasMorePages())
-              <a href="{{ $sessions->nextPageUrl() }}" class="page-btn"><i class="ri-arrow-right-line"></i></a>
-              <a href="{{ $sessions->url($sessions->lastPage()) }}" class="page-btn"><i class="ri-arrow-right-double-line"></i></a>
-            @else
-              <button class="page-btn" disabled><i class="ri-arrow-right-line"></i></button>
-              <button class="page-btn" disabled><i class="ri-arrow-right-double-line"></i></button>
-            @endif
-          @endif
-          <select class="per-page-select" onchange="updatePerPage(this.value)">
-            <option value="10" {{ $sessions->perPage() == 10 ? 'selected' : '' }}>10 rows</option>
-            <option value="25" {{ $sessions->perPage() == 25 ? 'selected' : '' }}>25 rows</option>
-            <option value="50" {{ $sessions->perPage() == 50 ? 'selected' : '' }}>50 rows</option>
-            <option value="100" {{ $sessions->perPage() == 100 ? 'selected' : '' }}>100 rows</option>
-          </select>
-        </div>
+      <div class="d-flex justify-content-center mt-5 mb-4">
+        {{ $sessions->links() }}
       </div>
     @endif
   </div>

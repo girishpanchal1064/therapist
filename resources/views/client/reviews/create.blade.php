@@ -462,24 +462,24 @@
     .page-header {
         padding: 1.5rem;
     }
-    
+
     .session-details {
         grid-template-columns: repeat(1, 1fr);
     }
-    
+
     .therapist-section {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .rating-star i {
         font-size: 2.25rem;
     }
-    
+
     .form-actions {
         flex-direction: column-reverse;
     }
-    
+
     .btn-cancel,
     .btn-submit {
         width: 100%;
@@ -550,16 +550,16 @@
                 <!-- Therapist Info -->
                 <div class="therapist-section">
                     @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
-                        <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" 
-                             alt="{{ $appointment->therapist->name }}" 
+                        <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}"
+                             alt="{{ $appointment->therapist->name }}"
                              class="therapist-avatar-large">
                     @elseif($appointment->therapist->avatar)
-                        <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" 
-                             alt="{{ $appointment->therapist->name }}" 
+                        <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}"
+                             alt="{{ $appointment->therapist->name }}"
                              class="therapist-avatar-large">
                     @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=160&bold=true&format=svg" 
-                             alt="{{ $appointment->therapist->name }}" 
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=160&bold=true&format=svg"
+                             alt="{{ $appointment->therapist->name }}"
                              class="therapist-avatar-large">
                     @endif
                     <div>
@@ -580,7 +580,7 @@
                     <div class="detail-item">
                         <i class="ri-time-line d-block"></i>
                         <strong>Time</strong>
-                        <span>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
+                        <span>{{ \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST</span>
                     </div>
                     <div class="detail-item">
                         <i class="ri-timer-line d-block"></i>
@@ -628,10 +628,10 @@
                             <i class="ri-message-3-line"></i>
                             Your Review <span class="optional">(Optional)</span>
                         </label>
-                        <textarea class="form-control form-control-comment @error('comment') is-invalid @enderror" 
-                                  id="comment" 
-                                  name="comment" 
-                                  rows="5" 
+                        <textarea class="form-control form-control-comment @error('comment') is-invalid @enderror"
+                                  id="comment"
+                                  name="comment"
+                                  rows="5"
                                   placeholder="Share your experience with this therapy session. What did you like? How did it help you?"
                                   maxlength="1000">{{ old('comment') }}</textarea>
                         <div class="comment-footer">
@@ -649,11 +649,11 @@
                     <div class="privacy-section">
                         <div class="privacy-card">
                             <label class="privacy-toggle">
-                                <input class="form-check-input" 
-                                       type="checkbox" 
-                                       id="is_public" 
-                                       name="is_public" 
-                                       value="1" 
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="is_public"
+                                       name="is_public"
+                                       value="1"
                                        {{ old('is_public', true) ? 'checked' : '' }}>
                                 <div class="privacy-info">
                                     <div class="privacy-title">
@@ -661,7 +661,7 @@
                                         Make this review public
                                     </div>
                                     <p class="privacy-description">
-                                        Public reviews are visible to other users on the therapist's profile. 
+                                        Public reviews are visible to other users on the therapist's profile.
                                         Private reviews are only visible to you and the therapist.
                                     </p>
                                 </div>

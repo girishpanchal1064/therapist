@@ -21,12 +21,12 @@ class BlogController extends Controller
         // Get featured post
         $featuredPost = BlogPost::published()
             ->featured()
-            ->with(['author.profile', 'category'])
+            ->with(['author.profile', 'author.therapistProfile', 'category'])
             ->first();
 
         // Build query for posts
         $query = BlogPost::published()
-            ->with(['author.profile', 'category'])
+            ->with(['author.profile', 'author.therapistProfile', 'category'])
             ->orderBy('published_at', 'desc');
 
         // Filter by category if not 'all'
@@ -61,7 +61,7 @@ class BlogController extends Controller
     {
         $post = BlogPost::published()
             ->where('slug', $slug)
-            ->with(['author.profile', 'category'])
+            ->with(['author.profile', 'author.therapistProfile', 'category'])
             ->firstOrFail();
 
         // Increment views count
@@ -71,7 +71,7 @@ class BlogController extends Controller
         $relatedPosts = BlogPost::published()
             ->where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
-            ->with(['author.profile', 'category'])
+            ->with(['author.profile', 'author.therapistProfile', 'category'])
             ->limit(3)
             ->get();
 
@@ -84,7 +84,7 @@ class BlogController extends Controller
 
         $posts = BlogPost::published()
             ->byCategory($category->id)
-            ->with(['author.profile', 'category'])
+            ->with(['author.profile', 'author.therapistProfile', 'category'])
             ->orderBy('published_at', 'desc')
             ->paginate(6);
 

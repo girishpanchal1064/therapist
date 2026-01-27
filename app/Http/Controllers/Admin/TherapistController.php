@@ -13,13 +13,37 @@ use Illuminate\Support\Facades\Hash;
 
 class TherapistController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $therapists = User::whereHas('roles', function($query) {
-            $query->where('name', 'therapist');
-        })->with(['therapistProfile.specializations'])->paginate(15);
+        $query = User::whereHas('roles', function($q) {
+            $q->where('name', 'Therapist');
+        })->with(['therapistProfile.specializations']);
 
-        return view('admin.therapists.index', compact('therapists'));
+        // Search by name
+        if ($request->filled('search_name')) {
+            $searchName = $request->search_name;
+            $query->where(function($q) use ($searchName) {
+                $q->where('name', 'like', '%' . $searchName . '%')
+                  ->orWhere('email', 'like', '%' . $searchName . '%');
+            });
+        }
+
+        // Filter by status
+        if ($request->filled('search_status')) {
+            $query->where('status', $request->search_status);
+        }
+
+        // Filter by specialization
+        if ($request->filled('search_specialization')) {
+            $query->whereHas('therapistProfile.specializations', function($q) use ($request) {
+                $q->where('therapist_specializations.id', $request->search_specialization);
+            });
+        }
+
+        $therapists = $query->paginate(15)->withQueryString();
+        $specializations = TherapistSpecialization::all();
+
+        return view('admin.therapists.index', compact('therapists', 'specializations'));
     }
 
     public function create()
@@ -61,7 +85,7 @@ class TherapistController extends Controller
             'status' => 'active',
         ]);
 
-        $user->assignRole('therapist');
+        $user->assignRole('Therapist');
 
         // Handle profile image upload
         $profileImagePath = null;

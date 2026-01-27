@@ -63,23 +63,25 @@
             <!-- Meta Information -->
             <div class="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-6">
                 <!-- Author -->
+                @if($post->author)
                 <div class="flex items-center">
                     @if($post->author->profile && $post->author->profile->profile_image)
                         <img src="{{ asset('storage/' . $post->author->profile->profile_image) }}"
-                             alt="{{ $post->author->name }}"
+                             alt="{{ $post->author ? $post->author->name : 'Author' }}"
                              class="w-10 h-10 rounded-full object-cover mr-3">
                     @else
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-semibold mr-3">
-                            {{ strtoupper(substr($post->author->name, 0, 2)) }}
+                            {{ strtoupper(substr($post->author ? $post->author->name : 'A', 0, 2)) }}
                         </div>
                     @endif
                     <div>
-                        <div class="font-semibold text-gray-900">{{ $post->author->name }}</div>
+                        <div class="font-semibold text-gray-900">{{ $post->author ? $post->author->name : 'Anonymous' }}</div>
                         @if($post->author->profile && $post->author->profile->designation)
                             <div class="text-xs text-gray-500">{{ $post->author->profile->designation }}</div>
                         @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Published Date -->
                 @if($post->published_at)

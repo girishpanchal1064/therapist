@@ -91,6 +91,14 @@
     color: #667eea;
     border-color: white;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.btn-book-new:active {
+    background: white;
+    color: #667eea;
+    border-color: white;
+    transform: translateY(0);
 }
 
 /* Alert Styling */
@@ -121,12 +129,12 @@
 
 /* Summary Card */
 .summary-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 14px;
     padding: 1rem 1.25rem;
     margin-bottom: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
 }
 
 .summary-item {
@@ -135,7 +143,7 @@
 }
 
 .summary-value {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
     background: var(--theme-gradient);
     -webkit-background-clip: text;
@@ -147,7 +155,7 @@
 
 .summary-label {
     font-size: 0.75rem;
-    color: #6b7280;
+    color: #4b5563;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -158,36 +166,24 @@
     background: white;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
     overflow: hidden;
     position: relative;
+    margin-bottom: 0.5rem;
+    border-left: 4px solid transparent;
 }
 
-.session-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--theme-gradient);
-    opacity: 0;
-    transition: opacity 0.2s ease;
+.session-card:nth-child(even) {
+    background: #fafbfc;
+    border-left-color: #667eea;
 }
 
-.session-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    border-color: #667eea;
-}
-
-.session-card:hover::before {
-    opacity: 1;
+.session-card:nth-child(odd) {
+    border-left-color: #764ba2;
 }
 
 .session-card .card-body {
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1.25rem;
 }
 
 /* Therapist Avatar */
@@ -216,7 +212,7 @@
 .therapist-info h6 {
     font-weight: 600;
     color: #1f2937;
-    margin-bottom: 0.1rem;
+    margin-bottom: 0;
     font-size: 0.875rem;
     line-height: 1.2;
 }
@@ -226,53 +222,54 @@
     display: flex;
     align-items: center;
     gap: 0.2rem;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
 }
 
 /* Session Details */
 .detail-item {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 0.35rem;
-    padding: 0.3rem 0.5rem;
+    margin: 0;
+    padding: 0.35rem 0.65rem;
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    border-radius: 6px;
-}
-
-.detail-item:last-child {
-    margin-bottom: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    margin-right: 0.5rem;
 }
 
 .detail-icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--theme-gradient);
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(102, 126, 234, 0.2);
 }
 
 .detail-text {
     font-weight: 600;
-    color: #374151;
+    color: #1f2937;
     font-size: 0.8rem;
     line-height: 1.3;
+    white-space: nowrap;
 }
 
 /* Status Badges */
 .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
     padding: 0.35rem 0.75rem;
-    border-radius: 20px;
+    border-radius: 8px;
     font-size: 0.75rem;
     font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
 }
 
 .status-badge.scheduled {
@@ -291,6 +288,11 @@
     animation: pulse 2s infinite;
 }
 
+.status-badge.expired {
+    background: linear-gradient(135deg, rgba(75, 85, 99, 0.15) 0%, rgba(55, 65, 81, 0.15) 100%);
+    color: #374151;
+}
+
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
@@ -301,11 +303,13 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
     font-size: 0.75rem;
     font-weight: 600;
-    margin-bottom: 0.35rem;
+    margin: 0;
+    margin-right: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
 }
 
 .session-badge.video {
@@ -327,9 +331,11 @@
     background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.1) 100%);
     color: #4b5563;
     padding: 0.3rem 0.65rem;
-    border-radius: 18px;
+    border-radius: 8px;
     font-size: 0.7rem;
     font-weight: 600;
+    border: 1px solid rgba(107, 114, 128, 0.15);
+    display: inline-block;
 }
 
 /* Action Buttons */
@@ -340,26 +346,21 @@
 }
 
 .action-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    border: none;
-    font-size: 0.875rem;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: all 0.3s ease;
     font-size: 0.9rem;
     transition: all 0.2s ease;
-    cursor: pointer;
+    border: none;
     text-decoration: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    cursor: pointer;
 }
 
-.action-btn:hover {
-    transform: translateY(-2px);
-}
+/* Removed hover transform */
 
 .action-btn.join {
     background: var(--success-gradient);
@@ -370,12 +371,12 @@
     font-size: 0.8rem;
     font-weight: 600;
     gap: 0.35rem;
+    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.25);
 }
 
-.action-btn.join:hover {
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+.action-btn.join:active {
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
     color: white;
-    transform: translateY(-2px);
 }
 
 .action-btn.view {
@@ -383,10 +384,9 @@
     color: #667eea;
 }
 
-.action-btn.view:hover {
+.action-btn.view:active {
     background: var(--theme-gradient);
     color: white;
-    transform: translateY(-2px);
 }
 
 .action-btn.disabled {
@@ -401,10 +401,7 @@
     position: relative;
 }
 
-.action-btn.disabled:hover {
-    transform: none;
-    box-shadow: none;
-}
+/* Disabled buttons don't need hover */
 
 .action-btn.disabled.expired {
     background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
@@ -431,11 +428,13 @@
     gap: 0.35rem;
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
-    padding: 0.25rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+    margin-right: 0.5rem;
 }
 
 .live-indicator::before {
@@ -505,9 +504,8 @@
     gap: 0.5rem;
 }
 
-.btn-book:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+.btn-book:active {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     color: white;
 }
 
@@ -516,32 +514,32 @@
     .page-header {
         padding: 1rem 1.25rem;
     }
-    
+
     .header-icon {
         width: 42px;
         height: 42px;
         font-size: 1.25rem;
     }
-    
+
     .page-header h4 {
         font-size: 1.15rem;
     }
-    
+
     .session-card .card-body {
         padding: 0.85rem 1rem;
     }
-    
+
     .therapist-avatar {
         width: 42px;
         height: 42px;
     }
-    
+
     .action-btn {
         width: 32px;
         height: 32px;
         font-size: 0.85rem;
     }
-    
+
     .action-btn.join {
         padding: 0.35rem 0.7rem;
         font-size: 0.75rem;
@@ -632,12 +630,12 @@
         @foreach($sessions as $session)
         @php
             // Handle appointment_time - it might be a datetime or time string
-            $timeString = is_string($session->appointment_time) 
-                ? $session->appointment_time 
-                : (is_object($session->appointment_time) 
-                    ? $session->appointment_time->format('H:i:s') 
+            $timeString = is_string($session->appointment_time)
+                ? $session->appointment_time
+                : (is_object($session->appointment_time)
+                    ? $session->appointment_time->format('H:i:s')
                     : $session->appointment_time);
-            
+
             // Extract just time if it's a full datetime string (contains date part)
             if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
                 // If it contains a date (has dashes or is longer than time format), extract just time
@@ -653,12 +651,12 @@
                     }
                 }
             }
-            
+
             // Ensure we have a valid time string (HH:MM:SS format)
             if (strlen($timeString) <= 5) {
                 $timeString = $timeString . ':00'; // Add seconds if missing
             }
-            
+
             $appointmentDateTime = \Carbon\Carbon::parse($session->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
             // Allow joining 5 minutes before appointment time or anytime after
             // diffInMinutes(now(), false) returns negative for future times, positive for past times
@@ -668,13 +666,13 @@
             $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
             $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
             $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
-            
+
             // Show join button if time has arrived (or within 5 min) AND status allows it AND session mode is video/audio
             // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
             $isVideoOrAudio = in_array($session->session_mode, ['video', 'audio']);
-            $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) || 
-                ($session->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
-            
+            $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) ||
+                ($session->status === 'scheduled' && ($appointmentDateTime->lessThan($nowIST) || $canJoin));
+
             $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
             $isLive = $session->status === 'in_progress';
             $isToday = $session->appointment_date->isToday();
@@ -684,19 +682,19 @@
                 <div class="card-body">
                     <div class="row align-items-center g-2">
                         <!-- Therapist Info -->
-                        <div class="col-lg-3 col-md-4 mb-1 mb-lg-0">
+                        <div class="col-lg-2 col-md-3 mb-0">
                             <div class="d-flex align-items-center" style="gap: 0.5rem;">
                                 @if($session->therapist->therapistProfile && $session->therapist->therapistProfile->profile_image)
-                                    <img src="{{ asset('storage/' . $session->therapist->therapistProfile->profile_image) }}" 
-                                         alt="{{ $session->therapist->name }}" 
+                                    <img src="{{ asset('storage/' . $session->therapist->therapistProfile->profile_image) }}"
+                                         alt="{{ $session->therapist->name }}"
                                          class="therapist-avatar">
                                 @elseif($session->therapist->avatar)
-                                    <img src="{{ asset('storage/' . $session->therapist->avatar) }}" 
-                                         alt="{{ $session->therapist->name }}" 
+                                    <img src="{{ asset('storage/' . $session->therapist->avatar) }}"
+                                         alt="{{ $session->therapist->name }}"
                                          class="therapist-avatar">
                                 @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" 
-                                         alt="{{ $session->therapist->name }}" 
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg"
+                                         alt="{{ $session->therapist->name }}"
                                          class="therapist-avatar">
                                 @endif
                                 <div class="therapist-info">
@@ -709,77 +707,76 @@
                         </div>
 
                         <!-- Session Details -->
-                        <div class="col-lg-4 col-md-4 mb-1 mb-lg-0">
-                            <div class="d-flex flex-column" style="gap: 0.25rem;">
-                                <div class="detail-item mb-0">
+                        <div class="col-lg-3 col-md-4 mb-0">
+                            <div class="d-flex align-items-center flex-wrap" style="gap: 0.25rem;">
+                                <div class="detail-item">
                                     <div class="detail-icon">
                                         <i class="ri-calendar-line"></i>
                                     </div>
                                     <span class="detail-text">
                                         @if($isToday)
-                                            <span class="text-success">Today</span>
+                                            <span class="text-success fw-bold">Today</span>
                                         @else
                                             {{ $session->appointment_date->format('M d, Y') }}
                                         @endif
                                     </span>
                                 </div>
-                                <div class="detail-item mb-0">
+                                <div class="detail-item">
                                     <div class="detail-icon">
                                         <i class="ri-time-line"></i>
                                     </div>
-                                    <div>
+                                    <span class="detail-text">
                                         @php
                                           $startTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
                                           $endTime = $startTime->copy()->addMinutes($session->duration_minutes ?? 60);
                                         @endphp
-                                        <span class="detail-text">{{ $startTime->format('g:i A') }} IST - {{ $endTime->format('g:i A') }} IST</span>
-                                        <small class="text-muted d-block" style="font-size: 0.65rem; margin-top: 1px; line-height: 1.2;">
-                                          <i class="ri-timer-line"></i> {{ $session->duration_minutes }} mins
-                                        </small>
-                                    </div>
+                                        {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }} IST
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Session Mode -->
-                        <div class="col-lg-2 col-md-4 mb-1 mb-lg-0">
-                            <div class="d-flex flex-column" style="gap: 0.25rem;">
+                        <!-- Session Mode & Status -->
+                        <div class="col-lg-2 col-md-3 mb-0">
+                            <div class="d-flex align-items-center flex-wrap" style="gap: 0.5rem;">
+                                @if($isLive)
+                                    <span class="live-indicator">Live</span>
+                                @endif
                                 <span class="session-badge {{ $session->session_mode }}">
                                     <i class="ri-{{ $session->session_mode === 'video' ? 'video' : ($session->session_mode === 'audio' ? 'mic' : 'chat-3') }}-line"></i>
                                     {{ ucfirst($session->session_mode) }}
                                 </span>
-                                <span class="type-badge">{{ ucfirst($session->appointment_type) }}</span>
-                            </div>
-                        </div>
-
-                        <!-- Status & Actions -->
-                        <div class="col-lg-3 col-md-12">
-                            <div class="d-flex flex-column align-items-lg-end align-items-start" style="gap: 0.5rem;">
-                                @if($isLive)
-                                    <span class="live-indicator">Live Now</span>
-                                @endif
                                 <span class="status-badge {{ $session->status }}">
                                     <i class="ri-{{ $session->status === 'in_progress' ? 'broadcast' : ($session->status === 'confirmed' ? 'check-double' : 'time') }}-line"></i>
                                     {{ ucfirst(str_replace('_', ' ', $session->status)) }}
                                 </span>
-                                <div class="d-flex" style="gap: 0.5rem;">
-                                    <a href="{{ route('client.appointments.show', $session->id) }}" 
-                                       class="action-btn view" 
+                            </div>
+                        </div>
+
+                        <!-- Session Type -->
+                        <div class="col-lg-2 col-md-2 mb-0">
+                            <span class="type-badge">{{ ucfirst($session->appointment_type) }}</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="col-lg-3 col-md-12 mb-0">
+                            <div class="d-flex align-items-center justify-content-lg-end justify-content-start" style="gap: 0.5rem;">
+                                    <a href="{{ route('client.appointments.show', $session->id) }}"
+                                       class="action-btn view"
                                        title="View Details">
                                         <i class="ri-eye-line"></i>
                                     </a>
-                                    @if($isActive)
-                                        <a href="{{ route('sessions.join', $session->id) }}" 
-                                           class="action-btn join" 
+                                    @if($isSessionExpired)
+                                        <span class="status-badge expired">
+                                            <i class="ri-time-off-line"></i>Expired
+                                        </span>
+                                    @elseif($isActive)
+                                        <a href="{{ route('sessions.join', $session->id) }}"
+                                           class="action-btn join"
                                            title="Join Session"
                                            target="_blank">
                                             <i class="ri-{{ $session->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>Join Session
                                         </a>
-                                    @elseif(!empty($isSessionExpired) && $isSessionExpired)
-                                        <button class="action-btn disabled expired" disabled title="Session Expired - This session has ended">
-                                            <i class="ri-time-off-line"></i>
-                                            <span>Session Expired</span>
-                                        </button>
                                     @elseif(!$isVideoOrAudio)
                                         <button class="action-btn disabled not-available" disabled title="Session mode is {{ $session->session_mode }} (only video/audio sessions can be joined)">
                                             <i class="ri-video-off-line"></i>
@@ -800,7 +797,6 @@
                                             <span>Not Available</span>
                                         </button>
                                     @endif
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -811,7 +807,7 @@
     </div>
 
     <!-- Pagination -->
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-center mt-5 mb-4">
         {{ $sessions->links() }}
     </div>
 @else

@@ -9,7 +9,7 @@
         --theme-primary-dark: #5f61e6;
         --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    
+
     .page-header {
         background: var(--theme-gradient);
         border-radius: 12px;
@@ -17,18 +17,18 @@
         margin-bottom: 1.5rem;
         color: white;
     }
-    
+
     .page-header h4 {
         margin: 0;
         font-weight: 600;
         color: white;
     }
-    
+
     .page-header p {
         margin: 0.5rem 0 0;
         opacity: 0.9;
     }
-    
+
     .btn-theme {
         background: var(--theme-gradient);
         border: none;
@@ -38,19 +38,19 @@
         font-weight: 500;
         transition: all 0.3s ease;
     }
-    
+
     .btn-theme:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         color: white;
     }
-    
+
     .card-modern {
         border: none;
         border-radius: 12px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
-    
+
     .status-tabs {
         display: flex;
         flex-wrap: wrap;
@@ -60,7 +60,7 @@
         border-radius: 12px;
         margin-bottom: 1.5rem;
     }
-    
+
     .status-tab {
         padding: 0.6rem 1.25rem;
         border-radius: 8px;
@@ -75,20 +75,20 @@
         color: #6c757d;
         border: 1px solid #e0e0e0;
     }
-    
+
     .status-tab:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         color: #667eea;
         border-color: #667eea;
     }
-    
+
     .status-tab.active {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border-color: transparent;
     }
-    
+
     .filter-card {
         background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
         border: 1px solid rgba(102, 126, 234, 0.1);
@@ -96,12 +96,12 @@
         padding: 1.25rem;
         margin-bottom: 1.5rem;
     }
-    
+
     .filter-card .form-control:focus {
         border-color: #667eea;
         box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
     }
-    
+
     .table-modern {
         border-collapse: separate;
         border-spacing: 0;
@@ -111,7 +111,7 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         width: 100%;
     }
-    
+
     .table-modern thead th {
         background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
         color: #4a5568;
@@ -124,31 +124,31 @@
         text-align: center;
         white-space: nowrap;
     }
-    
+
     .table-modern thead th:first-child {
         border-radius: 12px 0 0 0;
     }
-    
+
     .table-modern thead th:last-child {
         border-radius: 0 12px 0 0;
     }
-    
+
     .table-modern tbody tr {
         transition: all 0.3s ease;
         background: white;
         border-bottom: 1px solid #f0f2f5;
     }
-    
+
     .table-modern tbody tr:hover {
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
         transform: scale(1.001);
         box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
     }
-    
+
     .table-modern tbody tr:last-child {
         border-bottom: none;
     }
-    
+
     .table-modern tbody td {
         padding: 18px 20px;
         vertical-align: middle;
@@ -157,18 +157,18 @@
         border-bottom: 1px solid #f0f2f5;
         text-align: center;
     }
-    
+
     .table-modern tbody tr:last-child td {
         border-bottom: none;
     }
-    
+
     .user-info {
         display: flex;
         align-items: center;
         gap: 10px;
         justify-content: center;
     }
-    
+
     .user-avatar {
         width: 36px;
         height: 36px;
@@ -176,7 +176,7 @@
         object-fit: cover;
         border: 2px solid #f0f0f0;
     }
-    
+
     .user-avatar-initial {
         width: 36px;
         height: 36px;
@@ -189,7 +189,7 @@
         color: white;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    
+
     .session-id {
         font-family: monospace;
         font-size: 0.85rem;
@@ -199,54 +199,54 @@
         color: #667eea;
         font-weight: 600;
     }
-    
+
     .badge-video {
         background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
         color: white;
     }
-    
+
     .badge-audio {
         background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
         color: #212529;
     }
-    
+
     .badge-chat {
         background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
         color: white;
     }
-    
+
     .badge-pending {
         background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
         color: #212529;
     }
-    
+
     .badge-upcoming {
         background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
         color: white;
     }
-    
+
     .badge-completed {
         background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
         color: white;
     }
-    
+
     .badge-cancelled {
         background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
         color: white;
     }
-    
+
     .badge-expired {
         background: linear-gradient(135deg, #343a40 0%, #212529 100%);
         color: white;
     }
-    
+
     .mode-badge, .status-badge {
         padding: 0.35rem 0.75rem;
         border-radius: 20px;
         font-weight: 500;
         font-size: 0.75rem;
     }
-    
+
     .action-dropdown .dropdown-toggle {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -258,28 +258,28 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .action-dropdown .dropdown-toggle::after {
         display: none;
     }
-    
+
     .action-dropdown .dropdown-menu {
         border: none;
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         border-radius: 8px;
         padding: 0.5rem;
     }
-    
+
     .action-dropdown .dropdown-item {
         border-radius: 6px;
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
     }
-    
+
     .action-dropdown .dropdown-item:hover {
         background-color: rgba(102, 126, 234, 0.1);
     }
-    
+
     .pagination-modern .btn {
         border: none;
         background: #f8f9fa;
@@ -287,17 +287,17 @@
         margin: 0 2px;
         border-radius: 6px;
     }
-    
+
     .pagination-modern .btn:hover:not(:disabled) {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
     }
-    
+
     .empty-state {
         padding: 3rem;
         text-align: center;
     }
-    
+
     .empty-state-icon {
         width: 80px;
         height: 80px;
@@ -308,41 +308,41 @@
         justify-content: center;
         margin: 0 auto 1rem;
     }
-    
+
     .empty-state-icon i {
         font-size: 2rem;
         color: white;
     }
-    
+
     .alert-themed {
         border: none;
         border-radius: 10px;
         border-left: 4px solid;
     }
-    
+
     .alert-themed.alert-success {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         border-left-color: #28a745;
         color: #155724;
     }
-    
+
     .btn-refresh {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border: none;
         color: white;
     }
-    
+
     .btn-refresh:hover {
         background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
         color: white;
     }
-    
+
     .btn-search {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border: none;
         color: white;
     }
-    
+
     .btn-search:hover {
         background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
         color: white;
@@ -458,16 +458,16 @@
                                 @if($session->therapist)
                                     <div class="user-info">
                                         @if($session->therapist->therapistProfile && $session->therapist->therapistProfile->profile_image)
-                                            <img src="{{ asset('storage/' . $session->therapist->therapistProfile->profile_image) }}" 
-                                                 alt="{{ $session->therapist->name }}" 
+                                            <img src="{{ asset('storage/' . $session->therapist->therapistProfile->profile_image) }}"
+                                                 alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @elseif($session->therapist->avatar)
-                                            <img src="{{ asset('storage/' . $session->therapist->avatar) }}" 
-                                                 alt="{{ $session->therapist->name }}" 
+                                            <img src="{{ asset('storage/' . $session->therapist->avatar) }}"
+                                                 alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=667eea&color=fff&size=72&bold=true&format=svg" 
-                                                 alt="{{ $session->therapist->name }}" 
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=667eea&color=fff&size=72&bold=true&format=svg"
+                                                 alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @endif
                                         <span class="fw-bold">{{ $session->therapist->name }}</span>
@@ -499,7 +499,7 @@
                             <td>
                                 <span class="text-muted">
                                     <i class="ri-time-line me-1"></i>
-                                    {{ \Carbon\Carbon::parse($session->appointment_time)->format('g:i A') }}
+                                    {{ \Carbon\Carbon::parse($session->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST
                                 </span>
                             </td>
                                 <td>
@@ -512,7 +512,7 @@
                                                         <span class="status-badge badge-completed">COMPLETED</span>
                                                     @elseif($session->status === 'cancelled')
                                                         <span class="status-badge badge-cancelled">CANCELLED</span>
-                                                    @elseif($session->appointment_date < now()->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
+                                                    @elseif($session->appointment_date < \Carbon\Carbon::now('Asia/Kolkata')->toDateString() && !in_array($session->status, ['completed', 'cancelled']))
                                                         <span class="status-badge badge-expired">EXPIRED</span>
                                                     @else
                                                         <span class="status-badge" style="background: #6c757d; color: white;">{{ strtoupper($session->status) }}</span>

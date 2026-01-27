@@ -23,7 +23,11 @@
 @else
 <meta name="robots" content="noindex, nofollow">
 @endif
-<meta name="author" content="{{ $post->author->name }}">
+@if($post->author)
+@if($post->author)
+<meta name="author" content="{{ $post->author->name ?? 'Anonymous' }}">
+@endif
+@endif
 
 {{-- Canonical URL --}}
 <link rel="canonical" href="{{ $canonicalUrl }}">
@@ -42,7 +46,7 @@
 <meta property="article:modified_time" content="{{ $post->updated_at->toIso8601String() }}">
 @endif
 @if($post->author)
-<meta property="article:author" content="{{ $post->author->name }}">
+<meta property="article:author" content="{{ $post->author->name ?? 'Anonymous' }}">
 @endif
 @if($post->category)
 <meta property="article:section" content="{{ $post->category->name }}">
@@ -67,13 +71,20 @@
   "image": "{{ $ogImage }}",
   "datePublished": "{{ $post->published_at ? $post->published_at->toIso8601String() : $post->created_at->toIso8601String() }}",
   "dateModified": "{{ $post->updated_at->toIso8601String() }}",
+  @if($post->author)
   "author": {
     "@type": "Person",
-    "name": "{{ $post->author->name }}"
+    "name": "{{ $post->author->name ?? 'Anonymous' }}"
     @if($post->author->email)
     ,"email": "{{ $post->author->email }}"
     @endif
   },
+  @else
+  "author": {
+    "@type": "Person",
+    "name": "Anonymous"
+  },
+  @endif
   "publisher": {
     "@type": "Organization",
     "name": "{{ config('app.name') }}",

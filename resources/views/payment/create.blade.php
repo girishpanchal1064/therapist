@@ -10,7 +10,7 @@
                 <h1 class="text-2xl font-bold text-gray-900">Complete Payment</h1>
                 <p class="text-gray-600">Secure payment processing for your therapy session</p>
             </div>
-            
+
             <div class="px-6 py-6">
                 @if(session('success'))
                     <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
@@ -34,7 +34,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-3">Select Payment Method</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <label class="relative cursor-pointer">
-                                <input type="radio" name="payment_method" value="razorpay" 
+                                <input type="radio" name="payment_method" value="razorpay"
                                        class="sr-only peer" checked>
                                 <div class="p-4 border-2 border-gray-200 rounded-lg peer-checked:border-primary-500 peer-checked:bg-primary-50">
                                     <div class="text-center">
@@ -47,7 +47,7 @@
                                 </div>
                             </label>
                             <label class="relative cursor-pointer">
-                                <input type="radio" name="payment_method" value="stripe" 
+                                <input type="radio" name="payment_method" value="stripe"
                                        class="sr-only peer">
                                 <div class="p-4 border-2 border-gray-200 rounded-lg peer-checked:border-primary-500 peer-checked:bg-primary-50">
                                     <div class="text-center">
@@ -77,8 +77,8 @@
                             <div class="flex justify-between">
                                 <span class="text-sm text-gray-600">Date & Time</span>
                                 <span class="text-sm font-medium">
-                                    {{ $appointment->appointment_date->format('M d, Y') }} at 
-                                    {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
+                                    {{ $appointment->appointment_date->format('M d, Y') }} at
+                                    {{ \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST
                                 </span>
                             </div>
                             <div class="flex justify-between">
@@ -121,10 +121,10 @@
 
                     <!-- Submit Button -->
                     <div class="flex justify-end space-x-4">
-                        <a href="{{ route('client.dashboard') }}" 
+                        <a href="{{ route('client.dashboard') }}"
                            class="btn-outline">Cancel</a>
-                        <button type="submit" 
-                                class="btn-primary" 
+                        <button type="submit"
+                                class="btn-primary"
                                 id="payButton">
                             <span id="buttonText">Pay ₹{{ number_format($appointment->therapist->therapistProfile->consultation_fee * 1.18) }}</span>
                             <span id="loadingText" class="hidden">Processing...</span>
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         // Show loading state
         payButton.disabled = true;
         buttonText.classList.add('hidden');

@@ -510,7 +510,7 @@
       </div>
       <div class="header-meta-item">
         <i class="ri-time-line"></i>
-        <span>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
+        <span>{{ \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST</span>
       </div>
       <div class="header-meta-item">
         <i class="ri-timer-line"></i>
@@ -636,7 +636,7 @@
           <div class="col-md-6">
             <div class="detail-row">
               <span class="label"><i class="ri-time-line"></i> Time</span>
-              <span class="value">{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
+              <span class="value">{{ \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata')->format('g:i A') }} IST</span>
             </div>
             <div class="detail-row">
               <span class="label"><i class="ri-timer-line"></i> Duration</span>
@@ -835,14 +835,14 @@ function copyMeetingLink() {
   input.select();
   input.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(input.value);
-  
+
   // Show feedback
   const btn = event.target.closest('.copy-btn');
   const originalHtml = btn.innerHTML;
   btn.innerHTML = '<i class="ri-check-line"></i> Copied!';
   btn.style.background = '#28c76f';
   btn.style.color = 'white';
-  
+
   setTimeout(() => {
     btn.innerHTML = originalHtml;
     btn.style.background = '';

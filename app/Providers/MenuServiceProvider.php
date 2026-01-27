@@ -311,6 +311,11 @@ class MenuServiceProvider extends ServiceProvider
             // Convert to array if it's an object for easier checking
             $itemArray = is_array($item) ? $item : (array) $item;
             
+            // Skip Users menu (commented out for now)
+            if (isset($itemArray['slug']) && $itemArray['slug'] === 'admin.users') {
+                continue;
+            }
+            
             // Skip menu headers with "Account" or "USER MANAGEMENT" text
             if (isset($itemArray['menuHeader'])) {
                 $headerText = strtolower(trim($itemArray['menuHeader']));

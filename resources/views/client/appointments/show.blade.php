@@ -744,12 +744,12 @@
             @endif
             @php
                 // Handle appointment_time - it might be a datetime or time string
-                $timeString = is_string($appointment->appointment_time) 
-                    ? $appointment->appointment_time 
-                    : (is_object($appointment->appointment_time) 
-                        ? $appointment->appointment_time->format('H:i:s') 
+                $timeString = is_string($appointment->appointment_time)
+                    ? $appointment->appointment_time
+                    : (is_object($appointment->appointment_time)
+                        ? $appointment->appointment_time->format('H:i:s')
                         : $appointment->appointment_time);
-                
+
                 // Extract just time if it's a full datetime string (contains date part)
                 if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
                     // If it contains a date (has dashes or is longer than time format), extract just time
@@ -765,24 +765,25 @@
                         }
                     }
                 }
-                
+
                 // Ensure we have a valid time string (HH:MM:SS format)
                 if (strlen($timeString) <= 5) {
                     $timeString = $timeString . ':00'; // Add seconds if missing
                 }
-                
+
                 $appointmentDateTime = \Carbon\Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
                 // Allow joining 5 minutes before appointment time or anytime after
-                // diffInMinutes(now(), false) returns negative for future times, positive for past times
-                $minutesDiff = $appointmentDateTime->diffInMinutes(now(), false);
+                // diffInMinutes(nowIST(), false) returns negative for future times, positive for past times
+                $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
+                $minutesDiff = $appointmentDateTime->diffInMinutes($nowIST, false);
                 $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
-                
+
                 // Show join button if time has arrived (or within 5 min) AND status allows it
                 // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
                 $isVideoOrAudio = in_array($appointment->session_mode, ['video', 'audio']);
-                $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress']) || 
-                    ($appointment->status === 'scheduled' && ($appointmentDateTime->isPast() || $canJoin));
-                
+                $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress']) ||
+                    ($appointment->status === 'scheduled' && ($appointmentDateTime->lessThan(\Carbon\Carbon::now('Asia/Kolkata')) || $canJoin));
+
                 $isActive = $canJoin && $isVideoOrAudio && $statusCheck;
             @endphp
             @if($isActive)
@@ -792,7 +793,7 @@
             @elseif(!$canJoin)
             @php
                 $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
-                $timeUntilJoin = $joinAvailableAt->diffForHumans(now(), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+                $timeUntilJoin = $joinAvailableAt->diffForHumans(\Carbon\Carbon::now('Asia/Kolkata'), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
             @endphp
             <button class="btn btn-join-session" disabled style="opacity: 0.6; cursor: not-allowed;">
                 <i class="ri-time-line me-2"></i>Join button will be available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }})
@@ -859,7 +860,7 @@
             @elseif(isset($canJoin) && !$canJoin)
                 @php
                     $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
-                    $timeUntilJoin = $joinAvailableAt->diffForHumans(now(), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+                    $timeUntilJoin = $joinAvailableAt->diffForHumans(\Carbon\Carbon::now('Asia/Kolkata'), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
                 @endphp
                 <button class="btn btn-action" disabled style="opacity: 0.6; cursor: not-allowed;">
                     <i class="ri-time-line"></i>Available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }})
