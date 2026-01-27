@@ -541,7 +541,7 @@
   <div class="login-branding">
     <div class="login-branding-content">
       <div class="brand-logo animate-fade-in">
-        <img src="{{ asset('/assets/logo.png') }}" alt="Apani Psychology" style="height: 80px; width: auto; max-width: 400px; background: transparent !important; object-fit: contain;">
+        <img src="{{ public_path('logo.png') }}" alt="Apani Psychology" style="height: 80px; width: auto; max-width: 400px; background: transparent !important; object-fit: contain;">
       </div>
 
       <h1 class="brand-headline animate-fade-in delay-1">
