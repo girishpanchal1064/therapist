@@ -49,62 +49,6 @@ Alpine.data('modal', () => ({
   }
 }));
 
-Alpine.data('notification', () => ({
-  show: false,
-  type: 'info',
-  message: '',
-  duration: 5000,
-  timer: null,
-
-  success(message, duration = 5000) {
-    this.show = true;
-    this.type = 'success';
-    this.message = message;
-    this.duration = duration;
-    this.setTimer();
-  },
-
-  error(message, duration = 5000) {
-    this.show = true;
-    this.type = 'error';
-    this.message = message;
-    this.duration = duration;
-    this.setTimer();
-  },
-
-  warning(message, duration = 5000) {
-    this.show = true;
-    this.type = 'warning';
-    this.message = message;
-    this.duration = duration;
-    this.setTimer();
-  },
-
-  info(message, duration = 5000) {
-    this.show = true;
-    this.type = 'info';
-    this.message = message;
-    this.duration = duration;
-    this.setTimer();
-  },
-
-  setTimer() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      this.show = false;
-    }, this.duration);
-  },
-
-  close() {
-    this.show = false;
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-  }
-}));
-
 Alpine.data('calendar', () => ({
   currentDate: new Date(),
   selectedDate: null,
@@ -359,34 +303,6 @@ Alpine.data('search', () => ({
     this.showResults = false;
   }
 }));
-
-// Global notification system
-window.notify = {
-  success: (message, duration = 5000) => {
-    const notification = document.querySelector('[x-data*="notification"]');
-    if (notification) {
-      notification._x_dataStack[0].success(message, duration);
-    }
-  },
-  error: (message, duration = 5000) => {
-    const notification = document.querySelector('[x-data*="notification"]');
-    if (notification) {
-      notification._x_dataStack[0].error(message, duration);
-    }
-  },
-  warning: (message, duration = 5000) => {
-    const notification = document.querySelector('[x-data*="notification"]');
-    if (notification) {
-      notification._x_dataStack[0].warning(message, duration);
-    }
-  },
-  info: (message, duration = 5000) => {
-    const notification = document.querySelector('[x-data*="notification"]');
-    if (notification) {
-      notification._x_dataStack[0].info(message, duration);
-    }
-  }
-};
 
 // Utility functions
 window.utils = {

@@ -23,7 +23,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:SuperAdmin,Admin,Therapist,client'],
+            'role' => ['required', 'in:client,therapist,corporate_admin'],
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
@@ -31,8 +31,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'phone' => $request->phone,
+            'phone' => $request->phone ?? null,
         ]);
 
         // Create user profile
@@ -42,10 +41,24 @@ class RegisterController extends Controller
             'last_name' => explode(' ', $request->name, 2)[1] ?? '',
         ]);
 
-        // Assign role
-        $user->assignRole($request->role);
+        // Map form role values to database role names
+        $roleMap = [
+            'client' => 'Client',
+            'therapist' => 'Therapist',
+            'corporate_admin' => 'Admin', // Assuming corporate_admin maps to Admin role
+        ];
+        
+        $roleName = $roleMap[$request->role] ?? 'Client';
+        $user->assignRole($roleName);
 
         Auth::login($user);
+
+        // Redirect based on role
+        if ($request->role === 'therapist') {
+            return redirect()->route('therapist.dashboard');
+        } elseif ($request->role === 'corporate_admin') {
+            return redirect()->route('admin.dashboard');
+        }
 
         return redirect()->route('client.dashboard');
     }
