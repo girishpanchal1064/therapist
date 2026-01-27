@@ -38,7 +38,7 @@
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
                         <div class="flex-shrink-0">
-                            <img src="{{ asset('assets/logo.png') }}" alt="Apani Psychology" class="h-16 w-auto max-w-[300px]" style="background: transparent !important; object-fit: contain;width: auto; max-width: 250px;height: 300px;margin-top:10px">
+                            <img src="{{ asset('/assets/logo.png') }}" alt="Apani Psychology" class="h-16 w-auto max-w-[300px]" style="background: transparent !important; object-fit: contain;">
                         </div>
                     </a>
                 </div>
@@ -170,7 +170,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center mb-4">
-                        <img src="{{ asset('assets/logo.png') }}" alt="Apani Psychology" class="h-16 w-auto max-w-[300px]" style="background: transparent !important; object-fit: contain;">
+                        <img src="{{ asset('/assets/logo.png') }}" alt="Apani Psychology" class="h-16 w-auto max-w-[300px]" style="background: transparent !important; object-fit: contain;">
                     </div>
                     <p class="text-gray-300 mb-4">
                         Connect with verified therapists for online counseling, therapy sessions, and mental health support.

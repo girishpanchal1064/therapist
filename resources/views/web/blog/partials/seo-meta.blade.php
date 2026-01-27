@@ -90,7 +90,7 @@
     "name": "{{ config('app.name') }}",
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ asset('assets/img/logo.png') }}"
+      "url": "{{ asset('/assets/logo.png') }}"
     }
   },
   "mainEntityOfPage": {
