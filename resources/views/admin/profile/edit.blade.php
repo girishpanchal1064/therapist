@@ -64,6 +64,14 @@
     overflow: hidden;
 }
 
+.form-card .card-body > .row {
+    margin-top: 20px;
+}
+
+.form-card .card-body > .row:first-child {
+    margin-top: 0;
+}
+
 .form-section-title {
     font-size: 1.1rem;
     font-weight: 700;

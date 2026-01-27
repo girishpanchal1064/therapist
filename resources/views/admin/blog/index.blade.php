@@ -597,16 +597,20 @@
                             </td>
                             <td>
                                 <div class="author-info">
-                                    @if($post->author->avatar)
-                                        <img src="{{ asset('storage/' . $post->author->avatar) }}" 
-                                             alt="{{ $post->author->name }}" 
-                                             class="author-avatar">
+                                    @if($post->author)
+                                        @if($post->author->avatar)
+                                            <img src="{{ asset('storage/' . $post->author->avatar) }}" 
+                                                 alt="{{ $post->author->name }}" 
+                                                 class="author-avatar">
+                                        @else
+                                            <div class="author-avatar-initial">
+                                                {{ strtoupper(substr($post->author->name, 0, 2)) }}
+                                            </div>
+                                        @endif
+                                        <span class="small fw-bold">{{ $post->author->name }}</span>
                                     @else
-                                        <div class="author-avatar-initial">
-                                            {{ strtoupper(substr($post->author->name, 0, 2)) }}
-                                        </div>
+                                        <span class="text-muted small">No author</span>
                                     @endif
-                                    <span class="small fw-bold">{{ $post->author->name }}</span>
                                 </div>
                             </td>
                             <td>

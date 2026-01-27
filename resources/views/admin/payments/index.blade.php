@@ -9,6 +9,7 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 16px;
     padding: 2rem;
+    margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
@@ -148,34 +149,111 @@
     padding: 1rem 1.25rem;
   }
 
-  /* Filter Section */
-  .filter-section {
-    background: linear-gradient(135deg, #f8f9fc 0%, #f1f5f9 100%);
-    border-radius: 12px;
-    padding: 1.25rem;
+  /* Filter Card */
+  .filter-card {
+    border-radius: 16px;
+    border: 1px solid #e9ecef;
+    background: white;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     margin-bottom: 1.5rem;
-    border: 1px solid #e2e8f0;
+    display: block !important;
+    visibility: visible !important;
   }
 
-  .filter-section .form-label {
-    font-size: 0.75rem;
+  .filter-card .card-body {
+    padding: 1rem 24px 24px 24px;
+  }
+
+  .filter-card .filter-title {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 20px;
+  }
+
+  .filter-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 1rem;
+  }
+
+  .btn-filter-toggle {
+    background: transparent;
+    border: 2px solid #e4e6eb;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-filter-toggle:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+  }
+
+  .btn-filter-toggle i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .btn-filter-toggle.active i {
+    transform: rotate(180deg);
+  }
+
+  .filter-content {
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .filter-content.collapsed {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    padding-top: 0;
+  }
+
+  .filter-content:not(.collapsed) {
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  .filter-card .form-label {
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 600;
-    color: #64748b;
-    margin-bottom: 0.5rem;
+    color: #8e9baa;
+    margin-bottom: 6px;
   }
 
-  .filter-section .form-select,
-  .filter-section .form-control {
-    border: 2px solid #e2e8f0;
+  .filter-card .form-control,
+  .filter-card .form-select {
     border-radius: 10px;
-    padding: 0.625rem 1rem;
+    border: 1px solid #e4e6eb;
+    padding: 10px 14px;
     transition: all 0.2s ease;
   }
 
-  .filter-section .form-select:focus,
-  .filter-section .form-control:focus {
+  .filter-card .form-control:focus,
+  .filter-card .form-select:focus {
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
   }
@@ -184,28 +262,32 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     color: white;
-    padding: 0.625rem 1.25rem;
+    padding: 10px 24px;
     border-radius: 10px;
     font-weight: 600;
+    transition: all 0.3s ease;
   }
 
   .btn-filter:hover {
     color: white;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
   }
 
-  .btn-refresh {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    border: none;
-    color: white;
-    padding: 0.625rem 1.25rem;
+  .btn-clear-filter {
+    background: white;
+    border: 2px solid #e4e6eb;
+    color: #64748b;
+    padding: 10px 24px;
     border-radius: 10px;
     font-weight: 600;
+    transition: all 0.3s ease;
   }
 
-  .btn-refresh:hover {
-    color: white;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  .btn-clear-filter:hover {
+    border-color: #cbd5e0;
+    background: #f7fafc;
+    color: #4a5568;
   }
 
   /* Table Styling - Enhanced */
@@ -610,6 +692,57 @@
   </div>
 </div>
 
+<!-- Filter Card -->
+<div class="card filter-card">
+  <div class="card-body">
+    <div class="filter-title" onclick="toggleFilter()">
+      <div class="d-flex align-items-center gap-2">
+        <div class="filter-icon-wrapper">
+          <i class="ri-filter-3-line"></i>
+        </div>
+        <h5 class="mb-0">Filter & Search</h5>
+      </div>
+      <button type="button" class="btn-filter-toggle" id="filterToggle">
+        <i class="ri-arrow-down-s-line"></i>
+      </button>
+    </div>
+    <div class="filter-content" id="filterContent">
+      <form method="GET" action="{{ route('admin.payments.index') }}" id="filterForm">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+              <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Status</option>
+              <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>
+              <option value="processing" {{ $status === 'processing' ? 'selected' : '' }}>Processing</option>
+              <option value="completed" {{ $status === 'completed' ? 'selected' : '' }}>Completed</option>
+              <option value="failed" {{ $status === 'failed' ? 'selected' : '' }}>Failed</option>
+              <option value="refunded" {{ $status === 'refunded' ? 'selected' : '' }}>Refunded</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Search</label>
+            <input type="text" name="search" class="form-control" placeholder="Search by transaction ID, amount, user name or email..." value="{{ $search }}">
+            <input type="hidden" name="per_page" value="{{ $perPage }}">
+          </div>
+
+          <div class="col-md-3">
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-filter flex-fill">
+                <i class="ri-search-line me-1"></i> Apply
+              </button>
+              <a href="{{ route('admin.payments.index') }}" class="btn btn-clear-filter">
+                <i class="ri-close-line"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- Main Card -->
 <div class="card main-card">
   <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -644,53 +777,9 @@
       </div>
     @endif
 
-    <!-- Filters -->
-    <div class="filter-section">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-2">
-          <label class="form-label">Status</label>
-          <form method="GET" action="{{ route('admin.payments.index') }}" id="statusForm">
-            <select name="status" class="form-select" onchange="document.getElementById('statusForm').submit()">
-              <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Status</option>
-              <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>
-              <option value="processing" {{ $status === 'processing' ? 'selected' : '' }}>Processing</option>
-              <option value="completed" {{ $status === 'completed' ? 'selected' : '' }}>Completed</option>
-              <option value="failed" {{ $status === 'failed' ? 'selected' : '' }}>Failed</option>
-              <option value="refunded" {{ $status === 'refunded' ? 'selected' : '' }}>Refunded</option>
-            </select>
-            <input type="hidden" name="search" value="{{ $search }}">
-            <input type="hidden" name="per_page" value="{{ $perPage }}">
-          </form>
-        </div>
-        
-        <div class="col-md-7">
-          <label class="form-label">Search</label>
-          <form method="GET" action="{{ route('admin.payments.index') }}" class="d-flex gap-2">
-            <input type="text" name="search" class="form-control" placeholder="Search by transaction ID, amount, user name or email..." value="{{ $search }}">
-            <input type="hidden" name="status" value="{{ $status }}">
-            <input type="hidden" name="per_page" value="{{ $perPage }}">
-            <button type="submit" class="btn btn-filter">
-              <i class="ri-search-line"></i>
-            </button>
-            @if($search)
-              <a href="{{ route('admin.payments.index', ['status' => $status, 'per_page' => $perPage]) }}" class="btn btn-outline-secondary">
-                <i class="ri-close-line"></i>
-              </a>
-            @endif
-          </form>
-        </div>
-
-        <div class="col-md-3">
-          <button type="button" class="btn btn-refresh w-100" onclick="location.reload()">
-            <i class="ri-refresh-line me-1"></i> REFRESH DATA
-          </button>
-        </div>
-      </div>
-    </div>
-
     <!-- Payments Table -->
     @if($payments->count() > 0)
-      <div class="table-responsive">
+      <div class="table-responsive" style="margin-top: 20px">
         <table class="table payments-table">
           <thead>
             <tr>
@@ -809,7 +898,7 @@
       @if($payments->hasPages())
         <div class="pagination-wrapper">
           <div class="pagination-info">
-            Showing <strong>{{ $payments->firstItem() }}</strong> to <strong>{{ $payments->lastItem() }}</strong> 
+            Showing <strong>{{ $payments->firstItem() }}</strong> to <strong>{{ $payments->lastItem() }}</strong>
             of <strong>{{ $payments->total() }}</strong> payments
           </div>
           <div class="pagination-controls">
@@ -855,5 +944,21 @@
     url.searchParams.set('per_page', value);
     window.location.href = url.toString();
   }
+
+  function toggleFilter() {
+    const filterContent = document.getElementById('filterContent');
+    const filterToggle = document.getElementById('filterToggle');
+
+    filterContent.classList.toggle('collapsed');
+    filterToggle.classList.toggle('active');
+  }
+
+  // Initialize filter state - show by default if filters are applied
+  document.addEventListener('DOMContentLoaded', function() {
+    const hasFilters = {{ ($status !== 'all' || $search) ? 'true' : 'false' }};
+    if (!hasFilters) {
+      document.getElementById('filterContent').classList.add('collapsed');
+    }
+  });
 </script>
 @endsection

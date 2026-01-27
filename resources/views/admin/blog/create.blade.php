@@ -51,6 +51,14 @@
   }
   .form-card .card-body { padding: 24px; }
 
+  .form-card .card-body > .row {
+    margin-top: 20px;
+  }
+
+  .form-card .card-body > .row:first-child {
+    margin-top: 0;
+  }
+
   .section-title {
     display: flex;
     align-items: center;

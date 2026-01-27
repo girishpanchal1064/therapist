@@ -2,6 +2,18 @@
 
 @section('title', 'Edit Session')
 
+@section('page-style')
+<style>
+  .card .card-body > .row {
+    margin-top: 20px;
+  }
+
+  .card .card-body > .row:first-child {
+    margin-top: 0;
+  }
+</style>
+@endsection
+
 @section('content')
 <div class="row">
   <div class="col-12">

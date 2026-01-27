@@ -109,6 +109,14 @@
     padding: 1.25rem 1.5rem;
   }
 
+  .form-card .card-body > .row {
+    margin-top: 20px;
+  }
+
+  .form-card .card-body > .row:first-child {
+    margin-top: 0;
+  }
+
   /* Form Styling */
   .form-label {
     font-weight: 600;

@@ -26,6 +26,14 @@
     box-shadow: 0 4px 25px rgba(0,0,0,0.08);
 }
 
+.form-card .card-body > .row {
+    margin-top: 20px;
+}
+
+.form-card .card-body > .row:first-child {
+    margin-top: 0;
+}
+
 .form-section-title {
     font-size: 1.1rem;
     font-weight: 700;

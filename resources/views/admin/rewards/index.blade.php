@@ -190,6 +190,133 @@
     font-weight: 600;
     font-size: 0.85rem;
   }
+
+  /* Filter Card */
+  .filter-card {
+    border-radius: 16px;
+    border: 1px solid #e9ecef;
+    background: white;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1.5rem;
+  }
+  .filter-card .card-body {
+    padding: 1rem 24px 24px 24px;
+  }
+  .filter-card .filter-title {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 20px;
+  }
+  .filter-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 1rem;
+  }
+  .btn-filter-toggle {
+    background: transparent;
+    border: 2px solid #e4e6eb;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .btn-filter-toggle:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+  }
+  .btn-filter-toggle i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  .btn-filter-toggle.active i {
+    transform: rotate(180deg);
+  }
+  .filter-content {
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .filter-content.collapsed {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    padding-top: 0;
+  }
+  .filter-content:not(.collapsed) {
+    max-height: 1000px;
+    opacity: 1;
+  }
+  .filter-card .form-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: #8e9baa;
+    margin-bottom: 6px;
+  }
+  .filter-card .form-control,
+  .filter-card .form-select {
+    border-radius: 10px;
+    border: 1px solid #e4e6eb;
+    padding: 10px 14px;
+    transition: all 0.2s ease;
+  }
+  .filter-card .form-control:focus,
+  .filter-card .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  }
+  .filter-card .input-group {
+    border-radius: 10px;
+    border: 1px solid #e4e6eb;
+    overflow: hidden;
+  }
+  .filter-card .input-group-text {
+    background: #f8f9fa;
+    border: none;
+    color: #667eea;
+    padding: 10px 14px;
+  }
+  .filter-card .input-group .form-control {
+    border: none;
+    padding-left: 0;
+  }
+  .filter-card .input-group:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  }
+  .btn-apply-filter {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-apply-filter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
 </style>
 @endsection
 
@@ -226,41 +353,68 @@
   </div>
 @endif
 
-<!-- Filters -->
-<div class="card main-card mb-4">
-  <div class="card-header">
-    <h5 class="mb-0 fw-bold">Filters</h5>
-  </div>
+<!-- Filter Card -->
+<div class="card filter-card mb-4">
   <div class="card-body">
-    <form method="GET" action="{{ route('admin.rewards.index') }}" class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Search</label>
-        <input type="text" name="search" class="form-control" placeholder="Search by title, code, description..." value="{{ request('search') }}">
+    <div class="filter-title mb-3">
+      <div class="d-flex align-items-center gap-2">
+        <div class="filter-icon-wrapper">
+          <i class="ri-filter-3-line"></i>
+        </div>
+        <span>Filter & Search</span>
       </div>
-      <div class="col-md-3">
-        <label class="form-label">Status</label>
-        <select name="status" class="form-select">
-          <option value="">All</option>
-          <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
-          <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
-          <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Applicable For</label>
-        <select name="applicable_for" class="form-select">
-          <option value="">All</option>
-          <option value="therapist" {{ request('applicable_for') == 'therapist' ? 'selected' : '' }}>Therapist</option>
-          <option value="client" {{ request('applicable_for') == 'client' ? 'selected' : '' }}>Client</option>
-          <option value="both" {{ request('applicable_for') == 'both' ? 'selected' : '' }}>Both</option>
-        </select>
-      </div>
-      <div class="col-md-2 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary w-100">
-          <i class="ri-search-line me-1"></i>Filter
-        </button>
-      </div>
-    </form>
+      <button type="button" class="btn-filter-toggle" onclick="toggleFilterSection()">
+        <i class="ri-arrow-down-s-line" id="filterToggleIcon"></i>
+      </button>
+    </div>
+    <div class="filter-content" id="filterContent">
+      <form method="GET" action="{{ route('admin.rewards.index') }}" id="filterForm">
+        <div class="row g-3 align-items-end">
+          <!-- Search -->
+          <div class="col-md-4">
+            <label class="form-label">Search</label>
+            <div class="input-group input-group-merge">
+              <span class="input-group-text"><i class="ri-search-line"></i></span>
+              <input type="text" name="search" class="form-control" placeholder="Search by title, code, description..." value="{{ request('search') }}">
+            </div>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="col-md-2">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+              <option value="">All</option>
+              <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+              <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+              <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
+            </select>
+          </div>
+
+          <!-- Applicable For Filter -->
+          <div class="col-md-2">
+            <label class="form-label">Applicable For</label>
+            <select name="applicable_for" class="form-select">
+              <option value="">All</option>
+              <option value="therapist" {{ request('applicable_for') == 'therapist' ? 'selected' : '' }}>Therapist</option>
+              <option value="client" {{ request('applicable_for') == 'client' ? 'selected' : '' }}>Client</option>
+              <option value="both" {{ request('applicable_for') == 'both' ? 'selected' : '' }}>Both</option>
+            </select>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="col-md-4">
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-apply-filter flex-grow-1">
+                <i class="ri-filter-3-line me-1"></i> Apply Filters
+              </button>
+              <a href="{{ route('admin.rewards.index') }}" class="btn btn-outline-secondary" title="Reset">
+                <i class="ri-refresh-line"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -269,7 +423,7 @@
   <div class="card-header d-flex justify-content-between align-items-center">
     <h5 class="mb-0 fw-bold">All Rewards</h5>
   </div>
-  <div class="card-body p-0">
+  <div class="card-body p-0" style="margin-top: 20px">
     <div class="table-responsive">
       <table id="rewardsTable" class="table mb-0">
         <thead>
@@ -387,6 +541,21 @@ $(document).ready(function() {
       searchPlaceholder: "Search rewards..."
     }
   });
+
+  // Initialize filter state - show by default if filters are applied
+  const hasFilters = {{ (request('search') || request('status') || request('applicable_for')) ? 'true' : 'false' }};
+  if (!hasFilters) {
+    document.getElementById('filterContent').classList.add('collapsed');
+  }
 });
+
+function toggleFilterSection() {
+  const filterContent = document.getElementById('filterContent');
+  const filterToggle = document.querySelector('.btn-filter-toggle');
+  const filterIcon = document.getElementById('filterToggleIcon');
+  
+  filterContent.classList.toggle('collapsed');
+  filterToggle.classList.toggle('active');
+}
 </script>
 @endsection

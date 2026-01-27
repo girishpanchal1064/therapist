@@ -6,7 +6,7 @@
       <span class="app-brand-logo demo me-1">
         @include('_partials.macros',["height"=>20])
       </span>
-      <span class="app-brand-text demo menu-text fw-semibold ms-2">{{config('variables.templateName')}}</span>
+{{--      <span class="app-brand-text demo menu-text fw-semibold ms-2">{{config('variables.templateName')}}</span>--}}
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -61,8 +61,8 @@
 
       {{-- main menu --}}
       <li class="menu-item {{$activeClass}}">
-        <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" 
-           class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" 
+        <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}"
+           class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
            @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif
            @if (isset($menu->onclick)) onclick="{{ $menu->onclick }}" @endif>
           @isset($menu->icon)

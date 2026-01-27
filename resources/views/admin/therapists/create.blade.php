@@ -107,29 +107,65 @@
     padding: 1.25rem 1.5rem;
   }
 
+  .form-card .card-body > .row {
+    margin-top: 20px;
+  }
+
+  .form-card .card-body > .row:first-child {
+    margin-top: 0;
+  }
+
   /* Form Styling */
   .form-label {
     font-weight: 600;
-    color: #374151;
+    color: #1e293b;
     margin-bottom: 0.5rem;
     font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .form-label .label-icon {
+    color: #667eea;
+    font-size: 1rem;
+  }
+
+  .form-label .required-star {
+    color: #ef4444;
+    margin-left: 0.125rem;
   }
 
   .form-control, .form-select {
     border: 2px solid #e2e8f0;
     border-radius: 10px;
-    padding: 0.75rem 1rem;
+    padding: 0.625rem 1rem;
     transition: all 0.2s ease;
     font-size: 0.9375rem;
+    background: #ffffff;
+    color: #1e293b;
+  }
+
+  .form-control::placeholder {
+    color: #94a3b8;
+    opacity: 0.7;
   }
 
   .form-control:focus, .form-select:focus {
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    outline: none;
+    background: #ffffff;
   }
 
   .form-control.is-invalid, .form-select.is-invalid {
     border-color: #ef4444;
+    background: #fef2f2;
+  }
+
+  .form-control.is-invalid:focus, .form-select.is-invalid:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
   }
 
   .input-group .form-control {
@@ -153,6 +189,29 @@
     color: #64748b;
     font-size: 0.8125rem;
     margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .form-text::before {
+    content: 'ℹ️';
+    font-size: 0.875rem;
+  }
+
+  .invalid-feedback {
+    display: block;
+    color: #ef4444;
+    font-size: 0.8125rem;
+    margin-top: 0.375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .invalid-feedback::before {
+    content: '⚠️';
+    font-size: 0.875rem;
   }
 
   /* Avatar Preview */
@@ -196,36 +255,58 @@
   }
 
   /* Action Buttons */
+  .action-buttons-wrapper {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    border-top: 2px solid #f0f2f5;
+    flex-wrap: wrap;
+  }
+
   .btn-cancel {
-    background: #f1f5f9;
+    background: white;
     border: 2px solid #e2e8f0;
-    color: #475569;
+    color: #64748b;
     padding: 0.75rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .btn-cancel:active {
-    background: #e2e8f0;
-    border-color: #cbd5e1;
-    color: #334155;
+  .btn-cancel:hover {
+    border-color: #cbd5e0;
+    background: #f7fafc;
+    color: #4a5568;
   }
 
   .btn-submit {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     color: white;
-    padding: 0.75rem 2rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
   }
 
   .btn-submit:active {
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-    color: white;
+    transform: translateY(0);
   }
 
   /* Select2 Style for Multi-select */
@@ -249,6 +330,31 @@
   textarea.form-control {
     resize: vertical;
     min-height: 100px;
+    line-height: 1.6;
+  }
+
+  /* File Input */
+  .form-control[type="file"] {
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+
+  .form-control[type="file"]::file-selector-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin-right: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .form-control[type="file"]::file-selector-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
   }
 
   /* Required field indicator */
@@ -316,22 +422,32 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+            <label for="name" class="form-label">
+              <i class="ri-user-line label-icon"></i>
+              Full Name
+              <span class="required-star">*</span>
+            </label>
             <input type="text" class="form-control @error('name') is-invalid @enderror"
-                   id="name" name="name" value="{{ old('name') }}" placeholder="Enter full name" required>
+                   id="name" name="name" value="{{ old('name') }}" placeholder="e.g., John Doe" required>
             @error('name')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div class="form-text">Enter the therapist's full name</div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+            <label for="email" class="form-label">
+              <i class="ri-mail-line label-icon"></i>
+              Email Address
+              <span class="required-star">*</span>
+            </label>
             <input type="email" class="form-control @error('email') is-invalid @enderror"
-                   id="email" name="email" value="{{ old('email') }}" placeholder="Enter email address" required>
+                   id="email" name="email" value="{{ old('email') }}" placeholder="e.g., john.doe@example.com" required>
             @error('email')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div class="form-text">Used for login and notifications</div>
           </div>
         </div>
       </div>
@@ -339,30 +455,39 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+            <label for="password" class="form-label">
+              <i class="ri-lock-password-line label-icon"></i>
+              Password
+              <span class="required-star">*</span>
+            </label>
             <div class="input-group">
               <input type="password" class="form-control @error('password') is-invalid @enderror"
-                     id="password" name="password" placeholder="Enter password" required>
+                     id="password" name="password" placeholder="Enter secure password" required>
               <button class="btn" type="button" id="togglePassword">
                 <i class="ri-eye-off-line" id="passwordIcon"></i>
               </button>
             </div>
             @error('password')
-              <div class="text-danger small mt-1">{{ $message }}</div>
+              <div class="invalid-feedback">{{ $message }}</div>
             @enderror
-            <div class="form-text">Minimum 8 characters</div>
+            <div class="form-text">Minimum 8 characters with letters and numbers</div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="password_confirmation" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+            <label for="password_confirmation" class="form-label">
+              <i class="ri-lock-2-line label-icon"></i>
+              Confirm Password
+              <span class="required-star">*</span>
+            </label>
             <div class="input-group">
               <input type="password" class="form-control"
-                     id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
+                     id="password_confirmation" name="password_confirmation" placeholder="Re-enter password" required>
               <button class="btn" type="button" id="togglePasswordConfirm">
                 <i class="ri-eye-off-line" id="passwordConfirmIcon"></i>
               </button>
             </div>
+            <div class="form-text">Must match the password above</div>
           </div>
         </div>
       </div>
@@ -370,23 +495,31 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+            <label for="phone" class="form-label">
+              <i class="ri-phone-line label-icon"></i>
+              Phone Number
+              <span class="required-star">*</span>
+            </label>
             <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                   id="phone" name="phone" value="{{ old('phone') }}" placeholder="Enter phone number" required>
+                   id="phone" name="phone" value="{{ old('phone') }}" placeholder="e.g., +91 9876543210" required>
             @error('phone')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div class="form-text">Include country code if applicable</div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="profile_image" class="form-label">Profile Picture</label>
+            <label for="profile_image" class="form-label">
+              <i class="ri-image-line label-icon"></i>
+              Profile Picture
+            </label>
             <input type="file" class="form-control @error('profile_image') is-invalid @enderror"
                    id="profile_image" name="profile_image" accept="image/*">
             @error('profile_image')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
-            <div class="form-text">JPEG, PNG, JPG, GIF, SVG - Max 2MB</div>
+            <div class="form-text">JPEG, PNG, JPG, GIF, SVG - Max 2MB (Optional)</div>
           </div>
         </div>
       </div>
@@ -405,9 +538,13 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
+            <label for="first_name" class="form-label">
+              <i class="ri-user-3-line label-icon"></i>
+              First Name
+              <span class="required-star">*</span>
+            </label>
             <input type="text" class="form-control @error('first_name') is-invalid @enderror"
-                   id="first_name" name="first_name" value="{{ old('first_name') }}" placeholder="Enter first name" required>
+                   id="first_name" name="first_name" value="{{ old('first_name') }}" placeholder="e.g., John" required>
             @error('first_name')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -415,9 +552,13 @@
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
+            <label for="last_name" class="form-label">
+              <i class="ri-user-3-line label-icon"></i>
+              Last Name
+              <span class="required-star">*</span>
+            </label>
             <input type="text" class="form-control @error('last_name') is-invalid @enderror"
-                   id="last_name" name="last_name" value="{{ old('last_name') }}" placeholder="Enter last name" required>
+                   id="last_name" name="last_name" value="{{ old('last_name') }}" placeholder="e.g., Doe" required>
             @error('last_name')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -428,60 +569,87 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="experience_years" class="form-label">Experience (Years) <span class="text-danger">*</span></label>
+            <label for="experience_years" class="form-label">
+              <i class="ri-star-line label-icon"></i>
+              Experience (Years)
+              <span class="required-star">*</span>
+            </label>
             <input type="number" class="form-control @error('experience_years') is-invalid @enderror"
-                   id="experience_years" name="experience_years" value="{{ old('experience_years') }}" min="0" placeholder="0" required>
+                   id="experience_years" name="experience_years" value="{{ old('experience_years') }}" min="0" placeholder="e.g., 5" required>
             @error('experience_years')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div class="form-text">Years of professional experience</div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="consultation_fee" class="form-label">Consultation Fee (₹) <span class="text-danger">*</span></label>
+            <label for="consultation_fee" class="form-label">
+              <i class="ri-money-rupee-circle-line label-icon"></i>
+              Consultation Fee (₹)
+              <span class="required-star">*</span>
+            </label>
             <input type="number" class="form-control @error('consultation_fee') is-invalid @enderror"
-                   id="consultation_fee" name="consultation_fee" value="{{ old('consultation_fee') }}" min="0" step="0.01" placeholder="0.00" required>
+                   id="consultation_fee" name="consultation_fee" value="{{ old('consultation_fee') }}" min="0" step="0.01" placeholder="e.g., 1500.00" required>
             @error('consultation_fee')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div class="form-text">Per session consultation fee in INR</div>
           </div>
         </div>
       </div>
 
       <div class="mb-3">
-        <label for="bio" class="form-label">Bio / About <span class="text-danger">*</span></label>
+        <label for="bio" class="form-label">
+          <i class="ri-file-text-line label-icon"></i>
+          Bio / About
+          <span class="required-star">*</span>
+        </label>
         <textarea class="form-control @error('bio') is-invalid @enderror"
-                  id="bio" name="bio" rows="4" placeholder="Write a brief bio about the therapist..." required>{{ old('bio') }}</textarea>
+                  id="bio" name="bio" rows="4" placeholder="Write a brief bio about the therapist's background, expertise, and approach..." required>{{ old('bio') }}</textarea>
         @error('bio')
           <div class="invalid-feedback">{{ $message }}</div>
         @enderror
+        <div class="form-text">Brief professional biography (recommended: 100-200 words)</div>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="certifications" class="form-label">Certifications</label>
+            <label for="certifications" class="form-label">
+              <i class="ri-award-line label-icon"></i>
+              Certifications
+            </label>
             <textarea class="form-control @error('certifications') is-invalid @enderror"
-                      id="certifications" name="certifications" rows="3" placeholder="List certifications...">{{ old('certifications') }}</textarea>
+                      id="certifications" name="certifications" rows="3" placeholder="e.g., Licensed Clinical Psychologist, CBT Certified...">{{ old('certifications') }}</textarea>
             @error('certifications')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div class="form-text">List professional certifications (Optional)</div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="education" class="form-label">Education</label>
+            <label for="education" class="form-label">
+              <i class="ri-graduation-cap-line label-icon"></i>
+              Education
+            </label>
             <textarea class="form-control @error('education') is-invalid @enderror"
-                      id="education" name="education" rows="3" placeholder="Enter educational background...">{{ old('education') }}</textarea>
+                      id="education" name="education" rows="3" placeholder="e.g., M.A. in Psychology, Ph.D. in Clinical Psychology...">{{ old('education') }}</textarea>
             @error('education')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+            <div class="form-text">Educational qualifications and degrees (Optional)</div>
           </div>
         </div>
       </div>
 
       <div class="mb-3">
-        <label for="specializations" class="form-label">Specializations <span class="text-danger">*</span></label>
+        <label for="specializations" class="form-label">
+          <i class="ri-focus-3-line label-icon"></i>
+          Specializations
+          <span class="required-star">*</span>
+        </label>
         <select class="form-select @error('specializations') is-invalid @enderror"
                 id="specializations" name="specializations[]" multiple required>
           @foreach($specializations as $specialization)
@@ -493,18 +661,18 @@
         @error('specializations')
           <div class="invalid-feedback">{{ $message }}</div>
         @enderror
-        <div class="form-text">Hold Ctrl/Cmd to select multiple specializations</div>
+        <div class="form-text">Hold Ctrl (Windows) or Cmd (Mac) to select multiple specializations</div>
       </div>
     </div>
   </div>
 
   <!-- Action Buttons -->
-  <div class="d-flex justify-content-end gap-3">
-    <a href="{{ route('admin.therapists.index') }}" class="btn btn-cancel">
-      <i class="ri-close-line me-2"></i>Cancel
+  <div class="action-buttons-wrapper">
+    <a href="{{ route('admin.therapists.index') }}" class="btn-cancel">
+      <i class="ri-close-line"></i> Cancel
     </a>
-    <button type="submit" class="btn btn-submit">
-      <i class="ri-save-line me-2"></i>Create Therapist
+    <button type="submit" class="btn-submit">
+      <i class="ri-save-line"></i> Create Therapist
     </button>
   </div>
 </form>

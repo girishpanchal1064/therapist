@@ -204,7 +204,7 @@
     <div class="card-header" style="background: white; border-bottom: 2px solid #f0f2f5; padding: 1.5rem;">
         <h5 class="mb-0 fw-bold">Users List</h5>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-0" style="margin-top: 20px">
         <div class="table-responsive">
             <table class="report-table">
                 <thead>

@@ -40,11 +40,12 @@
   /* Stats Cards */
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     margin-bottom: 24px;
   }
-  @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 1400px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 992px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 576px) { .stats-grid { grid-template-columns: 1fr; } }
 
   .stat-card {
@@ -560,7 +561,7 @@
     </div>
   </div>
 
-  <div class="table-responsive">
+  <div class="table-responsive" style="margin-top: 20px">
     <table class="table table-modern">
       <thead>
         <tr>
@@ -689,10 +690,10 @@
     const filterContent = document.getElementById('filterContent');
     const toggleIcon = document.getElementById('filterToggleIcon');
     const toggleBtn = document.querySelector('.btn-filter-toggle');
-    
+
     filterContent.classList.toggle('collapsed');
     toggleBtn.classList.toggle('active');
-    
+
     // Save state to localStorage
     const isCollapsed = filterContent.classList.contains('collapsed');
     localStorage.setItem('filterSectionCollapsed', isCollapsed);
