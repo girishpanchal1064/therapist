@@ -5,14 +5,14 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+<section class="relative bg-gradient-to-br from-primary-50 to-secondary-50 py-12 sm:py-16 lg:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
                 Mental Health
                 <span class="text-gradient">Blog</span>
             </h1>
-            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-1">
                 Expert insights, wellness tips, and mental health resources to support your journey
                 towards better mental wellness.
             </p>
@@ -22,34 +22,34 @@
 
 <!-- Featured Article -->
 @if($featuredPost)
-<section class="py-16 bg-white">
+<section class="py-10 sm:py-14 lg:py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl p-8 text-white relative overflow-hidden">
+        <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 text-white relative overflow-hidden">
             <!-- Background Pattern -->
             <div class="absolute top-0 right-0 w-64 h-64 bg-white bg-opacity-10 rounded-full -translate-y-32 translate-x-32"></div>
             <div class="absolute bottom-0 left-0 w-48 h-48 bg-white bg-opacity-10 rounded-full translate-y-24 -translate-x-24"></div>
 
             <div class="relative z-10 max-w-3xl">
-                <span class="inline-block bg-white bg-opacity-20 text-white px-3 py-1 rounded-full text-sm font-medium mb-4">Featured Article</span>
-                <h2 class="text-3xl font-bold mb-4">{{ $featuredPost->title }}</h2>
-                <p class="text-xl text-primary-100 mb-6">
+                <span class="inline-block bg-white bg-opacity-20 text-white px-3 py-1 rounded-full text-xs sm:text-sm font-medium mb-3 sm:mb-4">Featured Article</span>
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">{{ $featuredPost->title }}</h2>
+                <p class="text-base sm:text-lg md:text-xl text-primary-100 mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
                     {{ $featuredPost->excerpt }}
                 </p>
-                <div class="flex items-center text-primary-100">
+                <div class="flex flex-wrap items-center gap-3 sm:gap-4 text-primary-100">
                     @if($featuredPost->author && $featuredPost->author->profile && $featuredPost->author->profile->profile_image)
                         <img src="{{ Storage::url($featuredPost->author->profile->profile_image) }}"
                              alt="{{ $featuredPost->author ? $featuredPost->author->name : 'Author' }}"
-                             class="w-10 h-10 rounded-full object-cover mr-3">
+                             class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shrink-0">
                     @else
-                        <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
                     @endif
-                    <div>
-                        <p class="font-medium">{{ $featuredPost->author ? $featuredPost->author->name : 'Anonymous' }}</p>
-                        <p class="text-sm">
+                    <div class="min-w-0">
+                        <p class="font-medium truncate">{{ $featuredPost->author ? $featuredPost->author->name : 'Anonymous' }}</p>
+                        <p class="text-xs sm:text-sm truncate">
                             @if($featuredPost->author && $featuredPost->author->therapistProfile)
                                 {{ $featuredPost->author->therapistProfile->qualification ?? 'Licensed Therapist' }}
                             @elseif($featuredPost->author && $featuredPost->author->profile && $featuredPost->author->profile->qualification)
@@ -59,13 +59,13 @@
                             @endif
                         </p>
                     </div>
-                    <span class="ml-auto text-sm">{{ $featuredPost->reading_time ?? 5 }} min read</span>
+                    <span class="text-xs sm:text-sm ml-auto shrink-0">{{ $featuredPost->reading_time ?? 5 }} min read</span>
                 </div>
-                <div class="mt-6">
+                <div class="mt-4 sm:mt-6">
                     <a href="{{ route('blog.show', $featuredPost->slug) }}"
-                       class="inline-flex items-center px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors">
+                       class="inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors text-sm sm:text-base">
                         Read Article
-                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
@@ -77,23 +77,23 @@
 @endif
 
 <!-- Blog Categories & Posts -->
-<section class="py-16 bg-gray-50" x-data="blogFilter()">
+<section class="py-10 sm:py-14 lg:py-16 bg-gray-50" x-data="blogFilter()">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Category Tabs -->
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Browse Articles by Category</h2>
+        <div class="text-center mb-8 sm:mb-12">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8">Browse Articles by Category</h2>
 
             <!-- Tab Navigation -->
-            <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
                 <button @click="filterPosts('all')"
                         :class="activeCategory === 'all' ? 'bg-primary-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                        class="px-6 py-3 rounded-lg font-medium transition-colors border border-gray-200">
+                        class="px-3 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 rounded-lg font-medium transition-colors border border-gray-200 text-sm sm:text-base">
                     All Articles
                 </button>
                 @foreach($categories as $category)
                     <button @click="filterPosts('{{ $category->id }}')"
                             :class="activeCategory === '{{ $category->id }}' ? 'text-white' : 'text-gray-700 hover:bg-gray-50'"
-                            class="px-6 py-3 rounded-lg font-medium transition-colors border border-gray-200"
+                            class="px-3 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 rounded-lg font-medium transition-colors border border-gray-200 text-sm sm:text-base"
                             :style="activeCategory === '{{ $category->id }}' ? 'background-color: {{ $category->color }}' : 'background-color: white'">
                         {{ $category->name }}
                     </button>
@@ -113,24 +113,24 @@
         </div>
 
         <!-- Posts Grid -->
-        <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="posts-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             @include('web.blog.partials.posts-grid', ['posts' => $posts])
         </div>
 
         <!-- Load More Button -->
-        <div x-show="hasMore && !loading" class="text-center mt-12">
+        <div x-show="hasMore && !loading" class="text-center mt-8 sm:mt-12">
             <button @click="loadMore()"
-                    class="inline-flex items-center px-8 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors">
+                    class="inline-flex items-center px-5 py-2.5 sm:px-8 sm:py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base">
                 Load More Articles
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
             </button>
         </div>
 
         <!-- No More Articles Message -->
-        <div x-show="!hasMore && !loading && postsLoaded > 0" class="text-center mt-12">
-            <div class="bg-gray-100 rounded-lg p-6 max-w-md mx-auto">
+        <div x-show="!hasMore && !loading && postsLoaded > 0" class="text-center mt-8 sm:mt-12">
+            <div class="bg-gray-100 rounded-lg p-4 sm:p-6 max-w-md mx-auto">
                 <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
@@ -140,8 +140,8 @@
         </div>
 
         <!-- No Articles Found -->
-        <div x-show="!loading && postsLoaded === 0" class="text-center py-12">
-            <div class="bg-gray-100 rounded-lg p-8 max-w-md mx-auto">
+        <div x-show="!loading && postsLoaded === 0" class="text-center py-8 sm:py-12">
+            <div class="bg-gray-100 rounded-lg p-5 sm:p-8 max-w-md mx-auto">
                 <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
@@ -157,22 +157,38 @@
 </section>
 
 <!-- Newsletter Signup -->
-<section class="py-16 bg-primary-600">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold text-white mb-4">Stay Updated</h2>
-        <p class="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
+<section class="newsletter-section py-10 sm:py-14 lg:py-16 bg-primary-600 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full box-border">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">Stay Updated</h2>
+        <p class="text-base sm:text-lg md:text-xl text-primary-100 mb-6 sm:mb-8 max-w-2xl mx-auto px-0 sm:px-1">
             Get the latest mental health insights and wellness tips delivered to your inbox.
         </p>
-        <div class="max-w-md mx-auto flex gap-4">
+        <div class="newsletter-form max-w-md mx-auto flex flex-col md:flex-row gap-3 sm:gap-4 w-full">
             <input type="email"
                    placeholder="Enter your email address"
-                   class="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">
-            <button class="px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+                   class="w-full min-w-0 flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 text-base box-border">
+            <button type="button" class="w-full md:w-auto px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shrink-0">
                 Subscribe
             </button>
         </div>
     </div>
 </section>
+
+<style>
+/* Newsletter: stack form on small/medium viewports for reliable responsiveness */
+@media (max-width: 767px) {
+    .newsletter-section .newsletter-form {
+        flex-direction: column !important;
+        align-items: stretch;
+        width: 100%;
+    }
+    .newsletter-section .newsletter-form input,
+    .newsletter-section .newsletter-form button {
+        width: 100% !important;
+        max-width: 100%;
+    }
+}
+</style>
 
 <script>
 function blogFilter() {
