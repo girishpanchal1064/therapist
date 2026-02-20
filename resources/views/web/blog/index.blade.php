@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mental Health Blog - TalkToAngel Clone')
+@section('title', 'Mental Health Blog - Apani Psychology')
 @section('description', 'Read our latest articles on mental health, wellness tips, therapy insights, and expert advice from licensed therapists.')
 
 @section('content')

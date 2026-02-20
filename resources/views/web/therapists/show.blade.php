@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $therapist->name . ' - Therapist Profile - TalkToAngel Clone')
+@section('title', $therapist->name . ' - Therapist Profile - Apani Psychology')
 
 @section('content')
 <div class="min-h-screen bg-gray-50">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Messages - TalkToAngel Clone')
+@section('title', 'Messages - Apani Psychology')
 
 @section('content')
 <div class="min-h-screen bg-gray-50">

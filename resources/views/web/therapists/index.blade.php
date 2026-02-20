@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Find Your Perfect Therapist - TalkToAngel Clone')
+@section('title', 'Find Your Perfect Therapist - Apani Psychology')
 
 @section('head')
 <style>

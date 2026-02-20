@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'TalkToAngel Clone - Online Mental Health Counseling')
+@section('title', 'Apani Psychology - Online Mental Health Counseling')
 @section('description', 'Connect with verified therapists for online counseling, therapy sessions, and mental health support. Professional help when you need it most.')
 
 @section('head')

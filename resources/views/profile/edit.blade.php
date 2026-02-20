@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profile Settings - TalkToAngel Clone')
+@section('title', 'Profile Settings - Apani Psychology')
 @section('description', 'Manage your profile information, preferences, and account settings.')
 
 @section('content')

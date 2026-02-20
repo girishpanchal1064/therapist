@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'TalkToAngel Clone - Online Mental Health Counseling')</title>
+    <title>@yield('title', 'Apani Psychology - Online Mental Health Counseling')</title>
     <meta name="description" content="@yield('description', 'Connect with verified therapists for online counseling, therapy sessions, and mental health support.')">
 
     <!-- Fonts -->
@@ -220,7 +220,7 @@
 
             <div class="mt-8 pt-8 border-t border-gray-800">
                 <p class="text-center text-gray-400 text-sm">
-                    &copy; {{ date('Y') }} TalkToAngel Clone. All rights reserved.
+                    &copy; {{ date('Y') }} Apani Psychology. All rights reserved.
                 </p>
             </div>
         </div>

@@ -33,7 +33,7 @@ class DashboardController extends Controller
                 ->where('status', 'completed')
                 ->sum('total_amount'),
             'wallet_balance' => $user->wallet ? $user->wallet->balance : 0,
-            'assessments_completed' => UserAssessment::where('user_id', $user->id)
+            'assessments_completed' => $user->assessments()
                 ->where('status', 'completed')
                 ->count(),
             'reviews_given' => Review::where('client_id', $user->id)

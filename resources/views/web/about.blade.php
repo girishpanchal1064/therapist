@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'About Us - TalkToAngel Clone')
+@section('title', 'About Us - Apani Psychology')
 @section('description', 'Learn about our mission to make mental health support accessible, affordable, and effective for everyone.')
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="text-center">
             <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
                 About
-                <span class="text-gradient">TalkToAngel</span>
+                <span class="text-gradient">Apani Psychology</span>
             </h1>
             <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
                 We're on a mission to make mental health support accessible, affordable, and effective for everyone,

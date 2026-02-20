@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "production": "vite build"
   },
   "devDependencies": {
     "@babel/core": "7.23.9",
