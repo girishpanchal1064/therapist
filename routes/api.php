@@ -8,7 +8,6 @@ Route::post('login', [ApiController::class, 'login']);
 Route::post('forgot-password', [ApiController::class, 'forgotPassword']);
 Route::post('reset-password', [ApiController::class, 'resetPassword']);
 
-// Public therapist (astrologer) endpoints
 Route::get('therapists', [ApiController::class, 'therapists']);
 Route::get('therapists/{id}', [ApiController::class, 'therapistProfile']);
 Route::get('therapists/{id}/availability', [ApiController::class, 'therapistAvailability']);
