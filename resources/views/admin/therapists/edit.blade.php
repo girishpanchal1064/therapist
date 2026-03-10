@@ -3,6 +3,9 @@
 @section('title', 'Edit Therapist')
 
 @section('page-style')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
   /* Page Header */
   .page-header {
@@ -114,7 +117,7 @@
   }
 
   .form-card .card-body > .row:first-child {
-    margin-top: 0;
+    margin-top: 1rem;
   }
 
   /* Form Styling */
@@ -251,7 +254,7 @@
     color: white;
   }
 
-  /* Select2 Style for Multi-select */
+  /* Multi-select base style (fallback if Select2 not loaded) */
   .form-select[multiple] {
     min-height: 120px;
     padding: 0.5rem;
@@ -266,6 +269,41 @@
   .form-select[multiple] option:checked {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+  }
+
+  /* Select2 overrides */
+  .select2-container--default .select2-selection--multiple {
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    min-height: 46px;
+    padding: 2px 4px;
+  }
+
+  .select2-container--default .select2-selection--multiple:focus,
+  .select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    outline: none;
+  }
+
+  .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+  }
+
+  .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #e5e7eb;
+    margin-right: 4px;
+  }
+
+  .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
   /* Textarea */
@@ -337,7 +375,7 @@
       </h6>
     </div>
     <div class="card-body">
-      <div class="row">
+      <div class="row mt-3">
         <div class="col-md-6">
           <div class="mb-3">
             <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
@@ -391,12 +429,19 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label for="profile_image" class="form-label">Profile Picture</label>
-            <input type="file" class="form-control @error('profile_image') is-invalid @enderror"
+            <div class="avatar-upload-area" id="avatarUploadAreaEdit">
+              <div class="upload-icon">
+                <i class="ri-upload-cloud-2-line"></i>
+              </div>
+              <p class="mb-1 fw-semibold">Click to upload or drag & drop</p>
+              <p class="mb-0 text-muted" style="font-size: 0.8rem;">JPEG, PNG, JPG, GIF - Max 2MB</p>
+            </div>
+
+            <input type="file" class="form-control d-none @error('profile_image') is-invalid @enderror"
                    id="profile_image" name="profile_image" accept="image/*">
             @error('profile_image')
-              <div class="invalid-feedback">{{ $message }}</div>
+              <div class="invalid-feedback d-block mt-2">{{ $message }}</div>
             @enderror
-            <div class="form-text">Upload a new picture to replace the current one</div>
           </div>
         </div>
         <div class="col-md-6">
@@ -404,11 +449,11 @@
             <label class="form-label">Current Avatar</label>
             <div>
               @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
-                <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}" alt="Current Avatar" class="current-avatar">
+                <img id="currentAvatarPreview" src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}" alt="Current Avatar" class="current-avatar">
               @elseif($therapist->avatar)
-                <img src="{{ asset('storage/' . $therapist->avatar) }}" alt="Current Avatar" class="current-avatar">
+                <img id="currentAvatarPreview" src="{{ asset('storage/' . $therapist->avatar) }}" alt="Current Avatar" class="current-avatar">
               @else
-                <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" alt="Default Avatar" class="current-avatar">
+                <img id="currentAvatarPreview" src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" alt="Default Avatar" class="current-avatar">
               @endif
             </div>
           </div>
@@ -427,7 +472,7 @@
     </div>
     <div class="card-body">
       @if($therapist->therapistProfile)
-        <div class="row">
+        <div class="row mt-3">
           <div class="col-md-6">
             <div class="mb-3">
               <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
@@ -476,10 +521,15 @@
         <div class="mb-3">
           <label for="bio" class="form-label">Bio / About <span class="text-danger">*</span></label>
           <textarea class="form-control @error('bio') is-invalid @enderror"
-                    id="bio" name="bio" rows="4" placeholder="Write a brief bio about the therapist..." required>{{ old('bio', $therapist->therapistProfile->bio) }}</textarea>
+                    id="bio" name="bio" rows="4" maxlength="1000"
+                    placeholder="Write a brief bio about the therapist..." required>{{ old('bio', $therapist->therapistProfile->bio) }}</textarea>
           @error('bio')
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
+          <div class="form-text">
+            Brief professional biography (recommended: 100-200 words)
+            <span class="ms-2" id="bioCounterEdit" style="font-weight: 600;">0 / 1000</span>
+          </div>
         </div>
 
         <div class="row">
@@ -519,7 +569,10 @@
           @error('specializations')
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
-          <div class="form-text">Hold Ctrl/Cmd to select multiple specializations</div>
+          <div class="form-text">
+            Type to search and select multiple specializations.
+            <span class="ms-1" id="specializationsCounterEdit"></span>
+          </div>
         </div>
       @else
         <div class="alert alert-warning">
@@ -545,4 +598,93 @@
     </button>
   </div>
 </form>
+@endsection
+
+@section('page-script')
+<!-- jQuery (required for Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Avatar upload preview for edit
+  const avatarUploadArea = document.getElementById('avatarUploadAreaEdit');
+  const avatarInput = document.getElementById('profile_image');
+  const currentAvatarPreview = document.getElementById('currentAvatarPreview');
+
+  if (avatarUploadArea && avatarInput && currentAvatarPreview) {
+    avatarUploadArea.addEventListener('click', () => avatarInput.click());
+
+    avatarUploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      avatarUploadArea.classList.add('border-primary');
+    });
+
+    avatarUploadArea.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      avatarUploadArea.classList.remove('border-primary');
+    });
+
+    avatarUploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      avatarUploadArea.classList.remove('border-primary');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        avatarInput.files = e.dataTransfer.files;
+        previewAvatar(e.dataTransfer.files[0]);
+      }
+    });
+
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        previewAvatar(file);
+      }
+    });
+
+    function previewAvatar(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentAvatarPreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Bio live character counter
+  const bioInput = document.getElementById('bio');
+  const bioCounter = document.getElementById('bioCounterEdit');
+  if (bioInput && bioCounter) {
+    const updateBioCounter = () => {
+      const length = bioInput.value.length;
+      bioCounter.textContent = `${length} / ${bioInput.maxLength}`;
+    };
+    bioInput.addEventListener('input', updateBioCounter);
+    updateBioCounter();
+  }
+
+  // Initialize Select2 for Specializations
+  if (window.jQuery && $('#specializations').length) {
+    $('#specializations').select2({
+      placeholder: 'Select specializations',
+      width: '100%',
+      allowClear: true
+    });
+  }
+
+  // Specializations selected count
+  const specSelect = document.getElementById('specializations');
+  const specCounter = document.getElementById('specializationsCounterEdit');
+  if (specSelect && specCounter) {
+    const updateSpecCounter = () => {
+      const count = Array.from(specSelect.selectedOptions).length;
+      specCounter.textContent = count
+        ? `${count} selected`
+        : 'No specializations selected yet';
+    };
+    specSelect.addEventListener('change', updateSpecCounter);
+    updateSpecCounter();
+  }
+});
+</script>
 @endsection

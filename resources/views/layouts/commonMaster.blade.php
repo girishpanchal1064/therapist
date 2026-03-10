@@ -22,6 +22,50 @@
   
   <!-- Logo & Global Styles -->
   <style>
+    /* Global theme gradient for backend headers */
+    :root {
+      --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    /* Unified backend page header */
+    .layout-wrapper .page-header {
+      background: var(--theme-gradient);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .layout-wrapper .page-header h4 {
+      color: #ffffff;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .layout-wrapper .page-header p {
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 0;
+    }
+
+    /* Unified main listing card */
+    .layout-wrapper .main-card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      background: #ffffff;
+      margin-bottom: 1.5rem;
+    }
+
+    .layout-wrapper .main-card .card-header {
+      background: #ffffff;
+      border-bottom: 2px solid #f0f2f5;
+      padding: 1.5rem;
+    }
+
+    .layout-wrapper .main-card .card-body {
+      padding: 1.5rem;
+    }
+
     /* Hide inline success alerts across admin/therapist modules */
     .layout-wrapper .alert.alert-success.alert-dismissible.fade.show {
       display: none !important;

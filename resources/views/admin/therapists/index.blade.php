@@ -105,29 +105,7 @@
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
   }
 
-  /* Main Card */
-  .main-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-    background: white;
-  }
-
-  .main-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    border-bottom: 2px solid #e2e8f0;
-    padding: 1rem 1.25rem;
-  }
-
-  .main-card .card-header h5 {
-    padding-top: 0;
-    margin-top: 0;
-  }
-
-  .main-card .card-body {
-    padding: 1.25rem;
-  }
+  /* Main Card – now uses global .main-card from layout; keep any page-specific tweaks below if needed */
 
   /* Add Button */
   .btn-add {
