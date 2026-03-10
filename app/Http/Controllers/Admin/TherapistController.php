@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class TherapistController extends Controller
 {
@@ -56,7 +57,14 @@ class TherapistController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                // Only enforce uniqueness on non-deleted users
+                Rule::unique('users', 'email')->whereNull('deleted_at'),
+            ],
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|string|max:20',
             'first_name' => 'required|string|max:255',
@@ -133,7 +141,16 @@ class TherapistController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $therapist->id,
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                // Allow current user email, still ignore soft-deleted users
+                Rule::unique('users', 'email')
+                    ->ignore($therapist->id)
+                    ->whereNull('deleted_at'),
+            ],
             'phone' => 'required|string|max:20',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
