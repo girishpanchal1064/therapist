@@ -4,12 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AppointmentResource;
+use App\Http\Resources\AssessmentResource;
 use App\Http\Resources\TherapistResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\WalletTransactionResource;
 use App\Models\Appointment;
+use App\Models\Assessment;
+use App\Models\UserAssessment;
+use App\Models\UserAssessmentAnswer;
 use App\Models\TherapistProfile;
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\Wallet;
 use App\Services\TherapistAvailabilityService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +27,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -143,6 +150,97 @@ class ApiController extends Controller
         ], 'Logged in successfully.');
     }
 
+    /**
+     * Login specifically as a Client (customer).
+     */
+    public function loginCustomer(Request $request): JsonResponse
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        $user = User::query()->where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            return $this->errorResponse('Invalid credentials.', 422);
+        }
+
+        if (! $user->isClient()) {
+            return $this->errorResponse('This account is not a Client.', 403);
+        }
+
+        if (! $user->isActive()) {
+            return $this->errorResponse('Your account is not active.', 403);
+        }
+
+        $tokenResult = $user->createToken('api-token');
+        $user->forceFill([
+            'last_login_at' => now(),
+        ])->save();
+
+        // Load customer profile & wallet so app can show it immediately
+        $user->loadMissing(['profile', 'wallet']);
+
+        return $this->successResponse([
+            'user' => new UserResource($user),
+            'profile' => $user->profile,
+            'wallet' => $user->wallet ? [
+                'balance' => $user->wallet->balance,
+                'formatted_balance' => $user->wallet->formatted_balance,
+                'currency' => $user->wallet->currency,
+            ] : null,
+            'token_type' => 'Bearer',
+            'access_token' => $tokenResult->accessToken ?? $tokenResult->token,
+        ], 'Logged in successfully as Client.');
+    }
+
+    /**
+     * Login specifically as a Therapist.
+     */
+    public function loginTherapist(Request $request): JsonResponse
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        $user = User::query()->where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            return $this->errorResponse('Invalid credentials.', 422);
+        }
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('This account is not a Therapist.', 403);
+        }
+
+        if (! $user->isActive()) {
+            return $this->errorResponse('Your account is not active.', 403);
+        }
+
+        $tokenResult = $user->createToken('api-token');
+        $user->forceFill([
+            'last_login_at' => now(),
+        ])->save();
+
+        // Load therapist profile (and basic profile/wallet) for immediate use
+        $user->loadMissing(['therapistProfile', 'profile', 'wallet']);
+
+        return $this->successResponse([
+            'user' => new UserResource($user),
+            'profile' => $user->profile,
+            'therapist_profile' => $user->therapistProfile,
+            'wallet' => $user->wallet ? [
+                'balance' => $user->wallet->balance,
+                'formatted_balance' => $user->wallet->formatted_balance,
+                'currency' => $user->wallet->currency,
+            ] : null,
+            'token_type' => 'Bearer',
+            'access_token' => $tokenResult->accessToken ?? $tokenResult->token,
+        ], 'Logged in successfully as Therapist.');
+    }
+
     public function forgotPassword(Request $request): JsonResponse
     {
         $request->validate([
@@ -211,6 +309,111 @@ class ApiController extends Controller
     {
         return $this->successResponse([
             'user' => new UserResource($request->user()),
+        ]);
+    }
+
+    /**
+     * Get the authenticated user's full profile, including client/therapist details and basic stats.
+     */
+    public function profile(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user()->loadMissing([
+            'profile',
+            'therapistProfile',
+            'wallet',
+        ]);
+
+        $appointmentsQuery = $user->isTherapist()
+            ? $user->appointmentsAsTherapist()
+            : $user->appointmentsAsClient();
+
+        $appointmentsCount = $appointmentsQuery->count();
+        $upcomingAppointmentsCount = (clone $appointmentsQuery)
+            ->upcoming()
+            ->count();
+
+        return $this->successResponse([
+            'user' => new UserResource($user),
+            'profile' => $user->profile,
+            'therapist_profile' => $user->therapistProfile,
+            'wallet' => $user->wallet ? [
+                'balance' => $user->wallet->balance,
+                'formatted_balance' => $user->wallet->formatted_balance,
+                'currency' => $user->wallet->currency,
+            ] : null,
+            'stats' => [
+                'appointments_count' => $appointmentsCount,
+                'upcoming_appointments_count' => $upcomingAppointmentsCount,
+            ],
+        ]);
+    }
+
+    /**
+     * Update the authenticated user's basic profile fields.
+     */
+    public function updateProfile(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => ['sometimes', 'string', 'max:255'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:30'],
+            'avatar' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.first_name' => ['sometimes', 'string', 'max:255'],
+            'profile.last_name' => ['sometimes', 'string', 'max:255'],
+            'profile.date_of_birth' => ['sometimes', 'date'],
+            'profile.gender' => ['sometimes', 'nullable', 'string', 'max:50'],
+            'profile.bio' => ['sometimes', 'nullable', 'string', 'max:2000'],
+            'profile.address_line1' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.address_line2' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.city' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.state' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.country' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.pincode' => ['sometimes', 'nullable', 'string', 'max:20'],
+            'profile.preferred_language' => ['sometimes', 'nullable', 'string', 'max:100'],
+        ]);
+
+        $user->fill($request->only(['name', 'phone', 'avatar']));
+        $user->save();
+
+        $profileData = $request->input('profile', []);
+        if (! empty($profileData)) {
+            $user->profile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $profileData
+            );
+        }
+
+        $user->loadMissing(['profile', 'therapistProfile', 'wallet']);
+
+        return $this->successResponse([
+            'user' => new UserResource($user),
+            'profile' => $user->profile,
+            'therapist_profile' => $user->therapistProfile,
+            'wallet' => $user->wallet ? [
+                'balance' => $user->wallet->balance,
+                'formatted_balance' => $user->wallet->formatted_balance,
+                'currency' => $user->wallet->currency,
+            ] : null,
+        ], 'Profile updated successfully.');
+    }
+
+    /**
+     * Get therapist specific profile for authenticated therapist.
+     */
+    public function therapistSelfProfile(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user()->loadMissing(['therapistProfile']);
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access therapist profile.', 403);
+        }
+
+        return $this->successResponse([
+            'therapist_profile' => $user->therapistProfile,
         ]);
     }
 
@@ -320,6 +523,166 @@ class ApiController extends Controller
             ->findOrFail($id);
 
         return $this->successResponse(new TherapistResource($therapist));
+    }
+
+    /**
+     * Get the authenticated user's wallet details and recent transactions.
+     */
+    public function wallet(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // Only customers (clients) can access wallet summary
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only customers can access wallet.', 403);
+        }
+
+        $wallet = $user->wallet;
+
+        if (! $wallet) {
+            $wallet = Wallet::create([
+                'user_id' => $user->id,
+                'balance' => 0,
+                'currency' => 'INR',
+            ]);
+        }
+
+        $recentTransactions = $wallet->transactions()
+            ->orderByDesc('id')
+            ->limit(10)
+            ->get();
+
+        return $this->successResponse([
+            'wallet' => [
+                'id' => $wallet->id,
+                'balance' => $wallet->balance,
+                'formatted_balance' => $wallet->formatted_balance,
+                'currency' => $wallet->currency,
+            ],
+            'recent_transactions' => WalletTransactionResource::collection($recentTransactions),
+        ]);
+    }
+
+    /**
+     * List wallet transactions for the authenticated user with pagination and optional filters.
+     */
+    public function walletTransactions(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // Only customers (clients) can view wallet transactions
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only customers can view wallet transactions.', 403);
+        }
+
+        $wallet = $user->wallet;
+
+        if (! $wallet) {
+            return $this->successResponse([
+                'wallet' => null,
+                'items' => [],
+                'pagination' => [
+                    'current_page' => 1,
+                    'last_page' => 1,
+                    'per_page' => (int) $request->get('per_page', 15),
+                    'total' => 0,
+                ],
+            ]);
+        }
+
+        $query = $wallet->transactions()->orderByDesc('id');
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->get('type'));
+        }
+
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->get('from'));
+        }
+
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->get('to'));
+        }
+
+        $perPage = (int) $request->get('per_page', 15);
+        $transactions = $query->paginate($perPage);
+
+        return $this->successResponse([
+            'wallet' => [
+                'id' => $wallet->id,
+                'balance' => $wallet->balance,
+                'formatted_balance' => $wallet->formatted_balance,
+                'currency' => $wallet->currency,
+            ],
+            'items' => WalletTransactionResource::collection($transactions),
+            'pagination' => [
+                'current_page' => $transactions->currentPage(),
+                'last_page' => $transactions->lastPage(),
+                'per_page' => $transactions->perPage(),
+                'total' => $transactions->total(),
+            ],
+        ]);
+    }
+
+    /**
+     * Confirm a simple top-up on the wallet (after successful payment).
+     */
+    public function walletTopupConfirm(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // Only customers (clients) can top up wallet
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only customers can top up wallet.', 403);
+        }
+
+        $validated = $request->validate([
+            'amount' => ['required', 'numeric', 'min:1'],
+            'payment_method' => ['required', 'string', 'max:50'],
+            'transaction_id' => ['required', 'string', 'max:191'],
+            'description' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $wallet = $user->wallet;
+
+        if (! $wallet) {
+            $wallet = Wallet::create([
+                'user_id' => $user->id,
+                'balance' => 0,
+                'currency' => 'INR',
+            ]);
+        }
+
+        $beforeBalance = $wallet->balance;
+        $amount = (float) $validated['amount'];
+
+        $wallet->addMoney(
+            $amount,
+            $validated['description'] ?? 'Wallet top-up',
+            null,
+            null
+        );
+
+        $transaction = $wallet->transactions()->latest('id')->first();
+        if ($transaction) {
+            $transaction->payment_method = $validated['payment_method'];
+            $transaction->transaction_id = $validated['transaction_id'];
+            $transaction->save();
+        }
+
+        return $this->successResponse([
+            'wallet' => [
+                'id' => $wallet->id,
+                'balance_before' => $beforeBalance,
+                'balance_after' => $wallet->balance,
+                'formatted_balance' => $wallet->formatted_balance,
+                'currency' => $wallet->currency,
+            ],
+            'transaction' => $transaction ? new WalletTransactionResource($transaction) : null,
+        ], 'Wallet topped up successfully.');
     }
 
     /**
@@ -449,6 +812,199 @@ class ApiController extends Controller
             new AppointmentResource($appointment),
             'Appointment created successfully.',
             201
+        );
+    }
+
+    /**
+     * List active assessments for the app.
+     */
+    public function assessments(Request $request): JsonResponse
+    {
+        $assessments = Assessment::query()
+            ->active()
+            ->ordered()
+            ->get();
+
+        return $this->successResponse(
+            AssessmentResource::collection($assessments)
+        );
+    }
+
+    /**
+     * Show a single assessment with its ordered questions.
+     */
+    public function assessmentShow(int $id, Request $request): JsonResponse
+    {
+        $assessment = Assessment::query()
+            ->active()
+            ->with(['questions' => function ($query) {
+                $query->ordered();
+            }])
+            ->findOrFail($id);
+
+        return $this->successResponse(
+            new AssessmentResource($assessment)
+        );
+    }
+
+    /**
+     * Submit answers for an assessment and compute a simple score.
+     */
+    public function assessmentSubmit(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // Only customers (clients) can submit assessments
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only customers can submit assessments.', 403);
+        }
+
+        $assessment = Assessment::query()
+            ->active()
+            ->with(['questions' => function ($query) {
+                $query->ordered();
+            }])
+            ->findOrFail($id);
+
+        $validated = $request->validate([
+            'answers' => ['required', 'array'],
+        ]);
+
+        $answersInput = $validated['answers'];
+
+        DB::beginTransaction();
+
+        try {
+            $userAssessment = UserAssessment::create([
+                'user_id' => $user->id,
+                'assessment_id' => $assessment->id,
+                'status' => 'completed',
+                'started_at' => now(),
+                'completed_at' => now(),
+            ]);
+
+            $totalScore = 0;
+            $maxScore = 0;
+
+            foreach ($assessment->questions as $question) {
+                $answerData = $answersInput[$question->id] ?? null;
+
+                if ($answerData === null && $question->required) {
+                    DB::rollBack();
+
+                    return $this->errorResponse(
+                        'Missing answer for required question: ' . $question->id,
+                        422
+                    );
+                }
+
+                if ($answerData === null) {
+                    continue;
+                }
+
+                $answerText = is_array($answerData) ? json_encode($answerData) : (string) $answerData;
+                $answerValue = null;
+                $score = 0;
+
+                if (is_numeric($answerData)) {
+                    $answerValue = (int) $answerData;
+                    $score = $answerValue * ($question->weight ?? 1);
+                }
+
+                UserAssessmentAnswer::create([
+                    'user_assessment_id' => $userAssessment->id,
+                    'question_id' => $question->id,
+                    'answer_text' => $answerText,
+                    'answer_value' => $answerValue,
+                    'score' => $score,
+                ]);
+
+                $totalScore += $score;
+                $maxScore += (int) ($question->weight ?? 1) * 5;
+            }
+
+            $percentage = $maxScore > 0 ? ($totalScore / $maxScore) * 100 : null;
+
+            $userAssessment->update([
+                'total_score' => $totalScore,
+                'max_score' => $maxScore,
+                'percentage' => $percentage,
+                'result_summary' => [
+                    'total_score' => $totalScore,
+                    'max_score' => $maxScore,
+                    'percentage' => $percentage,
+                ],
+            ]);
+
+            DB::commit();
+
+            $userAssessment->load(['assessment', 'answers.question']);
+
+            return $this->successResponse(
+                new \App\Http\Resources\UserAssessmentResource($userAssessment),
+                'Assessment submitted successfully.',
+                201
+            );
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return $this->errorResponse('Failed to submit assessment.', 500);
+        }
+    }
+
+    /**
+     * List assessment responses for the authenticated user.
+     */
+    public function assessmentResponses(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // Only customers (clients) can view their assessment history
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only customers can view assessment history.', 403);
+        }
+
+        $query = UserAssessment::query()
+            ->where('user_id', $user->id)
+            ->with('assessment')
+            ->orderByDesc('created_at');
+
+        $perPage = (int) $request->get('per_page', 10);
+        $responses = $query->paginate($perPage);
+
+        return $this->successResponse([
+            'items' => \App\Http\Resources\UserAssessmentResource::collection($responses),
+            'pagination' => [
+                'current_page' => $responses->currentPage(),
+                'last_page' => $responses->lastPage(),
+                'per_page' => $responses->perPage(),
+                'total' => $responses->total(),
+            ],
+        ]);
+    }
+
+    /**
+     * Show a single assessment response for the authenticated user.
+     */
+    public function assessmentResponseShow(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        // Only customers (clients) can view their assessment details
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only customers can view assessment details.', 403);
+        }
+
+        $response = UserAssessment::query()
+            ->where('user_id', $user->id)
+            ->with(['assessment', 'answers.question'])
+            ->findOrFail($id);
+
+        return $this->successResponse(
+            new \App\Http\Resources\UserAssessmentResource($response)
         );
     }
 }
