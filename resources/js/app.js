@@ -1,4 +1,7 @@
 import './bootstrap';
+import '../assets/vendor/js/helpers.js';
+import '../assets/vendor/js/menu.js';
+import '../assets/js/config.js';
 import Alpine from 'alpinejs';
 
 // Configure Laravel Echo only if Pusher credentials are available
