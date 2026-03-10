@@ -2,6 +2,9 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Remixicon font (was previously loaded as a separate Vite entry) */
+@import "../assets/vendor/fonts/remixicon/remixicon.scss";
+
 /* Custom styles for the mental health platform */
 @layer base {
   html {
