@@ -20,8 +20,13 @@
   <!-- Include Styles -->
   @include('layouts/sections/styles')
   
-  <!-- Logo Styles -->
+  <!-- Logo & Global Styles -->
   <style>
+    /* Hide inline success alerts across admin/therapist modules */
+    .layout-wrapper .alert.alert-success.alert-dismissible.fade.show {
+      display: none !important;
+    }
+
     .app-brand-logo,
     img[src*="logo.png"] {
       background: transparent !important;

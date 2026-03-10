@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class TherapistController extends Controller
@@ -70,8 +71,14 @@ class TherapistController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'bio' => 'required|string',
-            'experience_years' => 'required|integer|min:0',
-            'consultation_fee' => 'required|numeric|min:0',
+            'experience_years'        => 'required|integer|min:0',
+            'consultation_fee'        => 'required|numeric|min:0',
+            'couple_consultation_fee' => 'nullable|numeric|min:0',
+            'license_number'          => 'nullable|string|max:255',
+            'specialization'          => 'nullable|string|max:255',
+            'qualification'           => 'nullable|string|max:255',
+            'languages'               => 'nullable|array',
+            'languages.*'             => 'string|max:50',
             'specializations' => 'required|array',
             'specializations.*' => 'exists:therapist_specializations,id',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -85,40 +92,47 @@ class TherapistController extends Controller
                 ->withInput();
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'status' => 'active',
-        ]);
+        DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+                'phone'    => $request->phone,
+                'status'   => 'active',
+            ]);
 
-        $user->assignRole('Therapist');
+            $user->assignRole('Therapist');
 
-        // Handle profile image upload
-        $profileImagePath = null;
-        if ($request->hasFile('profile_image')) {
-            $profileImagePath = $request->file('profile_image')->store('therapist-profiles', 'public');
-        }
+            // Handle profile image upload
+            $profileImagePath = null;
+            if ($request->hasFile('profile_image')) {
+                $profileImagePath = $request->file('profile_image')->store('therapist-profiles', 'public');
+            }
 
-        $therapistProfile = TherapistProfile::create([
-            'user_id' => $user->id,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'bio' => $request->bio,
-            'experience_years' => $request->experience_years,
-            'consultation_fee' => $request->consultation_fee,
-            'profile_image' => $profileImagePath,
-            'certifications' => $request->certifications,
-            'education' => $request->education,
-            'is_verified' => true,
-            'is_approved' => true,
-        ]);
+            $therapistProfile = TherapistProfile::create([
+                'user_id'                 => $user->id,
+                'license_number'          => $request->license_number ?? '',
+                'specialization'          => $request->specialization ?? '',
+                'qualification'           => $request->qualification ?? '',
+                'languages'               => $request->languages ?? [],
+                'first_name'              => $request->first_name,
+                'last_name'               => $request->last_name,
+                'bio'                     => $request->bio,
+                'experience_years'        => $request->experience_years,
+                'consultation_fee'        => $request->consultation_fee,
+                'couple_consultation_fee' => $request->couple_consultation_fee ?? 0,
+                'profile_image'           => $profileImagePath,
+                'certifications'          => $request->certifications,
+                'education'               => $request->education,
+                'is_verified'             => true,
+                'is_approved'             => true,
+            ]);
 
-        // Attach specializations to therapist profile
-        if ($user->therapistProfile) {
-            $user->therapistProfile->specializations()->attach($request->specializations);
-        }
+            // Attach specializations to therapist profile
+            if ($therapistProfile) {
+                $therapistProfile->specializations()->attach($request->specializations);
+            }
+        });
 
         return redirect()->route('admin.therapists.index')
             ->with('success', 'Therapist created successfully.');
