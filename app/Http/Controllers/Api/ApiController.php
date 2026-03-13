@@ -10,9 +10,12 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletTransactionResource;
 use App\Models\Appointment;
 use App\Models\Assessment;
+use App\Models\SessionNote;
+use App\Models\TherapistEarning;
 use App\Models\UserAssessment;
 use App\Models\UserAssessmentAnswer;
 use App\Models\TherapistProfile;
+use App\Models\TherapistSpecialization;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Wallet;
@@ -264,13 +267,28 @@ class ApiController extends Controller
     public function resetPassword(Request $request): JsonResponse
     {
         $request->validate([
-            'token' => ['required', 'string'],
-            'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', PasswordRule::defaults()],
         ]);
 
+        // Allow the reset token and email to come from either the body or the query string
+        $token = $request->input('token') ?? $request->query('token');
+        $email = $request->input('email') ?? $request->query('email');
+
+        if (! $token || ! is_string($token)) {
+            return $this->errorResponse('The password reset token is required.', 422);
+        }
+
+        if (! $email || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->errorResponse('A valid email address is required.', 422);
+        }
+
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            [
+                'email' => $email,
+                'password' => $request->input('password'),
+                'password_confirmation' => $request->input('password_confirmation'),
+                'token' => $token,
+            ],
             function (User $user, string $password) {
                 $user->forceFill([
                     'password' => $password,
@@ -363,8 +381,10 @@ class ApiController extends Controller
             'avatar' => ['sometimes', 'nullable', 'string', 'max:255'],
             'profile.first_name' => ['sometimes', 'string', 'max:255'],
             'profile.last_name' => ['sometimes', 'string', 'max:255'],
-            'profile.date_of_birth' => ['sometimes', 'date'],
-            'profile.gender' => ['sometimes', 'nullable', 'string', 'max:50'],
+            // Date of birth must be in Y-m-d format, e.g. 1990-05-21
+            'profile.date_of_birth' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
+            // Restrict gender to known values for consistency
+            'profile.gender' => ['sometimes', 'nullable', 'in:male,female,other,prefer_not_to_say'],
             'profile.bio' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'profile.address_line1' => ['sometimes', 'nullable', 'string', 'max:255'],
             'profile.address_line2' => ['sometimes', 'nullable', 'string', 'max:255'],
@@ -406,15 +426,125 @@ class ApiController extends Controller
     public function therapistSelfProfile(Request $request): JsonResponse
     {
         /** @var User $user */
-        $user = $request->user()->loadMissing(['therapistProfile']);
+        $user = $request->user();
 
         if (! $user->isTherapist()) {
             return $this->errorResponse('Only therapists can access therapist profile.', 403);
         }
 
-        return $this->successResponse([
-            'therapist_profile' => $user->therapistProfile,
+        $user->loadMissing([
+            'profile',
+            'therapistProfile.specializations',
+            'therapistProfile.experiences',
+            'therapistProfile.qualifications',
+            'therapistProfile.awards',
+            'therapistProfile.professionalBodies',
+            'therapistProfile.bankDetails',
         ]);
+
+        $tp = $user->therapistProfile;
+
+        $specializations = $tp && $tp->relationLoaded('specializations')
+            ? $tp->specializations->map(fn ($s) => [
+                'id' => $s->id,
+                'name' => $s->name,
+                'slug' => $s->slug,
+            ])->values()->all()
+            : [];
+
+        return $this->successResponse([
+            'basic' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'avatar' => $user->avatar,
+            ],
+            'profile' => $tp ? [
+                'id' => $tp->id,
+                'user_name' => $tp->user_name,
+                'full_name' => $tp->full_name,
+                'qualification_summary' => $tp->qualification,
+                'experience_years' => $tp->experience_years,
+                'consultation_fee' => $tp->consultation_fee,
+                'couple_consultation_fee' => $tp->couple_consultation_fee,
+                'bio' => $tp->bio,
+                'languages' => $tp->languages,
+                'areas_of_expertise' => $tp->areas_of_expertise,
+                'profile_image' => $tp->profile_image,
+                'is_verified' => $tp->is_verified,
+                'is_available' => $tp->is_available,
+                'specializations' => $specializations,
+            ] : null,
+            'experiences' => $tp ? $tp->experiences : [],
+            'qualifications' => $tp ? $tp->qualifications : [],
+            'awards' => $tp ? $tp->awards : [],
+            'professional_bodies' => $tp ? $tp->professionalBodies : [],
+            'bank_details' => $tp ? $tp->bankDetails : [],
+        ]);
+    }
+
+    /**
+     * Update therapist profile for the authenticated therapist.
+     */
+    public function updateTherapistProfile(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can update therapist profile.', 403);
+        }
+
+        $validated = $request->validate([
+            'name' => ['sometimes', 'string', 'max:255'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:30'],
+
+            'bio' => ['sometimes', 'string'],
+            'experience_years' => ['sometimes', 'integer', 'min:0'],
+            'consultation_fee' => ['sometimes', 'numeric', 'min:0'],
+            'couple_consultation_fee' => ['sometimes', 'nullable', 'numeric', 'min:0'],
+            'qualification_summary' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'languages' => ['sometimes', 'array'],
+            'languages.*' => ['string', 'max:50'],
+            'areas_of_expertise' => ['sometimes', 'array'],
+            'areas_of_expertise.*' => ['string', 'max:255'],
+            'certifications' => ['sometimes', 'nullable', 'string'],
+            'education' => ['sometimes', 'nullable', 'string'],
+            'specializations' => ['sometimes', 'array'],
+            'specializations.*' => ['integer', 'exists:therapist_specializations,id'],
+        ]);
+
+        // Update basic user fields
+        $user->fill($request->only(['name', 'phone']));
+        $user->save();
+
+        // Ensure therapist profile exists
+        $tp = $user->therapistProfile;
+        if (! $tp) {
+            $tp = new TherapistProfile(['user_id' => $user->id]);
+        }
+
+        $tp->fill([
+            'bio' => $request->input('bio', $tp->bio),
+            'experience_years' => $request->input('experience_years', $tp->experience_years),
+            'consultation_fee' => $request->input('consultation_fee', $tp->consultation_fee),
+            'couple_consultation_fee' => $request->input('couple_consultation_fee', $tp->couple_consultation_fee),
+            'qualification' => $request->input('qualification_summary', $tp->qualification),
+            'languages' => $request->has('languages') ? $request->input('languages') : $tp->languages,
+            'areas_of_expertise' => $request->has('areas_of_expertise') ? $request->input('areas_of_expertise') : $tp->areas_of_expertise,
+            'certifications' => $request->input('certifications', $tp->certifications),
+            'education' => $request->input('education', $tp->education),
+        ]);
+        $tp->save();
+
+        // Sync specializations if provided
+        if ($request->has('specializations')) {
+            $tp->specializations()->sync($request->input('specializations', []));
+        }
+
+        // Reload full therapist profile data for response
+        return $this->therapistSelfProfile($request);
     }
 
     /**
@@ -456,7 +586,308 @@ class ApiController extends Controller
     }
 
     /**
+     * Get account summary for the authenticated therapist (earnings per appointment).
+     */
+    public function therapistAccountSummary(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access account summary.', 403);
+        }
+
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
+        $search = $request->get('search');
+        $perPage = (int) $request->get('per_page', 10);
+
+        $query = Appointment::with(['client', 'payment', 'therapistEarning'])
+            ->where('therapist_id', $user->id)
+            ->whereHas('payment', function ($q) {
+                $q->where('status', 'completed');
+            });
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('appointment_date', [$startDate, $endDate]);
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                    ->orWhereHas('client', function ($clientQuery) use ($search) {
+                        $clientQuery->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $summaries = $query->orderByDesc('appointment_date')
+            ->orderByDesc('appointment_time')
+            ->paginate($perPage);
+
+        $totalDue = $summaries->sum(function ($appointment) {
+            return $appointment->therapistEarning ? $appointment->therapistEarning->due_amount : 0;
+        });
+
+        $totalAvailable = $summaries->sum(function ($appointment) {
+            return $appointment->therapistEarning ? $appointment->therapistEarning->available_amount : 0;
+        });
+
+        $totalDisbursed = $summaries->sum(function ($appointment) {
+            return $appointment->therapistEarning ? $appointment->therapistEarning->disbursed_amount : 0;
+        });
+
+        $items = $summaries->map(function (Appointment $appointment) {
+            $earning = $appointment->therapistEarning;
+
+            return [
+                'appointment_id' => $appointment->id,
+                'appointment_date' => optional($appointment->appointment_date)->toDateString(),
+                'appointment_time' => optional($appointment->appointment_time)->format('H:i:s'),
+                'status' => $appointment->status,
+                'session_notes' => $appointment->session_notes,
+                'client' => $appointment->client ? [
+                    'id' => $appointment->client->id,
+                    'name' => $appointment->client->name,
+                    'email' => $appointment->client->email,
+                ] : null,
+                'payment' => $appointment->payment ? [
+                    'id' => $appointment->payment->id,
+                    'amount' => $appointment->payment->amount,
+                    'status' => $appointment->payment->status,
+                    'method' => $appointment->payment->payment_method ?? null,
+                    'paid_at' => optional($appointment->payment->paid_at)->toDateTimeString(),
+                ] : null,
+                'earning' => $earning ? [
+                    'id' => $earning->id,
+                    'due_amount' => $earning->due_amount,
+                    'available_amount' => $earning->available_amount,
+                    'disbursed_amount' => $earning->disbursed_amount,
+                    'status' => $earning->status,
+                    'disbursed_at' => optional($earning->disbursed_at)->toDateTimeString(),
+                    'description' => $earning->description,
+                ] : null,
+            ];
+        });
+
+        return $this->successResponse([
+            'items' => $items,
+            'totals' => [
+                'due_amount' => $totalDue,
+                'available_amount' => $totalAvailable,
+                'disbursed_amount' => $totalDisbursed,
+            ],
+            'pagination' => [
+                'current_page' => $summaries->currentPage(),
+                'last_page' => $summaries->lastPage(),
+                'per_page' => $summaries->perPage(),
+                'total' => $summaries->total(),
+            ],
+        ]);
+    }
+
+    /**
+     * List session notes for authenticated therapist.
+     */
+    public function therapistSessionNotes(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access session notes.', 403);
+        }
+
+        $search = $request->get('search');
+        $perPage = (int) $request->get('per_page', 10);
+
+        $query = SessionNote::where('therapist_id', $user->id)
+            ->with(['client', 'appointment']);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('chief_complaints', 'like', "%{$search}%")
+                    ->orWhere('observations', 'like', "%{$search}%")
+                    ->orWhere('recommendations', 'like', "%{$search}%")
+                    ->orWhere('reason', 'like', "%{$search}%")
+                    ->orWhereHas('client', function ($clientQuery) use ($search) {
+                        $clientQuery->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('appointment', function ($appointmentQuery) use ($search) {
+                        $appointmentQuery->where('id', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $sessionNotes = $query->orderByDesc('session_date')
+            ->orderByDesc('start_time')
+            ->paginate($perPage);
+
+        $items = $sessionNotes->map(function (SessionNote $note) {
+            return [
+                'id' => $note->id,
+                'session_date' => optional($note->session_date)->toDateString(),
+                'start_time' => optional($note->start_time)->format('H:i:s'),
+                'chief_complaints' => $note->chief_complaints,
+                'observations' => $note->observations,
+                'recommendations' => $note->recommendations,
+                'reason' => $note->reason,
+                'follow_up_date' => optional($note->follow_up_date)->toDateString(),
+                'user_didnt_turn_up' => (bool) $note->user_didnt_turn_up,
+                'no_follow_up_required' => (bool) $note->no_follow_up_required,
+                'client' => $note->client ? [
+                    'id' => $note->client->id,
+                    'name' => $note->client->name,
+                    'email' => $note->client->email,
+                ] : null,
+                'appointment' => $note->appointment ? [
+                    'id' => $note->appointment->id,
+                    'appointment_date' => optional($note->appointment->appointment_date)->toDateString(),
+                    'appointment_time' => optional($note->appointment->appointment_time)->format('H:i:s'),
+                ] : null,
+            ];
+        });
+
+        return $this->successResponse([
+            'items' => $items,
+            'pagination' => [
+                'current_page' => $sessionNotes->currentPage(),
+                'last_page' => $sessionNotes->lastPage(),
+                'per_page' => $sessionNotes->PerPage(),
+                'total' => $sessionNotes->total(),
+            ],
+        ]);
+    }
+
+    /**
+     * Store a new session note for authenticated therapist.
+     */
+    public function storeTherapistSessionNote(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can create session notes.', 403);
+        }
+
+        $validated = $request->validate([
+            'appointment_id' => ['nullable', 'exists:appointments,id'],
+            'client_id' => ['required', 'exists:users,id'],
+            'session_date' => ['nullable', 'date'],
+            'start_time' => ['nullable'],
+            'chief_complaints' => ['required', 'string'],
+            'observations' => ['required', 'string'],
+            'recommendations' => ['required', 'string'],
+            'reason' => ['nullable', 'string'],
+            'follow_up_date' => ['nullable', 'date', 'after_or_equal:today'],
+            'user_didnt_turn_up' => ['boolean'],
+            'no_follow_up_required' => ['boolean'],
+        ]);
+
+        if ($request->appointment_id) {
+            $appointment = Appointment::findOrFail($request->appointment_id);
+            $validated['session_date'] = $appointment->appointment_date;
+            $validated['start_time'] = $appointment->appointment_time
+                ? $appointment->appointment_time->format('H:i:s')
+                : null;
+        }
+
+        $validated['therapist_id'] = $user->id;
+        $validated['user_didnt_turn_up'] = $request->has('user_didnt_turn_up');
+        $validated['no_follow_up_required'] = $request->has('no_follow_up_required');
+
+        if (! empty($validated['no_follow_up_required'])) {
+            $validated['follow_up_date'] = null;
+        }
+
+        $note = SessionNote::create($validated);
+
+        return $this->successResponse($note, 'Session note created successfully.', 201);
+    }
+
+    /**
+     * Show a single session note for authenticated therapist.
+     */
+    public function showTherapistSessionNote(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can view session notes.', 403);
+        }
+
+        $note = SessionNote::where('therapist_id', $user->id)
+            ->with(['client', 'appointment'])
+            ->findOrFail($id);
+
+        return $this->successResponse($note);
+    }
+
+    /**
+     * Update a session note for authenticated therapist.
+     */
+    public function updateTherapistSessionNote(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can update session notes.', 403);
+        }
+
+        $note = SessionNote::where('therapist_id', $user->id)->findOrFail($id);
+
+        $validated = $request->validate([
+            'appointment_id' => ['nullable', 'exists:appointments,id'],
+            'client_id' => ['sometimes', 'exists:users,id'],
+            'session_date' => ['nullable', 'date'],
+            'start_time' => ['nullable'],
+            'chief_complaints' => ['sometimes', 'string'],
+            'observations' => ['sometimes', 'string'],
+            'recommendations' => ['sometimes', 'string'],
+            'reason' => ['nullable', 'string'],
+            'follow_up_date' => ['nullable', 'date', 'after_or_equal:today'],
+            'user_didnt_turn_up' => ['boolean'],
+            'no_follow_up_required' => ['boolean'],
+        ]);
+
+        if ($request->appointment_id) {
+            $appointment = Appointment::findOrFail($request->appointment_id);
+            $validated['session_date'] = $appointment->appointment_date;
+            $validated['start_time'] = $appointment->appointment_time
+                ? $appointment->appointment_time->format('H:i:s')
+                : null;
+        }
+
+        if ($request->has('user_didnt_turn_up')) {
+            $validated['user_didnt_turn_up'] = $request->boolean('user_didnt_turn_up');
+        }
+
+        if ($request->has('no_follow_up_required')) {
+            $validated['no_follow_up_required'] = $request->boolean('no_follow_up_required');
+            if ($validated['no_follow_up_required']) {
+                $validated['follow_up_date'] = null;
+            }
+        }
+
+        $note->update($validated);
+
+        return $this->successResponse($note, 'Session note updated successfully.');
+    }
+
+    /**
      * List all therapists (astrologers) with optional filters.
+     *
+     * Query params (multi-select supported):
+     * - search: string
+     * - category[] or category: comma-separated or repeated specialization IDs (therapist must have at least one)
+     * - language[] or language: comma-separated or repeated language names (therapist must speak at least one)
+     * - min_fee, max_fee: number
+     * - per_page: number (default 12)
      */
     public function therapists(Request $request): JsonResponse
     {
@@ -465,7 +896,7 @@ class ApiController extends Controller
                 $q->where('is_verified', true)
                     ->where('is_available', true);
             })
-            ->with(['therapistProfile', 'profile']);
+            ->with(['therapistProfile.specializations', 'profile']);
 
         if ($request->filled('search')) {
             $search = $request->string('search')->toString();
@@ -478,10 +909,29 @@ class ApiController extends Controller
             });
         }
 
-        if ($request->filled('language')) {
-            $language = $request->string('language')->toString();
-            $query->whereHas('therapistProfile', function ($q) use ($language) {
-                $q->whereJsonContains('languages', $language);
+        // Multi-select: category (specialization IDs)
+        $categoryIds = $request->collect('category')->filter()->values()->all();
+        if ($request->filled('category') && empty($categoryIds)) {
+            $categoryIds = array_filter(array_map('intval', explode(',', $request->string('category')->toString())));
+        }
+        if (! empty($categoryIds)) {
+            $query->whereHas('therapistProfile.specializations', function ($q) use ($categoryIds) {
+                $q->whereIn('therapist_specializations.id', $categoryIds);
+            });
+        }
+
+        // Multi-select: language (therapist must speak at least one of the given languages)
+        $languages = $request->collect('language')->filter()->values()->all();
+        if ($request->filled('language') && empty($languages)) {
+            $languages = array_filter(array_map('trim', explode(',', $request->string('language')->toString())));
+        }
+        if (! empty($languages)) {
+            $query->whereHas('therapistProfile', function ($q) use ($languages) {
+                $q->where(function ($q2) use ($languages) {
+                    foreach ($languages as $lang) {
+                        $q2->orWhereJsonContains('languages', $lang);
+                    }
+                });
             });
         }
 
@@ -499,6 +949,22 @@ class ApiController extends Controller
         $perPage = (int) $request->get('per_page', 12);
         $therapists = $query->paginate($perPage);
 
+        // Build filter options for multi-select UIs (categories = specializations, languages = distinct from DB)
+        $filterOptions = [
+            'categories' => TherapistSpecialization::active()->ordered()->get(['id', 'name', 'slug']),
+            'languages' => TherapistProfile::whereNotNull('languages')
+                ->where('is_verified', true)
+                ->get()
+                ->pluck('languages')
+                ->flatten()
+                ->unique()
+                ->filter()
+                ->values()
+                ->sort()
+                ->values()
+                ->all(),
+        ];
+
         return $this->successResponse([
             'items' => TherapistResource::collection($therapists),
             'pagination' => [
@@ -507,6 +973,7 @@ class ApiController extends Controller
                 'per_page' => $therapists->perPage(),
                 'total' => $therapists->total(),
             ],
+            'filter_options' => $filterOptions,
         ]);
     }
 
@@ -519,7 +986,7 @@ class ApiController extends Controller
             ->whereHas('therapistProfile', function ($q) {
                 $q->where('is_verified', true);
             })
-            ->with(['therapistProfile', 'profile'])
+            ->with(['therapistProfile.specializations', 'profile'])
             ->findOrFail($id);
 
         return $this->successResponse(new TherapistResource($therapist));
@@ -987,6 +1454,11 @@ class ApiController extends Controller
 
     /**
      * Show a single assessment response for the authenticated user.
+     *
+     * By default the {id} parameter is treated as the assessment ID,
+     * and we return the latest response of the current user for that assessment.
+     *
+     * Optionally you can pass ?response_id=... to fetch a specific UserAssessment row instead.
      */
     public function assessmentResponseShow(int $id, Request $request): JsonResponse
     {
@@ -998,10 +1470,21 @@ class ApiController extends Controller
             return $this->errorResponse('Only customers can view assessment details.', 403);
         }
 
-        $response = UserAssessment::query()
+        $responseId = $request->query('response_id');
+
+        $query = UserAssessment::query()
             ->where('user_id', $user->id)
-            ->with(['assessment', 'answers.question'])
-            ->findOrFail($id);
+            ->with(['assessment', 'answers.question']);
+
+        if ($responseId) {
+            $response = $query->whereKey($responseId)->firstOrFail();
+        } else {
+            // Treat route {id} as assessment_id and return the latest response for that assessment
+            $response = $query
+                ->where('assessment_id', $id)
+                ->orderByDesc('created_at')
+                ->firstOrFail();
+        }
 
         return $this->successResponse(
             new \App\Http\Resources\UserAssessmentResource($response)
