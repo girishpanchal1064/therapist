@@ -23,10 +23,20 @@ class TherapistResource extends JsonResource
             ? $profile->specializations->map(fn ($s) => ['id' => $s->id, 'name' => $s->name, 'slug' => $s->slug])->values()->all()
             : [];
 
-        $qualification = $profile->qualification ?? '';
-        $qualificationArray = is_array($qualification)
-            ? array_values($qualification)
-            : array_values(array_filter(array_map('trim', preg_split('/[\n,]+/', (string) $qualification))));
+        // Build qualifications from related TherapistQualification records when available
+        $qualifications = $profile && $profile->relationLoaded('qualifications')
+            ? $profile->qualifications->map(function ($q) {
+                return [
+                    'id' => $q->id,
+                    'name_of_degree' => $q->name_of_degree,
+                    'degree_in' => $q->degree_in,
+                    'institute_university' => $q->institute_university,
+                    'year_of_passing' => $q->year_of_passing,
+                    'percentage_cgpa' => $q->percentage_cgpa,
+                    'certificate' => $q->certificate,
+                ];
+            })->values()->all()
+            : [];
 
         return [
             'id' => $this->id,
@@ -39,8 +49,7 @@ class TherapistResource extends JsonResource
                 'id' => $profile->id,
                 'user_name' => $profile->user_name,
                 'full_name' => $profile->full_name ?? trim(($profile->first_name ?? '') . ' ' . ($profile->last_name ?? '')),
-                'qualification' => $qualificationArray,
-                'specialization' => $specializations,
+                'qualifications' => $qualifications,
                 'specializations' => $specializations,
                 'experience_years' => $profile->experience_years,
                 'consultation_fee' => $profile->consultation_fee,

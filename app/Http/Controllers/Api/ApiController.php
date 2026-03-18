@@ -27,6 +27,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Support\Str;
@@ -543,8 +544,57 @@ class ApiController extends Controller
             $tp->specializations()->sync($request->input('specializations', []));
         }
 
-        // Reload full therapist profile data for response
-        return $this->therapistSelfProfile($request);
+        // Reload full therapist profile data for response (same shape as therapistSelfProfile)
+        $user->loadMissing([
+            'profile',
+            'therapistProfile.specializations',
+            'therapistProfile.experiences',
+            'therapistProfile.qualifications',
+            'therapistProfile.awards',
+            'therapistProfile.professionalBodies',
+            'therapistProfile.bankDetails',
+        ]);
+
+        $tp = $user->therapistProfile;
+
+        $specializations = $tp && $tp->relationLoaded('specializations')
+            ? $tp->specializations->map(fn ($s) => [
+                'id' => $s->id,
+                'name' => $s->name,
+                'slug' => $s->slug,
+            ])->values()->all()
+            : [];
+
+        return $this->successResponse([
+            'basic' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'avatar' => $user->avatar,
+            ],
+            'profile' => $tp ? [
+                'id' => $tp->id,
+                'user_name' => $tp->user_name,
+                'full_name' => $tp->full_name,
+                'qualification_summary' => $tp->qualification,
+                'experience_years' => $tp->experience_years,
+                'consultation_fee' => $tp->consultation_fee,
+                'couple_consultation_fee' => $tp->couple_consultation_fee,
+                'bio' => $tp->bio,
+                'languages' => $tp->languages,
+                'areas_of_expertise' => $tp->areas_of_expertise,
+                'profile_image' => $tp->profile_image,
+                'is_verified' => $tp->is_verified,
+                'is_available' => $tp->is_available,
+                'specializations' => $specializations,
+            ] : null,
+            'experiences' => $tp ? $tp->experiences : [],
+            'qualifications' => $tp ? $tp->qualifications : [],
+            'awards' => $tp ? $tp->awards : [],
+            'professional_bodies' => $tp ? $tp->professionalBodies : [],
+            'bank_details' => $tp ? $tp->bankDetails : [],
+        ], 'Therapist profile updated successfully.');
     }
 
     /**
@@ -896,7 +946,7 @@ class ApiController extends Controller
                 $q->where('is_verified', true)
                     ->where('is_available', true);
             })
-            ->with(['therapistProfile.specializations', 'profile']);
+            ->with(['therapistProfile.specializations', 'therapistProfile.qualifications', 'profile']);
 
         if ($request->filled('search')) {
             $search = $request->string('search')->toString();
@@ -986,7 +1036,7 @@ class ApiController extends Controller
             ->whereHas('therapistProfile', function ($q) {
                 $q->where('is_verified', true);
             })
-            ->with(['therapistProfile.specializations', 'profile'])
+            ->with(['therapistProfile.specializations', 'therapistProfile.qualifications', 'profile'])
             ->findOrFail($id);
 
         return $this->successResponse(new TherapistResource($therapist));
@@ -1338,7 +1388,38 @@ class ApiController extends Controller
             'answers' => ['required', 'array'],
         ]);
 
+        /**
+         * Accept both formats:
+         * 1) answers: { "<question_id>": <answer> }
+         * 2) answers: [ { "question_id": 1, "answer": ... }, ... ]
+         */
         $answersInput = $validated['answers'];
+        $answersByQuestionId = [];
+
+        // If it's a list of objects, normalize it
+        if (array_is_list($answersInput)) {
+            foreach ($answersInput as $row) {
+                if (! is_array($row)) {
+                    continue;
+                }
+                $qid = $row['question_id'] ?? $row['id'] ?? null;
+                $ans = $row['answer'] ?? $row['value'] ?? $row['answer_text'] ?? null;
+                if ($qid !== null) {
+                    $answersByQuestionId[(int) $qid] = $ans;
+                }
+            }
+        } else {
+            // Treat as map keyed by question id
+            foreach ($answersInput as $qid => $ans) {
+                if (is_numeric($qid)) {
+                    $answersByQuestionId[(int) $qid] = $ans;
+                }
+            }
+        }
+
+        if (empty($answersByQuestionId)) {
+            return $this->errorResponse('Answers payload is empty or invalid.', 422);
+        }
 
         DB::beginTransaction();
 
@@ -1355,7 +1436,7 @@ class ApiController extends Controller
             $maxScore = 0;
 
             foreach ($assessment->questions as $question) {
-                $answerData = $answersInput[$question->id] ?? null;
+                $answerData = $answersByQuestionId[$question->id] ?? null;
 
                 if ($answerData === null && $question->required) {
                     DB::rollBack();
@@ -1415,6 +1496,12 @@ class ApiController extends Controller
             );
         } catch (\Throwable $e) {
             DB::rollBack();
+
+            Log::error('Assessment submit failed', [
+                'assessment_id' => $id,
+                'user_id' => $user->id ?? null,
+                'error' => $e->getMessage(),
+            ]);
 
             return $this->errorResponse('Failed to submit assessment.', 500);
         }
