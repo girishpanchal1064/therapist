@@ -1252,7 +1252,7 @@ class ApiController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $query = Appointment::query()->with(['client', 'therapist']);
+        $query = Appointment::query()->with(['client']);
 
         if ($user->isTherapist()) {
             $query->where('therapist_id', $user->id);
@@ -1363,7 +1363,7 @@ class ApiController extends Controller
             $appointment->generateMeetingLink();
         }
 
-        $appointment->load(['client', 'therapist']);
+        $appointment->load(['client']);
 
         return $this->successResponse(
             new AppointmentResource($appointment),
