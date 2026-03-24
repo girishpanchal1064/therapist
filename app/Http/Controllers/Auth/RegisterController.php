@@ -27,11 +27,17 @@ class RegisterController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
+        $roleIdMap = [
+            'therapist' => 3,
+            'client' => 4,
+        ];
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone ?? null,
+            'role_id' => $roleIdMap[$request->role] ?? 4,
         ]);
 
         // Create user profile

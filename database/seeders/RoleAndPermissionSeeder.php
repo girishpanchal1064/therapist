@@ -14,6 +14,8 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        $guard = config('auth.defaults.guard', 'web');
+
         // Create permissions
         $permissions = [
             // User management
@@ -98,14 +100,14 @@ class RoleAndPermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => $guard]);
         }
 
         // Create roles
-        $superAdminRole = Role::firstOrCreate(['name' => 'SuperAdmin']);
-        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
-        $therapistRole = Role::firstOrCreate(['name' => 'Therapist']);
-        $clientRole = Role::firstOrCreate(['name' => 'Client']);
+        $superAdminRole = Role::firstOrCreate(['name' => 'SuperAdmin', 'guard_name' => $guard]);
+        $adminRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => $guard]);
+        $therapistRole = Role::firstOrCreate(['name' => 'Therapist', 'guard_name' => $guard]);
+        $clientRole = Role::firstOrCreate(['name' => 'Client', 'guard_name' => $guard]);
 
         // Assign permissions to super admin role (full access)
         $superAdminRole->givePermissionTo(Permission::all());

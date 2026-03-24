@@ -14,10 +14,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $superAdminRole = \Spatie\Permission\Models\Role::where('name', 'SuperAdmin')->first();
-        $adminRole = \Spatie\Permission\Models\Role::where('name', 'Admin')->first();
-        $therapistRole = \Spatie\Permission\Models\Role::where('name', 'Therapist')->first();
-        $clientRole = \Spatie\Permission\Models\Role::where('name', 'Client')->first();
+        $guard = config('auth.defaults.guard', 'web');
+        $roleQuery = fn (string $name) => \Spatie\Permission\Models\Role::where('name', $name)->where('guard_name', $guard)->first();
+
+        $superAdminRole = $roleQuery('SuperAdmin');
+        $adminRole = $roleQuery('Admin');
+        $therapistRole = $roleQuery('Therapist');
+        $clientRole = $roleQuery('Client');
 
         $superAdmin = User::firstOrCreate(
             ['email' => 'superadmin@therapist.local'],

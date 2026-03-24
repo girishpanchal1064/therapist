@@ -444,6 +444,7 @@ class ApiController extends Controller
         ]);
 
         $tp = $user->therapistProfile;
+        $up = $user->profile;
 
         $specializations = $tp && $tp->relationLoaded('specializations')
             ? $tp->specializations->map(fn ($s) => [
@@ -463,14 +464,43 @@ class ApiController extends Controller
             ],
             'profile' => $tp ? [
                 'id' => $tp->id,
+                // Basic Information (as per therapist profile UI)
+                'prefix' => $tp->prefix,
+                'first_name' => $tp->first_name ?? ($up->first_name ?? null),
+                'middle_name' => $tp->middle_name,
+                'last_name' => $tp->last_name ?? ($up->last_name ?? null),
+                'category' => $tp->category,
                 'user_name' => $tp->user_name,
                 'full_name' => $tp->full_name,
+                'email' => $user->email,
+                'mobile' => $user->phone,
+                'gender' => $up->gender ?? null,
+                'date_of_birth' => optional($up?->date_of_birth)->toDateString(),
                 'qualification_summary' => $tp->qualification,
                 'experience_years' => $tp->experience_years,
+                'timezone' => $tp->timezone,
                 'consultation_fee' => $tp->consultation_fee,
                 'couple_consultation_fee' => $tp->couple_consultation_fee,
                 'bio' => $tp->bio,
                 'languages' => $tp->languages,
+                'brief_description' => $tp->brief_description,
+                'present_address' => [
+                    'address' => $tp->present_address,
+                    'country' => $tp->present_country,
+                    'state' => $tp->present_state,
+                    'city' => $tp->present_city,
+                    'district' => $tp->present_district,
+                    'zip_code' => $tp->present_zip,
+                ],
+                'clinic_address' => [
+                    'same_as_present_address' => (bool) $tp->same_as_present_address,
+                    'address' => $tp->clinic_address,
+                    'country' => $tp->clinic_country,
+                    'state' => $tp->clinic_state,
+                    'city' => $tp->clinic_city,
+                    'district' => $tp->clinic_district,
+                    'zip_code' => $tp->clinic_zip,
+                ],
                 'areas_of_expertise' => $tp->areas_of_expertise,
                 'profile_image' => $tp->profile_image,
                 'is_verified' => $tp->is_verified,
@@ -556,6 +586,7 @@ class ApiController extends Controller
         ]);
 
         $tp = $user->therapistProfile;
+        $up = $user->profile;
 
         $specializations = $tp && $tp->relationLoaded('specializations')
             ? $tp->specializations->map(fn ($s) => [
@@ -575,14 +606,43 @@ class ApiController extends Controller
             ],
             'profile' => $tp ? [
                 'id' => $tp->id,
+                // Basic Information (as per therapist profile UI)
+                'prefix' => $tp->prefix,
+                'first_name' => $tp->first_name ?? ($up->first_name ?? null),
+                'middle_name' => $tp->middle_name,
+                'last_name' => $tp->last_name ?? ($up->last_name ?? null),
+                'category' => $tp->category,
                 'user_name' => $tp->user_name,
                 'full_name' => $tp->full_name,
+                'email' => $user->email,
+                'mobile' => $user->phone,
+                'gender' => $up->gender ?? null,
+                'date_of_birth' => optional($up?->date_of_birth)->toDateString(),
                 'qualification_summary' => $tp->qualification,
                 'experience_years' => $tp->experience_years,
+                'timezone' => $tp->timezone,
                 'consultation_fee' => $tp->consultation_fee,
                 'couple_consultation_fee' => $tp->couple_consultation_fee,
                 'bio' => $tp->bio,
                 'languages' => $tp->languages,
+                'brief_description' => $tp->brief_description,
+                'present_address' => [
+                    'address' => $tp->present_address,
+                    'country' => $tp->present_country,
+                    'state' => $tp->present_state,
+                    'city' => $tp->present_city,
+                    'district' => $tp->present_district,
+                    'zip_code' => $tp->present_zip,
+                ],
+                'clinic_address' => [
+                    'same_as_present_address' => (bool) $tp->same_as_present_address,
+                    'address' => $tp->clinic_address,
+                    'country' => $tp->clinic_country,
+                    'state' => $tp->clinic_state,
+                    'city' => $tp->clinic_city,
+                    'district' => $tp->clinic_district,
+                    'zip_code' => $tp->clinic_zip,
+                ],
                 'areas_of_expertise' => $tp->areas_of_expertise,
                 'profile_image' => $tp->profile_image,
                 'is_verified' => $tp->is_verified,

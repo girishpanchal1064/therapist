@@ -11,9 +11,12 @@ class RoleSeeder extends Seeder
 
     public function run(): void
     {
-      Role::firstOrCreate(['name' => 'SuperAdmin']);
-      Role::firstOrCreate(['name' => 'Admin']);
-      Role::firstOrCreate(['name' => 'Therapist']);
-      Role::firstOrCreate(['name' => 'Client']);
+        $guard = config('auth.defaults.guard', 'web');
+
+        foreach (['SuperAdmin', 'Admin', 'Therapist', 'Client'] as $name) {
+            Role::firstOrCreate(
+                ['name' => $name, 'guard_name' => $guard]
+            );
+        }
     }
 }
