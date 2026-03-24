@@ -44,6 +44,7 @@ Route::middleware('auth:api')->group(function () {
   Route::get('therapist/account-summary', [ApiController::class, 'therapistAccountSummary']);
 
   // Therapist session notes
+  Route::get('therapist/sessions-for-notes', [ApiController::class, 'therapistSessionsForNotes']);
   Route::get('therapist/session-notes', [ApiController::class, 'therapistSessionNotes']);
   Route::post('therapist/session-notes', [ApiController::class, 'storeTherapistSessionNote']);
   Route::get('therapist/session-notes/{id}', [ApiController::class, 'showTherapistSessionNote']);
