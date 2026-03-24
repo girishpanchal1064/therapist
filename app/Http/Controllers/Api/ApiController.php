@@ -23,14 +23,12 @@ use App\Services\TherapistAvailabilityService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules\Password as PasswordRule;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
@@ -263,48 +261,30 @@ class ApiController extends Controller
     }
 
     /**
-     * Reset the user's password using the token sent via email.
+     * Reset the authenticated user's password.
      */
     public function resetPassword(Request $request): JsonResponse
     {
         $request->validate([
+            'current_password' => ['required', 'string'],
             'password' => ['required', 'confirmed', PasswordRule::defaults()],
         ]);
 
-        // Allow the reset token and email to come from either the body or the query string
-        $token = $request->input('token') ?? $request->query('token');
-        $email = $request->input('email') ?? $request->query('email');
+        $user = $request->user();
 
-        if (! $token || ! is_string($token)) {
-            return $this->errorResponse('The password reset token is required.', 422);
+        if (! $user) {
+            return $this->errorResponse('Unauthenticated.', 401);
         }
 
-        if (! $email || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $this->errorResponse('A valid email address is required.', 422);
+        if (! Hash::check($request->input('current_password'), $user->password)) {
+            return $this->errorResponse('Current password is incorrect.', 422);
         }
 
-        $status = Password::reset(
-            [
-                'email' => $email,
-                'password' => $request->input('password'),
-                'password_confirmation' => $request->input('password_confirmation'),
-                'token' => $token,
-            ],
-            function (User $user, string $password) {
-                $user->forceFill([
-                    'password' => $password,
-                    'remember_token' => Str::random(60),
-                ])->save();
+        $user->forceFill([
+            'password' => $request->input('password'),
+        ])->save();
 
-                event(new PasswordReset($user));
-            }
-        );
-
-        if ($status === Password::PASSWORD_RESET) {
-            return $this->successResponse(null, __($status));
-        }
-
-        return $this->errorResponse(__($status), 422);
+        return $this->successResponse(null, 'Password reset successfully.');
     }
 
     /**
