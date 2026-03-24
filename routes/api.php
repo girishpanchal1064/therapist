@@ -43,6 +43,16 @@ Route::middleware('auth:api')->group(function () {
 
   // Therapist account summary
   Route::get('therapist/account-summary', [ApiController::class, 'therapistAccountSummary']);
+  Route::get('therapist/availability', [ApiController::class, 'therapistOwnAvailability']);
+  Route::post('therapist/availability/weekly', [ApiController::class, 'createTherapistWeeklyAvailability']);
+  Route::put('therapist/availability/weekly', [ApiController::class, 'updateTherapistWeeklyAvailability']);
+  Route::delete('therapist/availability/weekly/{id}', [ApiController::class, 'deleteTherapistWeeklyAvailability']);
+  Route::post('therapist/availability/single-day', [ApiController::class, 'createTherapistSingleAvailability']);
+  Route::put('therapist/availability/single-day', [ApiController::class, 'updateTherapistSingleAvailability']);
+  Route::delete('therapist/availability/single-day/{id}', [ApiController::class, 'deleteTherapistSingleAvailability']);
+  Route::post('therapist/availability/block', [ApiController::class, 'createTherapistAvailabilityBlock']);
+  Route::put('therapist/availability/block', [ApiController::class, 'updateTherapistAvailabilityBlock']);
+  Route::delete('therapist/availability/block/{id}', [ApiController::class, 'deleteTherapistAvailabilityBlock']);
 
   // Therapist session notes
   Route::get('therapist/sessions-for-notes', [ApiController::class, 'therapistSessionsForNotes']);

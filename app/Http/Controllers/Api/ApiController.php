@@ -12,6 +12,9 @@ use App\Models\Appointment;
 use App\Models\Assessment;
 use App\Models\SessionNote;
 use App\Models\TherapistEarning;
+use App\Models\TherapistWeeklyAvailability;
+use App\Models\TherapistSingleAvailability;
+use App\Models\TherapistAvailabilityBlock;
 use App\Models\TherapistExperience;
 use App\Models\TherapistQualification;
 use App\Models\TherapistAward;
@@ -34,6 +37,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules\Password as PasswordRule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
@@ -1003,6 +1007,370 @@ class ApiController extends Controller
             'duration_minutes' => (int) $duration,
             'slots' => $slots,
         ]);
+    }
+
+    /**
+     * Get authenticated therapist weekly/single/block availability.
+     */
+    public function therapistOwnAvailability(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access availability.', 403);
+        }
+
+        $weekly = TherapistWeeklyAvailability::where('therapist_id', $user->id)
+            ->latest()
+            ->get(['id', 'days', 'slots', 'mode', 'type', 'timezone', 'created_at', 'updated_at']);
+
+        $single = TherapistSingleAvailability::where('therapist_id', $user->id)
+            ->orderByDesc('date')
+            ->get(['id', 'date', 'slots', 'mode', 'type', 'timezone', 'created_at', 'updated_at']);
+
+        $blocks = TherapistAvailabilityBlock::where('therapist_id', $user->id)
+            ->where('is_active', true)
+            ->latest()
+            ->get(['id', 'start_date', 'end_date', 'date', 'blocked_slots', 'reason', 'is_active', 'created_at', 'updated_at']);
+
+        return $this->successResponse([
+            'weekly' => $weekly,
+            'single_day' => $single,
+            'blocked' => $blocks,
+        ]);
+    }
+
+    private function validateWeeklyAvailabilityPayload(Request $request): array
+    {
+        $validated = $request->validate([
+            'days' => ['required', 'array', 'min:1'],
+            'slots' => ['required', 'array', 'min:1', 'max:4'],
+            'slots.*.start' => ['required', 'date_format:H:i'],
+            'slots.*.end' => ['required', 'date_format:H:i'],
+            'mode' => ['required', 'in:online,offline'],
+            'type' => ['required', 'in:repeat,once'],
+            'timezone' => ['nullable', 'string'],
+        ]);
+
+        foreach ($validated['slots'] as $slot) {
+            if (strtotime($slot['end']) <= strtotime($slot['start'])) {
+                throw ValidationException::withMessages([
+                    'slots' => ['Each slot end time must be after start time.'],
+                ]);
+            }
+        }
+
+        return $validated;
+    }
+
+    private function validateBlockAvailabilityPayload(Request $request): array
+    {
+        $validated = $request->validate([
+            'start_date' => ['nullable', 'date', 'required_without:date'],
+            'end_date' => ['nullable', 'date', 'required_with:start_date', 'after_or_equal:start_date'],
+            'date' => ['nullable', 'date', 'required_without:start_date'],
+            'blocked_slots' => ['nullable', 'array', 'max:4'],
+            'blocked_slots.*.start' => ['required_with:blocked_slots', 'date_format:H:i'],
+            'blocked_slots.*.end' => ['required_with:blocked_slots', 'date_format:H:i'],
+            'reason' => ['nullable', 'string'],
+            'is_active' => ['nullable', 'boolean'],
+        ]);
+
+        if (! empty($validated['blocked_slots'])) {
+            foreach ($validated['blocked_slots'] as $slot) {
+                if (strtotime($slot['end']) <= strtotime($slot['start'])) {
+                    throw ValidationException::withMessages([
+                        'blocked_slots' => ['Each blocked slot end time must be after start time.'],
+                    ]);
+                }
+            }
+        }
+
+        return $validated;
+    }
+
+    /**
+     * Create authenticated therapist weekly availability.
+     */
+    public function createTherapistWeeklyAvailability(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can create weekly availability.', 403);
+        }
+
+        $validated = $this->validateWeeklyAvailabilityPayload($request);
+
+        $availability = TherapistWeeklyAvailability::create([
+            'therapist_id' => $user->id,
+            'days' => $validated['days'],
+            'slots' => array_values($validated['slots']),
+            'mode' => $validated['mode'],
+            'type' => $validated['type'],
+            'timezone' => $validated['timezone'] ?? null,
+        ]);
+
+        return $this->successResponse($availability, 'Weekly availability created successfully.', 201);
+    }
+
+    /**
+     * Update authenticated therapist weekly availability.
+     */
+    public function updateTherapistWeeklyAvailability(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can update weekly availability.', 403);
+        }
+
+        $validated = $this->validateWeeklyAvailabilityPayload($request);
+        $request->validate(['id' => ['required', 'integer']]);
+
+        $availability = TherapistWeeklyAvailability::where('therapist_id', $user->id)
+            ->where('id', (int) $request->input('id'))
+            ->first();
+
+        if (! $availability) {
+            return $this->errorResponse('Weekly availability not found.', 404);
+        }
+
+        $availability->update([
+            'days' => $validated['days'],
+            'slots' => array_values($validated['slots']),
+            'mode' => $validated['mode'],
+            'type' => $validated['type'],
+            'timezone' => $validated['timezone'] ?? null,
+        ]);
+
+        return $this->successResponse($availability, 'Weekly availability updated successfully.');
+    }
+
+    /**
+     * Create authenticated therapist single-day availability.
+     */
+    public function createTherapistSingleAvailability(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can create single-day availability.', 403);
+        }
+
+        $validated = $request->validate([
+            'date' => ['required', 'date'],
+            'slots' => ['required', 'array', 'min:1', 'max:4'],
+            'slots.*.start' => ['required', 'date_format:H:i'],
+            'slots.*.end' => ['required', 'date_format:H:i'],
+            'mode' => ['required', 'in:online,offline'],
+            'timezone' => ['nullable', 'string'],
+        ]);
+
+        foreach ($validated['slots'] as $slot) {
+            if (strtotime($slot['end']) <= strtotime($slot['start'])) {
+                return $this->errorResponse('Each slot end time must be after start time.', 422);
+            }
+        }
+
+        $availability = TherapistSingleAvailability::create([
+            'therapist_id' => $user->id,
+            'date' => $validated['date'],
+            'slots' => array_values($validated['slots']),
+            'mode' => $validated['mode'],
+            'type' => 'once',
+            'timezone' => $validated['timezone'] ?? null,
+        ]);
+
+        return $this->successResponse($availability, 'Single-day availability created successfully.', 201);
+    }
+
+    /**
+     * Update authenticated therapist single-day availability.
+     */
+    public function updateTherapistSingleAvailability(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can update single-day availability.', 403);
+        }
+
+        $validated = $request->validate([
+            'id' => ['required', 'integer'],
+            'date' => ['required', 'date'],
+            'slots' => ['required', 'array', 'min:1', 'max:4'],
+            'slots.*.start' => ['required', 'date_format:H:i'],
+            'slots.*.end' => ['required', 'date_format:H:i'],
+            'mode' => ['required', 'in:online,offline'],
+            'timezone' => ['nullable', 'string'],
+        ]);
+
+        foreach ($validated['slots'] as $slot) {
+            if (strtotime($slot['end']) <= strtotime($slot['start'])) {
+                return $this->errorResponse('Each slot end time must be after start time.', 422);
+            }
+        }
+
+        $availability = TherapistSingleAvailability::where('therapist_id', $user->id)
+            ->where('id', $validated['id'])
+            ->first();
+
+        if (! $availability) {
+            return $this->errorResponse('Single-day availability not found.', 404);
+        }
+
+        $availability->update([
+            'date' => $validated['date'],
+            'slots' => array_values($validated['slots']),
+            'mode' => $validated['mode'],
+            'type' => 'once',
+            'timezone' => $validated['timezone'] ?? null,
+        ]);
+
+        return $this->successResponse($availability, 'Single-day availability updated successfully.');
+    }
+
+    /**
+     * Create authenticated therapist blocked availability by day/date-range.
+     */
+    public function createTherapistAvailabilityBlock(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can create blocked availability.', 403);
+        }
+
+        $validated = $this->validateBlockAvailabilityPayload($request);
+
+        $block = TherapistAvailabilityBlock::create([
+            'therapist_id' => $user->id,
+            'start_date' => $validated['start_date'] ?? null,
+            'end_date' => $validated['end_date'] ?? null,
+            'date' => $validated['date'] ?? null,
+            'blocked_slots' => $validated['blocked_slots'] ?? null,
+            'reason' => $validated['reason'] ?? null,
+            'is_active' => $validated['is_active'] ?? true,
+        ]);
+
+        return $this->successResponse($block, 'Blocked availability created successfully.', 201);
+    }
+
+    /**
+     * Update authenticated therapist blocked availability by id.
+     */
+    public function updateTherapistAvailabilityBlock(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can update blocked availability.', 403);
+        }
+
+        $request->validate(['id' => ['required', 'integer']]);
+        $validated = $this->validateBlockAvailabilityPayload($request);
+
+        $block = TherapistAvailabilityBlock::where('therapist_id', $user->id)
+            ->where('id', (int) $request->input('id'))
+            ->first();
+
+        if (! $block) {
+            return $this->errorResponse('Blocked availability not found.', 404);
+        }
+
+        $block->update([
+            'start_date' => $validated['start_date'] ?? null,
+            'end_date' => $validated['end_date'] ?? null,
+            'date' => $validated['date'] ?? null,
+            'blocked_slots' => $validated['blocked_slots'] ?? null,
+            'reason' => $validated['reason'] ?? null,
+            'is_active' => $validated['is_active'] ?? true,
+        ]);
+
+        return $this->successResponse($block, 'Blocked availability updated successfully.');
+    }
+
+    /**
+     * Delete authenticated therapist weekly availability by id.
+     */
+    public function deleteTherapistWeeklyAvailability(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can delete weekly availability.', 403);
+        }
+
+        $availability = TherapistWeeklyAvailability::where('therapist_id', $user->id)
+            ->where('id', $id)
+            ->first();
+
+        if (! $availability) {
+            return $this->errorResponse('Weekly availability not found.', 404);
+        }
+
+        $availability->delete();
+
+        return $this->successResponse(null, 'Weekly availability deleted successfully.');
+    }
+
+    /**
+     * Delete authenticated therapist single-day availability by id.
+     */
+    public function deleteTherapistSingleAvailability(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can delete single-day availability.', 403);
+        }
+
+        $availability = TherapistSingleAvailability::where('therapist_id', $user->id)
+            ->where('id', $id)
+            ->first();
+
+        if (! $availability) {
+            return $this->errorResponse('Single-day availability not found.', 404);
+        }
+
+        $availability->delete();
+
+        return $this->successResponse(null, 'Single-day availability deleted successfully.');
+    }
+
+    /**
+     * Delete authenticated therapist blocked availability by id.
+     */
+    public function deleteTherapistAvailabilityBlock(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can delete blocked availability.', 403);
+        }
+
+        $block = TherapistAvailabilityBlock::where('therapist_id', $user->id)
+            ->where('id', $id)
+            ->first();
+
+        if (! $block) {
+            return $this->errorResponse('Blocked availability not found.', 404);
+        }
+
+        $block->delete();
+
+        return $this->successResponse(null, 'Blocked availability deleted successfully.');
     }
 
     /**
