@@ -24,6 +24,7 @@ Route::middleware('auth:api')->group(function () {
   Route::get('profile', [ApiController::class, 'profile']);
   Route::put('profile', [ApiController::class, 'updateProfile']);
   Route::patch('profile', [ApiController::class, 'updateProfile']);
+  Route::post('profile/avatar', [ApiController::class, 'updateAvatar']);
   Route::get('profile/therapist', [ApiController::class, 'therapistSelfProfile']);
   Route::put('profile/therapist', [ApiController::class, 'updateTherapistProfile']);
 

@@ -407,6 +407,42 @@ class ApiController extends Controller
     }
 
     /**
+     * Upload avatar for authenticated user (and therapist profile image when applicable).
+     */
+    public function updateAvatar(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $request->validate([
+            'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ]);
+
+        $path = $request->file('avatar')->store('avatars', 'public');
+
+        $user->avatar = $path;
+        $user->save();
+
+        if ($user->isTherapist()) {
+            $tp = $user->therapistProfile;
+            if (! $tp) {
+                $tp = new TherapistProfile(['user_id' => $user->id]);
+            }
+            $tp->profile_image = $path;
+            $tp->save();
+        }
+
+        $user->loadMissing(['profile', 'therapistProfile']);
+
+        return $this->successResponse([
+            'avatar' => $user->avatar,
+            'avatar_path' => $path,
+            'avatar_url' => asset('storage/' . $path),
+            'therapist_profile_image' => $user->therapistProfile?->profile_image,
+        ], 'Avatar updated successfully.');
+    }
+
+    /**
      * Get therapist specific profile for authenticated therapist.
      */
     public function therapistSelfProfile(Request $request): JsonResponse
