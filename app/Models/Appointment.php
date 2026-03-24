@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Wallet;
 use App\Models\Payment;
@@ -198,7 +199,7 @@ class Appointment extends Model
         $meetingId = 'meeting_' . $this->id . '_' . time();
         $this->meeting_id = $meetingId;
         $this->meeting_link = config('app.url') . '/session/' . $meetingId;
-        $this->meeting_password = str_random(8);
+        $this->meeting_password = Str::random(8);
         $this->save();
     }
 
