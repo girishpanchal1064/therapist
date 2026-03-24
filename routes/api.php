@@ -36,10 +36,10 @@ Route::middleware('auth:api')->group(function () {
   // Therapist-specific
   // Assessments
   Route::get('assessments', [ApiController::class, 'assessments']);
-  Route::get('assessments/{id}', [ApiController::class, 'assessmentShow']);
-  Route::post('assessments/{id}/submit', [ApiController::class, 'assessmentSubmit']);
   Route::get('assessments/responses', [ApiController::class, 'assessmentResponses']);
   Route::get('assessments/responses/{id}', [ApiController::class, 'assessmentResponseShow']);
+  Route::get('assessments/{id}', [ApiController::class, 'assessmentShow']);
+  Route::post('assessments/{id}/submit', [ApiController::class, 'assessmentSubmit']);
 
   // Therapist account summary
   Route::get('therapist/account-summary', [ApiController::class, 'therapistAccountSummary']);
