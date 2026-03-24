@@ -852,6 +852,99 @@ class ApiController extends Controller
     }
 
     /**
+     * List therapist sessions with minimal payload for creating session notes.
+     */
+    public function therapistSessionsForNotes(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access sessions.', 403);
+        }
+
+        $validated = $request->validate([
+            'status' => ['nullable', 'in:scheduled,confirmed,in_progress,completed,cancelled,no_show'],
+            'from_date' => ['nullable', 'date'],
+            'to_date' => ['nullable', 'date'],
+            'search' => ['nullable', 'string', 'max:255'],
+            'has_note' => ['nullable', 'boolean'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:50'],
+        ]);
+
+        $query = Appointment::query()
+            ->where('therapist_id', $user->id)
+            ->with(['client:id,name'])
+            ->withCount('sessionNote')
+            ->select([
+                'id',
+                'client_id',
+                'appointment_date',
+                'appointment_time',
+                'session_mode',
+                'status',
+            ]);
+
+        if (! empty($validated['status'])) {
+            $query->where('status', $validated['status']);
+        }
+
+        if (! empty($validated['from_date'])) {
+            $query->whereDate('appointment_date', '>=', $validated['from_date']);
+        }
+
+        if (! empty($validated['to_date'])) {
+            $query->whereDate('appointment_date', '<=', $validated['to_date']);
+        }
+
+        if (! empty($validated['search'])) {
+            $search = trim((string) $validated['search']);
+            $query->whereHas('client', function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
+
+        if (array_key_exists('has_note', $validated)) {
+            if ((bool) $validated['has_note']) {
+                $query->whereHas('sessionNote');
+            } else {
+                $query->whereDoesntHave('sessionNote');
+            }
+        }
+
+        $perPage = (int) ($validated['per_page'] ?? 10);
+        $sessions = $query
+            ->orderByDesc('appointment_date')
+            ->orderByDesc('appointment_time')
+            ->paginate($perPage);
+
+        $items = $sessions->map(function (Appointment $appointment) {
+            return [
+                'appointment_id' => $appointment->id,
+                'client_id' => $appointment->client_id,
+                'client_name' => $appointment->client?->name,
+                'session_date' => optional($appointment->appointment_date)->toDateString(),
+                'session_time' => is_string($appointment->appointment_time)
+                    ? $appointment->appointment_time
+                    : optional($appointment->appointment_time)->format('H:i:s'),
+                'session_mode' => $appointment->session_mode,
+                'status' => $appointment->status,
+                'has_note' => (bool) ($appointment->session_note_count ?? 0),
+            ];
+        });
+
+        return $this->successResponse([
+            'items' => $items,
+            'pagination' => [
+                'current_page' => $sessions->currentPage(),
+                'last_page' => $sessions->lastPage(),
+                'per_page' => $sessions->perPage(),
+                'total' => $sessions->total(),
+            ],
+        ]);
+    }
+
+    /**
      * Store a new session note for authenticated therapist.
      */
     public function storeTherapistSessionNote(Request $request): JsonResponse

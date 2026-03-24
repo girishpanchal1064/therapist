@@ -141,6 +141,14 @@ class Appointment extends Model
     }
 
     /**
+     * Get the session note for this appointment.
+     */
+    public function sessionNote()
+    {
+        return $this->hasOne(SessionNote::class, 'appointment_id');
+    }
+
+    /**
      * Get the cancelled by user.
      */
     public function cancelledBy()
