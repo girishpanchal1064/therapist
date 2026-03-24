@@ -12,6 +12,11 @@ use App\Models\Appointment;
 use App\Models\Assessment;
 use App\Models\SessionNote;
 use App\Models\TherapistEarning;
+use App\Models\TherapistExperience;
+use App\Models\TherapistQualification;
+use App\Models\TherapistAward;
+use App\Models\TherapistProfessionalBody;
+use App\Models\TherapistBankDetail;
 use App\Models\UserAssessment;
 use App\Models\UserAssessmentAnswer;
 use App\Models\TherapistProfile;
@@ -454,8 +459,8 @@ class ApiController extends Controller
                 'full_name' => $tp->full_name,
                 'email' => $user->email,
                 'mobile' => $user->phone,
-                'gender' => $up->gender ?? null,
-                'date_of_birth' => optional($up?->date_of_birth)->toDateString(),
+                'gender' => $user->gender,
+                'date_of_birth' => optional($user->date_of_birth)->toDateString(),
                 'qualification_summary' => $tp->qualification,
                 'experience_years' => $tp->experience_years,
                 'timezone' => $tp->timezone,
@@ -507,10 +512,12 @@ class ApiController extends Controller
             return $this->errorResponse('Only therapists can update therapist profile.', 403);
         }
 
-        $validated = $request->validate([
+        $request->validate([
+            // Backward-compatible flat fields
             'name' => ['sometimes', 'string', 'max:255'],
             'phone' => ['sometimes', 'nullable', 'string', 'max:30'],
-
+            'gender' => ['sometimes', 'nullable', 'string', 'max:50'],
+            'date_of_birth' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
             'bio' => ['sometimes', 'string'],
             'experience_years' => ['sometimes', 'integer', 'min:0'],
             'consultation_fee' => ['sometimes', 'numeric', 'min:0'],
@@ -520,14 +527,126 @@ class ApiController extends Controller
             'languages.*' => ['string', 'max:50'],
             'areas_of_expertise' => ['sometimes', 'array'],
             'areas_of_expertise.*' => ['string', 'max:255'],
-            'certifications' => ['sometimes', 'nullable', 'string'],
-            'education' => ['sometimes', 'nullable', 'string'],
+            'certifications' => ['sometimes', 'nullable'],
+            'education' => ['sometimes', 'nullable'],
             'specializations' => ['sometimes', 'array'],
             'specializations.*' => ['integer', 'exists:therapist_specializations,id'],
+
+            // therapistSelfProfile-compatible payload
+            'basic' => ['sometimes', 'array'],
+            'basic.name' => ['sometimes', 'string', 'max:255'],
+            'basic.phone' => ['sometimes', 'nullable', 'string', 'max:30'],
+            'profile' => ['sometimes', 'array'],
+            'profile.prefix' => ['sometimes', 'nullable', 'string', 'max:20'],
+            'profile.first_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.middle_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.last_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.category' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.user_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.gender' => ['sometimes', 'nullable', 'in:male,female,other,prefer_not_to_say'],
+            'profile.date_of_birth' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
+            'profile.qualification_summary' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.experience_years' => ['sometimes', 'integer', 'min:0'],
+            'profile.timezone' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'profile.consultation_fee' => ['sometimes', 'numeric', 'min:0'],
+            'profile.couple_consultation_fee' => ['sometimes', 'nullable', 'numeric', 'min:0'],
+            'profile.bio' => ['sometimes', 'nullable', 'string'],
+            'profile.languages' => ['sometimes', 'array'],
+            'profile.languages.*' => ['string', 'max:50'],
+            'profile.brief_description' => ['sometimes', 'nullable', 'string'],
+            'profile.areas_of_expertise' => ['sometimes', 'array'],
+            'profile.areas_of_expertise.*' => ['string', 'max:255'],
+            'profile.profile_image' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.certifications' => ['sometimes', 'nullable'],
+            'profile.education' => ['sometimes', 'nullable'],
+            'profile.specializations' => ['sometimes', 'array'],
+            'profile.specializations.*' => ['integer', 'exists:therapist_specializations,id'],
+            'profile.present_address' => ['sometimes', 'array'],
+            'profile.present_address.address' => ['sometimes', 'nullable', 'string', 'max:500'],
+            'profile.present_address.country' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.present_address.state' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.present_address.city' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.present_address.district' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.present_address.zip_code' => ['sometimes', 'nullable', 'string', 'max:20'],
+            'profile.clinic_address' => ['sometimes', 'array'],
+            'profile.clinic_address.same_as_present_address' => ['sometimes', 'boolean'],
+            'profile.clinic_address.address' => ['sometimes', 'nullable', 'string', 'max:500'],
+            'profile.clinic_address.country' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.clinic_address.state' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.clinic_address.city' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.clinic_address.district' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'profile.clinic_address.zip_code' => ['sometimes', 'nullable', 'string', 'max:20'],
+
+            // Full profile collections (same sections as therapistSelfProfile response)
+            'experiences' => ['sometimes', 'array'],
+            'experiences.*.id' => ['sometimes', 'integer'],
+            'experiences.*.designation' => ['required_with:experiences', 'nullable', 'string', 'max:255'],
+            'experiences.*.hospital_organisation' => ['required_with:experiences', 'nullable', 'string', 'max:255'],
+            'experiences.*.starting_date' => ['required_with:experiences', 'nullable', 'date'],
+            'experiences.*.last_date' => ['nullable', 'date'],
+            'experiences.*.document' => ['nullable', 'string', 'max:255'],
+
+            'qualifications' => ['sometimes', 'array'],
+            'qualifications.*.id' => ['sometimes', 'integer'],
+            'qualifications.*.name_of_degree' => ['required_with:qualifications', 'nullable', 'string', 'max:255'],
+            'qualifications.*.degree_in' => ['required_with:qualifications', 'nullable', 'string', 'max:255'],
+            'qualifications.*.institute_university' => ['required_with:qualifications', 'nullable', 'string', 'max:255'],
+            'qualifications.*.year_of_passing' => ['nullable', 'string', 'max:10'],
+            'qualifications.*.percentage_cgpa' => ['nullable', 'string', 'max:50'],
+            'qualifications.*.certificate' => ['nullable', 'string', 'max:255'],
+
+            'awards' => ['sometimes', 'array'],
+            'awards.*.id' => ['sometimes', 'integer'],
+            'awards.*.award_name' => ['required_with:awards', 'nullable', 'string', 'max:255'],
+            'awards.*.awarded_by' => ['required_with:awards', 'nullable', 'string', 'max:255'],
+            'awards.*.year' => ['nullable', 'string', 'max:10'],
+            'awards.*.description' => ['nullable', 'string'],
+            'awards.*.document' => ['nullable', 'string', 'max:255'],
+
+            'professional_bodies' => ['sometimes', 'array'],
+            'professional_bodies.*.id' => ['sometimes', 'integer'],
+            'professional_bodies.*.body_name' => ['required_with:professional_bodies', 'nullable', 'string', 'max:255'],
+            'professional_bodies.*.membership_number' => ['nullable', 'string', 'max:255'],
+            'professional_bodies.*.membership_type' => ['nullable', 'string', 'max:255'],
+            'professional_bodies.*.year_joined' => ['nullable', 'string', 'max:10'],
+            'professional_bodies.*.document' => ['nullable', 'string', 'max:255'],
+
+            'bank_details' => ['sometimes', 'array'],
+            'bank_details.*.id' => ['sometimes', 'integer'],
+            'bank_details.*.account_holder_name' => ['required_with:bank_details', 'nullable', 'string', 'max:255'],
+            'bank_details.*.account_number' => ['required_with:bank_details', 'nullable', 'string', 'max:255'],
+            'bank_details.*.bank_name' => ['required_with:bank_details', 'nullable', 'string', 'max:255'],
+            'bank_details.*.ifsc_code' => ['nullable', 'string', 'max:255'],
+            'bank_details.*.branch_name' => ['nullable', 'string', 'max:255'],
+            'bank_details.*.account_type' => ['nullable', 'string', 'max:100'],
         ]);
 
+        $basic = (array) $request->input('basic', []);
+        $profileInput = (array) $request->input('profile', []);
+        $normalizeTextOrArray = static function ($value): ?string {
+            if (is_array($value)) {
+                $parts = array_values(array_filter(array_map(static fn ($item) => is_scalar($item) ? trim((string) $item) : '', $value)));
+                return empty($parts) ? null : implode(', ', $parts);
+            }
+            if (is_null($value)) {
+                return null;
+            }
+            return trim((string) $value);
+        };
+
         // Update basic user fields
-        $user->fill($request->only(['name', 'phone']));
+        $user->fill([
+            'name' => $basic['name'] ?? $request->input('name', $user->name),
+            'phone' => array_key_exists('phone', $basic)
+                ? $basic['phone']
+                : $request->input('phone', $user->phone),
+            'gender' => $request->exists('profile.gender')
+                ? ($profileInput['gender'] ?? null)
+                : ($request->exists('gender') ? $request->input('gender') : $user->gender),
+            'date_of_birth' => $request->exists('profile.date_of_birth')
+                ? ($profileInput['date_of_birth'] ?? null)
+                : ($request->exists('date_of_birth') ? $request->input('date_of_birth') : $user->date_of_birth),
+        ]);
         $user->save();
 
         // Ensure therapist profile exists
@@ -536,22 +655,197 @@ class ApiController extends Controller
             $tp = new TherapistProfile(['user_id' => $user->id]);
         }
 
+        $presentAddress = (array) ($profileInput['present_address'] ?? []);
+        $clinicAddress = (array) ($profileInput['clinic_address'] ?? []);
+
         $tp->fill([
-            'bio' => $request->input('bio', $tp->bio),
-            'experience_years' => $request->input('experience_years', $tp->experience_years),
-            'consultation_fee' => $request->input('consultation_fee', $tp->consultation_fee),
-            'couple_consultation_fee' => $request->input('couple_consultation_fee', $tp->couple_consultation_fee),
-            'qualification' => $request->input('qualification_summary', $tp->qualification),
-            'languages' => $request->has('languages') ? $request->input('languages') : $tp->languages,
-            'areas_of_expertise' => $request->has('areas_of_expertise') ? $request->input('areas_of_expertise') : $tp->areas_of_expertise,
-            'certifications' => $request->input('certifications', $tp->certifications),
-            'education' => $request->input('education', $tp->education),
+            'prefix' => $profileInput['prefix'] ?? $tp->prefix,
+            'first_name' => $profileInput['first_name'] ?? $tp->first_name,
+            'middle_name' => $profileInput['middle_name'] ?? $tp->middle_name,
+            'last_name' => $profileInput['last_name'] ?? $tp->last_name,
+            'category' => $profileInput['category'] ?? $tp->category,
+            'user_name' => $profileInput['user_name'] ?? $tp->user_name,
+            'timezone' => $profileInput['timezone'] ?? $tp->timezone,
+            'brief_description' => $profileInput['brief_description'] ?? $tp->brief_description,
+            'profile_image' => $profileInput['profile_image'] ?? $tp->profile_image,
+            'bio' => $profileInput['bio'] ?? $request->input('bio', $tp->bio),
+            'experience_years' => $profileInput['experience_years'] ?? $request->input('experience_years', $tp->experience_years),
+            'consultation_fee' => $profileInput['consultation_fee'] ?? $request->input('consultation_fee', $tp->consultation_fee),
+            'couple_consultation_fee' => $profileInput['couple_consultation_fee'] ?? $request->input('couple_consultation_fee', $tp->couple_consultation_fee),
+            'qualification' => $profileInput['qualification_summary'] ?? $request->input('qualification_summary', $tp->qualification),
+            'languages' => array_key_exists('languages', $profileInput)
+                ? $profileInput['languages']
+                : ($request->has('languages') ? $request->input('languages') : $tp->languages),
+            'areas_of_expertise' => array_key_exists('areas_of_expertise', $profileInput)
+                ? $profileInput['areas_of_expertise']
+                : ($request->has('areas_of_expertise') ? $request->input('areas_of_expertise') : $tp->areas_of_expertise),
+            'certifications' => $normalizeTextOrArray(
+                array_key_exists('certifications', $profileInput)
+                    ? $profileInput['certifications']
+                    : $request->input('certifications', $tp->certifications)
+            ),
+            'education' => $normalizeTextOrArray(
+                array_key_exists('education', $profileInput)
+                    ? $profileInput['education']
+                    : $request->input('education', $tp->education)
+            ),
+            'present_address' => $presentAddress['address'] ?? $tp->present_address,
+            'present_country' => $presentAddress['country'] ?? $tp->present_country,
+            'present_state' => $presentAddress['state'] ?? $tp->present_state,
+            'present_city' => $presentAddress['city'] ?? $tp->present_city,
+            'present_district' => $presentAddress['district'] ?? $tp->present_district,
+            'present_zip' => $presentAddress['zip_code'] ?? $tp->present_zip,
+            'same_as_present_address' => array_key_exists('same_as_present_address', $clinicAddress)
+                ? (bool) $clinicAddress['same_as_present_address']
+                : $tp->same_as_present_address,
+            'clinic_address' => $clinicAddress['address'] ?? $tp->clinic_address,
+            'clinic_country' => $clinicAddress['country'] ?? $tp->clinic_country,
+            'clinic_state' => $clinicAddress['state'] ?? $tp->clinic_state,
+            'clinic_city' => $clinicAddress['city'] ?? $tp->clinic_city,
+            'clinic_district' => $clinicAddress['district'] ?? $tp->clinic_district,
+            'clinic_zip' => $clinicAddress['zip_code'] ?? $tp->clinic_zip,
         ]);
         $tp->save();
 
+        // Keep user profile name fields in sync with therapistSelfProfile response structure.
+        $userProfileUpdates = [];
+
+        if (array_key_exists('first_name', $profileInput)) {
+            $userProfileUpdates['first_name'] = $profileInput['first_name'];
+        }
+        if (array_key_exists('last_name', $profileInput)) {
+            $userProfileUpdates['last_name'] = $profileInput['last_name'];
+        }
+
+        if (! empty($userProfileUpdates)) {
+            $user->profile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $userProfileUpdates
+            );
+        }
+
         // Sync specializations if provided
-        if ($request->has('specializations')) {
+        if (array_key_exists('specializations', $profileInput)) {
+            $tp->specializations()->sync($profileInput['specializations'] ?? []);
+        } elseif ($request->has('specializations')) {
             $tp->specializations()->sync($request->input('specializations', []));
+        }
+
+        if ($request->has('experiences')) {
+            $keepIds = [];
+            foreach ((array) $request->input('experiences', []) as $item) {
+                $experience = TherapistExperience::updateOrCreate(
+                    [
+                        'id' => $item['id'] ?? null,
+                        'therapist_profile_id' => $tp->id,
+                    ],
+                    [
+                        'designation' => $item['designation'] ?? null,
+                        'hospital_organisation' => $item['hospital_organisation'] ?? null,
+                        'starting_date' => $item['starting_date'] ?? null,
+                        'last_date' => $item['last_date'] ?? null,
+                        'document' => $item['document'] ?? null,
+                    ]
+                );
+                $keepIds[] = $experience->id;
+            }
+            TherapistExperience::where('therapist_profile_id', $tp->id)
+                ->whereNotIn('id', $keepIds)
+                ->delete();
+        }
+
+        if ($request->has('qualifications')) {
+            $keepIds = [];
+            foreach ((array) $request->input('qualifications', []) as $item) {
+                $qualification = TherapistQualification::updateOrCreate(
+                    [
+                        'id' => $item['id'] ?? null,
+                        'therapist_profile_id' => $tp->id,
+                    ],
+                    [
+                        'name_of_degree' => $item['name_of_degree'] ?? null,
+                        'degree_in' => $item['degree_in'] ?? null,
+                        'institute_university' => $item['institute_university'] ?? null,
+                        'year_of_passing' => $item['year_of_passing'] ?? null,
+                        'percentage_cgpa' => $item['percentage_cgpa'] ?? null,
+                        'certificate' => $item['certificate'] ?? null,
+                    ]
+                );
+                $keepIds[] = $qualification->id;
+            }
+            TherapistQualification::where('therapist_profile_id', $tp->id)
+                ->whereNotIn('id', $keepIds)
+                ->delete();
+        }
+
+        if ($request->has('awards')) {
+            $keepIds = [];
+            foreach ((array) $request->input('awards', []) as $item) {
+                $award = TherapistAward::updateOrCreate(
+                    [
+                        'id' => $item['id'] ?? null,
+                        'therapist_profile_id' => $tp->id,
+                    ],
+                    [
+                        'award_name' => $item['award_name'] ?? null,
+                        'awarded_by' => $item['awarded_by'] ?? null,
+                        'year' => $item['year'] ?? null,
+                        'description' => $item['description'] ?? null,
+                        'document' => $item['document'] ?? null,
+                    ]
+                );
+                $keepIds[] = $award->id;
+            }
+            TherapistAward::where('therapist_profile_id', $tp->id)
+                ->whereNotIn('id', $keepIds)
+                ->delete();
+        }
+
+        if ($request->has('professional_bodies')) {
+            $keepIds = [];
+            foreach ((array) $request->input('professional_bodies', []) as $item) {
+                $body = TherapistProfessionalBody::updateOrCreate(
+                    [
+                        'id' => $item['id'] ?? null,
+                        'therapist_profile_id' => $tp->id,
+                    ],
+                    [
+                        'body_name' => $item['body_name'] ?? null,
+                        'membership_number' => $item['membership_number'] ?? null,
+                        'membership_type' => $item['membership_type'] ?? null,
+                        'year_joined' => $item['year_joined'] ?? null,
+                        'document' => $item['document'] ?? null,
+                    ]
+                );
+                $keepIds[] = $body->id;
+            }
+            TherapistProfessionalBody::where('therapist_profile_id', $tp->id)
+                ->whereNotIn('id', $keepIds)
+                ->delete();
+        }
+
+        if ($request->has('bank_details')) {
+            $keepIds = [];
+            foreach ((array) $request->input('bank_details', []) as $item) {
+                $bankDetail = TherapistBankDetail::updateOrCreate(
+                    [
+                        'id' => $item['id'] ?? null,
+                        'therapist_profile_id' => $tp->id,
+                    ],
+                    [
+                        'account_holder_name' => $item['account_holder_name'] ?? null,
+                        'account_number' => $item['account_number'] ?? null,
+                        'bank_name' => $item['bank_name'] ?? null,
+                        'ifsc_code' => $item['ifsc_code'] ?? null,
+                        'branch_name' => $item['branch_name'] ?? null,
+                        'account_type' => $item['account_type'] ?? null,
+                    ]
+                );
+                $keepIds[] = $bankDetail->id;
+            }
+            TherapistBankDetail::where('therapist_profile_id', $tp->id)
+                ->whereNotIn('id', $keepIds)
+                ->delete();
         }
 
         // Reload full therapist profile data for response (same shape as therapistSelfProfile)
@@ -596,8 +890,8 @@ class ApiController extends Controller
                 'full_name' => $tp->full_name,
                 'email' => $user->email,
                 'mobile' => $user->phone,
-                'gender' => $up->gender ?? null,
-                'date_of_birth' => optional($up?->date_of_birth)->toDateString(),
+                'gender' => $user->gender,
+                'date_of_birth' => optional($user->date_of_birth)->toDateString(),
                 'qualification_summary' => $tp->qualification,
                 'experience_years' => $tp->experience_years,
                 'timezone' => $tp->timezone,
