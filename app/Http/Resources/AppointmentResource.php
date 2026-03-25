@@ -27,6 +27,7 @@ class AppointmentResource extends JsonResource
             'created_at' => optional($this->created_at)->toDateTimeString(),
             'updated_at' => optional($this->updated_at)->toDateTimeString(),
             'client' => new UserResource($this->whenLoaded('client')),
+            'therapist' => new UserResource($this->whenLoaded('therapist')),
         ];
     }
 }

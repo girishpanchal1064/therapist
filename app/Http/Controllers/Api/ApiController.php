@@ -10,6 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletTransactionResource;
 use App\Models\Appointment;
 use App\Models\Assessment;
+use App\Models\Review;
 use App\Models\SessionNote;
 use App\Models\TherapistEarning;
 use App\Models\TherapistWeeklyAvailability;
@@ -315,8 +316,10 @@ class ApiController extends Controller
      */
     public function me(Request $request): JsonResponse
     {
+        $user = $request->user();
+
         return $this->successResponse([
-            'user' => new UserResource($request->user()),
+            'user' => new UserResource($user),
         ]);
     }
 
@@ -2034,23 +2037,70 @@ class ApiController extends Controller
     }
 
     /**
-     * List appointments for the authenticated user.
-     * - If therapist: appointments where therapist_id = user id
-     * - If client: appointments where client_id = user id
+     * List appointments for the authenticated user (legacy).
+     * Prefer GET /client/appointments or GET /therapist/appointments for a clear contract.
      */
     public function appointments(Request $request): JsonResponse
     {
         /** @var User $user */
         $user = $request->user();
 
-        $query = Appointment::query()->with(['client']);
-
-        if ($user->isTherapist()) {
-            $query->where('therapist_id', $user->id);
-        } elseif ($user->isClient()) {
-            $query->where('client_id', $user->id);
+        if ($user->isClient()) {
+            return $this->clientAppointments($request);
         }
 
+        if ($user->isTherapist()) {
+            return $this->therapistAppointments($request);
+        }
+
+        return $this->errorResponse('Only clients or therapists can list appointments.', 403);
+    }
+
+    /**
+     * List appointments for the authenticated client (bookings as client).
+     */
+    public function clientAppointments(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only clients can access client appointments.', 403);
+        }
+
+        return $this->paginateAppointmentsForUser(
+            $request,
+            Appointment::query()
+                ->where('client_id', $user->id)
+                ->with(['therapist'])
+        );
+    }
+
+    /**
+     * List appointments for the authenticated therapist (sessions as therapist).
+     */
+    public function therapistAppointments(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access therapist appointments.', 403);
+        }
+
+        return $this->paginateAppointmentsForUser(
+            $request,
+            Appointment::query()
+                ->where('therapist_id', $user->id)
+                ->with(['client'])
+        );
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Builder<Appointment>  $query
+     */
+    private function paginateAppointmentsForUser(Request $request, $query): JsonResponse
+    {
         if ($request->filled('status')) {
             $query->where('status', $request->get('status'));
         }
@@ -2069,6 +2119,80 @@ class ApiController extends Controller
                 'per_page' => $appointments->perPage(),
                 'total' => $appointments->total(),
             ],
+        ]);
+    }
+
+    /**
+     * Upcoming appointments for the authenticated client (today through the next N calendar days, N = 1–3).
+     */
+    public function clientUpcomingAppointments(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only clients can access upcoming client appointments.', 403);
+        }
+
+        return $this->upcomingAppointmentsInWindow(
+            $request,
+            Appointment::query()->where('client_id', $user->id),
+            ['therapist']
+        );
+    }
+
+    /**
+     * Upcoming appointments for the authenticated therapist (today through the next N calendar days, N = 1–3).
+     */
+    public function therapistUpcomingAppointments(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access upcoming therapist appointments.', 403);
+        }
+
+        return $this->upcomingAppointmentsInWindow(
+            $request,
+            Appointment::query()->where('therapist_id', $user->id),
+            ['client']
+        );
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Builder<Appointment>  $query
+     * @param  array<int, string>  $with
+     */
+    private function upcomingAppointmentsInWindow(Request $request, $query, array $with): JsonResponse
+    {
+        $validated = $request->validate([
+            'days' => ['sometimes', 'integer', 'min:1', 'max:3'],
+        ]);
+
+        $dayCount = (int) ($validated['days'] ?? 3);
+        $from = Carbon::today()->startOfDay();
+        $toDate = Carbon::today()->addDays($dayCount - 1)->toDateString();
+        $fromDate = $from->toDateString();
+
+        $query->with($with)
+            ->whereDate('appointment_date', '>=', $fromDate)
+            ->whereDate('appointment_date', '<=', $toDate)
+            ->whereIn('status', ['scheduled', 'confirmed', 'in_progress'])
+            ->orderBy('appointment_date', 'asc')
+            ->orderBy('appointment_time', 'asc');
+
+        $appointments = $query->get();
+
+        return $this->successResponse([
+            'items' => AppointmentResource::collection($appointments),
+            'window' => [
+                'days' => $dayCount,
+                'from_date' => $fromDate,
+                'to_date' => $toDate,
+            ],
+            'has_appointments' => $appointments->isNotEmpty(),
+            'count' => $appointments->count(),
         ]);
     }
 
@@ -2161,6 +2285,251 @@ class ApiController extends Controller
             'Appointment created successfully.',
             201
         );
+    }
+
+    /**
+     * Client submits a review for the therapist tied to a completed appointment.
+     */
+    public function storeClientReview(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only clients can submit reviews.', 403);
+        }
+
+        $validated = $request->validate([
+            'appointment_id' => ['required', 'integer', 'exists:appointments,id'],
+            'therapist_id' => ['sometimes', 'integer', 'exists:users,id'],
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'comment' => ['nullable', 'string', 'max:2000'],
+            'is_public' => ['sometimes', 'boolean'],
+        ]);
+
+        $appointment = Appointment::with('therapist.therapistProfile')->findOrFail($validated['appointment_id']);
+
+        if ((int) $appointment->client_id !== (int) $user->id) {
+            return $this->errorResponse('You are not allowed to review this appointment.', 403);
+        }
+
+        if ($appointment->status !== 'completed') {
+            return $this->errorResponse('You can only review completed sessions.', 422);
+        }
+
+        if (! empty($validated['therapist_id'])
+            && (int) $validated['therapist_id'] !== (int) $appointment->therapist_id) {
+            return $this->errorResponse('Therapist does not match this appointment.', 422);
+        }
+
+        if (Review::where('client_id', $user->id)->where('appointment_id', $appointment->id)->exists()) {
+            return $this->errorResponse('You have already reviewed this session.', 422);
+        }
+
+        $review = Review::create([
+            'client_id' => $user->id,
+            'therapist_id' => $appointment->therapist_id,
+            'appointment_id' => $appointment->id,
+            'rating' => $validated['rating'],
+            'comment' => $validated['comment'] ?? null,
+            'is_verified' => false,
+            'is_public' => $request->boolean('is_public'),
+        ]);
+
+        if ($appointment->therapist && $appointment->therapist->therapistProfile) {
+            $appointment->therapist->therapistProfile->updateRating();
+        }
+
+        return $this->successResponse([
+            'id' => $review->id,
+            'appointment_id' => $review->appointment_id,
+            'therapist_id' => $review->therapist_id,
+            'rating' => $review->rating,
+            'comment' => $review->comment,
+            'is_verified' => $review->is_verified,
+            'is_public' => $review->is_public,
+            'created_at' => optional($review->created_at)->toDateTimeString(),
+        ], 'Review submitted successfully. It may require verification before publication.', 201);
+    }
+
+    /**
+     * Therapist lists reviews received from clients.
+     */
+    public function therapistReviews(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can view therapist reviews.', 403);
+        }
+
+        $request->validate([
+            'search' => ['sometimes', 'string', 'max:255'],
+            'rating' => ['sometimes', 'integer', 'min:1', 'max:5'],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:50'],
+        ]);
+
+        $search = $request->get('search');
+        $rating = $request->get('rating');
+
+        $query = Review::where('therapist_id', $user->id)
+            ->with([
+                'client:id,name,email,phone',
+                'appointment:id,appointment_date,appointment_time,status,session_mode',
+            ]);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('comment', 'like', '%' . $search . '%')
+                    ->orWhereHas('client', function ($clientQuery) use ($search) {
+                        $clientQuery->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        if ($rating !== null && $rating !== '') {
+            $query->where('rating', (int) $rating);
+        }
+
+        $perPage = (int) $request->get('per_page', 10);
+        $reviews = $query->orderByDesc('created_at')->paginate($perPage);
+
+        $therapistId = $user->id;
+        $totalReviews = Review::where('therapist_id', $therapistId)->count();
+        $averageRating = round((float) (Review::where('therapist_id', $therapistId)->avg('rating') ?? 0), 2);
+        $ratingDistribution = Review::where('therapist_id', $therapistId)
+            ->selectRaw('rating, count(*) as c')
+            ->groupBy('rating')
+            ->pluck('c', 'rating')
+            ->toArray();
+
+        $items = $reviews->getCollection()->map(function (Review $review) {
+            return [
+                'id' => $review->id,
+                'rating' => $review->rating,
+                'comment' => $review->comment,
+                'is_verified' => $review->is_verified,
+                'is_public' => $review->is_public,
+                'created_at' => optional($review->created_at)->toDateTimeString(),
+                'client' => $review->client ? [
+                    'id' => $review->client->id,
+                    'name' => $review->client->name,
+                    'email' => $review->client->email,
+                    'phone' => $review->client->phone,
+                ] : null,
+                'appointment' => $review->appointment ? [
+                    'id' => $review->appointment->id,
+                    'appointment_date' => optional($review->appointment->appointment_date)->toDateString(),
+                    'appointment_time' => (string) $review->appointment->appointment_time,
+                    'status' => $review->appointment->status,
+                    'session_mode' => $review->appointment->session_mode,
+                ] : null,
+            ];
+        })->values();
+
+        return $this->successResponse([
+            'items' => $items,
+            'pagination' => [
+                'current_page' => $reviews->currentPage(),
+                'last_page' => $reviews->lastPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+            ],
+            'stats' => [
+                'total_reviews' => $totalReviews,
+                'average_rating' => $averageRating,
+                'rating_distribution' => $ratingDistribution,
+            ],
+        ]);
+    }
+
+    /**
+     * Client lists reviews they have submitted.
+     */
+    public function clientReviews(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only clients can view their reviews.', 403);
+        }
+
+        $request->validate([
+            'therapist_id' => ['nullable', 'integer', 'exists:users,id'],
+            'rating' => ['nullable', 'integer', 'min:1', 'max:5'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:50'],
+            'is_verified' => ['nullable', 'boolean'],
+            'is_public' => ['nullable', 'boolean'],
+        ]);
+
+        $therapistId = $request->get('therapist_id');
+        $rating = $request->get('rating');
+        $isVerified = $request->get('is_verified');
+        $isPublic = $request->get('is_public');
+
+        $query = Review::where('client_id', $user->id)
+            ->with([
+                'therapist:id,name,email,phone',
+                'appointment:id,appointment_date,appointment_time,status,session_mode',
+            ]);
+
+        if (! empty($therapistId)) {
+            $query->where('therapist_id', (int) $therapistId);
+        }
+
+        if (! empty($rating)) {
+            $query->where('rating', (int) $rating);
+        }
+
+        if ($request->has('is_verified')) {
+            $query->where('is_verified', (bool) $isVerified);
+        }
+
+        if ($request->has('is_public')) {
+            $query->where('is_public', (bool) $isPublic);
+        }
+
+        $perPage = (int) $request->get('per_page', 10);
+        $reviews = $query->orderByDesc('created_at')->paginate($perPage);
+
+        $items = $reviews->getCollection()->map(function (Review $review) {
+            return [
+                'id' => $review->id,
+                'therapist_id' => $review->therapist_id,
+                'appointment_id' => $review->appointment_id,
+                'rating' => $review->rating,
+                'comment' => $review->comment,
+                'is_verified' => $review->is_verified,
+                'is_public' => $review->is_public,
+                'created_at' => optional($review->created_at)->toDateTimeString(),
+                'therapist' => $review->therapist ? [
+                    'id' => $review->therapist->id,
+                    'name' => $review->therapist->name,
+                    'email' => $review->therapist->email,
+                    'phone' => $review->therapist->phone,
+                ] : null,
+                'appointment' => $review->appointment ? [
+                    'id' => $review->appointment->id,
+                    'appointment_date' => optional($review->appointment->appointment_date)->toDateString(),
+                    'appointment_time' => (string) $review->appointment->appointment_time,
+                    'status' => $review->appointment->status,
+                    'session_mode' => $review->appointment->session_mode,
+                ] : null,
+            ];
+        })->values();
+
+        return $this->successResponse([
+            'items' => $items,
+            'pagination' => [
+                'current_page' => $reviews->currentPage(),
+                'last_page' => $reviews->lastPage(),
+                'per_page' => $reviews->perPage(),
+                'total' => $reviews->total(),
+            ],
+        ]);
     }
 
     /**

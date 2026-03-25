@@ -18,6 +18,13 @@ Route::middleware('auth:api')->group(function () {
   Route::post('logout', [ApiController::class, 'logout']);
   Route::get('me', [ApiController::class, 'me']);
   Route::get('appointments', [ApiController::class, 'appointments']);
+  Route::get('client/appointments/upcoming', [ApiController::class, 'clientUpcomingAppointments']);
+  Route::get('client/appointments', [ApiController::class, 'clientAppointments']);
+  Route::post('client/reviews', [ApiController::class, 'storeClientReview']);
+  Route::get('client/reviews', [ApiController::class, 'clientReviews']);
+  Route::get('therapist/appointments/upcoming', [ApiController::class, 'therapistUpcomingAppointments']);
+  Route::get('therapist/appointments', [ApiController::class, 'therapistAppointments']);
+  Route::get('therapist/reviews', [ApiController::class, 'therapistReviews']);
   Route::post('appointments', [ApiController::class, 'createAppointment']);
 
   // Profile
