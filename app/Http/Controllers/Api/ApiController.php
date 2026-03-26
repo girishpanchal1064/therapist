@@ -26,6 +26,7 @@ use App\Models\UserAssessmentAnswer;
 use App\Models\TherapistProfile;
 use App\Models\TherapistSpecialization;
 use App\Models\User;
+use App\Models\UserMood;
 use App\Models\UserProfile;
 use App\Models\Wallet;
 use App\Services\TherapistAvailabilityService;
@@ -37,6 +38,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
@@ -2776,6 +2778,92 @@ class ApiController extends Controller
         return $this->successResponse(
             new \App\Http\Resources\UserAssessmentResource($response)
         );
+    }
+
+    /**
+     * Record a mood check-in for the authenticated user.
+     */
+    public function storeMyMood(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'mood' => ['required', 'string', Rule::in(UserMood::MOODS)],
+            'note' => ['nullable', 'string', 'max:5000'],
+        ]);
+
+        $mood = UserMood::create([
+            'user_id' => $user->id,
+            'mood' => $validated['mood'],
+            'note' => $validated['note'] ?? null,
+        ]);
+
+        return $this->successResponse([
+            'id' => $mood->id,
+            'mood' => $mood->mood,
+            'note' => $mood->note,
+            'created_at' => optional($mood->created_at)->toDateTimeString(),
+            'updated_at' => optional($mood->updated_at)->toDateTimeString(),
+        ], 'Mood recorded.', 201);
+    }
+
+    /**
+     * List mood entries for the authenticated user (optional date range, paginated).
+     */
+    public function myMoods(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $request->validate([
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:50'],
+        ]);
+
+        if ($request->filled('from') && $request->filled('to')) {
+            if (Carbon::parse($request->get('from'))->startOfDay()->gt(Carbon::parse($request->get('to'))->startOfDay())) {
+                return $this->errorResponse('`to` must be on or after `from`.', 422);
+            }
+        }
+
+        $query = UserMood::query()
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at');
+
+        if ($request->filled('from')) {
+            $from = Carbon::parse($request->get('from'))->startOfDay();
+            $query->where('created_at', '>=', $from);
+        }
+
+        if ($request->filled('to')) {
+            $to = Carbon::parse($request->get('to'))->endOfDay();
+            $query->where('created_at', '<=', $to);
+        }
+
+        $perPage = (int) $request->get('per_page', 15);
+        $page = $query->paginate($perPage);
+
+        $items = $page->getCollection()->map(function (UserMood $row) {
+            return [
+                'id' => $row->id,
+                'mood' => $row->mood,
+                'note' => $row->note,
+                'created_at' => optional($row->created_at)->toDateTimeString(),
+                'updated_at' => optional($row->updated_at)->toDateTimeString(),
+            ];
+        })->values();
+
+        return $this->successResponse([
+            'items' => $items,
+            'pagination' => [
+                'current_page' => $page->currentPage(),
+                'last_page' => $page->lastPage(),
+                'per_page' => $page->perPage(),
+                'total' => $page->total(),
+            ],
+        ]);
     }
 }
 

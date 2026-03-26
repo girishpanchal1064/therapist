@@ -17,6 +17,8 @@ Route::middleware('auth:api')->group(function () {
   Route::post('reset-password', [ApiController::class, 'resetPassword']);
   Route::post('logout', [ApiController::class, 'logout']);
   Route::get('me', [ApiController::class, 'me']);
+  Route::get('my-moods', [ApiController::class, 'myMoods']);
+  Route::post('my-moods', [ApiController::class, 'storeMyMood']);
   Route::get('appointments', [ApiController::class, 'appointments']);
   Route::get('client/appointments/upcoming', [ApiController::class, 'clientUpcomingAppointments']);
   Route::get('client/appointments', [ApiController::class, 'clientAppointments']);

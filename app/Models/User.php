@@ -157,6 +157,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Mood check-ins for this user.
+     */
+    public function moods()
+    {
+        return $this->hasMany(UserMood::class);
+    }
+
+    /**
      * Check if user is admin.
      */
     public function isAdmin()
