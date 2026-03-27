@@ -2099,6 +2099,56 @@ class ApiController extends Controller
     }
 
     /**
+     * Single appointment for the authenticated client (must be the booking owner).
+     */
+    public function clientAppointmentShow(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isClient()) {
+            return $this->errorResponse('Only clients can access client appointment details.', 403);
+        }
+
+        $appointment = Appointment::query()
+            ->whereKey($id)
+            ->where('client_id', $user->id)
+            ->with(['therapist'])
+            ->first();
+
+        if (! $appointment) {
+            return $this->errorResponse('Appointment not found.', 404);
+        }
+
+        return $this->successResponse(new AppointmentResource($appointment));
+    }
+
+    /**
+     * Single appointment for the authenticated therapist (must be assigned therapist).
+     */
+    public function therapistAppointmentShow(int $id, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can access therapist appointment details.', 403);
+        }
+
+        $appointment = Appointment::query()
+            ->whereKey($id)
+            ->where('therapist_id', $user->id)
+            ->with(['client'])
+            ->first();
+
+        if (! $appointment) {
+            return $this->errorResponse('Appointment not found.', 404);
+        }
+
+        return $this->successResponse(new AppointmentResource($appointment));
+    }
+
+    /**
      * @param  \Illuminate\Database\Eloquent\Builder<Appointment>  $query
      */
     private function paginateAppointmentsForUser(Request $request, $query): JsonResponse

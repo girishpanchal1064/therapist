@@ -22,10 +22,12 @@ Route::middleware('auth:api')->group(function () {
   Route::get('appointments', [ApiController::class, 'appointments']);
   Route::get('client/appointments/upcoming', [ApiController::class, 'clientUpcomingAppointments']);
   Route::get('client/appointments', [ApiController::class, 'clientAppointments']);
+  Route::get('client/appointments/{id}', [ApiController::class, 'clientAppointmentShow']);
   Route::post('client/reviews', [ApiController::class, 'storeClientReview']);
   Route::get('client/reviews', [ApiController::class, 'clientReviews']);
   Route::get('therapist/appointments/upcoming', [ApiController::class, 'therapistUpcomingAppointments']);
   Route::get('therapist/appointments', [ApiController::class, 'therapistAppointments']);
+  Route::get('therapist/appointments/{id}', [ApiController::class, 'therapistAppointmentShow']);
   Route::get('therapist/reviews', [ApiController::class, 'therapistReviews']);
   Route::post('appointments', [ApiController::class, 'createAppointment']);
 
