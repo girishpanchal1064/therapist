@@ -4,705 +4,424 @@
 
 @section('page-style')
 <style>
-:root {
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    --info-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-}
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
 
-  /* === Sessions Page Custom Styles === */
-  .page-header {
-    background: var(--theme-gradient);
-    border-radius: 14px;
-    padding: 1.25rem 1.75rem;
-    margin-bottom: 1.25rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .page-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 300px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-  }
-
-  .page-header::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -10%;
-    width: 150px;
-    height: 150px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 50%;
-  }
-
-  .header-icon {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: white;
-    backdrop-filter: blur(10px);
-  }
-
-  .page-header h4 {
-    color: white;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    position: relative;
-    z-index: 1;
-    font-size: 1.35rem;
-  }
-
-  .page-header p {
-    color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 0;
-    position: relative;
-    z-index: 1;
-    font-size: 0.875rem;
-  }
-
-  /* Tab Navigation */
-  .session-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  }
-
-  .session-tab {
-    padding: 0.625rem 1.25rem;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: 2px solid transparent;
-  }
-
-  .session-tab:not(.active) {
-    background: #f3f4f6;
-    color: #6b7280;
-    border-color: #e5e7eb;
-  }
-
-  .session-tab:not(.active):active {
-    background: #e5e7eb;
-    color: #374151;
-  }
-
-  .session-tab.active {
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
-  }
-
-  .session-tab i {
-    font-size: 1rem;
-  }
-
-  .tab-count {
-    background: rgba(255,255,255,0.2);
-    padding: 0.125rem 0.5rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-  }
-
-  .session-tab:not(.active) .tab-count {
-    background: #e5e7eb;
-  }
-
-  /* Main Card */
-  .sessions-card {
-    background: transparent;
-    border-radius: 0;
-    box-shadow: none;
-    overflow: visible;
-  }
-
-  .sessions-card .card-header {
-    display: none;
-  }
-
-  .sessions-card .card-body {
-    padding: 0;
-  }
-
-  /* Search & Filters */
-  .filters-row {
+  .therapist-sessions-apni .filters-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
-
-  .search-box {
+  .therapist-sessions-apni .search-box {
     display: flex;
     gap: 0.5rem;
     flex: 1;
-    max-width: 400px;
+    max-width: 420px;
   }
-
-  .search-input {
+  .therapist-sessions-apni .search-input {
     flex: 1;
     padding: 0.75rem 1rem 0.75rem 2.75rem;
-    border: 2px solid #e5e7eb;
+    border: 2px solid rgba(186, 194, 210, 0.85);
     border-radius: 10px;
     font-size: 0.9375rem;
-    transition: all 0.2s ease;
-    background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat 0.875rem center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237484a4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat 0.875rem center;
     background-size: 18px;
   }
-
-  .search-input:focus {
+  .therapist-sessions-apni .search-input:focus {
     outline: none;
-    border-color: #059669;
-    background-color: white;
-    box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+    border-color: #041c54;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(4, 28, 84, 0.12);
   }
-
-  .btn-search {
-    padding: 0.75rem 1.25rem;
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-    color: white;
+  .therapist-sessions-apni .btn-search {
+    padding: 0.75rem 1.15rem;
+    background: #041c54;
+    color: #fff;
     border: none;
     border-radius: 10px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
   }
-
-  .btn-search:active {
-    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
-    color: white;
+  .therapist-sessions-apni .btn-search:hover {
+    background: #052a66;
+    color: #fff;
   }
-
-  .btn-refresh {
+  .therapist-sessions-apni .btn-refresh {
     padding: 0.75rem 1.25rem;
-    background: white;
-    color: #059669;
-    border: 2px solid #059669;
+    background: #fff;
+    color: #041c54;
+    border: 2px solid rgba(4, 28, 84, 0.35);
     border-radius: 10px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
   }
-
-  .btn-refresh:active {
-    background: #059669;
-    color: white;
+  .therapist-sessions-apni .btn-refresh:hover {
+    background: rgba(4, 28, 84, 0.06);
+    border-color: #041c54;
+    color: #041c54;
   }
 
-  /* Session Cards */
-  .session-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  .therapist-sessions-apni .session-card {
+    background: #fff;
+    border: 1px solid rgba(186, 194, 210, 0.55);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(4, 28, 84, 0.04);
     overflow: hidden;
-    position: relative;
     margin-bottom: 0.5rem;
-    border-left: 4px solid transparent;
+    border-left: 4px solid #647494;
   }
-
-  .session-card:nth-child(even) {
-    background: #fafbfc;
-    border-left-color: #667eea;
+  .therapist-sessions-apni .session-card:nth-child(even) {
+    background: rgba(186, 194, 210, 0.06);
+    border-left-color: #041c54;
   }
-
-  .session-card:nth-child(odd) {
-    border-left-color: #764ba2;
-  }
-
-  .session-card .card-body {
+  .therapist-sessions-apni .session-card .card-body {
     padding: 0.875rem 1.25rem;
   }
 
-  /* Client Avatar */
-  .client-avatar {
+  .therapist-sessions-apni .client-avatar {
     width: 40px;
     height: 40px;
     border-radius: 10px;
     object-fit: cover;
-    border: 2px solid #f0f2ff;
-    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.1);
+    border: 2px solid rgba(186, 194, 210, 0.6);
+    box-shadow: 0 1px 4px rgba(4, 28, 84, 0.08);
   }
-
-  .client-avatar-placeholder {
+  .therapist-sessions-apni .client-avatar-placeholder {
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: var(--theme-gradient);
+    background: linear-gradient(135deg, #647494 0%, #041c54 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.875rem;
     font-weight: 700;
-    color: white;
+    color: #fff;
   }
-
-  .client-info h6 {
+  .therapist-sessions-apni .client-info h6 {
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     margin-bottom: 0;
     font-size: 0.875rem;
     line-height: 1.2;
+    font-family: var(--apni-font-display, 'Sora', system-ui, sans-serif);
   }
-
-  .client-info small {
-    color: #6b7280;
+  .therapist-sessions-apni .client-info small {
+    color: #7484a4;
     display: flex;
     align-items: center;
     gap: 0.2rem;
     font-size: 0.65rem;
   }
 
-  /* Session Details */
-  .detail-item {
+  .therapist-sessions-apni .detail-item {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin: 0;
+    margin: 0 0.5rem 0 0;
     padding: 0.35rem 0.65rem;
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    background: rgba(186, 194, 210, 0.2);
     border-radius: 8px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
-    margin-right: 0.5rem;
+    border: 1px solid rgba(100, 116, 148, 0.15);
   }
-
-  .detail-icon {
+  .therapist-sessions-apni .detail-icon {
     width: 24px;
     height: 24px;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--theme-gradient);
-    color: white;
+    background: #647494;
+    color: #fff;
     font-size: 0.75rem;
     flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(102, 126, 234, 0.2);
   }
-
-  .detail-text {
+  .therapist-sessions-apni .detail-text {
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     font-size: 0.8rem;
     line-height: 1.3;
     white-space: nowrap;
   }
 
-  /* Session Type Badges */
-  .session-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.65rem;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin: 0;
-    margin-right: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-  }
-
-  .session-badge.video {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+  .therapist-sessions-apni .session-badge.video {
+    background: rgba(59, 130, 246, 0.12);
     color: #2563eb;
   }
-
-  .session-badge.audio {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+  .therapist-sessions-apni .session-badge.audio {
+    background: rgba(16, 185, 129, 0.12);
     color: #059669;
   }
-
-  .session-badge.chat {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
-    color: #7c3aed;
+  .therapist-sessions-apni .session-badge.chat {
+    background: rgba(100, 116, 148, 0.15);
+    color: #4d5d78;
   }
-
-  .type-badge {
-    background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.1) 100%);
-    color: #4b5563;
+  .therapist-sessions-apni .type-badge {
+    background: rgba(186, 194, 210, 0.25);
+    color: #4d5d78;
     padding: 0.3rem 0.65rem;
     border-radius: 8px;
     font-size: 0.7rem;
     font-weight: 600;
-    border: 1px solid rgba(107, 114, 128, 0.15);
+    border: 1px solid rgba(100, 116, 148, 0.2);
     display: inline-block;
   }
 
-  /* Status Badge */
-  .status-badge {
+  .therapist-sessions-apni .session-badge,
+  .therapist-sessions-apni .status-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.35rem 0.75rem;
+    padding: 0.3rem 0.65rem;
     border-radius: 8px;
     font-size: 0.75rem;
     font-weight: 600;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    margin: 0 0.5rem 0 0;
   }
-
-  .status-badge.scheduled {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
-    color: #d97706;
+  .therapist-sessions-apni .status-badge.scheduled,
+  .therapist-sessions-apni .status-badge.pending {
+    background: rgba(245, 158, 11, 0.15);
+    color: #b45309;
   }
-
-  .status-badge.confirmed {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+  .therapist-sessions-apni .status-badge.confirmed {
+    background: rgba(16, 185, 129, 0.15);
     color: #059669;
   }
-
-  .status-badge.in_progress {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+  .therapist-sessions-apni .status-badge.in_progress {
+    background: rgba(59, 130, 246, 0.15);
     color: #2563eb;
   }
-
-  .status-badge.completed {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    color: #667eea;
+  .therapist-sessions-apni .status-badge.completed {
+    background: rgba(100, 116, 148, 0.18);
+    color: #4d5d78;
   }
-
-  .status-badge.cancelled, .status-badge.cancel {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
+  .therapist-sessions-apni .status-badge.cancelled,
+  .therapist-sessions-apni .status-badge.cancel {
+    background: rgba(239, 68, 68, 0.12);
     color: #dc2626;
   }
-
-  .status-badge.expired {
-    background: linear-gradient(135deg, rgba(75, 85, 99, 0.15) 0%, rgba(55, 65, 81, 0.15) 100%);
-    color: #374151;
+  .therapist-sessions-apni .status-badge.expired {
+    background: rgba(75, 85, 99, 0.12);
+    color: #4b5563;
   }
 
-  .status-badge.pending {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
-    color: #d97706;
-  }
-
-  .status-badge.upcoming {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
-    color: #2563eb;
-  }
-
-  /* Action Buttons */
-  .action-btn {
-    width: 36px;
-    height: 36px;
+  .therapist-sessions-apni .action-btn.join {
+    background: #10b981;
+    color: #fff;
+    padding: 0.45rem 0.9rem;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    border: none;
-    text-decoration: none;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-    cursor: pointer;
-  }
-
-  .action-btn.join {
-    background: var(--success-gradient);
-    color: white;
-    padding: 0.4rem 0.85rem;
-    width: auto;
-    height: auto;
     font-size: 0.8rem;
     font-weight: 600;
+    display: inline-flex;
+    align-items: center;
     gap: 0.35rem;
-    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.25);
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
   }
-
-  .action-btn.view {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #667eea;
+  .therapist-sessions-apni .action-btn.join:hover {
+    background: #059669;
+    color: #fff;
   }
-
-  .action-btn.disabled {
-    background: #f3f4f6;
-    color: #6b7280;
+  .therapist-sessions-apni .action-btn.disabled {
+    background: #f1f5f9;
+    color: #7484a4;
     cursor: not-allowed;
     padding: 0.4rem 0.85rem;
-    width: auto;
-    height: auto;
+    border-radius: 10px;
     font-size: 0.75rem;
+    border: 1px solid rgba(186, 194, 210, 0.8);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
   }
-
-  .action-btn.disabled.expired {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  .therapist-sessions-apni .action-btn.disabled.expired {
+    background: #fef2f2;
     color: #991b1b;
-    border: 1px solid #fca5a5;
+    border-color: #fecaca;
   }
-
-  .action-btn.disabled.waiting {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  .therapist-sessions-apni .action-btn.disabled.waiting {
+    background: #fffbeb;
     color: #92400e;
-    border: 1px solid #fcd34d;
+    border-color: #fde68a;
+  }
+  .therapist-sessions-apni .action-btn.disabled.not-available {
+    background: #f8fafc;
+    color: #647494;
+    border-color: #cbd5e1;
   }
 
-  .action-btn.disabled.not-available {
-    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
-    color: #4b5563;
-    border: 1px solid #9ca3af;
-  }
-
-  /* Pagination */
-  .pagination-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1.5rem;
-    border-top: 1px solid #f3f4f6;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .pagination-info {
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
-
-  .pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .page-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    border: 2px solid #e5e7eb;
-    background: white;
-    color: #6b7280;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    text-decoration: none;
-  }
-
-  .page-btn:active:not(:disabled) {
-    border-color: #059669;
-    color: #059669;
-    background: #f0fdf4;
-  }
-
-  .page-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .per-page-select {
-    padding: 0.5rem 0.75rem;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    color: #374151;
-    background: white;
-    cursor: pointer;
-  }
-
-  .per-page-select:focus {
-    outline: none;
-    border-color: #059669;
-  }
-
-  /* Empty State */
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-  }
-
-  .empty-state-icon {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 2.5rem;
-    color: #059669;
-  }
-
-  @keyframes blink {
+  @keyframes therapist-sessions-blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
   }
-
-  .live-indicator {
+  .therapist-sessions-apni .live-indicator {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
+    color: #fff;
     padding: 0.35rem 0.75rem;
     border-radius: 8px;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
     margin-right: 0.5rem;
   }
-
-  .live-indicator::before {
+  .therapist-sessions-apni .live-indicator::before {
     content: '';
     width: 6px;
     height: 6px;
-    background: white;
+    background: #fff;
     border-radius: 50%;
-    animation: blink 1s infinite;
+    animation: therapist-sessions-blink 1s infinite;
   }
 
-  .empty-state h5 {
+  .therapist-sessions-apni .empty-state {
+    text-align: center;
+    padding: 3.5rem 1.5rem;
+  }
+  .therapist-sessions-apni .empty-state-icon {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: rgba(100, 116, 148, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    font-size: 2.25rem;
+    color: #647494;
+  }
+  .therapist-sessions-apni .empty-state h5 {
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     margin-bottom: 0.5rem;
+    font-family: var(--apni-font-display, 'Sora', system-ui, sans-serif);
   }
-
-  .empty-state p {
-    color: #6b7280;
+  .therapist-sessions-apni .empty-state p {
+    color: #7484a4;
     font-size: 0.9375rem;
+    margin: 0;
   }
 
-  /* Responsive */
+  .therapist-sessions-apni .pagination {
+    margin-bottom: 0;
+  }
+  .therapist-sessions-apni .page-link {
+    color: #041c54;
+    border-color: rgba(186, 194, 210, 0.8);
+    border-radius: 8px !important;
+    margin: 0 2px;
+  }
+  .therapist-sessions-apni .page-item.active .page-link {
+    background: #041c54;
+    border-color: #041c54;
+    color: #fff;
+  }
+  .therapist-sessions-apni .page-link:hover {
+    color: #041c54;
+    background: rgba(4, 28, 84, 0.06);
+    border-color: #647494;
+  }
+
   @media (max-width: 768px) {
-    .filters-row {
-      flex-direction: column;
-    }
-
-    .search-box {
-      max-width: 100%;
-      width: 100%;
-    }
-
-    .session-tabs {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      padding: 0.75rem;
-    }
-
-    .session-tab {
-      white-space: nowrap;
-      font-size: 0.75rem;
-      padding: 0.5rem 1rem;
-    }
-
-    .session-card .card-body {
-      padding: 0.75rem 1rem;
-    }
+    .therapist-sessions-apni .filters-row { flex-direction: column; align-items: stretch; }
+    .therapist-sessions-apni .search-box { max-width: 100%; width: 100%; }
+    .therapist-sessions-apni .session-card .card-body { padding: 0.75rem 1rem; }
   }
 </style>
 @endsection
 
+@php
+  $tabActive = 'inline-flex items-center gap-2 rounded-[10px] border-2 border-transparent px-3 py-2 text-xs font-semibold whitespace-nowrap transition sm:px-4 sm:text-sm bg-[#041C54] text-white shadow-[0_4px_14px_rgba(4,28,84,0.28)]';
+  $tabIdle = 'inline-flex items-center gap-2 rounded-[10px] border-2 border-[#BAC2D2]/50 bg-white px-3 py-2 text-xs font-semibold whitespace-nowrap text-[#7484A4] transition hover:border-[#647494]/60 hover:text-[#041C54] sm:px-4 sm:text-sm';
+  $sessionsHeroTitle = match ($status) {
+    'pending' => 'Pending Sessions',
+    'upcoming' => 'Upcoming Sessions',
+    'completed' => 'Completed Sessions',
+    'cancel_by_me' => 'Cancelled By Me',
+    'cancelled_by_user' => 'Cancelled By Client',
+    'expired' => 'Expired Sessions',
+    default => 'Online Sessions',
+  };
+@endphp
+
 @section('content')
-<!-- Page Header -->
-<div class="page-header">
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 position-relative" style="z-index: 1;">
-    <div class="d-flex align-items-center gap-3">
-      <div class="header-icon">
-        <i class="ri-video-chat-line"></i>
+<div class="therapist-sessions-apni pb-2">
+  <div class="relative mb-8 overflow-hidden rounded-3xl shadow-[0_20px_25px_-5px_rgba(100,116,148,0.2),0_8px_10px_-6px_rgba(100,116,148,0.2)]"
+       style="background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%);">
+    <div class="pointer-events-none absolute -right-20 top-0 h-64 w-64 rounded-full bg-white/10 blur-[64px]" aria-hidden="true"></div>
+    <div class="relative z-10 flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between md:p-8">
+      <div class="min-w-0">
+        <h1 class="font-display flex items-center gap-3 text-2xl font-medium leading-snug text-white md:text-3xl">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-white/15 text-[1.5rem] backdrop-blur-sm">
+            <i class="ri-video-chat-line"></i>
+          </span>
+          <span>{{ $sessionsHeroTitle }}</span>
+        </h1>
+        <p class="mt-2 max-w-xl text-base text-white/90">
+          Manage and track your therapy sessions in one place.
+        </p>
       </div>
-      <div>
-        <h4 class="mb-1">
-          @if($status === 'pending')
-            Pending Sessions
-          @elseif($status === 'upcoming')
-            Upcoming Sessions
-          @elseif($status === 'completed')
-            Completed Sessions
-          @elseif($status === 'cancel_by_me')
-            Cancelled By Me
-          @elseif($status === 'cancelled_by_user')
-            Cancelled By Client
-          @elseif($status === 'expired')
-            Expired Sessions
-          @else
-            Online Sessions
-          @endif
-        </h4>
-        <p class="mb-0">Manage and track all your therapy sessions in one place</p>
+      <div class="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="{{ route('therapist.dashboard') }}"
+           class="inline-flex items-center justify-center gap-2 rounded-[14px] bg-white px-5 py-2.5 text-sm font-medium text-[#041C54] shadow-md transition hover:bg-[#BAC2D2]/30">
+          <i class="ri-dashboard-line text-lg"></i>
+          Dashboard
+        </a>
+        <a href="{{ route('therapist.profile.index', ['tab' => 'basic-info']) }}"
+           class="inline-flex items-center justify-center gap-2 rounded-[14px] border-2 border-white px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/10">
+          <i class="ri-user-settings-line text-lg"></i>
+          Profile
+        </a>
       </div>
     </div>
   </div>
-</div>
 
-@if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 12px; border-left: 4px solid #059669;">
-    <i class="ri-checkbox-circle-line me-2"></i>
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  @if(session('success'))
+    <div class="mb-6 flex items-start gap-3 rounded-2xl border border-[#10B981]/30 bg-[#ecfdf5] px-4 py-3 text-sm text-[#065f46] md:px-5" role="status">
+      <i class="ri-checkbox-circle-fill mt-0.5 text-lg text-[#059669]"></i>
+      <div class="min-w-0 flex-1">{{ session('success') }}</div>
+    </div>
+  @endif
+
+  <div class="mb-6 overflow-x-auto rounded-2xl border border-[#BAC2D2]/30 bg-white p-3 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)] sm:p-4">
+    <div class="flex min-w-max flex-wrap gap-2">
+      <a href="{{ route('therapist.sessions.index', ['status' => 'pending']) }}" class="{{ $status === 'pending' ? $tabActive : $tabIdle }}">
+        <i class="ri-time-line"></i> Pending
+      </a>
+      <a href="{{ route('therapist.sessions.index', ['status' => 'upcoming']) }}" class="{{ $status === 'upcoming' ? $tabActive : $tabIdle }}">
+        <i class="ri-calendar-check-line"></i> Upcoming
+      </a>
+      <a href="{{ route('therapist.sessions.index', ['status' => 'completed']) }}" class="{{ $status === 'completed' ? $tabActive : $tabIdle }}">
+        <i class="ri-checkbox-circle-line"></i> Completed
+      </a>
+      <a href="{{ route('therapist.sessions.index', ['status' => 'cancel_by_me']) }}" class="{{ $status === 'cancel_by_me' ? $tabActive : $tabIdle }}">
+        <i class="ri-close-circle-line"></i> Cancel by Me
+      </a>
+      <a href="{{ route('therapist.sessions.index', ['status' => 'cancelled_by_user']) }}" class="{{ $status === 'cancelled_by_user' ? $tabActive : $tabIdle }}">
+        <i class="ri-user-unfollow-line"></i> Cancelled by Client
+      </a>
+      <a href="{{ route('therapist.sessions.index', ['status' => 'expired']) }}" class="{{ $status === 'expired' ? $tabActive : $tabIdle }}">
+        <i class="ri-history-line"></i> Expired
+      </a>
+    </div>
   </div>
-@endif
 
-<!-- Session Tabs -->
-<div class="session-tabs">
-  <a href="{{ route('therapist.sessions.index', ['status' => 'pending']) }}"
-     class="session-tab {{ $status === 'pending' ? 'active' : '' }}">
-    <i class="ri-time-line"></i>
-    Pending
-  </a>
-  <a href="{{ route('therapist.sessions.index', ['status' => 'upcoming']) }}"
-     class="session-tab {{ $status === 'upcoming' ? 'active' : '' }}">
-    <i class="ri-calendar-check-line"></i>
-    Upcoming
-  </a>
-  <a href="{{ route('therapist.sessions.index', ['status' => 'completed']) }}"
-     class="session-tab {{ $status === 'completed' ? 'active' : '' }}">
-    <i class="ri-checkbox-circle-line"></i>
-    Completed
-  </a>
-  <a href="{{ route('therapist.sessions.index', ['status' => 'cancel_by_me']) }}"
-     class="session-tab {{ $status === 'cancel_by_me' ? 'active' : '' }}">
-    <i class="ri-close-circle-line"></i>
-    Cancel by Me
-  </a>
-  <a href="{{ route('therapist.sessions.index', ['status' => 'cancelled_by_user']) }}"
-     class="session-tab {{ $status === 'cancelled_by_user' ? 'active' : '' }}">
-    <i class="ri-user-unfollow-line"></i>
-    Cancelled by Client
-  </a>
-  <a href="{{ route('therapist.sessions.index', ['status' => 'expired']) }}"
-     class="session-tab {{ $status === 'expired' ? 'active' : '' }}">
-    <i class="ri-history-line"></i>
-    Expired
-  </a>
-</div>
-
-<!-- Sessions Card -->
-<div class="sessions-card">
-  <div class="card-body">
-    <!-- Filters Row -->
-    <div class="filters-row mb-3">
+  <div class="rounded-2xl border border-[#BAC2D2]/30 bg-white p-4 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)] sm:p-6">
+    <div class="filters-row">
       <form method="GET" action="{{ route('therapist.sessions.index') }}" class="search-box">
         <input type="hidden" name="status" value="{{ $status }}">
         <input type="text" name="search" class="search-input" placeholder="Search by client name..." value="{{ $search }}">
-        <button type="submit" class="btn-search">
+        <button type="submit" class="btn-search" aria-label="Search">
           <i class="ri-search-line"></i>
         </button>
       </form>
@@ -712,26 +431,21 @@
       </button>
     </div>
 
-    <!-- Sessions List -->
     @if($sessions->count() > 0)
       <div class="row g-2">
         @foreach($sessions as $session)
         @php
-            // Handle appointment_time - it might be a datetime or time string
             $timeString = is_string($session->appointment_time)
                 ? $session->appointment_time
                 : (is_object($session->appointment_time)
                     ? $session->appointment_time->format('H:i:s')
                     : $session->appointment_time);
 
-            // Extract just time if it's a full datetime string (contains date part)
             if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
-                // If it contains a date (has dashes or is longer than time format), extract just time
                 try {
                     $parsedTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata');
                     $timeString = $parsedTime->format('H:i:s');
                 } catch (\Exception $e) {
-                    // If parsing fails, try to extract time manually
                     if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
                         $timeString = $matches[1];
                     } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
@@ -740,20 +454,17 @@
                 }
             }
 
-            // Ensure we have a valid time string (HH:MM:SS format)
             if (strlen($timeString) <= 5) {
-                $timeString = $timeString . ':00'; // Add seconds if missing
+                $timeString = $timeString . ':00';
             }
 
             $appointmentDateTime = \Carbon\Carbon::parse($session->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
-            // Allow joining 5 minutes before appointment time or anytime after
             $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
             $minutesDiff = $appointmentDateTime->diffInMinutes($nowIST, false);
-            $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
+            $canJoin = $minutesDiff >= -5;
             $sessionEndTime = $appointmentDateTime->copy()->addMinutes($session->duration_minutes ?? 60);
             $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
 
-            // Show join button if time has arrived (or within 5 min) AND status allows it AND session mode is video/audio
             $isVideoOrAudio = in_array($session->session_mode, ['video', 'audio']);
             $statusCheck = in_array($session->status, ['confirmed', 'in_progress']) ||
                 ($session->status === 'scheduled' && ($appointmentDateTime->lessThan($nowIST) || $canJoin));
@@ -766,7 +477,6 @@
             <div class="card session-card">
                 <div class="card-body">
                     <div class="row align-items-center g-2">
-                        <!-- Client Info -->
                         <div class="col-lg-2 col-md-3 mb-0">
                             <div class="d-flex align-items-center" style="gap: 0.5rem;">
                                 @if($session->client)
@@ -775,7 +485,7 @@
                                     @elseif($session->client->getRawOriginal('avatar'))
                                         <img src="{{ asset('storage/' . $session->client->getRawOriginal('avatar')) }}" alt="{{ $session->client->name }}" class="client-avatar">
                                     @else
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($session->client->name ?? 'N') }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $session->client->name }}" class="client-avatar">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($session->client->name ?? 'N') }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $session->client->name }}" class="client-avatar">
                                     @endif
                                 @else
                                     <div class="client-avatar-placeholder">
@@ -791,7 +501,6 @@
                             </div>
                         </div>
 
-                        <!-- Session Details -->
                         <div class="col-lg-3 col-md-4 mb-0">
                             <div class="d-flex align-items-center flex-wrap" style="gap: 0.25rem;">
                                 <div class="detail-item">
@@ -821,7 +530,6 @@
                             </div>
                         </div>
 
-                        <!-- Session Mode & Status -->
                         <div class="col-lg-2 col-md-3 mb-0">
                             <div class="d-flex align-items-center flex-wrap" style="gap: 0.5rem;">
                                 @if($isLive)
@@ -854,12 +562,10 @@
                             </div>
                         </div>
 
-                        <!-- Session Type -->
                         <div class="col-lg-2 col-md-2 mb-0">
                             <span class="type-badge">{{ ucfirst($session->appointment_type ?? 'Session') }}</span>
                         </div>
 
-                        <!-- Actions -->
                         <div class="col-lg-3 col-md-12 mb-0">
                             <div class="d-flex align-items-center justify-content-lg-end justify-content-start" style="gap: 0.5rem;">
                                 @if($isSessionExpired)
@@ -867,11 +573,11 @@
                                         <i class="ri-time-off-line"></i>Expired
                                     </span>
                                 @elseif($isActive && in_array($session->session_mode, ['video', 'audio']))
-                                    <a href="{{ route('sessions.join', $session->id) }}" class="action-btn join" title="Join Session" target="_blank">
+                                    <a href="{{ route('sessions.join', $session->id) }}" class="action-btn join" title="Join Session" target="_blank" rel="noopener noreferrer">
                                         <i class="ri-{{ $session->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>Join Session
                                     </a>
                                 @elseif(!$isVideoOrAudio)
-                                    <button class="action-btn disabled not-available" disabled title="Session mode is {{ $session->session_mode }} (only video/audio sessions can be joined)">
+                                    <button type="button" class="action-btn disabled not-available" disabled title="Session mode is {{ $session->session_mode }} (only video/audio sessions can be joined)">
                                         <i class="ri-video-off-line"></i>
                                         <span>Not Available</span>
                                     </button>
@@ -880,12 +586,12 @@
                                         $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
                                         $timeUntilJoin = $joinAvailableAt->diffForHumans($nowIST, ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
                                     @endphp
-                                    <button class="action-btn disabled waiting" disabled title="Join button will be available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }} IST)">
+                                    <button type="button" class="action-btn disabled waiting" disabled title="Join button will be available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }} IST)">
                                         <i class="ri-time-line"></i>
                                         <span>Available {{ $timeUntilJoin }}</span>
                                     </button>
                                 @else
-                                    <button class="action-btn disabled not-available" disabled title="Session not available at this time">
+                                    <button type="button" class="action-btn disabled not-available" disabled title="Session not available at this time">
                                         <i class="ri-information-line"></i>
                                         <span>Not Available</span>
                                     </button>
@@ -899,7 +605,6 @@
         @endforeach
       </div>
     @else
-      <!-- Empty State -->
       <div class="empty-state">
         <div class="empty-state-icon">
           <i class="ri-calendar-line"></i>
@@ -909,9 +614,8 @@
       </div>
     @endif
 
-    <!-- Pagination -->
     @if($sessions->hasPages() || $sessions->total() > 0)
-      <div class="d-flex justify-content-center mt-5 mb-4">
+      <div class="d-flex justify-content-center mt-4 pt-4" style="border-top: 1px solid rgba(186, 194, 210, 0.45);">
         {{ $sessions->links() }}
       </div>
     @endif

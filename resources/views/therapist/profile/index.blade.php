@@ -4,135 +4,29 @@
 
 @section('page-style')
 <style>
-  /* === Profile Page Custom Styles === */
-  .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 1.5rem;
-    color: white;
-    position: relative;
-    overflow: hidden;
-  }
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
 
-  .page-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .page-header h4 {
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: white;
-  }
-
-  .page-header p {
-    opacity: 0.9;
-    margin: 0;
-    font-size: 0.9375rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Profile Tabs */
-  .profile-tabs-wrapper {
-    background: white;
-    border-radius: 16px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    overflow-x: auto;
-  }
-
-  .profile-tabs {
-    display: flex;
-    gap: 0.5rem;
-    min-width: max-content;
-  }
-
-  .profile-tab {
-    padding: 0.625rem 1rem;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: 2px solid transparent;
-    white-space: nowrap;
-  }
-
-  .profile-tab:not(.active) {
-    background: #f3f4f6;
-    color: #6b7280;
-    border-color: #e5e7eb;
-  }
-
-  .profile-tab:not(.active):hover {
-    background: #e5e7eb;
-    color: #374151;
-    transform: translateY(-2px);
-  }
-
-  .profile-tab.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  }
-
-  .profile-tab i {
-    font-size: 1rem;
-  }
-
-  /* Profile Card */
-  .profile-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    overflow: hidden;
-  }
-
-  .profile-card .card-body {
-    padding: 2rem;
-  }
-
-  /* Form Styles */
-  .form-section {
+  .therapist-profile-apni .form-section {
     margin-bottom: 2rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid rgba(186, 194, 210, 0.45);
   }
-
-  .form-section:last-child {
+  .therapist-profile-apni .form-section:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
     border-bottom: none;
   }
-
-  .section-title {
+  .therapist-profile-apni .section-title {
     font-size: 1.125rem;
-    font-weight: 700;
-    color: #1f2937;
+    font-weight: 600;
+    color: #041c54;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    font-family: var(--apni-font-display, 'Sora', system-ui, sans-serif);
   }
-
-  .section-title-icon {
+  .therapist-profile-apni .section-title-icon {
     width: 40px;
     height: 40px;
     border-radius: 10px;
@@ -141,150 +35,53 @@
     justify-content: center;
     font-size: 1.125rem;
   }
-
-  .section-title-icon.purple {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #7c3aed;
+  .therapist-profile-apni .section-title-icon.purple,
+  .therapist-profile-apni .section-title-icon.gulf {
+    background: rgba(4, 28, 84, 0.08);
+    color: #041c54;
   }
-
-  .section-title-icon.green {
-    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+  .therapist-profile-apni .section-title-icon.green {
+    background: rgba(16, 185, 129, 0.12);
     color: #059669;
   }
-
-  .section-title-icon.blue {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%);
+  .therapist-profile-apni .section-title-icon.blue {
+    background: rgba(59, 130, 246, 0.12);
     color: #2563eb;
   }
-
-  .form-label {
+  .therapist-profile-apni .form-label {
     font-weight: 600;
     font-size: 0.8125rem;
-    color: #374151;
+    color: #647494;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
   }
-
-  .form-control,
-  .form-select {
+  .therapist-profile-apni .form-control,
+  .therapist-profile-apni .form-select {
     padding: 0.75rem 1rem;
-    border: 2px solid #e5e7eb;
+    border: 2px solid rgba(186, 194, 210, 0.7);
     border-radius: 10px;
     font-size: 0.9375rem;
-    transition: all 0.2s ease;
-    background: #f9fafb;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    background: #f8fafc;
   }
-
-  .form-control:focus,
-  .form-select:focus {
+  .therapist-profile-apni .form-control:focus,
+  .therapist-profile-apni .form-select:focus {
     outline: none;
-    border-color: #7c3aed;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+    border-color: #041c54;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(4, 28, 84, 0.12);
   }
-
-  .form-control::placeholder {
-    color: #9ca3af;
+  .therapist-profile-apni .form-control::placeholder {
+    color: #9aa8bc;
   }
-
-  textarea.form-control {
+  .therapist-profile-apni textarea.form-control {
     min-height: 120px;
     resize: vertical;
   }
-
-  /* Avatar Upload */
-  .avatar-upload {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .avatar-preview {
-    width: 100px;
-    height: 100px;
-    border-radius: 16px;
-    object-fit: cover;
-    border: 3px solid #e5e7eb;
-    transition: all 0.3s ease;
-  }
-
-  .avatar-preview:hover {
-    border-color: #7c3aed;
-  }
-
-  .avatar-placeholder {
-    width: 100px;
-    height: 100px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 2rem;
-  }
-
-  .avatar-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .btn-upload {
-    padding: 0.5rem 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .btn-upload:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  }
-
-  .avatar-hint {
-    font-size: 0.75rem;
-    color: #9ca3af;
-  }
-
-  /* Submit Button */
-  .btn-submit {
-    padding: 0.875rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
-  }
-
-  .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.45);
-    color: white;
-  }
-
-  /* Info Cards */
-  .info-card {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border: 1px solid #86efac;
+  .therapist-profile-apni .info-card {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 1px solid rgba(16, 185, 129, 0.35);
     border-radius: 12px;
     padding: 1rem 1.25rem;
     margin-bottom: 1.5rem;
@@ -292,8 +89,7 @@
     align-items: flex-start;
     gap: 0.875rem;
   }
-
-  .info-card-icon {
+  .therapist-profile-apni .info-card-icon {
     width: 40px;
     height: 40px;
     border-radius: 10px;
@@ -305,121 +101,148 @@
     font-size: 1.125rem;
     flex-shrink: 0;
   }
-
-  .info-card-content h6 {
+  .therapist-profile-apni .info-card-content h6 {
     font-weight: 600;
     color: #166534;
     margin-bottom: 0.25rem;
     font-size: 0.9375rem;
   }
-
-  .info-card-content p {
-    color: #16a34a;
+  .therapist-profile-apni .info-card-content p {
+    color: #15803d;
     margin: 0;
     font-size: 0.8125rem;
   }
-
-  /* Scrollbar */
-  .profile-tabs-wrapper::-webkit-scrollbar {
-    height: 4px;
+  .therapist-profile-apni .btn-primary {
+    background-color: #041c54 !important;
+    border-color: #041c54 !important;
+    color: #fff !important;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    box-shadow: 0 4px 14px rgba(4, 28, 84, 0.2);
   }
-
-  .profile-tabs-wrapper::-webkit-scrollbar-track {
-    background: #f3f4f6;
-    border-radius: 4px;
+  .therapist-profile-apni .btn-primary:hover,
+  .therapist-profile-apni .btn-primary:focus {
+    background-color: #052a66 !important;
+    border-color: #052a66 !important;
+    color: #fff !important;
   }
-
-  .profile-tabs-wrapper::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 4px;
+  .therapist-profile-apni .btn-sm.btn-primary {
+    padding: 0.35rem 0.75rem;
+    border-radius: 10px;
+    font-size: 0.8125rem;
+    box-shadow: none;
   }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .profile-card .card-body {
-      padding: 1.5rem;
-    }
-
-    .avatar-upload {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .avatar-actions {
-      align-items: center;
-    }
+  .therapist-profile-apni .btn-secondary {
+    border-radius: 10px;
+    border-color: rgba(186, 194, 210, 0.9);
+    color: #647494;
+    background: #fff;
+  }
+  .therapist-profile-apni .btn-secondary:hover {
+    background: rgba(186, 194, 210, 0.2);
+    border-color: #647494;
+    color: #041c54;
+  }
+  .therapist-profile-apni .btn-outline-primary {
+    color: #041c54 !important;
+    border-color: rgba(4, 28, 84, 0.45) !important;
+    background: #fff !important;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .therapist-profile-apni .btn-outline-primary:hover {
+    background: rgba(4, 28, 84, 0.06) !important;
+    border-color: #041c54 !important;
+    color: #041c54 !important;
+  }
+  .therapist-profile-apni h5 {
+    font-family: var(--apni-font-display, 'Sora', system-ui, sans-serif);
+    font-weight: 600;
+    color: #041c54;
+  }
+  .therapist-profile-apni .table {
+    --bs-table-hover-bg: rgba(186, 194, 210, 0.15);
+  }
+  .therapist-profile-apni .text-muted {
+    color: #7484a4 !important;
   }
 </style>
 @endsection
 
+@php
+  $tabActive = 'inline-flex items-center gap-2 rounded-[10px] border-2 border-transparent px-3 py-2 text-xs font-semibold whitespace-nowrap transition sm:px-4 sm:text-sm bg-[#041C54] text-white shadow-[0_4px_14px_rgba(4,28,84,0.28)]';
+  $tabIdle = 'inline-flex items-center gap-2 rounded-[10px] border-2 border-[#BAC2D2]/50 bg-white px-3 py-2 text-xs font-semibold whitespace-nowrap text-[#7484A4] transition hover:border-[#647494]/60 hover:text-[#041C54] sm:px-4 sm:text-sm';
+@endphp
+
 @section('content')
-<!-- Page Header -->
-<div class="page-header">
-  <h4>
-    <i class="ri-user-settings-line"></i>
-    My Profile
-  </h4>
-  <p>Manage your professional profile and account information</p>
-</div>
-
-@if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 12px; border-left: 4px solid #059669;">
-    <i class="ri-checkbox-circle-line me-2"></i>
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="therapist-profile-apni pb-2">
+  {{-- Hero — same Lynch gradient language as dashboard --}}
+  <div class="relative mb-8 overflow-hidden rounded-3xl shadow-[0_20px_25px_-5px_rgba(100,116,148,0.2),0_8px_10px_-6px_rgba(100,116,148,0.2)]"
+       style="background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%);">
+    <div class="pointer-events-none absolute -right-20 top-0 h-64 w-64 rounded-full bg-white/10 blur-[64px]" aria-hidden="true"></div>
+    <div class="relative z-10 flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between md:p-8">
+      <div class="min-w-0">
+        <h1 class="font-display flex items-center gap-2 text-2xl font-medium leading-snug text-white md:text-3xl">
+          <i class="ri-user-settings-line text-[1.75rem]"></i>
+          My Profile
+        </h1>
+        <p class="mt-2 max-w-xl text-base text-white/90">
+          Manage your professional profile, credentials, and account details.
+        </p>
+      </div>
+      <div class="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="{{ route('therapist.dashboard') }}"
+           class="inline-flex items-center justify-center gap-2 rounded-[14px] bg-white px-5 py-2.5 text-sm font-medium text-[#041C54] shadow-md transition hover:bg-[#BAC2D2]/30">
+          <i class="ri-dashboard-line text-lg"></i>
+          Dashboard
+        </a>
+        <a href="{{ route('therapist.sessions.index') }}"
+           class="inline-flex items-center justify-center gap-2 rounded-[14px] border-2 border-white px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/10">
+          <i class="ri-video-line text-lg"></i>
+          Sessions
+        </a>
+      </div>
+    </div>
   </div>
-@endif
 
-<!-- Profile Tabs -->
-<div class="profile-tabs-wrapper">
-  <div class="profile-tabs">
-    <a href="{{ route('therapist.profile.index', ['tab' => 'basic-info']) }}"
-       class="profile-tab {{ $tab === 'basic-info' ? 'active' : '' }}">
-      <i class="ri-user-line"></i>
-      Basic Info
-    </a>
-    <a href="{{ route('therapist.profile.index', ['tab' => 'experience']) }}"
-       class="profile-tab {{ $tab === 'experience' ? 'active' : '' }}">
-      <i class="ri-briefcase-line"></i>
-      Experience
-    </a>
-    <a href="{{ route('therapist.profile.index', ['tab' => 'qualifications']) }}"
-       class="profile-tab {{ $tab === 'qualifications' ? 'active' : '' }}">
-      <i class="ri-graduation-cap-line"></i>
-      Qualifications
-    </a>
-    <a href="{{ route('therapist.profile.index', ['tab' => 'area-of-expertise']) }}"
-       class="profile-tab {{ $tab === 'area-of-expertise' ? 'active' : '' }}">
-      <i class="ri-focus-line"></i>
-      Expertise
-    </a>
-    <a href="{{ route('therapist.profile.index', ['tab' => 'awards']) }}"
-       class="profile-tab {{ $tab === 'awards' ? 'active' : '' }}">
-      <i class="ri-award-line"></i>
-      Awards
-    </a>
-    <a href="{{ route('therapist.profile.index', ['tab' => 'professional-bodies']) }}"
-       class="profile-tab {{ $tab === 'professional-bodies' ? 'active' : '' }}">
-      <i class="ri-group-line"></i>
-      Prof. Bodies
-    </a>
-    <a href="{{ route('therapist.profile.index', ['tab' => 'bank-details']) }}"
-       class="profile-tab {{ $tab === 'bank-details' ? 'active' : '' }}">
-      <i class="ri-bank-line"></i>
-      Bank Details
-    </a>
-    <a href="{{ route('therapist.profile.index', ['tab' => 'specializations']) }}"
-       class="profile-tab {{ $tab === 'specializations' ? 'active' : '' }}">
-      <i class="ri-star-line"></i>
-      Specializations
-    </a>
+  @if(session('success'))
+    <div class="mb-6 flex items-start gap-3 rounded-2xl border border-[#10B981]/30 bg-[#ecfdf5] px-4 py-3 text-sm text-[#065f46] md:px-5" role="status">
+      <i class="ri-checkbox-circle-fill mt-0.5 text-lg text-[#059669]"></i>
+      <div class="min-w-0 flex-1">{{ session('success') }}</div>
+    </div>
+  @endif
+
+  <div class="mb-6 overflow-x-auto rounded-2xl border border-[#BAC2D2]/30 bg-white p-3 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)] sm:p-4">
+    <div class="flex min-w-max flex-wrap gap-2">
+      <a href="{{ route('therapist.profile.index', ['tab' => 'basic-info']) }}" class="{{ $tab === 'basic-info' ? $tabActive : $tabIdle }}">
+        <i class="ri-user-line"></i> Basic Info
+      </a>
+      <a href="{{ route('therapist.profile.index', ['tab' => 'experience']) }}" class="{{ $tab === 'experience' ? $tabActive : $tabIdle }}">
+        <i class="ri-briefcase-line"></i> Experience
+      </a>
+      <a href="{{ route('therapist.profile.index', ['tab' => 'qualifications']) }}" class="{{ $tab === 'qualifications' ? $tabActive : $tabIdle }}">
+        <i class="ri-graduation-cap-line"></i> Qualifications
+      </a>
+      <a href="{{ route('therapist.profile.index', ['tab' => 'area-of-expertise']) }}" class="{{ $tab === 'area-of-expertise' ? $tabActive : $tabIdle }}">
+        <i class="ri-focus-line"></i> Expertise
+      </a>
+      <a href="{{ route('therapist.profile.index', ['tab' => 'awards']) }}" class="{{ $tab === 'awards' ? $tabActive : $tabIdle }}">
+        <i class="ri-award-line"></i> Awards
+      </a>
+      <a href="{{ route('therapist.profile.index', ['tab' => 'professional-bodies']) }}" class="{{ $tab === 'professional-bodies' ? $tabActive : $tabIdle }}">
+        <i class="ri-group-line"></i> Prof. Bodies
+      </a>
+      <a href="{{ route('therapist.profile.index', ['tab' => 'bank-details']) }}" class="{{ $tab === 'bank-details' ? $tabActive : $tabIdle }}">
+        <i class="ri-bank-line"></i> Bank Details
+      </a>
+      <a href="{{ route('therapist.profile.index', ['tab' => 'specializations']) }}" class="{{ $tab === 'specializations' ? $tabActive : $tabIdle }}">
+        <i class="ri-star-line"></i> Specializations
+      </a>
+    </div>
   </div>
-</div>
 
-<!-- Profile Content -->
-<div class="profile-card">
-  <div class="card-body">
-    <!-- Tab Content -->
+  <div class="rounded-2xl border border-[#BAC2D2]/30 bg-white p-6 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)] sm:p-8">
     @if($tab === 'basic-info')
       @include('therapist.profile.tabs.basic-info')
     @elseif($tab === 'experience')

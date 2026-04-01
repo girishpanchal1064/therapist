@@ -4,158 +4,96 @@
 
 @section('page-style')
 <style>
-  /* === Reviews Page Custom Styles === */
-  .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    padding: 1.5rem 2rem;
-    margin-bottom: 1.5rem;
-    color: white;
-    position: relative;
-    overflow: hidden;
-  }
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
 
-  .page-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .page-header h4 {
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    position: relative;
-    color: white;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .page-header p {
-    opacity: 0.9;
-    margin: 0;
-    font-size: 0.9375rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Stats Cards */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 1.25rem 1.5rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-  }
-
-  .stat-card.total::before { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-  .stat-card.average::before { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-  .stat-card.distribution::before { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
-
-  .stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-  }
-
-  .stat-card.total .stat-icon { background: rgba(102, 126, 234, 0.1); color: #667eea; }
-  .stat-card.average .stat-icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-  .stat-card.distribution .stat-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-
-  .stat-label {
-    font-size: 0.75rem;
-    color: #6b7280;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.375rem;
-  }
-
-  .stat-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #1f2937;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .stat-value i {
-    color: #f59e0b;
-    font-size: 1.5rem;
-  }
-
-  /* Rating Distribution */
-  .rating-distribution {
+  .therapist-reviews-apni .search-filters {
     display: flex;
     gap: 0.75rem;
-    margin-top: 0.5rem;
+    flex: 1;
+    max-width: 720px;
+    flex-wrap: wrap;
+    align-items: stretch;
   }
-
-  .rating-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #f9fafb;
-    padding: 0.5rem 0.75rem;
-    border-radius: 8px;
-    min-width: 44px;
+  .therapist-reviews-apni .search-input {
+    flex: 1;
+    min-width: 180px;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border: 2px solid rgba(186, 194, 210, 0.85);
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237484a4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat 0.875rem center;
+    background-size: 18px;
   }
-
-  .rating-item .count {
-    font-weight: 700;
-    color: #1f2937;
-    font-size: 1rem;
+  .therapist-reviews-apni .search-input:focus {
+    outline: none;
+    border-color: #041c54;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(4, 28, 84, 0.12);
   }
-
-  .rating-item .stars {
-    font-size: 0.6875rem;
-    color: #f59e0b;
+  .therapist-reviews-apni .rating-filter {
+    padding: 0.75rem 1rem;
+    border: 2px solid rgba(186, 194, 210, 0.85);
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    background: #f8fafc;
+    cursor: pointer;
+    min-width: 150px;
+    color: #041c54;
+  }
+  .therapist-reviews-apni .rating-filter:focus {
+    outline: none;
+    border-color: #041c54;
+    box-shadow: 0 0 0 4px rgba(4, 28, 84, 0.12);
+  }
+  .therapist-reviews-apni .btn-search {
+    padding: 0.75rem 1.15rem;
+    background: #041c54;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
     font-weight: 600;
+    box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
+  }
+  .therapist-reviews-apni .btn-search:hover {
+    background: #052a66;
+    color: #fff;
+  }
+  .therapist-reviews-apni .btn-clear {
+    padding: 0.75rem 1rem;
+    background: #fff;
+    color: #647494;
+    border: 2px solid rgba(100, 116, 148, 0.4);
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .therapist-reviews-apni .btn-clear:hover {
+    background: rgba(186, 194, 210, 0.2);
+    color: #041c54;
+    border-color: #647494;
+  }
+  .therapist-reviews-apni .btn-refresh {
+    padding: 0.75rem 1.25rem;
+    background: #fff;
+    color: #041c54;
+    border: 2px solid rgba(4, 28, 84, 0.35);
+    border-radius: 10px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .therapist-reviews-apni .btn-refresh:hover {
+    background: rgba(4, 28, 84, 0.06);
+    border-color: #041c54;
+    color: #041c54;
   }
 
-  /* Reviews Card */
-  .reviews-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    overflow: hidden;
-  }
-
-  .reviews-card .card-body {
-    padding: 1.5rem;
-  }
-
-  /* Filters */
-  .filters-row {
+  .therapist-reviews-apni .filters-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -164,225 +102,90 @@
     flex-wrap: wrap;
   }
 
-  .search-filters {
-    display: flex;
-    gap: 0.75rem;
-    flex: 1;
-    max-width: 600px;
-  }
-
-  .search-input {
-    flex: 1;
-    padding: 0.75rem 1rem 0.75rem 2.75rem;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 0.9375rem;
-    transition: all 0.2s ease;
-    background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E") no-repeat 0.875rem center;
-    background-size: 18px;
-  }
-
-  .search-input:focus {
-    outline: none;
-    border-color: #f59e0b;
-    background-color: white;
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
-  }
-
-  .rating-filter {
-    padding: 0.75rem 1rem;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 0.9375rem;
-    background: #f9fafb;
-    cursor: pointer;
-    min-width: 140px;
-  }
-
-  .rating-filter:focus {
-    outline: none;
-    border-color: #f59e0b;
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
-  }
-
-  .btn-search {
-    padding: 0.75rem 1.25rem;
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn-search:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-    color: white;
-  }
-
-  .btn-clear {
-    padding: 0.75rem 1rem;
-    background: white;
-    color: #6b7280;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .btn-clear:hover {
-    background: #f3f4f6;
-    color: #374151;
-  }
-
-  .btn-refresh {
-    padding: 0.75rem 1.25rem;
-    background: white;
-    color: #f59e0b;
-    border: 2px solid #f59e0b;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .btn-refresh:hover {
-    background: #f59e0b;
-    color: white;
-    transform: translateY(-2px);
-  }
-
-  /* Table Styles - Enhanced */
-  .reviews-table {
+  .therapist-reviews-apni .reviews-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    background: white;
+    background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(186, 194, 210, 0.45);
   }
-
-  .reviews-table thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
+  .therapist-reviews-apni .reviews-table thead th {
+    background: rgba(186, 194, 210, 0.2);
+    color: #4d5d78;
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 18px 20px;
+    letter-spacing: 0.04em;
+    padding: 14px 16px;
     border: none;
     text-align: left;
     white-space: nowrap;
   }
-
-  .reviews-table thead th:first-child {
-    border-radius: 12px 0 0 0;
-  }
-
-  .reviews-table thead th:last-child {
-    border-radius: 0 12px 0 0;
-  }
-
-  .reviews-table tbody td {
-    padding: 18px 20px;
-    border-bottom: 1px solid #f0f2f5;
+  .therapist-reviews-apni .reviews-table tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     vertical-align: middle;
-    color: #2d3748;
-    font-size: 0.9rem;
+    color: #334155;
+    font-size: 0.875rem;
   }
-
-  .reviews-table tbody tr {
-    transition: all 0.3s ease;
-    background: white;
+  .therapist-reviews-apni .reviews-table tbody tr {
+    background: #fff;
+    transition: background 0.2s ease;
   }
-
-  .reviews-table tbody tr:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
-    transform: scale(1.001);
-    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+  .therapist-reviews-apni .reviews-table tbody tr:hover {
+    background: rgba(4, 28, 84, 0.03);
   }
-
-  .reviews-table tbody tr:last-child td {
+  .therapist-reviews-apni .reviews-table tbody tr:last-child td {
     border-bottom: none;
   }
 
-  /* Client Cell */
-  .client-cell {
+  .therapist-reviews-apni .client-cell {
     display: flex;
     align-items: center;
     gap: 0.75rem;
   }
-
-  .client-avatar {
+  .therapist-reviews-apni .client-avatar {
     width: 40px;
     height: 40px;
     border-radius: 10px;
     object-fit: cover;
-    border: 2px solid #e5e7eb;
+    border: 2px solid rgba(186, 194, 210, 0.7);
   }
-
-  .client-avatar-placeholder {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
+  .therapist-reviews-apni .client-name {
     font-weight: 600;
-    font-size: 0.8125rem;
-  }
-
-  .client-name {
-    font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     font-size: 0.9375rem;
+    font-family: var(--apni-font-display, 'Sora', system-ui, sans-serif);
   }
-
-  .client-email {
+  .therapist-reviews-apni .client-email {
     font-size: 0.75rem;
-    color: #9ca3af;
+    color: #7484a4;
   }
 
-  /* Rating Stars */
-  .rating-stars {
+  .therapist-reviews-apni .rating-stars {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.2rem;
   }
-
-  .rating-stars i {
+  .therapist-reviews-apni .rating-stars i {
     font-size: 1rem;
-    color: #e5e7eb;
+    color: #e2e8f0;
   }
-
-  .rating-stars i.filled {
+  .therapist-reviews-apni .rating-stars i.filled {
     color: #f59e0b;
   }
-
-  .rating-score {
+  .therapist-reviews-apni .rating-score {
     font-weight: 700;
-    color: #1f2937;
+    color: #041c54;
     margin-left: 0.5rem;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
   }
 
-  /* Comment Cell */
-  .comment-cell {
-    max-width: 280px;
-  }
-
-  .comment-text {
-    color: #4b5563;
+  .therapist-reviews-apni .comment-cell { max-width: 280px; }
+  .therapist-reviews-apni .comment-text {
+    color: #647494;
     font-size: 0.875rem;
     line-height: 1.5;
     display: -webkit-box;
@@ -390,212 +193,197 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
-  .no-comment {
-    color: #d1d5db;
+  .therapist-reviews-apni .no-comment {
+    color: #bac2d2;
     font-style: italic;
     font-size: 0.875rem;
   }
 
-  /* Status Badges */
-  .status-badges {
+  .therapist-reviews-apni .status-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
   }
-
-  .status-badge {
+  .therapist-reviews-apni .status-badge {
     padding: 0.25rem 0.625rem;
     border-radius: 6px;
-    font-size: 0.6875rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.02em;
   }
+  .therapist-reviews-apni .status-badge.verified { background: rgba(16, 185, 129, 0.12); color: #059669; }
+  .therapist-reviews-apni .status-badge.pending { background: rgba(245, 158, 11, 0.12); color: #b45309; }
+  .therapist-reviews-apni .status-badge.public { background: rgba(59, 130, 246, 0.12); color: #2563eb; }
+  .therapist-reviews-apni .status-badge.private { background: rgba(100, 116, 148, 0.15); color: #4d5d78; }
 
-  .status-badge.verified { background: rgba(16, 185, 129, 0.1); color: #059669; }
-  .status-badge.pending { background: rgba(245, 158, 11, 0.1); color: #d97706; }
-  .status-badge.public { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
-  .status-badge.private { background: rgba(107, 114, 128, 0.1); color: #4b5563; }
-
-  /* Pagination */
-  .pagination-wrapper {
+  .therapist-reviews-apni .pagination-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 1.5rem;
-    border-top: 1px solid #f3f4f6;
+    padding-top: 1.25rem;
     margin-top: 1rem;
+    border-top: 1px solid rgba(186, 194, 210, 0.45);
     flex-wrap: wrap;
     gap: 1rem;
   }
-
-  .pagination-info {
+  .therapist-reviews-apni .pagination-info,
+  .therapist-reviews-apni .pagination-controls span {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #7484a4;
   }
-
-  .pagination-controls {
+  .therapist-reviews-apni .pagination-controls {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-wrap: wrap;
   }
-
-  .page-btn {
+  .therapist-reviews-apni .page-btn {
     width: 36px;
     height: 36px;
     border-radius: 8px;
-    border: 2px solid #e5e7eb;
-    background: white;
-    color: #6b7280;
+    border: 2px solid rgba(186, 194, 210, 0.85);
+    background: #fff;
+    color: #647494;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
     text-decoration: none;
   }
-
-  .page-btn:hover:not(:disabled) {
-    border-color: #f59e0b;
-    color: #f59e0b;
-    background: #fffbeb;
+  .therapist-reviews-apni a.page-btn:hover {
+    border-color: #041c54;
+    color: #041c54;
+    background: rgba(4, 28, 84, 0.04);
   }
-
-  .page-btn:disabled {
-    opacity: 0.5;
+  .therapist-reviews-apni .page-btn:disabled {
+    opacity: 0.45;
     cursor: not-allowed;
   }
-
-  .per-page-select {
+  .therapist-reviews-apni .per-page-select {
     padding: 0.5rem 0.75rem;
-    border: 2px solid #e5e7eb;
+    border: 2px solid rgba(186, 194, 210, 0.85);
     border-radius: 8px;
     font-size: 0.875rem;
-    color: #374151;
-    background: white;
+    color: #041c54;
+    background: #fff;
     cursor: pointer;
   }
-
-  .per-page-select:focus {
+  .therapist-reviews-apni .per-page-select:focus {
     outline: none;
-    border-color: #f59e0b;
+    border-color: #041c54;
   }
 
-  /* Empty State */
-  .empty-state {
+  .therapist-reviews-apni .empty-state {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 2.5rem 1rem;
   }
-
-  .empty-state-icon {
-    width: 100px;
-    height: 100px;
+  .therapist-reviews-apni .empty-state-icon {
+    width: 88px;
+    height: 88px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    background: rgba(100, 116, 148, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 2.5rem;
-    color: #f59e0b;
+    margin: 0 auto 1rem;
+    font-size: 2.25rem;
+    color: #647494;
   }
-
-  .empty-state h5 {
+  .therapist-reviews-apni .empty-state h5 {
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     margin-bottom: 0.5rem;
+    font-family: var(--apni-font-display, 'Sora', system-ui, sans-serif);
   }
-
-  .empty-state p {
-    color: #6b7280;
+  .therapist-reviews-apni .empty-state p {
+    color: #7484a4;
     font-size: 0.9375rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 992px) {
-    .stats-row {
-      grid-template-columns: 1fr;
-    }
+    margin: 0;
   }
 
   @media (max-width: 768px) {
-    .filters-row {
-      flex-direction: column;
-    }
-
-    .search-filters {
-      max-width: 100%;
-      width: 100%;
-      flex-wrap: wrap;
-    }
-
-    .reviews-table {
-      display: block;
-      overflow-x: auto;
-    }
+    .therapist-reviews-apni .filters-row { flex-direction: column; align-items: stretch; }
+    .therapist-reviews-apni .search-filters { max-width: 100%; }
   }
 </style>
 @endsection
 
 @section('content')
-<!-- Page Header -->
-<div class="page-header">
-  <h4>
-    <i class="ri-star-smile-line"></i>
-    My Reviews
-  </h4>
-  <p>See what your clients are saying about your sessions</p>
-</div>
-
-@if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 12px; border-left: 4px solid #10b981;">
-    <i class="ri-checkbox-circle-line me-2"></i>
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-@endif
-
-<!-- Stats Cards -->
-<div class="stats-row">
-  <div class="stat-card total">
-    <div class="stat-icon">
-      <i class="ri-chat-quote-line"></i>
-    </div>
-    <div class="stat-label">Total Reviews</div>
-    <div class="stat-value">{{ $totalReviews }}</div>
-  </div>
-
-  <div class="stat-card average">
-    <div class="stat-icon">
-      <i class="ri-star-fill"></i>
-    </div>
-    <div class="stat-label">Average Rating</div>
-    <div class="stat-value">
-      {{ number_format($averageRating, 1) }}
-      <i class="ri-star-fill"></i>
+<div class="therapist-reviews-apni pb-2">
+  <div class="relative mb-8 overflow-hidden rounded-3xl shadow-[0_20px_25px_-5px_rgba(100,116,148,0.2),0_8px_10px_-6px_rgba(100,116,148,0.2)]"
+       style="background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%);">
+    <div class="pointer-events-none absolute -right-20 top-0 h-64 w-64 rounded-full bg-white/10 blur-[64px]" aria-hidden="true"></div>
+    <div class="relative z-10 flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between md:p-8">
+      <div class="min-w-0">
+        <h1 class="font-display flex items-center gap-3 text-2xl font-medium leading-snug text-white md:text-3xl">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-white/15 text-[1.5rem] backdrop-blur-sm">
+            <i class="ri-star-smile-line"></i>
+          </span>
+          My Reviews
+        </h1>
+        <p class="mt-2 max-w-xl text-base text-white/90">
+          See what your clients are saying about your sessions.
+        </p>
+      </div>
+      <div class="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
+        <a href="{{ route('therapist.dashboard') }}"
+           class="inline-flex items-center justify-center gap-2 rounded-[14px] bg-white px-5 py-2.5 text-sm font-medium text-[#041C54] shadow-md transition hover:bg-[#BAC2D2]/30">
+          <i class="ri-dashboard-line text-lg"></i>
+          Dashboard
+        </a>
+        <a href="{{ route('therapist.profile.index', ['tab' => 'basic-info']) }}"
+           class="inline-flex items-center justify-center gap-2 rounded-[14px] border-2 border-white px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/10">
+          <i class="ri-user-settings-line text-lg"></i>
+          Profile
+        </a>
+      </div>
     </div>
   </div>
 
-  <div class="stat-card distribution">
-    <div class="stat-icon">
-      <i class="ri-bar-chart-grouped-line"></i>
+  @if(session('success'))
+    <div class="mb-6 flex items-start gap-3 rounded-2xl border border-[#10B981]/30 bg-[#ecfdf5] px-4 py-3 text-sm text-[#065f46] md:px-5" role="status">
+      <i class="ri-checkbox-circle-fill mt-0.5 text-lg text-[#059669]"></i>
+      <div class="min-w-0 flex-1">{{ session('success') }}</div>
     </div>
-    <div class="stat-label">Rating Distribution</div>
-    <div class="rating-distribution">
-      @for($i = 5; $i >= 1; $i--)
-        <div class="rating-item">
-          <span class="count">{{ $ratingDistribution[$i] ?? 0 }}</span>
-          <span class="stars">{{ $i }}★</span>
-        </div>
-      @endfor
+  @endif
+
+  {{-- Stats — same card language as dashboard --}}
+  <div class="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <div class="rounded-2xl border border-[#BAC2D2]/30 bg-white p-6 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)]">
+      <div class="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#647494]/10">
+        <i class="ri-chat-quote-line text-2xl text-[#647494]"></i>
+      </div>
+      <p class="mt-4 text-sm text-[#7484A4]">Total Reviews</p>
+      <p class="font-display mt-1 text-3xl font-medium text-[#041C54]">{{ $totalReviews }}</p>
+    </div>
+    <div class="rounded-2xl border border-[#BAC2D2]/30 bg-white p-6 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)]">
+      <div class="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#F59E0B]/10">
+        <i class="ri-star-fill text-2xl text-[#d97706]"></i>
+      </div>
+      <p class="mt-4 text-sm text-[#7484A4]">Average Rating</p>
+      <p class="font-display mt-1 flex items-center gap-2 text-3xl font-medium text-[#041C54]">
+        {{ number_format($averageRating, 1) }}
+        <i class="ri-star-fill text-2xl text-[#F59E0B]"></i>
+      </p>
+    </div>
+    <div class="rounded-2xl border border-[#BAC2D2]/30 bg-white p-6 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)]">
+      <div class="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#06B6D4]/10">
+        <i class="ri-bar-chart-grouped-line text-2xl text-[#0891b2]"></i>
+      </div>
+      <p class="mt-4 text-sm text-[#7484A4]">Rating distribution</p>
+      <div class="mt-3 flex flex-wrap gap-2">
+        @for($i = 5; $i >= 1; $i--)
+          <div class="flex min-w-[3rem] flex-col items-center rounded-[10px] bg-[#BAC2D2]/15 px-2 py-1.5">
+            <span class="text-sm font-semibold text-[#041C54]">{{ $ratingDistribution[$i] ?? 0 }}</span>
+            <span class="text-[0.65rem] font-semibold text-[#d97706]">{{ $i }}★</span>
+          </div>
+        @endfor
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Reviews Card -->
-<div class="reviews-card">
-  <div class="card-body">
-    <!-- Filters -->
+  <div class="rounded-2xl border border-[#BAC2D2]/30 bg-white p-4 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)] sm:p-6">
     <div class="filters-row">
       <form method="GET" action="{{ route('therapist.reviews.index') }}" class="search-filters">
         <input type="text" name="search" class="search-input" placeholder="Search by client name or comment..." value="{{ $search }}">
@@ -607,11 +395,11 @@
           <option value="2" {{ $rating == '2' ? 'selected' : '' }}>⭐⭐ 2 Stars</option>
           <option value="1" {{ $rating == '1' ? 'selected' : '' }}>⭐ 1 Star</option>
         </select>
-        <button type="submit" class="btn-search">
+        <button type="submit" class="btn-search" aria-label="Search">
           <i class="ri-search-line"></i>
         </button>
         @if($search || $rating)
-          <a href="{{ route('therapist.reviews.index') }}" class="btn-clear">
+          <a href="{{ route('therapist.reviews.index') }}" class="btn-clear" aria-label="Clear filters">
             <i class="ri-close-line"></i>
           </a>
         @endif
@@ -622,7 +410,6 @@
       </button>
     </div>
 
-    <!-- Reviews Table -->
     <div class="table-responsive">
       <table class="reviews-table">
         <thead>
@@ -639,7 +426,7 @@
         <tbody>
           @forelse($reviews as $index => $review)
             <tr>
-              <td style="font-weight: 500; color: #6b7280;">{{ $reviews->firstItem() + $index }}</td>
+              <td class="text-[#7484A4]" style="font-weight: 500;">{{ $reviews->firstItem() + $index }}</td>
               <td>
                 <div class="client-cell">
                   @if($review->client->profile && $review->client->profile->profile_image)
@@ -647,7 +434,7 @@
                   @elseif($review->client->getRawOriginal('avatar'))
                     <img src="{{ asset('storage/' . $review->client->getRawOriginal('avatar')) }}" alt="{{ $review->client->name }}" class="client-avatar">
                   @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $review->client->name }}" class="client-avatar">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $review->client->name }}" class="client-avatar">
                   @endif
                   <div>
                     <div class="client-name">{{ $review->client->name }}</div>
@@ -672,14 +459,14 @@
                   @endif
                 </div>
               </td>
-              <td style="font-weight: 500;">
+              <td class="font-medium text-[#041C54]">
                 @if($review->appointment)
                   {{ $review->appointment->appointment_date->format('d M, Y') }}
                 @else
-                  <span style="color: #d1d5db;">N/A</span>
+                  <span class="text-[#BAC2D2]">N/A</span>
                 @endif
               </td>
-              <td style="color: #6b7280;">{{ $review->created_at->format('d M, Y') }}</td>
+              <td class="text-[#7484A4]">{{ $review->created_at->format('d M, Y') }}</td>
               <td>
                 <div class="status-badges">
                   @if($review->is_verified)
@@ -712,7 +499,6 @@
       </table>
     </div>
 
-    <!-- Pagination -->
     @if($reviews->hasPages() || $reviews->total() > 0)
       <div class="pagination-wrapper">
         <div class="pagination-info">
@@ -722,25 +508,25 @@
         </div>
         <div class="pagination-controls">
           @if($reviews->hasPages())
-            <span style="font-size: 0.875rem; color: #6b7280; margin-right: 0.5rem;">
+            <span>
               Page {{ $reviews->currentPage() }} of {{ $reviews->lastPage() }}
             </span>
             @if($reviews->onFirstPage())
-              <button class="page-btn" disabled><i class="ri-arrow-left-double-line"></i></button>
-              <button class="page-btn" disabled><i class="ri-arrow-left-line"></i></button>
+              <button type="button" class="page-btn" disabled aria-label="First page"><i class="ri-arrow-left-double-line"></i></button>
+              <button type="button" class="page-btn" disabled aria-label="Previous page"><i class="ri-arrow-left-line"></i></button>
             @else
-              <a href="{{ $reviews->url(1) }}" class="page-btn"><i class="ri-arrow-left-double-line"></i></a>
-              <a href="{{ $reviews->previousPageUrl() }}" class="page-btn"><i class="ri-arrow-left-line"></i></a>
+              <a href="{{ $reviews->url(1) }}" class="page-btn" aria-label="First page"><i class="ri-arrow-left-double-line"></i></a>
+              <a href="{{ $reviews->previousPageUrl() }}" class="page-btn" aria-label="Previous page"><i class="ri-arrow-left-line"></i></a>
             @endif
             @if($reviews->hasMorePages())
-              <a href="{{ $reviews->nextPageUrl() }}" class="page-btn"><i class="ri-arrow-right-line"></i></a>
-              <a href="{{ $reviews->url($reviews->lastPage()) }}" class="page-btn"><i class="ri-arrow-right-double-line"></i></a>
+              <a href="{{ $reviews->nextPageUrl() }}" class="page-btn" aria-label="Next page"><i class="ri-arrow-right-line"></i></a>
+              <a href="{{ $reviews->url($reviews->lastPage()) }}" class="page-btn" aria-label="Last page"><i class="ri-arrow-right-double-line"></i></a>
             @else
-              <button class="page-btn" disabled><i class="ri-arrow-right-line"></i></button>
-              <button class="page-btn" disabled><i class="ri-arrow-right-double-line"></i></button>
+              <button type="button" class="page-btn" disabled aria-label="Next page"><i class="ri-arrow-right-line"></i></button>
+              <button type="button" class="page-btn" disabled aria-label="Last page"><i class="ri-arrow-right-double-line"></i></button>
             @endif
           @endif
-          <select class="per-page-select" onchange="updatePerPage(this.value)">
+          <select class="per-page-select" onchange="updatePerPage(this.value)" aria-label="Rows per page">
             <option value="10" {{ $reviews->perPage() == 10 ? 'selected' : '' }}>10 rows</option>
             <option value="25" {{ $reviews->perPage() == 25 ? 'selected' : '' }}>25 rows</option>
             <option value="50" {{ $reviews->perPage() == 50 ? 'selected' : '' }}>50 rows</option>

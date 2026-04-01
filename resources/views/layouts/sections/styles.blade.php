@@ -5,16 +5,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-@vite(['resources/assets/vendor/fonts/remixicon/remixicon.scss'])
-<!-- Core CSS -->
-@vite([
-  'resources/assets/vendor/scss/core.scss',
-  'resources/assets/vendor/scss/theme-default.scss',
-  'resources/assets/css/demo.css'
-])
-
-<!-- Vendor Styles -->
-@vite(['resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.scss'])
+{{-- Single bundle: Tailwind + Apni tokens + Materio (core, theme, demo, Remixicon, perfect-scrollbar) --}}
+@vite(['resources/css/app.css'])
 @yield('vendor-style')
 
 <!-- Page Styles -->

@@ -723,3 +723,107 @@
 .view-toggle-btn:not(.active):hover {
   color: #1f2937;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Materio vertical sidebar — selected: Gulf Blue bg, white label + icons      */
+/* -------------------------------------------------------------------------- */
+/* Sidebar logo: stay within menu width (therapist / admin layout) */
+.layout-menu.menu-vertical .app-brand-link {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.layout-menu.menu-vertical .app-brand .app-brand-logo {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme {
+  --apni-sidebar-icon: var(--apni-bermuda-gray);
+  --apni-sidebar-hover-text: var(--apni-gulf-blue);
+  --apni-sidebar-active-bg: var(--apni-gulf-blue);
+  --apni-sidebar-active-fg: #ffffff;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme .menu-link {
+  color: var(--apni-sidebar-icon);
+}
+
+.layout-menu.menu-vertical.bg-menu-theme .menu-link:hover,
+.layout-menu.menu-vertical.bg-menu-theme .menu-link:focus {
+  color: var(--apni-sidebar-hover-text);
+}
+
+.layout-menu.menu-vertical.bg-menu-theme .menu-link i {
+  color: currentColor;
+}
+
+/* Active leaf: dark blue pill, white text + icons */
+.layout-menu.menu-vertical.bg-menu-theme
+  .menu-item.active:not(.open)
+  > .menu-link:not(.menu-toggle),
+.layout-menu.menu-vertical.bg-menu-theme
+  .menu-item.active:not(.open)
+  > .menu-link:not(.menu-toggle)::before {
+  color: var(--apni-sidebar-active-fg) !important;
+  border-color: var(--apni-sidebar-active-fg) !important;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme .menu-item.active > .menu-link:not(.menu-toggle) {
+  background: var(--apni-sidebar-active-bg) !important;
+  box-shadow: 0 2px 8px rgba(4, 28, 84, 0.25) !important;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme
+  .menu-item.active
+  > .menu-link:not(.menu-toggle):hover,
+.layout-menu.menu-vertical.bg-menu-theme
+  .menu-item.active
+  > .menu-link:not(.menu-toggle):focus {
+  color: var(--apni-sidebar-active-fg) !important;
+  background-color: var(--apni-sidebar-active-bg) !important;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme
+  .menu-item.active.open
+  > .menu-link.menu-toggle:hover,
+.layout-menu.menu-vertical.bg-menu-theme
+  .menu-item.active.open
+  > .menu-link.menu-toggle:focus {
+  color: var(--apni-sidebar-active-fg) !important;
+  background-color: var(--apni-sidebar-active-bg) !important;
+}
+
+/* Submenu rail dots — inactive */
+.layout-menu.menu-vertical.bg-menu-theme .menu-sub > .menu-item > .menu-link::before {
+  border-color: var(--apni-sidebar-icon) !important;
+  background-color: transparent !important;
+}
+
+/* Active submenu row: white marker on dark blue bar */
+.layout-menu.menu-vertical.bg-menu-theme
+  .menu-sub
+  > .menu-item.active:not(.open)
+  > .menu-link::before {
+  border-color: var(--apni-sidebar-active-fg) !important;
+  background-color: var(--apni-sidebar-active-fg) !important;
+}
+
+/* Open parent that contains the current page — same selected treatment */
+.layout-menu.menu-vertical.bg-menu-theme .menu-item.active.open > .menu-link.menu-toggle {
+  color: var(--apni-sidebar-active-fg);
+  background-color: var(--apni-sidebar-active-bg) !important;
+  box-shadow: 0 2px 8px rgba(4, 28, 84, 0.25) !important;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme .menu-item.active.open > .menu-link.menu-toggle::after {
+  color: var(--apni-sidebar-active-fg) !important;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme .menu-toggle::after {
+  color: var(--apni-sidebar-icon) !important;
+}
+
+.layout-menu.menu-vertical.bg-menu-theme .menu-item.open:not(.active) > .menu-link.menu-toggle::after {
+  color: var(--apni-sidebar-icon) !important;
+}
