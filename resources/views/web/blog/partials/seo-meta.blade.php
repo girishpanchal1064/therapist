@@ -90,7 +90,7 @@
     "name": "{{ config('app.name') }}",
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ asset('logo.png') }}"
+      "url": "{{ asset('assets/img/logo/APNIPSYCHOLOGY-(dark).png') }}"
     }
   },
   "mainEntityOfPage": {

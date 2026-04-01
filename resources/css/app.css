@@ -1,3 +1,6 @@
+/* Brand tokens — shared with Materio via core.scss import */
+@import './apni-theme-tokens.css';
+
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
@@ -12,7 +15,7 @@
 /* Custom styles for the mental health platform */
 @layer base {
   html {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--apni-font-body), 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   }
 
   body {
@@ -62,7 +65,7 @@
   }
 
   .nav-link-active {
-    @apply text-primary-600 bg-primary-50 px-3 py-2 rounded-md text-sm font-medium;
+    @apply text-primary-800 px-3 py-2 rounded-md text-sm font-semibold underline decoration-primary-600 decoration-2 underline-offset-4;
   }
 
   /* Therapist card styles */

@@ -1,0 +1,73 @@
+/**
+ * Apni Psychology — single source of truth for brand tokens.
+ * Align with colors.txt; use these variables in custom CSS and (where useful) as var(--apni-*).
+ * Tailwind: see tailwind.config.js theme.extend.colors.apni
+ * Bootstrap (Materio): see resources/assets/vendor/scss/_custom-variables/_bootstrap-extended.scss
+ */
+
+:root {
+  /* Core brand */
+  --apni-gulf-blue: #041c54;
+  --apni-heather: #bac2d2;
+  --apni-lynch: #647494;
+  --apni-bermuda-gray: #7484a4;
+
+  /* Semantic */
+  --apni-success: #10b981;
+  --apni-success-soft: #10b98115;
+  --apni-warning: #f59e0b;
+  --apni-warning-soft: #f59e0b15;
+  --apni-danger: #ef4444;
+  --apni-danger-soft: #ef444415;
+  --apni-info: #3b82f6;
+  --apni-info-soft: #3b82f615;
+
+  /* Accents */
+  --apni-purple: #8b5cf6;
+  --apni-purple-soft: #8b5cf615;
+  --apni-pink: #ec4899;
+  --apni-pink-soft: #ec489915;
+  --apni-cyan: #06b6d4;
+  --apni-cyan-soft: #06b6d415;
+
+  /* Neutrals */
+  --apni-white: #ffffff;
+  --apni-black: #000000;
+
+  /* Gulf blue alpha */
+  --apni-gulf-05: #041c5405;
+  --apni-gulf-10: #041c5410;
+  --apni-gulf-20: #041c5420;
+
+  /* Heather alpha */
+  --apni-heather-05: #bac2d205;
+  --apni-heather-10: #bac2d210;
+  --apni-heather-20: #bac2d220;
+  --apni-heather-30: #bac2d230;
+  --apni-heather-40: #bac2d240;
+
+  /* Lynch alpha */
+  --apni-lynch-10: #64749410;
+  --apni-lynch-20: #64749420;
+  --apni-lynch-30: #64749430;
+  --apni-lynch-40: #64749440;
+
+  /* Typography (match layouts/app.blade.php) */
+  --apni-font-display: 'Sora', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --apni-font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Gradients from colors.txt */
+  --apni-gradient-dark: linear-gradient(135deg, #041c54 0%, #041c54 40%, #647494 100%);
+  --apni-gradient-light: linear-gradient(135deg, #647494 0%, #7484a4 50%, #647494 100%);
+  --apni-gradient-page-bg: linear-gradient(to bottom, #ffffff 0%, rgb(186 194 210 / 0.05) 100%);
+
+  /* Shadows */
+  --apni-shadow-gulf-05: 0 8px 24px rgb(4 28 84 / 0.05);
+  --apni-shadow-gulf-10: 0 12px 32px rgb(4 28 84 / 0.1);
+  --apni-shadow-lynch-10: 0 12px 32px rgb(100 116 148 / 0.15);
+
+  /* Aliases for Bootstrap 5 / utilities (optional use in custom CSS) */
+  --apni-bs-primary: var(--apni-lynch);
+  --apni-bs-primary-rgb: 100, 116, 148;
+  --apni-bs-dark: var(--apni-gulf-blue);
+}

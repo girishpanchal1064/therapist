@@ -9,31 +9,47 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49'
+        // Brand palette (sync with resources/css/apni-theme-tokens.css)
+        apni: {
+          gulf: '#041C54',
+          heather: '#BAC2D2',
+          lynch: '#647494',
+          bermuda: '#7484A4',
+          success: '#10B981',
+          warning: '#F59E0B',
+          danger: '#EF4444',
+          info: '#3B82F6',
+          purple: '#8B5CF6',
+          pink: '#EC4899',
+          cyan: '#06B6D4'
         },
+        // Tailwind "primary" mapped to Apni Psychology (Lynch + Gulf)
+        primary: {
+          50: '#f4f6f9',
+          100: '#e8ecf2',
+          200: '#d5dce8',
+          300: '#BAC2D2',
+          400: '#9aa8bc',
+          500: '#7484A4',
+          600: '#647494',
+          700: '#4d5d78',
+          800: '#041C54',
+          900: '#031340',
+          950: '#020c2b'
+        },
+        // Positive / success accent (#10B981)
         secondary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-          950: '#052e16'
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
+          950: '#022c22'
         },
         accent: {
           50: '#fffbeb',
@@ -63,8 +79,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif']
+        sans: ['var(--apni-font-body)', 'Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['var(--apni-font-display)', 'Sora', 'ui-sans-serif', 'system-ui', 'sans-serif']
       },
       spacing: {
         18: '4.5rem',

@@ -1,0 +1,217 @@
+Here's a comprehensive color palette guide for your Apni Psychology website:
+
+Primary Brand Colors (Your Core Palette)
+/* Main Brand Colors */
+#041C54  /* Gulf Blue - Primary text, headers, dark accents */
+#BAC2D2  /* Heather - Light backgrounds, subtle borders, soft accents */
+#647494  /* Lynch - Primary buttons, interactive elements, links */
+#7484A4  /* Bermuda Gray - Secondary text, medium accents */
+Semantic & Accent Colors
+Success/Positive
+#10B981  /* Emerald-500 - Success messages, positive stats */
+#10B98115 /* Emerald-500/10 - Success backgrounds (10% opacity) */
+Warning/Attention
+#F59E0B  /* Amber-500 - Warnings, highlights, scheduled status */
+#F59E0B15 /* Amber-500/10 - Warning backgrounds (10% opacity) */
+Error/Danger
+#EF4444  /* Red-500 - Errors, alerts, delete actions */
+#EF444415 /* Red-500/10 - Error backgrounds (10% opacity) */
+Info/Primary Actions
+#3B82F6  /* Blue-500 - Information, certain CTAs */
+#3B82F615 /* Blue-500/10 - Info backgrounds (10% opacity) */
+Special Accents
+#8B5CF6  /* Purple-500 - Special features, premium elements */
+#8B5CF615 /* Purple-500/10 - Purple backgrounds (10% opacity) */
+
+#EC4899  /* Pink-500 - Community features, highlights */
+#EC489915 /* Pink-500/10 - Pink backgrounds (10% opacity) */
+
+#06B6D4  /* Cyan-500 - Stats, data visualization */
+#06B6D415 /* Cyan-500/10 - Cyan backgrounds (10% opacity) */
+Neutral Colors
+#FFFFFF  /* White - Cards, backgrounds, buttons */
+#000000  /* Black - Rarely used, mostly for shadows */
+
+/* Opacity Variations of Primary Colors */
+#041C5405 /* Gulf Blue 5% - Very subtle backgrounds */
+#041C5410 /* Gulf Blue 10% - Light backgrounds */
+#041C5420 /* Gulf Blue 20% - Hover states, shadows */
+
+#BAC2D205 /* Heather 5% - Very light backgrounds */
+#BAC2D210 /* Heather 10% - Subtle backgrounds */
+#BAC2D220 /* Heather 20% - Borders, dividers */
+#BAC2D230 /* Heather 30% - Borders */
+#BAC2D240 /* Heather 40% - Active borders */
+
+#64749410 /* Lynch 10% - Light interactive backgrounds */
+#64749420 /* Lynch 20% - Hover effects, shadows */
+#64749430 /* Lynch 30% - Borders */
+#64749440 /* Lynch 40% - Active borders */
+Gradient Combinations
+/* Primary Dark Gradient - Hero sections, CTAs */
+from-[#041C54] via-[#041C54] to-[#647494]
+
+/* Primary Light Gradient - Featured cards, highlights */
+from-[#647494] via-[#7484A4] to-[#647494]
+
+/* Background Gradient - Page backgrounds */
+from-white to-[#BAC2D2]/5
+
+/* Success Gradient */
+from-emerald-500/10 via-emerald-400/10 to-emerald-500/10
+Text Colors by Usage
+/* Headings */ 
+text-[#041C54]  /* Primary headings */
+text-white      /* On dark backgrounds */
+
+/* Body Text */
+text-[#7484A4]  /* Primary body text */
+text-[#647494]  /* Secondary text, less emphasis */
+
+/* Links & Interactive */
+text-[#647494]  /* Default links */
+hover:text-[#041C54]  /* Link hover state */
+
+/* Subtle Text */
+text-[#BAC2D2]  /* Very light text on dark backgrounds */
+text-white/90   /* Slightly transparent white */
+text-white/80   /* More transparent white */
+Shadow Colors
+shadow-[#041C54]/5   /* Very subtle shadows */
+shadow-[#041C54]/10  /* Light shadows */
+shadow-[#041C54]/20  /* Medium shadows */
+shadow-[#647494]/10  /* Colored shadows for interactive elements */
+shadow-[#647494]/20  /* Stronger colored shadows */
+shadow-[#647494]/30  /* Strong hover shadows */
+Border Colors
+border-[#BAC2D2]/20  /* Very subtle borders */
+border-[#BAC2D2]/30  /* Default borders */
+border-[#BAC2D2]/40  /* Slightly stronger borders */
+border-[#647494]/40  /* Hover/active state borders */
+Quick Reference by Component Type
+Buttons:
+
+Primary: bg-[#647494] with hover:bg-[#041C54]
+Secondary: bg-white with text-[#041C54] and hover:bg-[#BAC2D2]
+Outline: border-2 border-white with text-white and hover:bg-white hover:text-[#041C54]
+Cards:
+
+Background: bg-white
+Border: border-[#BAC2D2]/30
+Hover Border: hover:border-[#647494]/40
+Shadow: shadow-lg shadow-[#041C54]/5
+Hover Shadow: hover:shadow-xl hover:shadow-[#647494]/20
+This is your complete color system! You can copy these directly into your design files or documentation. 🎨
+
+self-assessment
+
+
+
+
+
+Here's a complete breakdown of all the fonts used in your Apni Psychology website:
+
+Font Families
+1. Sora (Display Font - For Headings)
+font-family: 'Sora', sans-serif;
+/* Variable: var(--font-display) */
+Weights Available:
+
+300 (Light)
+400 (Regular)
+500 (Medium) ⭐ Primary heading weight
+600 (Semi-Bold)
+700 (Bold)
+800 (Extra-Bold)
+Used For:
+
+Main page headings (h1, h2)
+Logo text
+Hero titles
+Section titles
+Card titles
+Dashboard welcome messages
+Stat values
+Button text (default medium weight)
+2. Plus Jakarta Sans (Body Font - For Content)
+font-family: 'Plus Jakarta Sans', sans-serif;
+/* Variable: var(--font-body) */
+Weights Available:
+
+300 (Light)
+400 (Regular) ⭐ Primary body weight
+500 (Medium)
+600 (Semi-Bold)
+700 (Bold)
+800 (Extra-Bold)
+Used For:
+
+Body text / paragraphs
+Descriptions
+Card content
+Navigation links
+Form inputs
+Labels
+Smaller text elements
+All content that isn't a heading
+How They're Applied in Code
+Method 1: Using CSS Variable
+// For headings (Sora)
+style={{ fontFamily: 'var(--font-display)' }}
+
+// Examples:
+<h1 style={{ fontFamily: 'var(--font-display)' }}>Heading</h1>
+<h2 style={{ fontFamily: 'var(--font-display)' }}>Subheading</h2>
+Method 2: Default CSS (Plus Jakarta Sans)
+// Body text automatically uses Plus Jakarta Sans
+// No inline style needed - it's the default font
+<p className="text-[#7484A4]">Body text content</p>
+Font Weight Usage
+/* Defined in theme.css */
+--font-weight-medium: 500;
+--font-weight-normal: 400;
+Weight Breakdown:
+
+400 (Normal): Body text, paragraphs, input fields
+500 (Medium): Headings (h1-h4), labels, buttons, emphasis
+600+ (Bold): Rarely used, available for extra emphasis
+Typography Hierarchy
+/* Heading Sizes (with Sora font) */
+h1: text-5xl lg:text-7xl    /* Homepage hero */
+h1: text-4xl md:text-5xl lg:text-6xl  /* Page headers */
+h2: text-4xl lg:text-6xl    /* Section titles */
+h2: text-3xl md:text-4xl    /* Sub-sections */
+h3: text-2xl md:text-3xl    /* Card titles */
+h3: text-xl                 /* Smaller card titles */
+
+/* Body Text (with Plus Jakarta Sans) */
+p: text-base (16px)         /* Default body */
+p: text-lg (18px)          /* Larger body text */
+p: text-sm (14px)          /* Smaller text */
+p: text-xs (12px)          /* Tiny text, labels */
+Font Import Code
+/* Located in: /src/styles/fonts.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&display=swap');
+Quick Reference Guide
+Element Type	Font Family	Weight	CSS Variable
+Headings (h1-h4)	Sora	500	var(--font-display)
+Body Text	Plus Jakarta Sans	400	var(--font-body)
+Buttons	Sora	500	var(--font-display)
+Labels	Plus Jakarta Sans	500	var(--font-body)
+Inputs	Plus Jakarta Sans	400	var(--font-body)
+Navigation	Plus Jakarta Sans	400	var(--font-body)
+Logo	Sora	400-500	var(--font-display)
+How to Use in Your Code
+// For headings - use Sora
+<h1 style={{ fontFamily: 'var(--font-display)' }}>
+  Your Heading
+</h1>
+
+// For body text - automatically uses Plus Jakarta Sans
+<p className="text-[#7484A4]">
+  Your body content
+</p>
+
+// For emphasized text with different weight
+<span className="font-medium">Medium weight text</span>
+<span className="font-semibold">Semi-bold text</span>

@@ -3,5 +3,29 @@
 //  Copy and paste variables as needed, modify their values, and remove the !default flag.
 //  ===================================================================================================================
 
+// Apni Psychology — align with resources/css/apni-theme-tokens.css & colors.txt
+// Primary CTA / interactive: Lynch; Dark nav emphasis: Gulf Blue
+$primary: #647494;
+$secondary: #7484a4;
+$success: #10b981;
+$info: #3b82f6;
+$warning: #f59e0b;
+$danger: #ef4444;
+$dark: #041c54;
+
+// Match public site typography (resources/css/apni-theme-tokens.css)
+$font-family-sans-serif:
+  'Plus Jakarta Sans',
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  'Oxygen',
+  'Ubuntu',
+  sans-serif;
+
+// Optional: slightly tune body text toward brand secondary (comment out if layout looks too muted)
+// $body-color: #7484a4;
+
 // $font-size-root: 14px !default;
 // $success: #00ff00 !default;

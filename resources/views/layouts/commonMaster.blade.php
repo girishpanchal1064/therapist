@@ -72,7 +72,7 @@
     }
 
     .app-brand-logo,
-    img[src*="logo.png"] {
+    img[src*="APNIPSYCHOLOGY-(dark).png"] {
       background: transparent !important;
       object-fit: contain;
     }
