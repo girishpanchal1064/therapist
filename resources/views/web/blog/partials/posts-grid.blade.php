@@ -1,74 +1,75 @@
 @foreach($posts as $post)
-    <div class="blog-card bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200 min-w-0">
-        <!-- Featured Image -->
-        <div class="relative h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200">
+    <article class="blog-card group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[#BAC2D2]/30 bg-white shadow-[0_10px_15px_-3px_rgba(4,28,84,0.06),0_4px_6px_-4px_rgba(4,28,84,0.06)] transition-shadow duration-300 hover:shadow-[0_20px_40px_-12px_rgba(4,28,84,0.12)]">
+        <div class="relative aspect-[16/10] w-full overflow-hidden bg-[#BAC2D2]/20">
             @if($post->featured_image)
                 <img src="{{ $post->featured_image_url }}"
-                     alt="{{ $post->title }}"
-                     class="w-full h-full object-cover">
+                     alt=""
+                     class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]">
             @else
-                <div class="w-full h-full flex items-center justify-center">
-                    <svg class="w-12 h-12 sm:w-16 sm:h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#BAC2D2]/30 to-[#647494]/20">
+                    <svg class="h-14 w-14 text-[#647494]/50" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                 </div>
             @endif
 
-            <!-- Category Badge -->
-            <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
-                <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium text-white"
-                      style="background-color: {{ $post->category->color }}">
-                    {{ $post->category->name }}
-                </span>
-            </div>
+            @if($post->category)
+                <div class="absolute left-3 top-3 sm:left-4 sm:top-4">
+                    <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium text-white shadow-sm sm:px-3 sm:py-1 sm:text-sm"
+                          style="background-color: {{ $post->category->color ?? '#647494' }}">
+                        {{ $post->category->name }}
+                    </span>
+                </div>
+            @endif
 
             @if($post->is_featured)
-                <!-- Featured Badge -->
-                <div class="absolute top-3 right-3 sm:top-4 sm:right-4">
-                    <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-yellow-500 text-white rounded-full text-xs sm:text-sm font-medium">
+                <div class="absolute right-3 top-3 sm:right-4 sm:top-4">
+                    <span class="inline-flex rounded-full bg-[#F59E0B] px-2.5 py-0.5 text-xs font-medium text-white shadow-sm">
                         Featured
                     </span>
                 </div>
             @endif
         </div>
 
-        <!-- Content -->
-        <div class="p-4 sm:p-6">
-            <!-- Title -->
-            <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 min-w-0">
-                <a href="{{ route('blog.show', $post->slug) }}" class="hover:text-primary-600 transition-colors break-words">
+        <div class="flex flex-1 flex-col p-5 sm:p-6">
+            <h3 class="font-display line-clamp-2 min-w-0 text-lg font-medium leading-snug text-[#041C54] sm:text-xl">
+                <a href="{{ route('blog.show', $post->slug) }}" class="transition hover:text-[#647494]">
                     {{ $post->title }}
                 </a>
             </h3>
 
-            <!-- Excerpt -->
-            <p class="text-gray-600 mb-3 sm:mb-4 line-clamp-3 text-sm sm:text-base min-w-0">
+            <p class="mt-3 line-clamp-3 min-w-0 flex-1 text-sm leading-relaxed text-[#7484A4]">
                 {{ $post->excerpt }}
             </p>
 
-            <!-- Meta Information -->
-            <div class="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm text-gray-500">
-                <div class="flex items-center min-w-0">
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[#BAC2D2]/20 pt-4 text-xs text-[#7484A4] sm:text-sm">
+                <div class="flex min-w-0 items-center gap-2">
                     @if($post->author && $post->author->profile && $post->author->profile->profile_image)
                         <img src="{{ asset('storage/' . $post->author->profile->profile_image) }}"
-                             alt="{{ $post->author ? $post->author->name : 'Author' }}"
-                             class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover mr-1.5 sm:mr-2 shrink-0">
+                             alt=""
+                             class="h-8 w-8 shrink-0 rounded-full object-cover ring-2 ring-[#BAC2D2]/30">
                     @else
-                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white text-xs sm:text-sm font-semibold mr-1.5 sm:mr-2 shrink-0">
-                            {{ $post->author ? substr($post->author->name, 0, 1) : 'A' }}
+                        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,rgba(100,116,148,0.25)_0%,rgba(4,28,84,0.15)_100%)] text-xs font-semibold text-[#041C54] ring-2 ring-[#BAC2D2]/30">
+                            {{ $post->author ? strtoupper(substr($post->author->name, 0, 1)) : 'A' }}
                         </div>
                     @endif
-                    <span class="font-medium truncate">{{ $post->author ? $post->author->name : 'Anonymous' }}</span>
+                    <span class="truncate font-medium text-[#041C54]">{{ $post->author?->name ?? 'Anonymous' }}</span>
                 </div>
-                <div class="flex items-center gap-2 sm:gap-4 shrink-0">
-                    <span class="flex items-center">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-0.5 sm:mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex shrink-0 items-center gap-3">
+                    <span class="inline-flex items-center gap-1" title="Published">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        {{ $post->published_at->format('M j, Y') }}
+                    </span>
+                    <span class="inline-flex items-center gap-1">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         {{ $post->reading_time }} min
                     </span>
-                    <span class="flex items-center">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-0.5 sm:mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span class="inline-flex items-center gap-1">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                         </svg>
@@ -76,11 +77,6 @@
                     </span>
                 </div>
             </div>
-
-            <!-- Published Date -->
-            <div class="mt-2 sm:mt-3 text-xs sm:text-sm text-gray-500">
-                {{ $post->published_at->format('M d, Y') }}
-            </div>
         </div>
-    </div>
+    </article>
 @endforeach

@@ -29,6 +29,10 @@ class BlogController extends Controller
             ->with(['author.profile', 'author.therapistProfile', 'category'])
             ->orderBy('published_at', 'desc');
 
+        if ($featuredPost) {
+            $query->where('id', '!=', $featuredPost->id);
+        }
+
         // Filter by category if not 'all'
         if ($categoryId !== 'all') {
             $query->byCategory($categoryId);
