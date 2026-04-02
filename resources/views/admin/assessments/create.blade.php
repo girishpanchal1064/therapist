@@ -4,12 +4,16 @@
 
 @section('vendor-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
   .page-header h4 { margin: 0; font-weight: 700; color: white; font-size: 1.5rem; }
   .page-header p { color: rgba(255, 255, 255, 0.85); margin: 4px 0 0 0; }
@@ -26,13 +30,13 @@
 
   .form-card {
     border-radius: 16px;
-    border: none;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
   }
   .form-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    border-bottom: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 20px 24px;
   }
   .form-card .card-body { padding: 24px; }
@@ -58,9 +62,9 @@
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
   .section-title h5 { margin: 0; font-weight: 700; color: #2d3748; }
   .section-title small { color: #718096; font-size: 0.85rem; }
@@ -73,8 +77,8 @@
     transition: all 0.3s ease;
   }
   .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
   }
   .form-text { color: #8e9baa; font-size: 0.8rem; margin-top: 6px; }
 
@@ -98,11 +102,11 @@
     align-items: center;
     justify-content: center;
     font-size: 2.5rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    background: rgba(100, 116, 148, 0.12);
     transition: all 0.3s ease;
   }
 
-  .form-check-input:checked { background-color: #667eea; border-color: #667eea; }
+  .form-check-input:checked { background-color: #647494; border-color: #647494; }
 
   .btn-cancel {
     background: white;
@@ -115,16 +119,16 @@
   }
   .btn-cancel:hover { border-color: #ea5455; color: #ea5455; }
   .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 12px 28px;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
-  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); color: white; }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28); color: white; }
 </style>
 @endsection
 
@@ -247,8 +251,8 @@
           <div class="mb-4">
             <label class="form-label-styled">Color</label>
             <div class="color-picker-wrapper">
-              <input type="color" id="color" name="color" value="{{ old('color', '#667eea') }}">
-              <input type="text" class="form-control flex-grow-1" id="color-hex" value="{{ old('color', '#667eea') }}" maxlength="7">
+              <input type="color" id="color" name="color" value="{{ old('color', '#647494') }}">
+              <input type="text" class="form-control flex-grow-1" id="color-hex" value="{{ old('color', '#647494') }}" maxlength="7">
             </div>
           </div>
           <div class="form-check form-switch">

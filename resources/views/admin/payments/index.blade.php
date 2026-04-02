@@ -4,15 +4,20 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 2rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
 
   .page-header::before {
@@ -56,16 +61,21 @@
 
   /* Main Card */
   .main-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
   }
 
   .main-card .card-header {
-    background: white;
-    border-bottom: 2px solid #f0f2f5;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.5rem;
+  }
+
+  .main-card .card-header h5 {
+    font-weight: 700;
+    color: #041C54;
   }
 
   .main-card .card-body {
@@ -80,19 +90,19 @@
   }
 
   .btn-add {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
 
   .btn-add:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 
@@ -107,9 +117,9 @@
   }
 
   .btn-outline-custom:hover {
-    border-color: #667eea;
-    color: #667eea;
-    background: #f0f4ff;
+    border-color: #647494;
+    color: #041C54;
+    background: rgba(100, 116, 148, 0.08);
   }
 
   .btn-outline-custom.warning {
@@ -123,13 +133,14 @@
   }
 
   .btn-outline-custom.info {
-    border-color: #60a5fa;
-    color: #2563eb;
+    border-color: rgba(100, 116, 148, 0.45);
+    color: #647494;
   }
 
   .btn-outline-custom.info:hover {
-    background: #eff6ff;
-    border-color: #3b82f6;
+    background: rgba(100, 116, 148, 0.08);
+    border-color: #647494;
+    color: #041C54;
   }
 
   /* Alert Styling */
@@ -152,9 +163,9 @@
   /* Filter Card */
   .filter-card {
     border-radius: 16px;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     background: white;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     margin-bottom: 1.5rem;
     display: block !important;
     visibility: visible !important;
@@ -185,7 +196,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     font-size: 1rem;
   }
@@ -199,14 +210,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #667eea;
+    color: #647494;
     transition: all 0.3s ease;
     cursor: pointer;
   }
 
   .btn-filter-toggle:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: #667eea;
+    background: rgba(100, 116, 148, 0.1);
+    border-color: #647494;
   }
 
   .btn-filter-toggle i {
@@ -254,24 +265,25 @@
 
   .filter-card .form-control:focus,
   .filter-card .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.12);
   }
 
   .btn-filter {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 10px 24px;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
 
   .btn-filter:hover {
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
 
   .btn-clear-filter {
@@ -302,7 +314,7 @@
   }
 
   .payments-table thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     color: #4a5568;
     font-weight: 700;
     font-size: 0.8rem;
@@ -328,9 +340,9 @@
   }
 
   .payments-table tbody tr:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+    background: rgba(100, 116, 148, 0.06);
     transform: scale(1.001);
-    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+    box-shadow: 0 2px 12px rgba(100, 116, 148, 0.1);
   }
 
   .payments-table tbody tr:last-child {
@@ -372,7 +384,7 @@
     justify-content: center;
     font-weight: 600;
     font-size: 0.875rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
   }
 
@@ -451,8 +463,8 @@
 
   /* Payment Method */
   .payment-method {
-    background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
-    color: #4338ca;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
     padding: 0.375rem 0.75rem;
     border-radius: 8px;
     font-size: 0.75rem;
@@ -474,7 +486,7 @@
   }
 
   .action-dropdown .dropdown-toggle:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
   }
 
@@ -510,15 +522,15 @@
   }
 
   .btn-action.view {
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-    color: #1d4ed8;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
+    box-shadow: 0 2px 8px rgba(100, 116, 148, 0.12);
   }
 
   .btn-action.view:hover {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    box-shadow: 0 6px 20px rgba(4, 28, 84, 0.22);
   }
 
   .btn-action.edit {
@@ -585,14 +597,14 @@
   .empty-state-icon {
     width: 100px;
     height: 100px;
-    background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+    background: rgba(100, 116, 148, 0.12);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
     font-size: 2.5rem;
-    color: #667eea;
+    color: #647494;
   }
 
   .empty-state h5 {
@@ -642,9 +654,9 @@
   }
 
   .pagination-controls .btn-page:hover:not(.disabled) {
-    border-color: #667eea;
-    color: #667eea;
-    background: #f0f4ff;
+    border-color: #647494;
+    color: #041C54;
+    background: rgba(100, 116, 148, 0.08);
   }
 
   .pagination-controls .btn-page.disabled {

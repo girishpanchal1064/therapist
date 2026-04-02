@@ -5,15 +5,20 @@
 @section('vendor-style')
 <style>
 :root {
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-gradient: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+}
+
+.layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
 }
 
 .page-header {
     background: var(--theme-gradient);
-    border-radius: 16px;
+    border-radius: 24px;
     padding: 2rem 2.5rem;
     margin-bottom: 2rem;
     color: white;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
 }
 
 .page-header h4 {
@@ -21,9 +26,9 @@
 }
 
 .form-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
 }
 
 .form-card .card-body > .row {
@@ -39,7 +44,7 @@
     font-weight: 700;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    border-bottom: 2px solid rgba(186, 194, 210, 0.45);
     display: flex;
     align-items: center;
     color: #333;
@@ -59,8 +64,8 @@
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 0.2rem rgba(100, 116, 148, 0.12);
 }
 
 .btn-save {
@@ -75,7 +80,7 @@
 
 .btn-save:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
 }
 </style>

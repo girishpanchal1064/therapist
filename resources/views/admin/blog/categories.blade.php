@@ -2,13 +2,142 @@
 
 @section('title', 'Blog Categories')
 
+@section('page-style')
+<style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
+  .page-header {
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
+  }
+  .page-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.5rem;
+  }
+  .page-header p {
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .blog-categories-card {
+    border-radius: 16px;
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
+    overflow: hidden;
+  }
+  .blog-categories-card > .card-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
+    padding: 20px 24px;
+  }
+  .blog-categories-card .card-title {
+    font-weight: 700;
+    color: #041C54;
+  }
+
+  .blog-categories-card .form-control:focus,
+  .blog-categories-card .form-select:focus {
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
+  }
+
+  .blog-categories-card .table thead th {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    color: #4a5568;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+  }
+
+  .blog-categories-card .table tbody tr:hover {
+    background: rgba(100, 116, 148, 0.06);
+  }
+
+  .btn-blog-gradient {
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
+    transition: all 0.3s ease;
+  }
+  .btn-blog-gradient:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
+  }
+
+  .blog-categories-card .btn-outline-primary {
+    border-color: #647494;
+    color: #647494;
+  }
+  .blog-categories-card .btn-outline-primary:hover {
+    background: rgba(100, 116, 148, 0.1);
+    border-color: #647494;
+    color: #041C54;
+  }
+
+  #createCategoryModal .modal-header,
+  [id^="editCategoryModal"] .modal-header {
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
+    color: #fff;
+    border: none;
+  }
+  #createCategoryModal .modal-header .btn-close,
+  [id^="editCategoryModal"] .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+  }
+  #createCategoryModal .modal-title,
+  [id^="editCategoryModal"] .modal-title {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .page-header .btn-back-blog {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 10px 18px;
+    transition: all 0.3s ease;
+  }
+  .page-header .btn-back-blog:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+  }
+</style>
+@endsection
+
 @section('content')
+<div class="page-header">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h4><i class="ri-folder-line me-2"></i>Blog Categories</h4>
+      <p>Organize posts with colors, icons, and sort order</p>
+    </div>
+    <a href="{{ route('admin.blog.index') }}" class="btn btn-sm btn-back-blog">
+      <i class="ri-arrow-left-line me-1"></i> Back to Blog
+    </a>
+  </div>
+</div>
 <div class="row">
   <div class="col-12">
-    <div class="card">
+    <div class="card blog-categories-card">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Blog Categories</h5>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
+        <h5 class="card-title mb-0">All categories</h5>
+        <button type="button" class="btn btn-blog-gradient" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
           <i class="ri-add-line me-1"></i> Add New Category
         </button>
       </div>
@@ -247,7 +376,7 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Update Category</button>
+                            <button type="submit" class="btn btn-blog-gradient">Update Category</button>
                           </div>
                         </form>
                       </div>
@@ -272,7 +401,7 @@
             <i class="ri-folder-open-line" style="font-size: 4rem; color: #d1d5db;"></i>
             <h5 class="mt-3 text-muted">No categories found</h5>
             <p class="text-muted">Get started by creating your first blog category.</p>
-            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
+            <button type="button" class="btn btn-blog-gradient mt-2" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
               <i class="ri-add-line me-1"></i> Add New Category
             </button>
           </div>
@@ -403,7 +532,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Create Category</button>
+          <button type="submit" class="btn btn-blog-gradient">Create Category</button>
         </div>
       </form>
     </div>

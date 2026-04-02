@@ -5,12 +5,14 @@
 @section('vendor-style')
 <style>
   :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-gradient: linear-gradient(90deg, #041C54 0%, #647494 100%);
     --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --danger-gradient: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
   }
+
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
 
   /* Header Card */
   .appointment-header {
@@ -143,7 +145,8 @@
   .info-card {
     background: white;
     border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
     height: 100%;
   }
@@ -153,7 +156,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background: linear-gradient(to right, #f8f9ff, #fff);
+    background: linear-gradient(to right, #f8fafc, #fff);
   }
   .info-card-header .icon {
     width: 44px;

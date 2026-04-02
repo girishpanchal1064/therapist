@@ -4,26 +4,108 @@
 
 @section('vendor-style')
 <style>
-:root {
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
 }
 
-.page-header {
-    background: var(--theme-gradient);
+/* Match admin dashboard header */
+.dashboard-header {
+    background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.dashboard-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+}
+
+.dashboard-header h4 {
+    color: white;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.dashboard-header p {
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.header-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 16px;
-    padding: 2rem 2.5rem;
-    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: white;
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-header-back {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-header-back:hover {
+    background: rgba(255, 255, 255, 0.3);
     color: white;
 }
 
-.page-header h4 {
-    color: white;
-}
-
+/* Match dashboard content-card + stats top accent */
 .form-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.3);
     border-radius: 16px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
+    z-index: 1;
 }
 
 .form-card .card-body > .row {
@@ -39,56 +121,100 @@
     font-weight: 700;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     display: flex;
     align-items: center;
-    color: #333;
+    color: #041C54;
 }
 
 .form-section-title i {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--theme-gradient);
-    color: white;
-    border-radius: 10px;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
+    border-radius: 12px;
     margin-right: 0.75rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #041C54;
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 0.2rem rgba(100, 116, 148, 0.12);
+}
+
+.form-card .form-check-input:checked {
+    background-color: #041C54;
+    border-color: #041C54;
+}
+
+.form-card-footer {
+    background: #fff;
+    border-top: 1px solid rgba(186, 194, 210, 0.35);
+    padding: 1.25rem 1.5rem;
+}
+
+.btn-cancel-form {
+    background: white;
+    border: 2px solid rgba(186, 194, 210, 0.5);
+    color: #647494;
+    padding: 0.65rem 1.5rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel-form:hover {
+    background: rgba(100, 116, 148, 0.08);
+    border-color: #647494;
+    color: #041C54;
 }
 
 .btn-save {
-    background: var(--theme-gradient);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 0.75rem 2rem;
     font-weight: 600;
     border-radius: 10px;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(4, 28, 84, 0.2);
 }
 
 .btn-save:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 22px rgba(4, 28, 84, 0.28);
     color: white;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 1.5rem;
+    }
 }
 </style>
 @endsection
 
 @section('content')
-<div class="page-header">
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <h4 class="mb-1 fw-bold">Create New Reward</h4>
-            <p class="mb-0 text-white opacity-75">Add a new reward, offer, or coupon code</p>
+<div class="dashboard-header">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="header-icon">
+                <i class="ri-gift-2-line"></i>
+            </div>
+            <div>
+                <h4 class="mb-1">Create New Reward</h4>
+                <p class="mb-0">Add a new reward, offer, or coupon code</p>
+            </div>
         </div>
-        <a href="{{ route('admin.rewards.index') }}" class="btn btn-light">
+        <a href="{{ route('admin.rewards.index') }}" class="btn btn-header-back">
             <i class="ri-arrow-left-line me-2"></i>Back to List
         </a>
     </div>
@@ -295,8 +421,8 @@
             </div>
         </div>
 
-        <div class="card-footer bg-light d-flex justify-content-between">
-            <a href="{{ route('admin.rewards.index') }}" class="btn btn-secondary">
+        <div class="card-footer form-card-footer d-flex justify-content-between flex-wrap gap-2">
+            <a href="{{ route('admin.rewards.index') }}" class="btn btn-cancel-form">
                 <i class="ri-close-line me-2"></i>Cancel
             </a>
             <button type="submit" class="btn btn-save">

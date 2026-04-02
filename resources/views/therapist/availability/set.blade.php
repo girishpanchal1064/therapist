@@ -4,10 +4,14 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
   /* Page Header */
   .availability-page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%);
+    border-radius: 24px;
     padding: 2rem;
     margin-bottom: 1.5rem;
     position: relative;
@@ -66,15 +70,15 @@
 
   /* Main Card */
   .availability-main-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.3);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
   }
 
   .availability-main-card .card-header {
     background: white;
-    border-bottom: 2px solid #f0f2f5;
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.5rem;
   }
 
@@ -84,19 +88,20 @@
 
   /* Add Button */
   .btn-add-availability {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041C54;
     border: none;
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
 
   .btn-add-availability:hover {
+    background: #0a2c7a;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 
@@ -107,8 +112,8 @@
   }
 
   .availability-table thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    color: #647494;
     font-weight: 600;
     font-size: 0.8125rem;
     text-transform: uppercase;
@@ -131,13 +136,13 @@
   }
 
   .availability-table tbody tr:hover {
-    background: #f8fafc;
+    background: rgba(186, 194, 210, 0.12);
   }
 
   .availability-table tbody td {
     padding: 1.25rem;
     vertical-align: middle;
-    border-bottom: 1px solid #f0f2f5;
+    border-bottom: 1px solid rgba(186, 194, 210, 0.3);
   }
 
   /* Schedule Info */
@@ -154,8 +159,8 @@
   }
 
   .day-badge {
-    background: linear-gradient(135deg, #e8f0fe 0%, #d4e4fc 100%);
-    color: #1a73e8;
+    background: rgba(100, 116, 148, 0.12);
+    color: #041C54;
     font-size: 0.75rem;
     font-weight: 600;
     padding: 0.25rem 0.625rem;
@@ -170,13 +175,13 @@
   }
 
   .time-badge {
-    background: #f0fdf4;
-    color: #15803d;
+    background: rgba(16, 185, 129, 0.1);
+    color: #047857;
     font-size: 0.75rem;
     font-weight: 500;
     padding: 0.375rem 0.75rem;
     border-radius: 6px;
-    border: 1px solid #bbf7d0;
+    border: 1px solid rgba(16, 185, 129, 0.2);
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
@@ -196,13 +201,13 @@
   }
 
   .mode-badge.online {
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-    color: #1e40af;
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
   }
 
   .mode-badge.offline {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    color: #92400e;
+    background: rgba(245, 158, 11, 0.14);
+    color: #b45309;
   }
 
   /* Type Badge */
@@ -212,13 +217,13 @@
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: capitalize;
-    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
-    color: #7c3aed;
+    background: rgba(139, 92, 246, 0.14);
+    color: #6d28d9;
   }
 
   /* Timezone */
   .timezone-info {
-    color: #64748b;
+    color: #7484A4;
     font-size: 0.875rem;
     display: flex;
     align-items: center;
@@ -226,7 +231,7 @@
   }
 
   .timezone-info i {
-    color: #94a3b8;
+    color: #647494;
   }
 
   /* Action Buttons */
@@ -249,12 +254,12 @@
   }
 
   .btn-action.btn-edit {
-    background: #eff6ff;
-    color: #2563eb;
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
   }
 
   .btn-action.btn-edit:hover {
-    background: #dbeafe;
+    background: rgba(59, 130, 246, 0.2);
     transform: translateY(-1px);
   }
 
@@ -277,24 +282,24 @@
   .empty-state-icon {
     width: 100px;
     height: 100px;
-    background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+    background: linear-gradient(135deg, rgba(186, 194, 210, 0.2) 0%, rgba(186, 194, 210, 0.35) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
     font-size: 2.5rem;
-    color: #667eea;
+    color: #647494;
   }
 
   .empty-state h5 {
-    color: #1e293b;
+    color: #041C54;
     font-weight: 600;
     margin-bottom: 0.5rem;
   }
 
   .empty-state p {
-    color: #64748b;
+    color: #7484A4;
     margin-bottom: 1.5rem;
   }
 
@@ -309,7 +314,7 @@
 
   /* Modal Header with Gradient */
   .availability-modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(171deg, #647494 0%, #7484A4 100%);
     border: none;
     padding: 1.5rem 1.75rem;
     border-radius: 0.5rem 0.5rem 0 0;
@@ -341,7 +346,7 @@
   /* Modal Body */
   .availability-modal-body {
     padding: 2rem 2rem;
-    background: #f8f9fa;
+    background: #f8fafc;
   }
 
   #groups-wrapper {
@@ -364,27 +369,27 @@
 
   /* Availability Card */
   .availability-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.25);
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 10px rgba(4, 28, 84, 0.06), 0 2px 4px rgba(4, 28, 84, 0.04);
     transition: all 0.3s ease;
     overflow: hidden;
   }
 
   .availability-card:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.1), 0 4px 8px rgba(4, 28, 84, 0.06);
     transform: translateY(-2px);
   }
 
   .availability-card-header {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-bottom: 2px solid #e9ecef;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1rem 1.25rem;
     border-radius: 12px 12px 0 0;
   }
 
   .availability-card-header h6 {
-    color: #2d3748;
+    color: #041C54;
     font-size: 1rem;
   }
 
@@ -395,10 +400,10 @@
 
   /* Days Selection */
   .days-selection-wrapper {
-    background: #f8f9fa;
+    background: rgba(186, 194, 210, 0.08);
     padding: 1.25rem;
     border-radius: 10px;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(186, 194, 210, 0.3);
   }
 
   .days-switch-container {
@@ -419,7 +424,7 @@
   }
 
   .days-switch-container::-webkit-scrollbar-thumb {
-    background: #667eea;
+    background: #647494;
     border-radius: 4px;
   }
 
@@ -427,7 +432,7 @@
     background: white;
     padding: 0.625rem 0.875rem;
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     transition: all 0.2s ease;
     white-space: nowrap;
     flex-shrink: 0;
@@ -435,8 +440,8 @@
   }
 
   .day-switch-item:hover {
-    border-color: #667eea;
-    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+    border-color: #647494;
+    box-shadow: 0 2px 4px rgba(100, 116, 148, 0.15);
   }
 
   .day-switch-item .form-switch {
@@ -454,15 +459,15 @@
   }
 
   .form-switch .form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
+    background-color: #647494;
+    border-color: #647494;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
   }
 
   .form-switch .form-check-input:focus {
-    border-color: #667eea;
+    border-color: #647494;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(100, 116, 148, 0.25);
   }
 
   .form-switch .form-check-label {
@@ -475,10 +480,10 @@
 
   /* Time Slots */
   .time-slots-wrapper {
-    background: #f8f9fa;
+    background: rgba(186, 194, 210, 0.08);
     padding: 1.25rem;
     border-radius: 10px;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(186, 194, 210, 0.3);
   }
 
   .slot-card {
@@ -491,12 +496,12 @@
   }
 
   .slot-card:hover {
-    border-color: #667eea;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 2px 8px rgba(100, 116, 148, 0.15);
   }
 
   .slot-number {
-    color: #667eea;
+    color: #041C54;
     font-weight: 600;
   }
 
@@ -507,8 +512,8 @@
   }
 
   .slot-card .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 0.2rem rgba(100, 116, 148, 0.15);
   }
 
   /* Buttons */
@@ -517,15 +522,15 @@
     padding: 0.5rem 1rem;
     font-weight: 500;
     transition: all 0.2s ease;
-    border: 1.5px solid #667eea;
-    color: #667eea;
+    border: 1.5px solid #647494;
+    color: #647494;
   }
 
   .add-more-timing-btn:hover {
-    background: #667eea;
+    background: #647494;
     color: white;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 8px rgba(100, 116, 148, 0.3);
   }
 
   #add-group {
@@ -537,14 +542,14 @@
 
   #add-group:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 4px 8px rgba(100, 116, 148, 0.2);
   }
 
   /* Modal Footer */
   .availability-modal-footer {
-    border-top: 1px solid #e9ecef;
+    border-top: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.5rem 2rem;
-    background: #f8f9fa;
+    background: #f8fafc;
     border-radius: 0 0 0.5rem 0.5rem;
     margin-top: 0;
   }
@@ -603,22 +608,22 @@
   }
 
   .btn-save {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041C54;
     border: none;
     color: white;
-    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 6px 10px rgba(4, 28, 84, 0.2);
   }
 
   .btn-save:hover {
-    background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+    background: #0a2c7a;
     transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.28);
     color: white;
   }
 
   /* Form Labels */
   .availability-modal-body .form-label {
-    color: #2d3748;
+    color: #041C54;
     font-size: 0.9375rem;
   }
 
@@ -779,7 +784,7 @@
     <!-- Edit Availability Modal -->
     <div class="modal fade" id="editAvailabilityModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-fullscreen-lg-down availability-modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 100% !important;">
           <!-- Modal Header with Gradient Background -->
           <div class="modal-header text-white availability-modal-header">
             <div class="d-flex align-items-center">

@@ -4,6 +4,109 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
+  .page-header {
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
+  }
+  .page-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.5rem;
+  }
+  .page-header p {
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .page-header .btn-header {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .page-header .btn-header:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .assessment-edit-card {
+    border-radius: 16px;
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
+    overflow: hidden;
+  }
+  .assessment-edit-card > .card-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
+    padding: 20px 24px;
+  }
+  .assessment-edit-card .card-title {
+    font-weight: 700;
+    color: #041C54;
+  }
+
+  .assessment-edit-card .form-control:focus,
+  .assessment-edit-card .form-select:focus {
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
+  }
+
+  .assessment-edit-card h6.text-muted {
+    color: #647494 !important;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
+  }
+  .assessment-edit-card h6.text-muted i {
+    color: #647494;
+  }
+
+  .assessment-edit-card .form-check-input:checked {
+    background-color: #647494;
+    border-color: #647494;
+  }
+
+  .btn-assessment-cancel {
+    background: #fff;
+    border: 2px solid #e4e6eb;
+    color: #566a7f;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-assessment-cancel:hover {
+    border-color: #ea5455;
+    color: #ea5455;
+    background: rgba(234, 84, 85, 0.05);
+  }
+  .btn-assessment-submit {
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
+    border: none;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
+    transition: all 0.3s ease;
+  }
+  .btn-assessment-submit:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
+  }
+
   .card .card-body > .row {
     margin-top: 20px;
   }
@@ -15,14 +118,22 @@
 @endsection
 
 @section('content')
+<div class="page-header">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h4><i class="ri-pencil-line me-2"></i>Edit Assessment</h4>
+      <p>Update details, appearance, and SEO</p>
+    </div>
+    <a href="{{ route('admin.assessments.index') }}" class="btn btn-header">
+      <i class="ri-arrow-left-line me-1"></i> Back to Assessments
+    </a>
+  </div>
+</div>
 <div class="row">
   <div class="col-12">
-    <div class="card">
+    <div class="card assessment-edit-card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">Edit Assessment</h5>
-        <a href="{{ route('admin.assessments.index') }}" class="btn btn-outline-secondary">
-          <i class="ri-arrow-left-line me-1"></i> Back to Assessments
-        </a>
       </div>
       <div class="card-body">
         @if(session('error'))
@@ -141,7 +252,7 @@
                   <div class="mt-2">
                     <label class="form-label small">Preview:</label>
                     <div>
-                      <i class="{{ $assessment->icon }}" style="font-size: 2rem; color: {{ $assessment->color ?? '#3B82F6' }};"></i>
+                      <i class="{{ $assessment->icon }}" style="font-size: 2rem; color: {{ $assessment->color ?? '#647494' }};"></i>
                     </div>
                   </div>
                 @endif
@@ -153,11 +264,11 @@
                 <label for="color" class="form-label">Color</label>
                 <div class="input-group">
                   <input type="color" class="form-control form-control-color @error('color') is-invalid @enderror" 
-                         id="color" name="color" value="{{ old('color', $assessment->color ?? '#3B82F6') }}" 
+                         id="color" name="color" value="{{ old('color', $assessment->color ?? '#647494') }}" 
                          title="Choose color">
                   <input type="text" class="form-control @error('color') is-invalid @enderror" 
-                         value="{{ old('color', $assessment->color ?? '#3B82F6') }}" 
-                         placeholder="#3B82F6" readonly>
+                         value="{{ old('color', $assessment->color ?? '#647494') }}" 
+                         placeholder="#647494" readonly>
                 </div>
                 <small class="text-muted">Hex color code for icon and badges</small>
                 @error('color')
@@ -232,10 +343,10 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2">
-            <a href="{{ route('admin.assessments.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ route('admin.assessments.index') }}" class="btn btn-assessment-cancel">
               <i class="ri-close-line me-2"></i>Cancel
             </a>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-assessment-submit">
               <i class="ri-save-line me-2"></i>Update Assessment
             </button>
           </div>

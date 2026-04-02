@@ -4,15 +4,20 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 2rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
 
   .page-header::before {
@@ -56,12 +61,13 @@
 
   /* Stats Cards */
   .stats-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     transition: all 0.3s ease;
     overflow: hidden;
     position: relative;
+    background: #fff;
   }
 
   .stats-card::before {
@@ -71,12 +77,12 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
   }
 
   .stats-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(4, 28, 84, 0.1);
   }
 
   .stats-icon {
@@ -87,21 +93,21 @@
     justify-content: center;
     border-radius: 14px;
     font-size: 1.6rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #667eea;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
   }
 
   .stats-card .stats-value {
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .stats-card .stats-label {
-    color: #64748b;
+    color: #7484a4;
     font-size: 0.875rem;
     font-weight: 500;
     margin-top: 0.5rem;
@@ -110,9 +116,9 @@
   /* Filter Card */
   .filter-card {
     border-radius: 16px;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     background: white;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     margin-bottom: 1.5rem;
   }
 
@@ -139,39 +145,45 @@
 
   .filter-card .form-control:focus,
   .filter-card .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.12);
   }
 
   .btn-filter {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 10px 24px;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
 
   .btn-filter:hover {
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
 
   /* Main Card */
   .main-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
     margin-bottom: 1.5rem;
   }
 
   .main-card .card-header {
-    background: white;
-    border-bottom: 2px solid #f0f2f5;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.5rem;
+  }
+
+  .main-card .card-header h5 {
+    font-weight: 700;
+    color: #041C54;
   }
 
   .main-card .card-body {
@@ -186,7 +198,7 @@
   }
 
   .reports-table thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     color: #4a5568;
     font-weight: 600;
     font-size: 0.8rem;
@@ -203,7 +215,7 @@
   }
 
   .reports-table tbody tr:hover {
-    background-color: rgba(102, 126, 234, 0.04);
+    background-color: rgba(100, 116, 148, 0.06);
   }
 
   .reports-table tbody td {
@@ -386,7 +398,7 @@
               <td>
                 <div class="d-flex align-items-center gap-2">
                   <div class="progress flex-fill" style="height: 8px;">
-                    <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%; background: linear-gradient(90deg, #041C54 0%, #647494 100%);" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <span class="text-muted small">{{ number_format($percentage, 1) }}%</span>
                 </div>

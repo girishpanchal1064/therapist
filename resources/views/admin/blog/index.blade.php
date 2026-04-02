@@ -4,18 +4,23 @@
 
 @section('page-style')
 <style>
+    .layout-page .content-wrapper {
+        background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+    }
+
     :root {
-        --theme-primary: #696cff;
-        --theme-primary-dark: #5f61e6;
-        --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --theme-primary: #647494;
+        --theme-primary-dark: #041C54;
+        --theme-gradient: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
     }
     
     .page-header {
         background: var(--theme-gradient);
-        border-radius: 12px;
+        border-radius: 24px;
         padding: 1.5rem 2rem;
         margin-bottom: 1.5rem;
         color: white;
+        box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     }
     
     .page-header h4 {
@@ -41,7 +46,7 @@
     
     .btn-theme:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 8px 14px rgba(4, 28, 84, 0.28);
         color: white;
     }
     
@@ -62,14 +67,14 @@
     }
     
     .card-modern {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border: 1px solid rgba(186, 194, 210, 0.35);
+        border-radius: 16px;
+        box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     }
     
     .filter-card {
-        background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-        border: 1px solid rgba(102, 126, 234, 0.1);
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+        border: 1px solid rgba(186, 194, 210, 0.35);
         border-radius: 12px;
         padding: 1.25rem;
         margin-bottom: 1.5rem;
@@ -86,8 +91,8 @@
     
     .filter-card .form-control:focus,
     .filter-card .form-select:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        border-color: #647494;
+        box-shadow: 0 0 0 0.2rem rgba(100, 116, 148, 0.12);
     }
     
     .table-modern {
@@ -101,7 +106,7 @@
     }
     
     .table-modern thead th {
-        background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
         color: #4a5568;
         font-weight: 700;
         text-transform: uppercase;
@@ -127,9 +132,9 @@
     }
     
     .table-modern tbody tr:hover {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+        background: rgba(100, 116, 148, 0.06);
         transform: scale(1.001);
-        box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+        box-shadow: 0 2px 12px rgba(100, 116, 148, 0.1);
     }
     
     .table-modern tbody tr:last-child {
@@ -160,11 +165,11 @@
         width: 70px;
         height: 50px;
         border-radius: 8px;
-        background: linear-gradient(135deg, #f8f9ff 0%, #e8e9ff 100%);
+        background: rgba(100, 116, 148, 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #667eea;
+        color: #647494;
     }
     
     .author-info {
@@ -190,7 +195,7 @@
         font-weight: 600;
         font-size: 0.7rem;
         color: white;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     }
     
     .badge-draft {
@@ -232,16 +237,16 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        background: linear-gradient(135deg, #f8f9ff 0%, #e8e9ff 100%);
+        background: rgba(100, 116, 148, 0.1);
         padding: 0.35rem 0.65rem;
         border-radius: 20px;
-        color: #667eea;
+        color: #647494;
         font-weight: 500;
         font-size: 0.8rem;
     }
     
     .action-dropdown .dropdown-toggle {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         color: white;
         border: none;
         width: 32px;
@@ -288,15 +293,15 @@
     }
 
     .btn-action.view {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        color: #1d4ed8;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+        background: rgba(100, 116, 148, 0.12);
+        color: #647494;
+        box-shadow: 0 2px 8px rgba(100, 116, 148, 0.12);
     }
 
     .btn-action.view:hover {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         color: white;
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+        box-shadow: 0 6px 20px rgba(4, 28, 84, 0.22);
     }
 
     .btn-action.edit {
@@ -342,7 +347,8 @@
     }
     
     .action-dropdown .dropdown-item:hover {
-        background-color: rgba(102, 126, 234, 0.1);
+        background-color: rgba(100, 116, 148, 0.1);
+        color: #041C54;
     }
     
     .pagination-modern .btn {
@@ -354,7 +360,7 @@
     }
     
     .pagination-modern .btn:hover:not(.disabled) {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         color: white;
     }
     
@@ -366,7 +372,7 @@
     .empty-state-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -398,24 +404,26 @@
     }
     
     .btn-refresh {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         border: none;
         color: white;
+        box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
     }
     
     .btn-refresh:hover {
-        background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        background: linear-gradient(90deg, #0a2c7a 0%, #7484a4 100%);
         color: white;
     }
     
     .btn-search {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         border: none;
         color: white;
+        box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
     }
     
     .btn-search:hover {
-        background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        background: linear-gradient(90deg, #0a2c7a 0%, #7484a4 100%);
         color: white;
     }
     
@@ -588,7 +596,7 @@
                             </td>
                             <td>
                                 @if($post->category)
-                                    <span class="badge-category" style="background-color: {{ $post->category->color ?? '#667eea' }};">
+                                    <span class="badge-category" style="background-color: {{ $post->category->color ?? '#647494' }};">
                                         {{ $post->category->name }}
                                     </span>
                                 @else

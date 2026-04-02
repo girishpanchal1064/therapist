@@ -4,6 +4,116 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
+  .page-header {
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
+  }
+  .page-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.5rem;
+  }
+  .page-header p {
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .page-header .btn-header {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .page-header .btn-header:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .blog-edit-form-card {
+    border-radius: 16px;
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
+    overflow: hidden;
+  }
+  .blog-edit-form-card > .card-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
+    padding: 20px 24px;
+  }
+  .blog-edit-form-card .card-title {
+    font-weight: 700;
+    color: #041C54;
+  }
+
+  .blog-edit-form-card .form-control:focus,
+  .blog-edit-form-card .form-select:focus {
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
+  }
+
+  .blog-edit-form-card h6.text-muted {
+    color: #647494 !important;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
+  }
+  .blog-edit-form-card h6.text-muted i {
+    color: #647494;
+  }
+
+  .blog-edit-form-card .form-check-input:checked {
+    background-color: #647494;
+    border-color: #647494;
+  }
+
+  .btn-blog-cancel {
+    background: #fff;
+    border: 2px solid #e4e6eb;
+    color: #566a7f;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-blog-cancel:hover {
+    border-color: #ea5455;
+    color: #ea5455;
+    background: rgba(234, 84, 85, 0.05);
+  }
+  .btn-blog-submit {
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
+    border: none;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
+    transition: all 0.3s ease;
+  }
+  .btn-blog-submit:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
+  }
+
+  .blog-edit-form-card .card .card-body > .row {
+    margin-top: 20px;
+  }
+  .blog-edit-form-card .card .card-body > .row:first-child {
+    margin-top: 0;
+  }
+
   .card .card-body > .row {
     margin-top: 20px;
   }
@@ -15,14 +125,22 @@
 @endsection
 
 @section('content')
+<div class="page-header">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h4><i class="ri-pencil-line me-2"></i>Edit Blog Post</h4>
+      <p>Update content and publishing settings</p>
+    </div>
+    <a href="{{ route('admin.blog.index') }}" class="btn btn-header">
+      <i class="ri-arrow-left-line me-1"></i> Back to Posts
+    </a>
+  </div>
+</div>
 <div class="row">
   <div class="col-12">
-    <div class="card">
+    <div class="card blog-edit-form-card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">Edit Blog Post</h5>
-        <a href="{{ route('admin.blog.index') }}" class="btn btn-outline-secondary">
-          <i class="ri-arrow-left-line me-1"></i> Back to Posts
-        </a>
       </div>
       <div class="card-body">
         @if(session('error'))
@@ -363,10 +481,10 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2">
-            <a href="{{ route('admin.blog.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ route('admin.blog.index') }}" class="btn btn-blog-cancel">
               <i class="ri-close-line me-2"></i>Cancel
             </a>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-blog-submit">
               <i class="ri-save-line me-2"></i>Update Blog Post
             </button>
           </div>

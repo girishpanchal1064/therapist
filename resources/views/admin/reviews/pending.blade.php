@@ -4,18 +4,23 @@
 
 @section('page-style')
 <style>
+    .layout-page .content-wrapper {
+        background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+    }
+
     :root {
-        --theme-primary: #696cff;
-        --theme-primary-dark: #5f61e6;
-        --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --theme-primary: #647494;
+        --theme-primary-dark: #041C54;
+        --theme-gradient: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
     }
     
     .page-header {
         background: var(--theme-gradient);
-        border-radius: 12px;
+        border-radius: 24px;
         padding: 1.5rem 2rem;
         margin-bottom: 1.5rem;
         color: white;
+        box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     }
     
     .page-header h4 {
@@ -41,7 +46,7 @@
     
     .btn-theme:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 8px 14px rgba(4, 28, 84, 0.28);
         color: white;
     }
     
@@ -62,22 +67,22 @@
     }
     
     .card-modern {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border: 1px solid rgba(186, 194, 210, 0.35);
+        border-radius: 16px;
+        box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     }
     
     .filter-card {
-        background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-        border: 1px solid rgba(102, 126, 234, 0.1);
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+        border: 1px solid rgba(186, 194, 210, 0.35);
         border-radius: 12px;
         padding: 1.25rem;
         margin-bottom: 1.5rem;
     }
     
     .filter-card .form-control:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        border-color: #647494;
+        box-shadow: 0 0 0 0.2rem rgba(100, 116, 148, 0.12);
     }
     
     .table-modern {
@@ -86,7 +91,7 @@
     }
     
     .table-modern thead th {
-        background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
         color: #4a5568;
         font-weight: 600;
         text-transform: uppercase;
@@ -109,7 +114,7 @@
     }
     
     .table-modern tbody tr:hover {
-        background-color: rgba(102, 126, 234, 0.05);
+        background-color: rgba(100, 116, 148, 0.06);
     }
     
     .table-modern tbody td {
@@ -190,7 +195,7 @@
     }
     
     .action-dropdown .dropdown-toggle {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         color: white;
         border: none;
         width: 32px;
@@ -219,7 +224,8 @@
     }
     
     .action-dropdown .dropdown-item:hover {
-        background-color: rgba(102, 126, 234, 0.1);
+        background-color: rgba(100, 116, 148, 0.1);
+        color: #041C54;
     }
     
     .pagination-modern .btn {
@@ -231,7 +237,7 @@
     }
     
     .pagination-modern .btn:hover:not(.disabled) {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         color: white;
     }
     
@@ -243,7 +249,7 @@
     .empty-state-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -275,24 +281,26 @@
     }
     
     .btn-refresh {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         border: none;
         color: white;
+        box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
     }
     
     .btn-refresh:hover {
-        background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        background: linear-gradient(90deg, #0a2c7a 0%, #7484a4 100%);
         color: white;
     }
     
     .btn-search {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #041C54 0%, #647494 100%);
         border: none;
         color: white;
+        box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
     }
     
     .btn-search:hover {
-        background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        background: linear-gradient(90deg, #0a2c7a 0%, #7484a4 100%);
         color: white;
     }
 </style>
@@ -384,7 +392,7 @@
                                              alt="{{ $review->client->name }}" 
                                              class="user-avatar">
                                     @else
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" 
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" 
                                              alt="{{ $review->client->name }}" 
                                              class="user-avatar">
                                     @endif
@@ -401,7 +409,7 @@
                                              alt="{{ $review->therapist->name }}" 
                                              class="user-avatar">
                                     @else
-                                        <div class="user-avatar-initial" style="background: linear-gradient(135deg, #20c997 0%, #28a745 100%);">
+                                        <div class="user-avatar-initial" style="background: linear-gradient(90deg, #041C54 0%, #647494 100%);">
                                             {{ strtoupper(substr($review->therapist->name, 0, 2)) }}
                                         </div>
                                     @endif

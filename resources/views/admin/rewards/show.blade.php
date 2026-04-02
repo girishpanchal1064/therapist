@@ -5,17 +5,22 @@
 @section('vendor-style')
 <style>
 :root {
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-gradient: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+}
+
+.layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
 }
 
 .page-header {
     background: var(--theme-gradient);
-    border-radius: 16px;
+    border-radius: 24px;
     padding: 2rem 2.5rem;
     margin-bottom: 2rem;
     color: white;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
 }
 
 .page-header::before {
@@ -36,20 +41,20 @@
 }
 
 .info-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     margin-bottom: 1.5rem;
 }
 
 .info-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    border-bottom: 2px solid #f0f2f5;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.25rem 1.5rem;
 }
 
 .info-card .card-header h6 {
-    color: #4a5568;
+    color: #041C54;
     font-weight: 700;
     margin: 0;
 }
@@ -115,8 +120,8 @@
 }
 
 .coupon-code-display {
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    border: 3px dashed #667eea;
+    background: rgba(100, 116, 148, 0.08);
+    border: 3px dashed #647494;
     border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
@@ -126,7 +131,7 @@
 .coupon-code-display code {
     font-size: 2rem;
     font-weight: 700;
-    color: #667eea;
+    color: #041C54;
     letter-spacing: 3px;
     background: transparent;
     padding: 0;
@@ -147,7 +152,7 @@
 
 .btn-edit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
 }
 </style>

@@ -14,10 +14,11 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 14px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 1.5rem 1.75rem;
     padding-top: 1.75rem;
     margin-top: 0;
@@ -38,7 +39,7 @@
     right: -20%;
     width: 300px;
     height: 300px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 50%;
   }
 
@@ -49,7 +50,7 @@
     left: -10%;
     width: 150px;
     height: 150px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.035);
     border-radius: 50%;
   }
 
@@ -99,28 +100,41 @@
 
   .btn-add-new:hover {
     background: white;
-    color: #667eea;
+    color: #041C54;
     border-color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
   }
 
   /* Main Card – now uses global .main-card from layout; keep any page-specific tweaks below if needed */
+  .main-card {
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
+  }
+
+  .main-card .card-header {
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
+    background: #fff;
+  }
+
+  .main-card .card-header h5 {
+    color: #041C54;
+  }
 
   /* Add Button */
   .btn-add {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 0.6rem 1.25rem;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
 
   .btn-add:active {
-    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 2px 6px rgba(4, 28, 84, 0.2);
   }
 
   /* Alert Styling */
@@ -147,9 +161,9 @@
   /* Therapist Card - One Line Layout */
   .therapist-card {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    box-shadow: 0 6px 10px rgba(4, 28, 84, 0.06), 0 2px 4px rgba(4, 28, 84, 0.04);
     overflow: hidden;
     position: relative;
     margin-top: 20px;
@@ -159,11 +173,11 @@
 
   .therapist-card:nth-child(even) {
     background: #fafbfc;
-    border-left-color: #667eea;
+    border-left-color: #647494;
   }
 
   .therapist-card:nth-child(odd) {
-    border-left-color: #764ba2;
+    border-left-color: #041C54;
   }
 
   .therapist-card .card-body {
@@ -217,8 +231,8 @@
     border-radius: 8px;
     object-fit: cover;
     border: 2px solid #f0f2ff;
-    box-shadow: 0 1px 3px rgba(102, 126, 234, 0.15);
-    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    box-shadow: 0 1px 3px rgba(100, 116, 148, 0.15);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     flex-shrink: 0;
   }
 
@@ -258,15 +272,15 @@
     justify-content: center;
     font-weight: 700;
     font-size: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   }
 
   /* Specialization Badge */
   .spec-badge {
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-    color: #0369a1;
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
     padding: 0.3rem 0.65rem;
     border-radius: 6px;
     font-size: 0.7rem;
@@ -280,7 +294,7 @@
   }
 
   .spec-badge:hover {
-    background: linear-gradient(135deg, #bae6fd 0%, #7dd3fc 100%);
+    background: rgba(59, 130, 246, 0.2);
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(3, 105, 161, 0.2);
   }
@@ -291,8 +305,8 @@
 
   /* Experience Badge */
   .exp-badge {
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-    color: #1e40af;
+    background: rgba(100, 116, 148, 0.14);
+    color: #334155;
     padding: 0.35rem 0.65rem;
     border-radius: 8px;
     font-size: 0.75rem;
@@ -311,8 +325,8 @@
 
   /* Fee Badge */
   .fee-badge {
-    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-    color: #166534;
+    background: rgba(16, 185, 129, 0.12);
+    color: #047857;
     padding: 0.35rem 0.65rem;
     border-radius: 8px;
     font-size: 0.75rem;
@@ -494,7 +508,7 @@
   }
 
   .action-dropdown .dropdown-toggle:active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
   }
 
@@ -525,7 +539,7 @@
   /* Filter Card */
   .filter-card {
     border-radius: 16px;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     background: white;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     margin-bottom: 1.5rem;
@@ -558,7 +572,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     font-size: 1rem;
   }
@@ -572,14 +586,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #667eea;
+    color: #647494;
     transition: all 0.3s ease;
     cursor: pointer;
   }
 
   .btn-filter-toggle:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: #667eea;
+    background: rgba(100, 116, 148, 0.1);
+    border-color: #647494;
   }
 
   .btn-filter-toggle i {
@@ -634,8 +648,8 @@
 
   .filter-card .form-control:focus,
   .filter-card .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.15);
   }
 
   .filter-card .input-group-merge .input-group-text {
@@ -643,7 +657,7 @@
     border: 1px solid #e4e6eb;
     border-right: none;
     border-radius: 10px 0 0 10px;
-    color: #667eea;
+    color: #647494;
   }
 
   .filter-card .input-group-merge .form-control {
@@ -652,11 +666,11 @@
   }
 
   .filter-card .input-group-merge .form-control:focus {
-    border-left: 1px solid #667eea;
+    border-left: 1px solid #647494;
   }
 
   .btn-apply-filter {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 10px 24px;
@@ -667,7 +681,7 @@
 
   .btn-apply-filter:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 
@@ -694,9 +708,9 @@
     align-items: center;
     gap: 0.4rem;
     margin: 0;
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     border-radius: 6px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(186, 194, 210, 0.3);
     font-size: 0.75rem;
     font-weight: 600;
     color: #1f2937;
@@ -712,11 +726,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     font-size: 0.65rem;
     flex-shrink: 0;
-    box-shadow: 0 1px 2px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 1px 2px rgba(4, 28, 84, 0.2);
   }
 
   .detail-text {
@@ -746,11 +760,11 @@
 
   .page-link:active {
     background: #f1f5f9;
-    color: #667eea;
+    color: #647494;
   }
 
   .page-item.active .page-link {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
   }
 
@@ -762,7 +776,7 @@
   }
 
   .modal-specializations .modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(171deg, #647494 0%, #7484A4 100%);
     color: white;
     border-radius: 14px 14px 0 0;
     border-bottom: none;
@@ -775,7 +789,7 @@
 
   .spec-list-item {
     padding: 0.75rem 1rem;
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    background: rgba(59, 130, 246, 0.12);
     border-radius: 8px;
     margin-bottom: 0.5rem;
     color: #0369a1;
@@ -824,12 +838,12 @@
     $activeCount = $therapists->where('status', 'active')->count();
     $verifiedCount = $therapists->filter(function($t) { return $t->therapistProfile && $t->therapistProfile->is_verified; })->count();
   @endphp
-  <div class="card mb-3" style="background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 14px; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);">
+  <div class="card mb-3" style="background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%); border: 1px solid rgba(186, 194, 210, 0.35); border-radius: 14px; box-shadow: 0 6px 10px rgba(4, 28, 84, 0.06);">
     <div class="card-body" style="padding: 1rem 1.25rem;">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div class="d-flex align-items-center" style="gap: 1rem;">
-          <div style="width: 48px; height: 48px; background: rgba(102, 126, 234, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="ri-user-heart-line text-primary" style="font-size: 1.25rem;"></i>
+          <div style="width: 48px; height: 48px; background: rgba(100, 116, 148, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="ri-user-heart-line" style="font-size: 1.25rem; color: #647494;"></i>
           </div>
           <div>
             <div class="text-muted" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Total Therapists</div>
@@ -840,7 +854,7 @@
           <span class="badge bg-success" style="font-size: 0.75rem; padding: 0.5rem 0.875rem; border-radius: 10px; font-weight: 600; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);">
             <i class="ri-checkbox-circle-line me-1"></i>{{ $activeCount }} Active
           </span>
-          <span class="badge bg-primary" style="font-size: 0.75rem; padding: 0.5rem 0.875rem; border-radius: 10px; font-weight: 600; box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);">
+          <span class="badge bg-primary" style="font-size: 0.75rem; padding: 0.5rem 0.875rem; border-radius: 10px; font-weight: 600; box-shadow: 0 2px 4px rgba(4, 28, 84, 0.2); background: linear-gradient(90deg, #041C54 0%, #647494 100%) !important;">
             <i class="ri-verified-badge-line me-1"></i>{{ $verifiedCount }} Verified
           </span>
         </div>
@@ -957,7 +971,7 @@
                   @elseif($therapist->avatar)
                     <img src="{{ asset('storage/' . $therapist->avatar) }}" alt="Avatar" class="therapist-avatar">
                   @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="Avatar" class="therapist-avatar-default">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="Avatar" class="therapist-avatar-default">
                   @endif
                   <div class="therapist-info" style="min-width: 0; flex: 1;">
                     <h6 style="margin: 0; font-size: 0.85rem; font-weight: 600; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $therapist->name }}</h6>
@@ -984,7 +998,7 @@
                       </span>
                     @endforeach
                     @if($therapist->therapistProfile->specializations->count() > 1)
-                      <span class="spec-badge" data-bs-toggle="modal" data-bs-target="#specializationsModal{{ $therapist->id }}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 0.65rem; padding: 0.25rem 0.5rem; cursor: pointer; white-space: nowrap; flex-shrink: 0;">
+                      <span class="spec-badge" data-bs-toggle="modal" data-bs-target="#specializationsModal{{ $therapist->id }}" style="background: linear-gradient(90deg, #041C54 0%, #647494 100%); color: white; font-size: 0.65rem; padding: 0.25rem 0.5rem; cursor: pointer; white-space: nowrap; flex-shrink: 0;">
                         +{{ $therapist->therapistProfile->specializations->count() - 1 }}
                       </span>
                     @endif

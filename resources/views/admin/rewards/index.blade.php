@@ -6,14 +6,19 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 2rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
 
   .page-header::before {
@@ -57,15 +62,15 @@
 
   /* Main Card */
   .main-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
   }
 
   .main-card .card-header {
-    background: white;
-    border-bottom: 2px solid #f0f2f5;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.5rem;
   }
 
@@ -75,19 +80,19 @@
 
   /* Add Button */
   .btn-add {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
 
   .btn-add:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 
@@ -112,7 +117,7 @@
   }
 
   #rewardsTable thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     color: #4a5568;
     font-weight: 700;
     font-size: 0.8rem;
@@ -150,14 +155,19 @@
 
   /* Action Buttons */
   .btn-action-view {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
+    background: rgba(100, 116, 148, 0.15);
+    color: #041C54;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 500;
     transition: all 0.2s ease;
+  }
+
+  .btn-action-view:hover {
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
+    color: white;
   }
 
   .btn-action-edit {
@@ -183,7 +193,7 @@
   }
 
   .badge-discount {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
@@ -194,9 +204,9 @@
   /* Filter Card */
   .filter-card {
     border-radius: 16px;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     background: white;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     margin-bottom: 1.5rem;
   }
   .filter-card .card-body {
@@ -222,7 +232,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     font-size: 1rem;
   }
@@ -235,13 +245,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #667eea;
+    color: #647494;
     transition: all 0.3s ease;
     cursor: pointer;
   }
   .btn-filter-toggle:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: #667eea;
+    background: rgba(100, 116, 148, 0.1);
+    border-color: #647494;
   }
   .btn-filter-toggle i {
     font-size: 1.2rem;
@@ -281,8 +291,8 @@
   }
   .filter-card .form-control:focus,
   .filter-card .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.12);
   }
   .filter-card .input-group {
     border-radius: 10px;
@@ -292,7 +302,7 @@
   .filter-card .input-group-text {
     background: #f8f9fa;
     border: none;
-    color: #667eea;
+    color: #647494;
     padding: 10px 14px;
   }
   .filter-card .input-group .form-control {
@@ -300,21 +310,22 @@
     padding-left: 0;
   }
   .filter-card .input-group:focus-within {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.12);
   }
   .btn-apply-filter {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 10px 24px;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
   .btn-apply-filter:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 </style>

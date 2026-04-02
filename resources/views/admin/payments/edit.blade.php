@@ -4,15 +4,20 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 2rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
 
   .page-header::before {
@@ -56,22 +61,22 @@
 
   /* Form Card */
   .form-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
     margin-bottom: 1.5rem;
   }
 
   .form-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    border-bottom: 2px solid #f0f2f5;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.25rem 1.5rem;
   }
 
   .form-card .card-header h6 {
     font-weight: 700;
-    color: #1e293b;
+    color: #041C54;
     margin: 0;
     display: flex;
     align-items: center;
@@ -82,7 +87,7 @@
   .form-card .card-header .header-icon-sm {
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -121,8 +126,8 @@
   }
 
   .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.12);
     outline: none;
   }
 
@@ -184,19 +189,19 @@
   }
 
   .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
 
   .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 

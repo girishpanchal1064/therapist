@@ -4,12 +4,15 @@
 
 @section('page-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
   .page-header h4 { margin: 0; font-weight: 700; color: white; font-size: 1.5rem; }
   .page-header p { color: rgba(255, 255, 255, 0.85); margin: 4px 0 0 0; }
@@ -26,14 +29,14 @@
 
   .settings-card {
     border-radius: 16px;
-    border: none;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
     margin-bottom: 24px;
   }
   .settings-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    border-bottom: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 20px 24px;
   }
   .settings-card .card-body { padding: 24px; }
@@ -51,11 +54,11 @@
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.2);
   }
-  .section-title h5 { margin: 0; font-weight: 700; color: #2d3748; }
+  .section-title h5 { margin: 0; font-weight: 700; color: #041C54; }
   .section-title small { color: #718096; font-size: 0.85rem; }
 
   .form-label-styled { font-weight: 600; color: #4a5568; margin-bottom: 8px; font-size: 0.9rem; display: block; }
@@ -66,15 +69,15 @@
     transition: all 0.3s ease;
   }
   .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
   }
   .form-text { color: #8e9baa; font-size: 0.8rem; margin-top: 6px; }
   .required-asterisk { color: #ea5455; }
 
   /* Toggle Card */
   .toggle-card {
-    background: #f8f9fc;
+    background: #f8fafc;
     border-radius: 12px;
     padding: 18px 20px;
     display: flex;
@@ -84,12 +87,12 @@
     border: 2px solid transparent;
     transition: all 0.3s ease;
   }
-  .toggle-card:hover { border-color: rgba(102, 126, 234, 0.2); }
+  .toggle-card:hover { border-color: rgba(100, 116, 148, 0.25); }
   .toggle-card:last-child { margin-bottom: 0; }
   .toggle-card .toggle-info h6 { margin: 0 0 4px; font-weight: 600; color: #2d3748; }
   .toggle-card .toggle-info small { color: #718096; }
   .toggle-card .form-check-input { width: 50px; height: 26px; }
-  .toggle-card .form-check-input:checked { background-color: #667eea; border-color: #667eea; }
+  .toggle-card .form-check-input:checked { background-color: #041C54; border-color: #041C54; }
 
   /* Social Input */
   .social-input {
@@ -130,12 +133,12 @@
   }
   .btn-cancel:hover { border-color: #ea5455; color: #ea5455; }
   .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
     border: none; color: white; padding: 12px 28px; border-radius: 10px;
     font-weight: 600; transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.22);
   }
-  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); color: white; }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(4, 28, 84, 0.32); color: white; }
 </style>
 @endsection
 
@@ -363,7 +366,7 @@
             <div class="col-md-6">
               <div class="commission-setting-card">
                 <div class="d-flex align-items-center mb-3">
-                  <div class="icon-wrapper me-3" style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                  <div class="icon-wrapper me-3" style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 10px 18px rgba(4, 28, 84, 0.2);">
                     <i class="ri-percent-line"></i>
                   </div>
                   <div>

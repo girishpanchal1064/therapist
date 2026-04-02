@@ -5,17 +5,22 @@
 @section('vendor-style')
 <style>
 :root {
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-gradient: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+}
+
+.layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
 }
 
 .page-header {
     background: var(--theme-gradient);
-    border-radius: 16px;
+    border-radius: 24px;
     padding: 2rem 2.5rem;
     margin-bottom: 2rem;
     color: white;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
 }
 
 .page-header::before {
@@ -34,9 +39,9 @@
 }
 
 .stats-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     margin-bottom: 1.5rem;
     overflow: hidden;
 }
@@ -58,12 +63,13 @@
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
 }
 
 .report-table thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    color: #041C54;
     font-weight: 700;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -74,7 +80,7 @@
 
 .report-table tbody td {
     padding: 18px 20px;
-    border-bottom: 1px solid #f0f2f5;
+    border-bottom: 1px solid rgba(186, 194, 210, 0.25);
     vertical-align: middle;
     color: #2d3748;
     font-size: 0.9rem;
@@ -110,7 +116,7 @@
                         <div class="text-muted small mb-1">Total Users</div>
                         <div class="h4 mb-0 fw-bold">{{ number_format($stats['total_users']) }}</div>
                     </div>
-                    <i class="ri-user-line" style="font-size: 2.5rem; color: #667eea; opacity: 0.3;"></i>
+                    <i class="ri-user-line" style="font-size: 2.5rem; color: #647494; opacity: 0.3;"></i>
                 </div>
             </div>
         </div>
@@ -123,7 +129,7 @@
                         <div class="text-muted small mb-1">Total Clients</div>
                         <div class="h4 mb-0 fw-bold">{{ number_format($stats['total_clients']) }}</div>
                     </div>
-                    <i class="ri-user-3-line" style="font-size: 2.5rem; color: #667eea; opacity: 0.3;"></i>
+                    <i class="ri-user-3-line" style="font-size: 2.5rem; color: #647494; opacity: 0.3;"></i>
                 </div>
             </div>
         </div>
@@ -136,7 +142,7 @@
                         <div class="text-muted small mb-1">Total Therapists</div>
                         <div class="h4 mb-0 fw-bold">{{ number_format($stats['total_therapists']) }}</div>
                     </div>
-                    <i class="ri-user-heart-line" style="font-size: 2.5rem; color: #667eea; opacity: 0.3;"></i>
+                    <i class="ri-user-heart-line" style="font-size: 2.5rem; color: #647494; opacity: 0.3;"></i>
                 </div>
             </div>
         </div>
@@ -149,7 +155,7 @@
                         <div class="text-muted small mb-1">New This Month</div>
                         <div class="h4 mb-0 fw-bold">{{ number_format($stats['new_this_month']) }}</div>
                     </div>
-                    <i class="ri-user-add-line" style="font-size: 2.5rem; color: #667eea; opacity: 0.3;"></i>
+                    <i class="ri-user-add-line" style="font-size: 2.5rem; color: #647494; opacity: 0.3;"></i>
                 </div>
             </div>
         </div>
@@ -157,7 +163,7 @@
 </div>
 
 <!-- Filters -->
-<div class="card mb-4" style="border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+<div class="card mb-4" style="border: 1px solid rgba(186, 194, 210, 0.35); border-radius: 16px; box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);">
     <div class="card-body">
         <form method="GET" action="{{ route('admin.reports.users') }}" class="row g-3">
             <div class="col-md-3">
@@ -200,7 +206,7 @@
 </div>
 
 <!-- Users Table -->
-<div class="card" style="border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden;">
+<div class="card" style="border: 1px solid rgba(186, 194, 210, 0.35); border-radius: 16px; box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05); overflow: hidden;">
     <div class="card-header" style="background: white; border-bottom: 2px solid #f0f2f5; padding: 1.5rem;">
         <h5 class="mb-0 fw-bold">Users List</h5>
     </div>
@@ -232,7 +238,7 @@
                                         @elseif($user->getRawOriginal('avatar'))
                                             <img src="{{ asset('storage/' . $user->getRawOriginal('avatar')) }}" alt="{{ $user->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                         @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $user->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $user->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                         @endif
                                     </div>
                                     <span class="fw-semibold">{{ $user->name }}</span>

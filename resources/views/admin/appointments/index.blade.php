@@ -4,13 +4,14 @@
 
 @section('vendor-style')
 <style>
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
     border-radius: 16px;
     padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
   .page-header h4 {
     margin: 0;
@@ -39,22 +40,22 @@
   }
   .page-header .btn-header-primary {
     background: white;
-    color: #667eea;
+    color: #041C54;
     border: none;
   }
   .page-header .btn-header-primary:hover {
     background: #f8f9fa;
-    color: #764ba2;
+    color: #647494;
   }
 
   /* Stats Cards */
   .stats-card {
     transition: all 0.3s ease;
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.3);
     border-radius: 16px;
     overflow: hidden;
     background: white;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     position: relative;
   }
   .stats-card::before {
@@ -64,7 +65,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -83,13 +84,13 @@
     justify-content: center;
     border-radius: 14px;
     font-size: 1.6rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #667eea;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
   }
   .stats-card .stats-value {
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -125,7 +126,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     font-size: 1rem;
   }
@@ -138,13 +139,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #667eea;
+    color: #647494;
     transition: all 0.3s ease;
     cursor: pointer;
   }
   .btn-filter-toggle:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: #667eea;
+    background: rgba(100, 116, 148, 0.1);
+    border-color: #647494;
   }
   .btn-filter-toggle i {
     font-size: 1.2rem;
@@ -184,11 +185,11 @@
   }
   .filter-card .form-control:focus,
   .filter-card .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.15);
   }
   .btn-apply-filter {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 10px 24px;
@@ -198,7 +199,7 @@
   }
   .btn-apply-filter:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 
@@ -224,13 +225,13 @@
     text-decoration: none;
   }
   .quick-filter-btn:hover {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: #647494;
+    color: #647494;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 4px 12px rgba(100, 116, 148, 0.15);
   }
   .quick-filter-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border-color: transparent;
     color: white;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);

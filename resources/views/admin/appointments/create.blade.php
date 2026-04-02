@@ -4,13 +4,14 @@
 
 @section('vendor-style')
 <style>
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
     border-radius: 16px;
     padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
   .page-header h4 {
     margin: 0;
@@ -41,8 +42,8 @@
   /* Form Card */
   .form-card {
     border-radius: 16px;
-    border: none;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
     transition: all 0.3s ease;
   }
@@ -50,7 +51,7 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   }
   .form-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     border-bottom: 1px solid #e9ecef;
     padding: 20px 24px;
   }
@@ -80,9 +81,9 @@
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
   .section-title h5 { 
     margin: 0; 
@@ -110,8 +111,8 @@
     height: 48px;
   }
   .user-search input:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.1);
   }
   .user-search i {
     position: absolute;
@@ -149,14 +150,14 @@
   }
   .user-option:last-child { margin-bottom: 0; }
   .user-option:hover {
-    background: rgba(102, 126, 234, 0.04);
-    border-color: rgba(102, 126, 234, 0.2);
+    background: rgba(100, 116, 148, 0.06);
+    border-color: rgba(100, 116, 148, 0.25);
     transform: translateX(4px);
   }
   .user-option.selected {
-    background: rgba(102, 126, 234, 0.08);
-    border-color: #667eea;
-    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.15);
+    background: rgba(100, 116, 148, 0.1);
+    border-color: #647494;
+    box-shadow: 0 2px 10px rgba(100, 116, 148, 0.18);
   }
   .user-option input { display: none; }
 
@@ -180,8 +181,8 @@
     flex-shrink: 0;
   }
   .user-initials.client { 
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); 
-    color: #667eea; 
+    background: rgba(100, 116, 148, 0.15);
+    color: #647494; 
   }
   .user-initials.therapist { 
     background: linear-gradient(135deg, rgba(40, 199, 111, 0.15) 0%, rgba(30, 157, 88, 0.15) 100%); 
@@ -205,10 +206,10 @@
     flex-shrink: 0;
   }
   .user-option.selected .user-check {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border-color: transparent;
     color: white;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 2px 8px rgba(4, 28, 84, 0.28);
   }
 
   /* Option Cards */
@@ -235,22 +236,22 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
   .option-card:hover {
-    border-color: #667eea;
+    border-color: #647494;
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 10px 25px rgba(100, 116, 148, 0.16);
   }
   .option-card:hover::before {
     opacity: 1;
   }
   .option-card.selected {
-    border-color: #667eea;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+    border-color: #647494;
+    background: rgba(100, 116, 148, 0.08);
+    box-shadow: 0 6px 20px rgba(100, 116, 148, 0.2);
   }
   .option-card.selected::before {
     opacity: 1;
@@ -283,8 +284,8 @@
   }
 
   .option-icon.bg-purple { 
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); 
-    color: #667eea; 
+    background: rgba(100, 116, 148, 0.16);
+    color: #647494; 
   }
   .option-icon.bg-green { 
     background: linear-gradient(135deg, rgba(40, 199, 111, 0.15) 0%, rgba(30, 157, 88, 0.15) 100%); 
@@ -322,14 +323,14 @@
     position: relative;
   }
   .duration-option:hover {
-    border-color: #667eea;
+    border-color: #647494;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.12);
+    box-shadow: 0 8px 20px rgba(100, 116, 148, 0.16);
   }
   .duration-option.selected {
-    border-color: #667eea;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    border-color: #647494;
+    background: rgba(100, 116, 148, 0.08);
+    box-shadow: 0 4px 15px rgba(100, 116, 148, 0.2);
   }
   .duration-option.popular {
     position: relative;
@@ -340,7 +341,7 @@
     top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
     font-size: 0.65rem;
     padding: 3px 10px;
@@ -348,7 +349,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 2px 8px rgba(4, 28, 84, 0.28);
   }
   .duration-option input { display: none; }
   .duration-option .time { 
@@ -359,7 +360,7 @@
     margin-bottom: 4px;
   }
   .duration-option.selected .time { 
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -386,7 +387,7 @@
     font-size: 0.9rem;
   }
   .schedule-input label i {
-    color: #667eea;
+    color: #647494;
     font-size: 1.1rem;
   }
   .schedule-input input,
@@ -400,8 +401,8 @@
   }
   .schedule-input input:focus,
   .schedule-input select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
   }
 
   /* Meeting Details */
@@ -423,8 +424,8 @@
   }
   .meeting-input input:focus,
   .meeting-input textarea:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
   }
   .meeting-input small {
     display: block;
@@ -443,7 +444,7 @@
     overflow: hidden;
   }
   .preview-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     padding: 28px 24px;
     color: white;
     text-align: center;
@@ -492,8 +493,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #667eea;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
     font-size: 0.95rem;
   }
   .preview-item .value {
@@ -508,7 +509,7 @@
 
   .preview-footer {
     padding: 18px 24px;
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     border-top: 1px solid #e9ecef;
   }
   .preview-footer p {
@@ -520,7 +521,7 @@
     gap: 10px;
   }
   .preview-footer p i {
-    color: #667eea;
+    color: #647494;
     font-size: 1rem;
   }
 
@@ -549,7 +550,7 @@
     background: rgba(234, 84, 85, 0.05);
   }
   .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 14px 32px;
@@ -557,11 +558,11 @@
     font-weight: 600;
     font-size: 1rem;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
   .btn-submit:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 
@@ -587,7 +588,7 @@
     font-size: 0.95rem;
   }
   .form-label-styled i {
-    color: #667eea;
+    color: #647494;
     font-size: 1.1rem;
   }
 

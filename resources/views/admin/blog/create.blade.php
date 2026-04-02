@@ -4,13 +4,17 @@
 
 @section('vendor-style')
 <style>
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    border-radius: 24px;
     padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
   .page-header h4 {
     margin: 0;
@@ -40,12 +44,12 @@
   /* Form Card */
   .form-card {
     border-radius: 16px;
-    border: none;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
   }
   .form-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     border-bottom: 1px solid #e9ecef;
     padding: 20px 24px;
   }
@@ -73,9 +77,9 @@
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
   .section-title h5 { margin: 0; font-weight: 700; color: #2d3748; }
   .section-title small { color: #718096; font-size: 0.85rem; }
@@ -95,8 +99,8 @@
     font-size: 0.95rem;
   }
   .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: #647494;
+    box-shadow: 0 0 0 4px rgba(100, 116, 148, 0.12);
   }
   textarea.form-control {
     min-height: 120px;
@@ -122,11 +126,11 @@
 
   /* Form Check/Switch */
   .form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
+    background-color: #647494;
+    border-color: #647494;
   }
   .form-check-input:focus {
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 0 0 3px rgba(100, 116, 148, 0.25);
   }
 
   /* File Input */
@@ -139,12 +143,12 @@
     cursor: pointer;
   }
   .file-input-wrapper:hover {
-    border-color: #667eea;
-    background: rgba(102, 126, 234, 0.02);
+    border-color: #647494;
+    background: rgba(100, 116, 148, 0.04);
   }
   .file-input-wrapper i {
     font-size: 2.5rem;
-    color: #667eea;
+    color: #647494;
     margin-bottom: 12px;
   }
 
@@ -163,18 +167,18 @@
     color: #ea5455;
   }
   .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
     color: white;
     padding: 12px 28px;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
   .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
     color: white;
   }
 

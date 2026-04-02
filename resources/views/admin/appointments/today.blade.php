@@ -4,13 +4,14 @@
 
 @section('vendor-style')
 <style>
+  .layout-page .content-wrapper { background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important; }
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
     border-radius: 16px;
     padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 18px rgba(4, 28, 84, 0.28);
   }
   .page-header h4 {
     margin: 0;
@@ -40,22 +41,22 @@
   }
   .page-header .btn-header-primary {
     background: white;
-    color: #667eea;
+    color: #041C54;
     border: none;
   }
   .page-header .btn-header-primary:hover {
     background: #f8f9fa;
-    color: #764ba2;
+    color: #647494;
   }
   
   /* Stats Cards */
   .stats-card {
     transition: all 0.3s ease;
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.3);
     border-radius: 16px;
     overflow: hidden;
     background: white;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     position: relative;
   }
   .stats-card::before {
@@ -65,13 +66,13 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
   .stats-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 12px 35px rgba(100, 116, 148, 0.15);
   }
   .stats-card:hover::before {
     opacity: 1;
@@ -84,13 +85,13 @@
     justify-content: center;
     border-radius: 14px;
     font-size: 1.6rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #667eea;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
   }
   .stats-card .stats-value {
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -99,18 +100,18 @@
   /* Appointments Card */
   .appointment-card {
     border-radius: 16px;
-    border: none;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(186, 194, 210, 0.3);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
   }
   .appointment-card .card-header {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
     padding: 20px 24px;
     border-bottom: 1px solid #e9ecef;
   }
   .appointment-card .card-title {
     font-weight: 700;
-    color: #4a5568;
+    color: #041C54;
     font-size: 1.1rem;
   }
   
@@ -126,8 +127,8 @@
     width: 100%;
   }
   .table-today thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    color: #647494;
     font-weight: 700;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -149,9 +150,9 @@
     border-bottom: 1px solid #f0f2f5;
   }
   .table-today tbody tr:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+    background: rgba(186, 194, 210, 0.12);
     transform: scale(1.001);
-    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+    box-shadow: 0 2px 12px rgba(100, 116, 148, 0.1);
   }
   .table-today tbody tr:last-child {
     border-bottom: none;
@@ -166,7 +167,7 @@
   .table-today tbody tr:last-child td {
     border-bottom: none;
   }
-  .table-today tbody tr.status-scheduled { border-left-color: #667eea; }
+  .table-today tbody tr.status-scheduled { border-left-color: #647494; }
   .table-today tbody tr.status-confirmed { border-left-color: #28c76f; }
   .table-today tbody tr.status-in_progress { border-left-color: #ff9f43; }
   .table-today tbody tr.status-completed { border-left-color: #82868b; }
@@ -184,8 +185,8 @@
     gap: 5px;
   }
   .mode-video { 
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); 
-    color: #667eea; 
+    background: rgba(100, 116, 148, 0.15);
+    color: #647494; 
   }
   .mode-audio { 
     background: linear-gradient(135deg, rgba(40, 199, 111, 0.15) 0%, rgba(30, 157, 88, 0.15) 100%); 
@@ -260,8 +261,8 @@
     justify-content: center;
     font-weight: 700;
     font-size: 0.9rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    color: #667eea;
+    background: rgba(100, 116, 148, 0.15);
+    color: #647494;
   }
   .user-avatar-initials.therapist {
     background: linear-gradient(135deg, rgba(40, 199, 111, 0.15) 0%, rgba(30, 157, 88, 0.15) 100%);
@@ -276,17 +277,17 @@
     flex-direction: column;
     align-items: center;
     padding: 8px 16px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    background: rgba(100, 116, 148, 0.1);
     border-radius: 10px;
   }
   .time-display .time {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #667eea;
+    color: #041C54;
   }
   .time-display .period {
     font-size: 0.7rem;
-    color: #764ba2;
+    color: #647494;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 600;
@@ -324,8 +325,8 @@
   }
 
   .current-time-bar {
-    background: linear-gradient(to right, rgba(102, 126, 234, 0.1), transparent);
-    border-left: 4px solid #667eea;
+    background: linear-gradient(to right, rgba(100, 116, 148, 0.12), transparent);
+    border-left: 4px solid #647494;
     padding: 14px 20px;
     border-radius: 0 10px 10px 0;
     margin-bottom: 20px;
@@ -333,8 +334,8 @@
     align-items: center;
     gap: 12px;
   }
-  .current-time-bar i { color: #667eea; font-size: 1.3rem; }
-  .current-time-bar span { font-weight: 600; color: #667eea; }
+  .current-time-bar i { color: #647494; font-size: 1.3rem; }
+  .current-time-bar span { font-weight: 600; color: #647494; }
   
   /* Quick Filters */
   .quick-filters {
@@ -357,14 +358,14 @@
     gap: 6px;
   }
   .quick-filter-btn:hover {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: #647494;
+    color: #647494;
   }
   .quick-filter-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border-color: transparent;
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 14px rgba(4, 28, 84, 0.2);
   }
   .quick-filter-btn .badge-count {
     background: rgba(255, 255, 255, 0.25);
@@ -465,7 +466,7 @@
   .empty-state-icon {
     width: 130px;
     height: 130px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    background: rgba(100, 116, 148, 0.12);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -474,7 +475,7 @@
   }
   .empty-state-icon i { 
     font-size: 3.5rem; 
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -504,8 +505,8 @@
     transition: all 0.2s ease;
   }
   .dropdown-item:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #667eea;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
   }
   .dropdown-item.text-danger:hover {
     background: rgba(234, 84, 85, 0.1);
@@ -662,7 +663,7 @@
       <small class="text-muted">{{ $totalToday }} appointments for {{ now()->format('F d, Y') }}</small>
     </div>
     <div class="d-flex gap-2">
-      <button type="button" class="btn btn-header btn-header-primary" onclick="location.reload()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+      <button type="button" class="btn btn-header btn-header-primary" onclick="location.reload()" style="background: linear-gradient(90deg, #041C54 0%, #647494 100%); color: white; border: none;">
         <i class="ri-refresh-line me-1"></i> Refresh
       </button>
     </div>
@@ -750,7 +751,7 @@
                     @elseif($appointment->therapist->avatar)
                       <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
                     @else
-                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="user-avatar">
                     @endif
                   @else
                     <div class="user-avatar-initials therapist">NA</div>
