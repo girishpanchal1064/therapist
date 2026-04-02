@@ -81,6 +81,18 @@
     img.app-brand-logo {
       background: transparent !important;
     }
+
+    /* Disable hover animations across all modules (requested) */
+    *:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      transition: none !important;
+    }
+
+    /* Make all module .page-header match the dashboard header look */
+    .page-header {
+      background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%) !important;
+    }
   </style>
 
   <!-- Include Scripts for customizer, helper, analytics, config -->
