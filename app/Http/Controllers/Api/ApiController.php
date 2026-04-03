@@ -1714,6 +1714,34 @@ class ApiController extends Controller
     }
 
     /**
+     * List session notes by appointment/session id for authenticated therapist.
+     */
+    public function showTherapistSessionNoteBySession(int $appointmentId, Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        if (! $user->isTherapist()) {
+            return $this->errorResponse('Only therapists can view session notes.', 403);
+        }
+
+        $notes = SessionNote::where('therapist_id', $user->id)
+            ->where('appointment_id', $appointmentId)
+            ->with(['client', 'appointment'])
+            ->orderByDesc('id')
+            ->get();
+
+        if ($notes->isEmpty()) {
+            return $this->errorResponse('Session note not found for this session.', 404);
+        }
+
+        return $this->successResponse([
+            'items' => $notes,
+            'count' => $notes->count(),
+        ]);
+    }
+
+    /**
      * Update a session note for authenticated therapist.
      */
     public function updateTherapistSessionNote(int $id, Request $request): JsonResponse
@@ -2843,11 +2871,27 @@ class ApiController extends Controller
             'note' => ['nullable', 'string', 'max:5000'],
         ]);
 
-        $mood = UserMood::create([
-            'user_id' => $user->id,
-            'mood' => $validated['mood'],
-            'note' => $validated['note'] ?? null,
-        ]);
+        $todayMood = UserMood::query()
+            ->where('user_id', $user->id)
+            ->whereDate('created_at', Carbon::today())
+            ->latest('id')
+            ->first();
+
+        $isUpdate = (bool) $todayMood;
+
+        if ($todayMood) {
+            $todayMood->update([
+                'mood' => $validated['mood'],
+                'note' => $validated['note'] ?? null,
+            ]);
+            $mood = $todayMood->fresh();
+        } else {
+            $mood = UserMood::create([
+                'user_id' => $user->id,
+                'mood' => $validated['mood'],
+                'note' => $validated['note'] ?? null,
+            ]);
+        }
 
         return $this->successResponse([
             'id' => $mood->id,
@@ -2855,7 +2899,7 @@ class ApiController extends Controller
             'note' => $mood->note,
             'created_at' => optional($mood->created_at)->toDateTimeString(),
             'updated_at' => optional($mood->updated_at)->toDateTimeString(),
-        ], 'Mood recorded.', 201);
+        ], $isUpdate ? 'Today mood updated.' : 'Mood recorded.', $isUpdate ? 200 : 201);
     }
 
     /**
