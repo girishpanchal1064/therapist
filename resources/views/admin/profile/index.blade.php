@@ -5,13 +5,14 @@
 @section('vendor-style')
 <style>
 :root {
-    --theme-primary: #696cff;
-    --theme-primary-dark: #5f61e6;
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-primary: #647494;
+    --theme-primary-dark: #041C54;
+    /* Force dashboard gradient (global theme vars exist elsewhere) */
+    --theme-gradient: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%) !important;
 }
 
 .profile-header {
-    background: var(--theme-gradient);
+    background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%) !important;
     border-radius: 16px 16px 0 0;
     padding: 2.5rem;
     position: relative;
@@ -54,7 +55,7 @@
     border: 6px solid #fff;
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     object-fit: cover;
-    background: var(--theme-gradient);
+    background: var(--theme-gradient) !important;
 }
 
 .profile-avatar-initials {
@@ -69,13 +70,13 @@
     font-size: 3rem;
     font-weight: 700;
     color: #fff;
-    background: var(--theme-gradient);
+    background: var(--theme-gradient) !important;
 }
 
 .profile-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
 }
 
@@ -101,7 +102,7 @@
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 10px 30px rgba(4, 28, 84, 0.12);
 }
 
 .stat-card:hover::before {
@@ -119,8 +120,8 @@
 }
 
 .stat-icon-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
 }
 
 .stat-icon-success {
@@ -139,40 +140,40 @@
 }
 
 .info-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
 }
 
 .info-card .card-header {
     background: transparent;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.35);
     padding: 1.25rem 1.5rem;
 }
 
 .info-card .card-header h5 {
-    color: #667eea;
+    color: #041C54;
 }
 
 .info-item {
     padding: 1.25rem;
     border-radius: 12px;
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    background: linear-gradient(135deg, rgba(100, 116, 148, 0.10) 0%, rgba(100, 116, 148, 0.05) 100%);
     margin-bottom: 1rem;
     transition: all 0.2s ease;
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    border: 1px solid rgba(186, 194, 210, 0.35);
 }
 
 .info-item:hover {
-    background: linear-gradient(135deg, #f0f2ff 0%, #e8e9ff 100%);
-    border-color: rgba(102, 126, 234, 0.15);
+    background: linear-gradient(135deg, rgba(100, 116, 148, 0.10) 0%, rgba(100, 116, 148, 0.05) 100%);
+    border-color: rgba(186, 194, 210, 0.45);
 }
 
 .info-label {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #667eea;
+    color: #647494;
     margin-bottom: 0.35rem;
     font-weight: 600;
 }
@@ -192,8 +193,8 @@
 }
 
 .activity-item:hover {
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    border-left-color: #667eea;
+    background: linear-gradient(135deg, rgba(100, 116, 148, 0.10) 0%, rgba(100, 116, 148, 0.05) 100%);
+    border-left-color: #647494;
 }
 
 .activity-icon {
@@ -207,8 +208,8 @@
 }
 
 .activity-icon-primary {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    color: #667eea;
+    background: linear-gradient(135deg, rgba(100, 116, 148, 0.15) 0%, rgba(4, 28, 84, 0.12) 100%);
+    color: #647494;
 }
 
 .activity-icon-success {
@@ -233,7 +234,7 @@
 }
 
 .security-section {
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 14px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -241,8 +242,8 @@
 }
 
 .security-section:hover {
-    border-color: rgba(102, 126, 234, 0.2);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.08);
+    border-color: rgba(186, 194, 210, 0.45);
+    box-shadow: 0 4px 15px rgba(4, 28, 84, 0.06);
 }
 
 .security-icon {
@@ -290,14 +291,14 @@
 
 .btn-theme:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 6px 20px rgba(4, 28, 84, 0.28);
     color: white;
 }
 
 .btn-theme-outline {
     background: transparent;
-    border: 2px solid #667eea;
-    color: #667eea;
+    border: 2px solid rgba(100, 116, 148, 0.6);
+    color: #647494;
     padding: 0.5rem 1.25rem;
     border-radius: 10px;
     font-weight: 500;
@@ -313,7 +314,7 @@
 .btn-theme-light {
     background: rgba(255,255,255,0.9);
     border: none;
-    color: #667eea;
+    color: #647494;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     font-weight: 500;
@@ -326,8 +327,8 @@
 }
 
 .role-badge {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    color: #667eea;
+    background: linear-gradient(135deg, rgba(100, 116, 148, 0.15) 0%, rgba(4, 28, 84, 0.12) 100%);
+    color: #647494;
     padding: 0.5rem 1rem;
     border-radius: 25px;
     font-weight: 600;
@@ -374,8 +375,8 @@
 }
 
 .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    border-color: #647494;
+    box-shadow: 0 0 0 0.2rem rgba(100, 116, 148, 0.15);
 }
 
 .input-group-text {
@@ -383,17 +384,17 @@
 }
 
 .btn-password-update {
-    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+    background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border: none;
-    color: #212529;
+    color: white;
     font-weight: 600;
 }
 
 .btn-password-update:hover {
-    background: linear-gradient(135deg, #ffb300 0%, #ff9800 100%);
-    color: #212529;
+    background: linear-gradient(90deg, #041C54 0%, #2f4a76 55%, #647494 100%);
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+    box-shadow: 0 4px 15px rgba(4, 28, 84, 0.25);
 }
 </style>
 @endsection
@@ -490,7 +491,7 @@
         <div class="card info-card mt-4">
             <div class="card-header">
                 <h6 class="card-title mb-0 fw-bold">
-                    <i class="ri-bar-chart-line me-2" style="color: #667eea;"></i>Account Statistics
+                    <i class="ri-bar-chart-line me-2" style="color: #647494;"></i>Account Statistics
                 </h6>
             </div>
             <div class="card-body">
@@ -542,7 +543,7 @@
         <div class="card info-card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0 fw-bold">
-                    <i class="ri-user-line me-2" style="color: #667eea;"></i>Profile Information
+                    <i class="ri-user-line me-2" style="color: #647494;"></i>Profile Information
                 </h5>
                 <a href="{{ route('admin.profile.edit') }}" class="btn btn-theme-outline btn-sm">
                     <i class="ri-pencil-line me-1"></i>Edit
@@ -615,7 +616,7 @@
         <div class="card security-card mb-4">
             <div class="card-header border-0 bg-transparent">
                 <h5 class="card-title mb-0 fw-bold">
-                    <i class="ri-lock-line me-2" style="color: #667eea;"></i>Security Settings
+                    <i class="ri-lock-line me-2" style="color: #647494;"></i>Security Settings
                 </h5>
             </div>
             <div class="card-body pt-0">
@@ -706,7 +707,7 @@
         <div class="card info-card">
             <div class="card-header">
                 <h5 class="card-title mb-0 fw-bold">
-                    <i class="ri-history-line me-2" style="color: #667eea;"></i>Recent Activity
+                    <i class="ri-history-line me-2" style="color: #647494;"></i>Recent Activity
                 </h5>
             </div>
             <div class="card-body pt-0">
@@ -831,7 +832,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 color = '#198754';
                 text = 'Good';
             } else {
-                color = '#667eea';
+                color = '#647494';
                 text = 'Strong';
             }
 

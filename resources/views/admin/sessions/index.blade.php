@@ -5,9 +5,10 @@
 @section('page-style')
 <style>
     :root {
-        --theme-primary: #696cff;
-        --theme-primary-dark: #5f61e6;
-        --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --theme-primary: var(--apni-lynch);
+        --theme-primary-dark: var(--apni-gulf-blue);
+        --theme-gradient: var(--apni-gradient-light);
+        --theme-gradient-hover: var(--apni-gradient-dark);
     }
 
     .page-header {
@@ -41,7 +42,7 @@
 
     .btn-theme:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 12px rgba(var(--apni-bs-primary-rgb), 0.4);
         color: white;
     }
 
@@ -79,27 +80,27 @@
     .status-tab:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        color: #667eea;
-        border-color: #667eea;
+        color: var(--theme-primary);
+        border-color: var(--theme-primary);
     }
 
     .status-tab.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--theme-gradient);
         color: white;
         border-color: transparent;
     }
 
     .filter-card {
         background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-        border: 1px solid rgba(102, 126, 234, 0.1);
+        border: 1px solid rgba(var(--apni-bs-primary-rgb), 0.1);
         border-radius: 12px;
         padding: 1.25rem;
         margin-bottom: 1.5rem;
     }
 
     .filter-card .form-control:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        border-color: var(--theme-primary);
+        box-shadow: 0 0 0 0.2rem rgba(var(--apni-bs-primary-rgb), 0.15);
     }
 
     .table-modern {
@@ -140,9 +141,13 @@
     }
 
     .table-modern tbody tr:hover {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.04) 0%, rgba(118, 75, 162, 0.04) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(var(--apni-bs-primary-rgb), 0.04) 0%,
+            rgba(var(--apni-bs-primary-rgb), 0.02) 100%
+        );
         transform: scale(1.001);
-        box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+        box-shadow: 0 2px 12px rgba(var(--apni-bs-primary-rgb), 0.08);
     }
 
     .table-modern tbody tr:last-child {
@@ -187,7 +192,7 @@
         font-weight: 600;
         font-size: 0.8rem;
         color: white;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--theme-gradient);
     }
 
     .session-id {
@@ -196,7 +201,7 @@
         background: linear-gradient(135deg, #f8f9ff 0%, #e8e9ff 100%);
         padding: 0.35rem 0.65rem;
         border-radius: 6px;
-        color: #667eea;
+        color: var(--theme-primary);
         font-weight: 600;
     }
 
@@ -248,7 +253,7 @@
     }
 
     .action-dropdown .dropdown-toggle {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--theme-gradient);
         color: white;
         border: none;
         width: 32px;
@@ -277,7 +282,7 @@
     }
 
     .action-dropdown .dropdown-item:hover {
-        background-color: rgba(102, 126, 234, 0.1);
+        background-color: rgba(var(--apni-bs-primary-rgb), 0.1);
     }
 
     .pagination-modern .btn {
@@ -289,7 +294,7 @@
     }
 
     .pagination-modern .btn:hover:not(:disabled) {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--theme-gradient);
         color: white;
     }
 
@@ -301,7 +306,7 @@
     .empty-state-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--theme-gradient);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -327,24 +332,24 @@
     }
 
     .btn-refresh {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--theme-gradient);
         border: none;
         color: white;
     }
 
     .btn-refresh:hover {
-        background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        background: var(--theme-gradient-hover);
         color: white;
     }
 
     .btn-search {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--theme-gradient);
         border: none;
         color: white;
     }
 
     .btn-search:hover {
-        background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        background: var(--theme-gradient-hover);
         color: white;
     }
 </style>
@@ -466,7 +471,7 @@
                                                  alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=667eea&color=fff&size=72&bold=true&format=svg"
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=647494&color=fff&size=72&bold=true&format=svg"
                                                  alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @endif

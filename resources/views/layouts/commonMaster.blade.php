@@ -24,7 +24,7 @@
   <style>
     /* Global theme gradient for backend headers */
     :root {
-      --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --theme-gradient: var(--apni-gradient-light);
     }
 
     /* Unified backend page header */
