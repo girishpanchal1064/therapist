@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\TwilioSessionTokenController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('register', [ApiController::class, 'register']);
@@ -30,6 +31,7 @@ Route::middleware('auth:api')->group(function () {
   Route::get('therapist/appointments/{id}', [ApiController::class, 'therapistAppointmentShow']);
   Route::get('therapist/reviews', [ApiController::class, 'therapistReviews']);
   Route::post('appointments', [ApiController::class, 'createAppointment']);
+  Route::get('appointments/{appointment}/twilio-token', [TwilioSessionTokenController::class, 'show']);
 
   // Profile
   Route::get('profile', [ApiController::class, 'profile']);
