@@ -175,6 +175,9 @@
                     <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">
                         Home
                     </a>
+                    <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'nav-link-active' : '' }}">
+                        Contact Us
+                    </a>
                     <a href="{{ route('therapists.index') }}" class="nav-link {{ request()->routeIs('therapists.*') ? 'nav-link-active' : '' }}">
                         Find Therapists
                     </a>
@@ -183,9 +186,6 @@
                     </a>
                     <a href="{{ route('blog.index') }}" class="nav-link {{ request()->routeIs('blog.*') ? 'nav-link-active' : '' }}">
                         Blog
-                    </a>
-                    <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'nav-link-active' : '' }}">
-                        About
                     </a>
                 </div>
 
@@ -256,10 +256,10 @@
              class="md:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
                 <a href="{{ route('home') }}" class="app-navbar-mobile-link block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'app-navbar-mobile-link-active' : '' }}">Home</a>
+                <a href="{{ route('contact') }}" class="app-navbar-mobile-link block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('contact') ? 'app-navbar-mobile-link-active' : '' }}">Contact Us</a>
                 <a href="{{ route('therapists.index') }}" class="app-navbar-mobile-link block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('therapists.*') ? 'app-navbar-mobile-link-active' : '' }}">Find Therapists</a>
                 <a href="{{ route('assessments.index') }}" class="app-navbar-mobile-link block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('assessments.*') ? 'app-navbar-mobile-link-active' : '' }}">Self Assessment</a>
                 <a href="{{ route('blog.index') }}" class="app-navbar-mobile-link block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('blog.*') ? 'app-navbar-mobile-link-active' : '' }}">Blog</a>
-                <a href="{{ route('about') }}" class="app-navbar-mobile-link block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('about') ? 'app-navbar-mobile-link-active' : '' }}">About</a>
 
                 @auth
                     <div class="border-t border-gray-200 pt-4">
@@ -340,7 +340,7 @@
                     </ul>
                     <ul class="space-y-2 min-w-0 pl-0" aria-labelledby="footer-nav-support">
                         <li><a href="#" class="text-[#7484A4] hover:text-[#041C54] transition-colors">Help Center</a></li>
-                        <li><a href="#" class="text-[#7484A4] hover:text-[#041C54] transition-colors">Contact Us</a></li>
+                        <li><a href="{{ route('contact') }}" class="text-[#7484A4] hover:text-[#041C54] transition-colors">Contact Us</a></li>
                         <li><a href="#" class="text-[#7484A4] hover:text-[#041C54] transition-colors">Privacy Policy</a></li>
                         <li><a href="#" class="text-[#7484A4] hover:text-[#041C54] transition-colors">Terms of Service</a></li>
                         <li><a href="#" class="text-[#7484A4] hover:text-[#041C54] transition-colors">FAQ</a></li>

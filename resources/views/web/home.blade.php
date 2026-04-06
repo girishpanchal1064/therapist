@@ -1478,7 +1478,7 @@
         </div>
 
         <div class="apni-online-help">
-            Still have questions? <a href="{{ route('about') }}">Learn more about our process</a>
+            Still have questions? <a href="{{ route('contact') }}">Contact us</a>
         </div>
     </div>
 </section>

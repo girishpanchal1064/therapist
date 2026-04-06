@@ -214,6 +214,8 @@ Route::get('/blog', [App\Http\Controllers\Web\BlogController::class, 'index'])->
 Route::get('/blog/{slug}', [App\Http\Controllers\Web\BlogController::class, 'show'])->name('blog.show');
 Route::get('/blog/category/{slug}', [App\Http\Controllers\Web\BlogController::class, 'category'])->name('blog.category');
 
-Route::get('/about', function () {
+Route::redirect('/about', '/contact', 301);
+
+Route::get('/contact', function () {
     return view('web.about');
-})->name('about');
+})->name('contact');

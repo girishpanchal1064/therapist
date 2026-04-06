@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'About Us - Apani Psychology')
-@section('description', 'Learn about our mission to make mental health support accessible, affordable, and effective for everyone.')
+@section('title', 'Contact Us - Apani Psychology')
+@section('description', 'Get in touch with Apani Psychology. We are here to answer questions about our services, online therapy, and how we can support your mental health journey.')
 
 @section('content')
-<div class="about-page min-h-screen bg-gradient-to-b from-white to-[#BAC2D2]/5">
+<div class="contact-page min-h-screen bg-gradient-to-b from-white to-[#BAC2D2]/5">
     {{-- Hero — marketing-page-hero + CTAs (aligned with therapists / assessments / blog) --}}
     <section class="marketing-page-hero">
         <div class="pointer-events-none absolute inset-0 opacity-10" aria-hidden="true">
@@ -13,10 +13,10 @@
         </div>
         <div class="relative z-10 mx-auto w-full max-w-3xl px-4 text-center sm:px-6 lg:px-8">
             <h1 class="font-display text-4xl font-medium leading-tight text-white md:text-5xl lg:text-[3.75rem] lg:leading-[1.1]">
-                About <span class="text-[#BAC2D2]">Apani Psychology</span>
+                Contact <span class="text-[#BAC2D2]">Us</span>
             </h1>
             <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#BAC2D2] md:text-lg">
-                We're on a mission to make mental health support accessible, affordable, and effective for everyone, everywhere.
+                Have a question or need support? Reach out to Apani Psychology—we are committed to making mental health care accessible, affordable, and effective for everyone.
             </p>
             <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <a href="#mission"
