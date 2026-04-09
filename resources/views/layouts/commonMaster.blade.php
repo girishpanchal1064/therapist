@@ -89,9 +89,44 @@
       transition: none !important;
     }
 
-    /* Make all module .page-header match the dashboard header look */
-    .page-header {
-      background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%) !important;
+    /* Unified dark-blue header bars across modules */
+    .page-header,
+    .dashboard-header,
+    .welcome-banner,
+    .theme-header-bar {
+      background: #041c54 !important;
+      color: #ffffff !important;
+    }
+
+    .page-header h1,
+    .page-header h2,
+    .page-header h3,
+    .page-header h4,
+    .page-header h5,
+    .page-header h6,
+    .page-header p,
+    .dashboard-header h1,
+    .dashboard-header h2,
+    .dashboard-header h3,
+    .dashboard-header h4,
+    .dashboard-header h5,
+    .dashboard-header h6,
+    .dashboard-header p,
+    .welcome-banner h1,
+    .welcome-banner h2,
+    .welcome-banner h3,
+    .welcome-banner h4,
+    .welcome-banner h5,
+    .welcome-banner h6,
+    .welcome-banner p,
+    .theme-header-bar h1,
+    .theme-header-bar h2,
+    .theme-header-bar h3,
+    .theme-header-bar h4,
+    .theme-header-bar h5,
+    .theme-header-bar h6,
+    .theme-header-bar p {
+      color: #ffffff !important;
     }
   </style>
 

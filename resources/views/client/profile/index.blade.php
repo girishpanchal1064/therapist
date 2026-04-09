@@ -5,9 +5,9 @@
 @section('vendor-style')
 <style>
 :root {
-    --theme-primary: #696cff;
-    --theme-primary-dark: #5f61e6;
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-primary: #041c54;
+    --theme-primary-dark: #031742;
+    --theme-gradient: linear-gradient(135deg, #041c54 0%, #041c54 100%);
 }
 
 .profile-header {
