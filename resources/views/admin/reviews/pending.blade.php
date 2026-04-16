@@ -85,44 +85,6 @@
         box-shadow: 0 0 0 0.2rem rgba(100, 116, 148, 0.12);
     }
     
-    .table-modern {
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    
-    .table-modern thead th {
-        background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-        color: #4a5568;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.5px;
-        padding: 1rem;
-        border: none;
-    }
-    
-    .table-modern thead th:first-child {
-        border-radius: 8px 0 0 0;
-    }
-    
-    .table-modern thead th:last-child {
-        border-radius: 0 8px 0 0;
-    }
-    
-    .table-modern tbody tr {
-        transition: all 0.2s ease;
-    }
-    
-    .table-modern tbody tr:hover {
-        background-color: rgba(100, 116, 148, 0.06);
-    }
-    
-    .table-modern tbody td {
-        padding: 1rem;
-        vertical-align: middle;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
     .user-info {
         display: flex;
         align-items: center;
@@ -362,8 +324,8 @@
         </div>
 
         <!-- Pending Reviews Table -->
-        <div class="table-responsive">
-            <table class="table table-modern">
+        <div class="table-responsive admin-table-scroll">
+            <table class="table table-modern table-hover align-middle">
                 <thead>
                     <tr>
                         <th>#</th>

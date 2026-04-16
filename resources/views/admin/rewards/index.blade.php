@@ -435,8 +435,8 @@
     <h5 class="mb-0 fw-bold">All Rewards</h5>
   </div>
   <div class="card-body p-0" style="margin-top: 20px">
-    <div class="table-responsive">
-      <table id="rewardsTable" class="table mb-0">
+    <div class="table-responsive admin-table-scroll">
+      <table id="rewardsTable" class="table table-modern table-hover align-middle mb-0">
         <thead>
           <tr>
             <th>ID</th>

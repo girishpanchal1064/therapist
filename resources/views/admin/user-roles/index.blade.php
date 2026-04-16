@@ -27,8 +27,8 @@
           </div>
         @endif
 
-        <div class="table-responsive">
-          <table class="table table-hover">
+        <div class="table-responsive admin-table-scroll">
+          <table class="table table-modern table-hover align-middle">
             <thead>
               <tr>
                 <th>User</th>

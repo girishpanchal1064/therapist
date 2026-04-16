@@ -316,36 +316,6 @@
     padding: 0;
 }
 
-/* Table Styling */
-.transactions-table {
-    margin: 0;
-}
-
-.transactions-table thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 1rem 1.25rem;
-    border: none;
-}
-
-.transactions-table tbody tr {
-    transition: all 0.2s ease;
-}
-
-.transactions-table tbody tr:hover {
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-}
-
-.transactions-table tbody td {
-    padding: 1rem 1.25rem;
-    vertical-align: middle;
-    border-bottom: 1px solid #f0f2f5;
-}
-
 /* Transaction Row */
 .txn-date {
     font-weight: 600;
@@ -597,8 +567,8 @@
             </div>
             <div class="transactions-body">
                 @if($transactions->count() > 0)
-                    <div class="table-responsive">
-                        <table class="table transactions-table">
+                    <div class="table-responsive admin-table-scroll">
+                        <table class="table transactions-table table-hover align-middle">
                             <thead>
                                 <tr>
                                     <th>Date & Time</th>

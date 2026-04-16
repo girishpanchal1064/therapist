@@ -8,40 +8,40 @@ use App\Http\Resources\AssessmentResource;
 use App\Http\Resources\TherapistResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WalletTransactionResource;
+use App\Models\ApiMobileRefreshToken;
 use App\Models\Appointment;
 use App\Models\Assessment;
 use App\Models\Review;
 use App\Models\SessionNote;
-use App\Models\TherapistEarning;
-use App\Models\TherapistWeeklyAvailability;
-use App\Models\TherapistSingleAvailability;
 use App\Models\TherapistAvailabilityBlock;
-use App\Models\TherapistExperience;
-use App\Models\TherapistQualification;
 use App\Models\TherapistAward;
-use App\Models\TherapistProfessionalBody;
 use App\Models\TherapistBankDetail;
+use App\Models\TherapistExperience;
+use App\Models\TherapistProfessionalBody;
+use App\Models\TherapistProfile;
+use App\Models\TherapistQualification;
+use App\Models\TherapistSingleAvailability;
+use App\Models\TherapistSpecialization;
+use App\Models\TherapistWeeklyAvailability;
+use App\Models\User;
 use App\Models\UserAssessment;
 use App\Models\UserAssessmentAnswer;
-use App\Models\TherapistProfile;
-use App\Models\TherapistSpecialization;
-use App\Models\User;
 use App\Models\UserMood;
 use App\Models\UserProfile;
 use App\Models\Wallet;
 use App\Services\TherapistAvailabilityService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class ApiController extends Controller
 {
@@ -85,6 +85,75 @@ class ApiController extends Controller
         return response()->json($payload, $status);
     }
 
+    /**
+     * Create a Passport personal access token and a mobile refresh token (rotated on refresh).
+     *
+     * @return array{access_token: string, refresh_token: string, token_type: string}
+     */
+    protected function issueMobileTokenPair(User $user): array
+    {
+        $tokenResult = $user->createToken('api-token');
+        $accessToken = $tokenResult->accessToken ?? (string) $tokenResult->token;
+        $accessTokenId = $tokenResult->token->getKey();
+
+        $plainRefresh = Str::random(64);
+        ApiMobileRefreshToken::query()->create([
+            'user_id' => $user->id,
+            'access_token_id' => $accessTokenId,
+            'token_hash' => hash('sha256', $plainRefresh),
+            'expires_at' => now()->addDays(config('auth.mobile_refresh_token_expiration_days', 30)),
+        ]);
+
+        return [
+            'access_token' => $accessToken,
+            'refresh_token' => $plainRefresh,
+            'token_type' => 'Bearer',
+        ];
+    }
+
+    /**
+     * Exchange a valid refresh token for a new access + refresh token pair.
+     */
+    public function refreshToken(Request $request): JsonResponse
+    {
+        $request->validate([
+            'refresh_token' => ['required', 'string'],
+        ]);
+
+        $hash = hash('sha256', $request->input('refresh_token'));
+        $record = ApiMobileRefreshToken::query()
+            ->where('token_hash', $hash)
+            ->whereNull('revoked_at')
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (! $record) {
+            return $this->errorResponse('Invalid or expired refresh token.', 401);
+        }
+
+        $user = User::query()->find($record->user_id);
+
+        if (! $user || ! $user->isActive()) {
+            return $this->errorResponse('Your account is not active.', 403);
+        }
+
+        DB::transaction(function () use ($record, $user) {
+            $token = $user->tokens()->whereKey($record->access_token_id)->first();
+            if ($token && (string) $token->user_id === (string) $user->id) {
+                $token->revoke();
+            }
+            $record->forceFill(['revoked_at' => now()])->save();
+        });
+
+        $tokens = $this->issueMobileTokenPair($user);
+
+        return $this->successResponse([
+            'user' => new UserResource($user),
+            'token_type' => $tokens['token_type'],
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
+        ], 'Token refreshed successfully.');
+    }
 
     public function register(Request $request): JsonResponse
     {
@@ -126,15 +195,15 @@ class ApiController extends Controller
             }
         }
 
-        $tokenResult = $user->createToken('api-token');
+        $tokens = $this->issueMobileTokenPair($user);
 
         return $this->successResponse([
             'user' => new UserResource($user),
-            'token_type' => 'Bearer',
-            'access_token' => $tokenResult->accessToken ?? $tokenResult->token,
+            'token_type' => $tokens['token_type'],
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
         ], 'Registered successfully.', 201);
     }
-
 
     public function login(Request $request): JsonResponse
     {
@@ -152,15 +221,16 @@ class ApiController extends Controller
             return $this->errorResponse('Your account is not active.', 403);
         }
 
-        $tokenResult = $user->createToken('api-token');
+        $tokens = $this->issueMobileTokenPair($user);
         $user->forceFill([
             'last_login_at' => now(),
         ])->save();
 
         return $this->successResponse([
             'user' => new UserResource($user),
-            'token_type' => 'Bearer',
-            'access_token' => $tokenResult->accessToken ?? $tokenResult->token,
+            'token_type' => $tokens['token_type'],
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
         ], 'Logged in successfully.');
     }
 
@@ -188,7 +258,7 @@ class ApiController extends Controller
             return $this->errorResponse('Your account is not active.', 403);
         }
 
-        $tokenResult = $user->createToken('api-token');
+        $tokens = $this->issueMobileTokenPair($user);
         $user->forceFill([
             'last_login_at' => now(),
         ])->save();
@@ -204,8 +274,9 @@ class ApiController extends Controller
                 'formatted_balance' => $user->wallet->formatted_balance,
                 'currency' => $user->wallet->currency,
             ] : null,
-            'token_type' => 'Bearer',
-            'access_token' => $tokenResult->accessToken ?? $tokenResult->token,
+            'token_type' => $tokens['token_type'],
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
         ], 'Logged in successfully as Client.');
     }
 
@@ -233,7 +304,7 @@ class ApiController extends Controller
             return $this->errorResponse('Your account is not active.', 403);
         }
 
-        $tokenResult = $user->createToken('api-token');
+        $tokens = $this->issueMobileTokenPair($user);
         $user->forceFill([
             'last_login_at' => now(),
         ])->save();
@@ -250,8 +321,9 @@ class ApiController extends Controller
                 'formatted_balance' => $user->wallet->formatted_balance,
                 'currency' => $user->wallet->currency,
             ] : null,
-            'token_type' => 'Bearer',
-            'access_token' => $tokenResult->accessToken ?? $tokenResult->token,
+            'token_type' => $tokens['token_type'],
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
         ], 'Logged in successfully as Therapist.');
     }
 
@@ -307,6 +379,9 @@ class ApiController extends Controller
         $user = $request->user();
 
         if ($user && $user->token()) {
+            ApiMobileRefreshToken::query()
+                ->where('access_token_id', $user->token()->id)
+                ->update(['revoked_at' => now()]);
             $user->token()->revoke();
         }
 
@@ -446,7 +521,7 @@ class ApiController extends Controller
         return $this->successResponse([
             'avatar' => $user->avatar,
             'avatar_path' => $path,
-            'avatar_url' => asset('storage/' . $path),
+            'avatar_url' => asset('storage/'.$path),
             'therapist_profile_image' => $user->therapistProfile?->profile_image,
         ], 'Avatar updated successfully.');
     }
@@ -671,11 +746,13 @@ class ApiController extends Controller
         $normalizeTextOrArray = static function ($value): ?string {
             if (is_array($value)) {
                 $parts = array_values(array_filter(array_map(static fn ($item) => is_scalar($item) ? trim((string) $item) : '', $value)));
+
                 return empty($parts) ? null : implode(', ', $parts);
             }
             if (is_null($value)) {
                 return null;
             }
+
             return trim((string) $value);
         };
 
@@ -1002,7 +1079,7 @@ class ApiController extends Controller
         $mode = $request->get('session_mode');
         $duration = $request->get('duration_minutes', 60);
 
-        $service = new TherapistAvailabilityService();
+        $service = new TherapistAvailabilityService;
         $slots = $service->getAvailableSlots($therapistId, $date, $mode, $duration);
 
         return $this->successResponse([
@@ -1603,7 +1680,7 @@ class ApiController extends Controller
         if (! empty($validated['search'])) {
             $search = trim((string) $validated['search']);
             $query->whereHas('client', function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%');
+                $q->where('name', 'like', '%'.$search.'%');
             });
         }
 
@@ -2308,12 +2385,12 @@ class ApiController extends Controller
         $appointmentDate = Carbon::parse($validated['appointment_date'])->toDateString();
         $appointmentTimeInput = $validated['appointment_time'];
         $timeFormatted = strlen($appointmentTimeInput) === 5
-            ? $appointmentTimeInput . ':00'
+            ? $appointmentTimeInput.':00'
             : $appointmentTimeInput;
 
         $durationMinutes = (int) $validated['duration_minutes'];
 
-        $slotStart = Carbon::parse($appointmentDate . ' ' . $timeFormatted);
+        $slotStart = Carbon::parse($appointmentDate.' '.$timeFormatted);
         $slotEnd = $slotStart->copy()->addMinutes($durationMinutes);
 
         // Check overlapping appointments for this therapist on that date
@@ -2331,7 +2408,7 @@ class ApiController extends Controller
                 $existingTime .= ':00';
             }
 
-            $existingStart = Carbon::parse($appointmentDate . ' ' . $existingTime);
+            $existingStart = Carbon::parse($appointmentDate.' '.$existingTime);
             $existingEnd = $existingStart->copy()->addMinutes($existing->duration_minutes ?? 60);
 
             if ($slotStart->lt($existingEnd) && $slotEnd->gt($existingStart)) {
@@ -2461,10 +2538,10 @@ class ApiController extends Controller
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('comment', 'like', '%' . $search . '%')
+                $q->where('comment', 'like', '%'.$search.'%')
                     ->orWhereHas('client', function ($clientQuery) use ($search) {
-                        $clientQuery->where('name', 'like', '%' . $search . '%')
-                            ->orWhere('email', 'like', '%' . $search . '%');
+                        $clientQuery->where('name', 'like', '%'.$search.'%')
+                            ->orWhere('email', 'like', '%'.$search.'%');
                     });
             });
         }
@@ -2722,7 +2799,7 @@ class ApiController extends Controller
                     DB::rollBack();
 
                     return $this->errorResponse(
-                        'Missing answer for required question: ' . $question->id,
+                        'Missing answer for required question: '.$question->id,
                         422
                     );
                 }
@@ -2960,4 +3037,3 @@ class ApiController extends Controller
         ]);
     }
 }
-

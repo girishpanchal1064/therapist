@@ -190,41 +190,6 @@
     padding: 1.5rem;
   }
 
-  /* Table Styling */
-  .reports-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-
-  .reports-table thead th {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-    color: #4a5568;
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 14px 16px;
-    border: none;
-    white-space: nowrap;
-  }
-
-  .reports-table tbody tr {
-    transition: all 0.2s ease;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  .reports-table tbody tr:hover {
-    background-color: rgba(100, 116, 148, 0.06);
-  }
-
-  .reports-table tbody td {
-    padding: 14px 16px;
-    vertical-align: middle;
-    color: #2d3748;
-    font-size: 0.9rem;
-  }
-
   .badge-status {
     padding: 0.375rem 0.875rem;
     border-radius: 20px;
@@ -372,8 +337,8 @@
     <h5 class="mb-0">Payment Methods</h5>
   </div>
   <div class="card-body" style="margin-top: 10px">
-    <div class="table-responsive">
-      <table class="table reports-table">
+    <div class="table-responsive admin-table-scroll">
+      <table class="table reports-table table-hover align-middle">
         <thead>
           <tr>
             <th>Payment Method</th>
@@ -422,8 +387,8 @@
     <h5 class="mb-0">Recent Payments</h5>
   </div>
   <div class="card-body" style="margin-top: 10px">
-    <div class="table-responsive">
-      <table class="table reports-table">
+    <div class="table-responsive admin-table-scroll">
+      <table class="table reports-table table-hover align-middle">
         <thead>
           <tr>
             <th>Transaction ID</th>
@@ -446,8 +411,13 @@
               </td>
               <td>
                 <div>
-                  <div class="fw-semibold">{{ $payment->user->name }}</div>
-                  <div class="text-muted small">{{ $payment->user->email }}</div>
+                  @if($payment->user)
+                    <div class="fw-semibold">{{ $payment->user->name }}</div>
+                    <div class="text-muted small">{{ $payment->user->email }}</div>
+                  @else
+                    <div class="fw-semibold text-muted">—</div>
+                    <div class="text-muted small">No user linked</div>
+                  @endif
                 </div>
               </td>
               <td>

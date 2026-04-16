@@ -162,66 +162,6 @@
     padding: 1.5rem;
   }
 
-  /* Table Styling - Enhanced */
-  .dashboard-table {
-    margin: 0;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    width: 100%;
-  }
-
-  .dashboard-table thead th {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-    color: #647494;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 18px 20px;
-    border: none;
-    white-space: nowrap;
-  }
-
-  .dashboard-table thead th:first-child {
-    border-radius: 12px 0 0 0;
-  }
-
-  .dashboard-table thead th:last-child {
-    border-radius: 0 12px 0 0;
-  }
-
-  .dashboard-table tbody tr {
-    transition: all 0.3s ease;
-    background: white;
-    border-bottom: 1px solid rgba(186, 194, 210, 0.3);
-  }
-
-  .dashboard-table tbody tr:hover {
-    background: rgba(186, 194, 210, 0.12);
-    transform: scale(1.001);
-    box-shadow: 0 2px 12px rgba(100, 116, 148, 0.1);
-  }
-
-  .dashboard-table tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  .dashboard-table tbody td {
-    padding: 18px 20px;
-    vertical-align: middle;
-    color: #041C54;
-    font-size: 0.9rem;
-    border-bottom: 1px solid rgba(186, 194, 210, 0.3);
-  }
-
-  .dashboard-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-
   /* User Info */
   .user-info {
     display: flex;
@@ -529,8 +469,8 @@
       </div>
       <div class="card-body p-0">
         @if($recent_appointments->count() > 0)
-          <div class="table-responsive">
-            <table class="table dashboard-table">
+          <div class="table-responsive admin-table-scroll">
+            <table class="table dashboard-table table-hover align-middle">
               <thead>
                 <tr>
                   <th>Client</th>
@@ -599,8 +539,8 @@
       </div>
       <div class="card-body p-0">
         @if($recent_users->count() > 0)
-          <div class="table-responsive">
-            <table class="table dashboard-table">
+          <div class="table-responsive admin-table-scroll">
+            <table class="table dashboard-table table-hover align-middle">
               <thead>
                 <tr>
                   <th>User</th>

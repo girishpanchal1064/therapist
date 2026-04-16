@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
 use App\Models\Payment;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PaymentController extends Controller
 {
@@ -24,13 +27,13 @@ class PaymentController extends Controller
 
         // Apply search
         if ($search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('transaction_id', 'like', "%{$search}%")
-                  ->orWhere('amount', 'like', "%{$search}%")
-                  ->orWhereHas('user', function($userQuery) use ($search) {
-                      $userQuery->where('name', 'like', "%{$search}%")
-                                ->orWhere('email', 'like', "%{$search}%");
-                  });
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -41,12 +44,50 @@ class PaymentController extends Controller
 
     public function create()
     {
-        return view('admin.payments.create');
+        $users = User::orderBy('name')->get();
+
+        return view('admin.payments.create', compact('users'));
     }
 
     public function store(Request $request)
     {
-        // Implementation for storing payments
+        $payableTypes = [Appointment::class, Wallet::class];
+
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'payable_type' => ['required', Rule::in($payableTypes)],
+            'payable_id' => 'required|integer|min:1',
+            'amount' => 'required|numeric|min:0',
+            'tax_amount' => 'nullable|numeric|min:0',
+            'total_amount' => 'required|numeric|min:0',
+            'currency' => 'nullable|string|max:3',
+            'payment_method' => 'required|in:razorpay,stripe,wallet,coupon',
+            'payment_gateway' => 'nullable|string|max:255',
+            'transaction_id' => 'nullable|string|max:255',
+            'status' => 'required|in:pending,processing,completed,failed,refunded',
+            'paid_at' => 'nullable|date',
+        ]);
+
+        $model = $validated['payable_type']::query()->whereKey($validated['payable_id'])->first();
+        if (! $model) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['payable_id' => 'No matching '.class_basename($validated['payable_type']).' found for this ID.']);
+        }
+
+        if ($validated['paid_at'] ?? null) {
+            $validated['paid_at'] = \Carbon\Carbon::parse($request->paid_at);
+        } else {
+            $validated['paid_at'] = null;
+        }
+
+        $validated['tax_amount'] = $validated['tax_amount'] ?? 0;
+        $validated['currency'] = $validated['currency'] ?? 'INR';
+
+        Payment::create($validated);
+
+        return redirect()->route('admin.payments.index')
+            ->with('success', 'Payment created successfully.');
     }
 
     public function show(Payment $payment)
@@ -58,6 +99,7 @@ class PaymentController extends Controller
     {
         $payment->load(['user', 'payable']);
         $users = User::orderBy('name')->get();
+
         return view('admin.payments.edit', compact('payment', 'users'));
     }
 
@@ -101,6 +143,7 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         $payment->delete();
+
         return redirect()->route('admin.payments.index');
     }
 
@@ -113,13 +156,13 @@ class PaymentController extends Controller
 
         // Apply search
         if ($search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('transaction_id', 'like', "%{$search}%")
-                  ->orWhere('amount', 'like', "%{$search}%")
-                  ->orWhereHas('user', function($userQuery) use ($search) {
-                      $userQuery->where('name', 'like', "%{$search}%")
-                                ->orWhere('email', 'like', "%{$search}%");
-                  });
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -133,7 +176,7 @@ class PaymentController extends Controller
         $startDate = $request->get('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->get('end_date', now()->endOfMonth()->format('Y-m-d'));
 
-        $query = Payment::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        $query = Payment::whereBetween('created_at', [$startDate.' 00:00:00', $endDate.' 23:59:59']);
 
         // Total statistics
         $totalRevenue = (clone $query)->where('status', 'completed')->sum('total_amount');
@@ -190,6 +233,7 @@ class PaymentController extends Controller
     public function refund(Payment $payment)
     {
         $payment->update(['status' => 'refunded']);
+
         return redirect()->back();
     }
 }

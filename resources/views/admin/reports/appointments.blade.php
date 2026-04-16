@@ -56,43 +56,6 @@
     background: var(--theme-gradient);
 }
 
-.report-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(186, 194, 210, 0.35);
-    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
-}
-
-.report-table thead th {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-    color: #041C54;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 18px 20px;
-    border: none;
-}
-
-.report-table tbody td {
-    padding: 18px 20px;
-    border-bottom: 1px solid rgba(186, 194, 210, 0.25);
-    vertical-align: middle;
-    color: #2d3748;
-    font-size: 0.9rem;
-}
-
-.report-table tbody tr {
-    background: white;
-}
-
-.report-table tbody tr:last-child td {
-    border-bottom: none;
-}
 </style>
 @endsection
 
@@ -211,8 +174,8 @@
         <h5 class="mb-0 fw-bold">Appointments List</h5>
     </div>
     <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="report-table">
+        <div class="table-responsive admin-table-scroll">
+            <table class="table report-table table-hover align-middle">
                 <thead>
                     <tr>
                         <th>ID</th>

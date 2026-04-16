@@ -240,34 +240,6 @@
     color: #667eea;
   }
 
-  /* Table Styling */
-  .table-modern {
-    margin: 0;
-  }
-  .table-modern thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
-    font-weight: 600;
-    padding: 16px;
-    border: none;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-  }
-  .table-modern tbody td {
-    padding: 16px;
-    vertical-align: middle;
-    border-bottom: 1px solid #f0f0f5;
-    color: #4a5568;
-  }
-  .table-modern tbody tr:hover {
-    background: rgba(102, 126, 234, 0.03);
-  }
-  .table-modern tbody tr:last-child td {
-    border-bottom: none;
-  }
-
   /* User Info */
   .user-info {
     display: flex;
@@ -561,8 +533,8 @@
     </div>
   </div>
 
-  <div class="table-responsive" style="margin-top: 20px">
-    <table class="table table-modern">
+  <div class="table-responsive admin-table-scroll" style="margin-top: 20px">
+    <table class="table table-modern table-hover align-middle">
       <thead>
         <tr>
           <th>#</th>

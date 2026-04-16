@@ -115,65 +115,6 @@
     font-size: 1.1rem;
   }
   
-  /* Table Styling */
-  .table-today {
-    margin: 0;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    width: 100%;
-  }
-  .table-today thead th {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-    color: #647494;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 14px 16px;
-    border: none;
-    white-space: nowrap;
-  }
-  .table-today thead th:first-child {
-    border-radius: 12px 0 0 0;
-  }
-  .table-today thead th:last-child {
-    border-radius: 0 12px 0 0;
-  }
-  .table-today tbody tr {
-    transition: all 0.3s ease;
-    background: white;
-    border-left: 4px solid transparent;
-    border-bottom: 1px solid #f0f2f5;
-  }
-  .table-today tbody tr:hover {
-    background: rgba(186, 194, 210, 0.12);
-    transform: scale(1.001);
-    box-shadow: 0 2px 12px rgba(100, 116, 148, 0.1);
-  }
-  .table-today tbody tr:last-child {
-    border-bottom: none;
-  }
-  .table-today tbody td {
-    padding: 18px 20px;
-    vertical-align: middle;
-    color: #2d3748;
-    font-size: 0.9rem;
-    border-bottom: 1px solid #f0f2f5;
-  }
-  .table-today tbody tr:last-child td {
-    border-bottom: none;
-  }
-  .table-today tbody tr.status-scheduled { border-left-color: #647494; }
-  .table-today tbody tr.status-confirmed { border-left-color: #28c76f; }
-  .table-today tbody tr.status-in_progress { border-left-color: #ff9f43; }
-  .table-today tbody tr.status-completed { border-left-color: #82868b; }
-  .table-today tbody tr.status-cancelled { border-left-color: #ea5455; }
-  .table-today tbody tr.status-no_show { border-left-color: #ff9f43; }
-  
   /* Badges */
   .mode-badge {
     padding: 6px 14px;
@@ -678,8 +619,8 @@
       </div>
     </div>
     
-    <div class="table-responsive">
-      <table class="table table-today mb-0">
+    <div class="table-responsive admin-table-scroll">
+      <table class="table table-today table-hover align-middle mb-0">
         <thead>
           <tr>
             <th>Time</th>

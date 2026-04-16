@@ -201,8 +201,8 @@
 
         <!-- Categories Table -->
         @if($categories->count() > 0)
-          <div class="table-responsive">
-            <table class="table table-hover">
+          <div class="table-responsive admin-table-scroll">
+            <table class="table table-modern table-hover align-middle">
               <thead>
                 <tr>
                   <th style="width: 50px;">Color</th>

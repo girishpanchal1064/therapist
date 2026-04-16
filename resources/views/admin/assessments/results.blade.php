@@ -151,24 +151,6 @@
     color: #041C54;
   }
 
-  .table-results-admin thead th {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-    color: #4a5568;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: none;
-    padding: 16px 14px;
-    white-space: nowrap;
-  }
-  .table-results-admin tbody tr {
-    transition: background 0.2s ease;
-  }
-  .table-results-admin tbody tr:hover {
-    background: rgba(100, 116, 148, 0.06);
-  }
-
   .avatar-results-initials {
     width: 32px;
     height: 32px;
@@ -186,11 +168,6 @@
     background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     border-color: transparent;
     color: #fff;
-  }
-
-  .table-results-admin .dropdown-item:hover {
-    background: rgba(100, 116, 148, 0.1);
-    color: #041C54;
   }
 
   .results-empty-icon {
@@ -362,8 +339,8 @@
         </div>
 
         <!-- Results Table -->
-        <div class="table-responsive">
-          <table class="table table-hover table-results-admin">
+        <div class="table-responsive admin-table-scroll">
+          <table class="table table-hover table-results-admin align-middle">
             <thead>
               <tr>
                 <th>#</th>

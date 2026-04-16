@@ -1,5 +1,6 @@
 /* Brand tokens — shared with Materio via core.scss import */
 @import './apni-theme-tokens.css';
+@import './admin-module-tables.css';
 
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';

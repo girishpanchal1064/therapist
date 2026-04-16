@@ -105,46 +105,6 @@
     color: white;
   }
 
-  /* Table Styles */
-  .availability-table {
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-
-  .availability-table thead th {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-    color: #647494;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 1rem 1.25rem;
-    border: none;
-    white-space: nowrap;
-  }
-
-  .availability-table thead th:first-child {
-    border-radius: 10px 0 0 10px;
-  }
-
-  .availability-table thead th:last-child {
-    border-radius: 0 10px 10px 0;
-  }
-
-  .availability-table tbody tr {
-    transition: all 0.2s ease;
-  }
-
-  .availability-table tbody tr:hover {
-    background: rgba(186, 194, 210, 0.12);
-  }
-
-  .availability-table tbody td {
-    padding: 1.25rem;
-    vertical-align: middle;
-    border-bottom: 1px solid rgba(186, 194, 210, 0.3);
-  }
-
   /* Schedule Info */
   .schedule-info {
     display: flex;
@@ -694,8 +654,8 @@
       </div>
       <div class="card-body">
         @if($availabilities->count() > 0)
-          <div class="table-responsive">
-            <table class="table availability-table mb-0">
+          <div class="table-responsive admin-table-scroll">
+            <table class="table availability-table table-hover align-middle mb-0">
               <thead>
                 <tr>
                   <th>Schedule (Days + Time)</th>

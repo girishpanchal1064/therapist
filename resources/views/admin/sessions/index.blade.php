@@ -103,70 +103,6 @@
         box-shadow: 0 0 0 0.2rem rgba(var(--apni-bs-primary-rgb), 0.15);
     }
 
-    .table-modern {
-        border-collapse: separate;
-        border-spacing: 0;
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        width: 100%;
-    }
-
-    .table-modern thead th {
-        background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-        color: #4a5568;
-        font-weight: 700;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-        padding: 18px 20px;
-        border: none;
-        text-align: center;
-        white-space: nowrap;
-    }
-
-    .table-modern thead th:first-child {
-        border-radius: 12px 0 0 0;
-    }
-
-    .table-modern thead th:last-child {
-        border-radius: 0 12px 0 0;
-    }
-
-    .table-modern tbody tr {
-        transition: all 0.3s ease;
-        background: white;
-        border-bottom: 1px solid #f0f2f5;
-    }
-
-    .table-modern tbody tr:hover {
-        background: linear-gradient(
-            135deg,
-            rgba(var(--apni-bs-primary-rgb), 0.04) 0%,
-            rgba(var(--apni-bs-primary-rgb), 0.02) 100%
-        );
-        transform: scale(1.001);
-        box-shadow: 0 2px 12px rgba(var(--apni-bs-primary-rgb), 0.08);
-    }
-
-    .table-modern tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    .table-modern tbody td {
-        padding: 18px 20px;
-        vertical-align: middle;
-        color: #2d3748;
-        font-size: 0.9rem;
-        border-bottom: 1px solid #f0f2f5;
-        text-align: center;
-    }
-
-    .table-modern tbody tr:last-child td {
-        border-bottom: none;
-    }
-
     .user-info {
         display: flex;
         align-items: center;
@@ -437,8 +373,8 @@
         </div>
 
         <!-- Sessions Table -->
-        <div class="table-responsive">
-            <table class="table table-modern">
+        <div class="table-responsive admin-table-scroll">
+            <table class="table table-modern table-hover align-middle text-center">
                 <thead>
                     <tr>
                         <th>Sr. No.</th>

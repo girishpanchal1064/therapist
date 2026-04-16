@@ -1,0 +1,332 @@
+/**
+ * Unified admin listing & report tables — all backend modules.
+ * Use: wrapper `table-responsive admin-table-scroll`, table `table table-modern table-hover align-middle` (or the module class below).
+ */
+
+.admin-table-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-color: rgba(var(--apni-bs-primary-rgb), 0.4) rgba(186, 194, 210, 0.25);
+  scrollbar-width: thin;
+}
+
+.admin-table-scroll::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+.admin-table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(var(--apni-bs-primary-rgb), 0.45);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.admin-table-scroll::-webkit-scrollbar-track {
+  background: rgba(186, 194, 210, 0.22);
+  border-radius: 999px;
+}
+
+/* Card-style data tables */
+.table-modern,
+.payments-table,
+.transactions-table,
+.reports-table,
+.dashboard-table,
+.table-today,
+#usersTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--apni-white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin: 0;
+}
+
+/* Flush tables inside cards */
+.table-appointments,
+.availability-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  background: var(--apni-white);
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--apni-white);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(186, 194, 210, 0.35);
+  box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
+  margin: 0;
+}
+
+.table-results-admin {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  background: var(--apni-white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.table-modern thead th,
+.payments-table thead th,
+.transactions-table thead th,
+.reports-table thead th,
+.report-table thead th,
+.dashboard-table thead th,
+.table-appointments thead th,
+.table-today thead th,
+.availability-table thead th,
+#usersTable thead th,
+.table-results-admin thead th {
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+  color: #4a5568;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px 18px;
+  border: none;
+  white-space: nowrap;
+}
+
+.report-table thead th {
+  color: #041c54;
+  padding: 18px 20px;
+}
+
+.table-appointments thead th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 14px 16px;
+}
+
+.availability-table thead th {
+  color: #647494;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 1rem 1.25rem;
+}
+
+.table-modern thead th:first-child,
+.payments-table thead th:first-child,
+.transactions-table thead th:first-child,
+.reports-table thead th:first-child,
+.report-table thead th:first-child,
+.dashboard-table thead th:first-child,
+.table-today thead th:first-child,
+.availability-table thead th:first-child,
+#usersTable thead th:first-child,
+.table-results-admin thead th:first-child {
+  border-radius: 12px 0 0 0;
+}
+
+.table-modern thead th:last-child,
+.payments-table thead th:last-child,
+.transactions-table thead th:last-child,
+.reports-table thead th:last-child,
+.report-table thead th:last-child,
+.dashboard-table thead th:last-child,
+.table-today thead th:last-child,
+.availability-table thead th:last-child,
+#usersTable thead th:last-child,
+.table-results-admin thead th:last-child {
+  border-radius: 0 12px 0 0;
+}
+
+.table-modern tbody tr,
+.payments-table tbody tr,
+.transactions-table tbody tr,
+.reports-table tbody tr,
+.report-table tbody tr,
+.dashboard-table tbody tr,
+.table-today tbody tr,
+#usersTable tbody tr {
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+  background: var(--apni-white);
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.table-modern tbody tr:nth-child(even),
+.payments-table tbody tr:nth-child(even),
+.transactions-table tbody tr:nth-child(even),
+.reports-table tbody tr:nth-child(even),
+.report-table tbody tr:nth-child(even),
+.dashboard-table tbody tr:nth-child(even),
+.table-today tbody tr:nth-child(even),
+#usersTable tbody tr:nth-child(even) {
+  background: rgba(var(--apni-bs-primary-rgb), 0.03);
+}
+
+.table-appointments tbody tr {
+  transition: background 0.2s ease;
+  border-left: 4px solid transparent;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-today tbody tr {
+  border-left: 4px solid transparent;
+}
+
+.availability-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table-results-admin tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table-results-admin tbody tr:nth-child(even) {
+  background: rgba(var(--apni-bs-primary-rgb), 0.03);
+}
+
+.table-modern tbody tr:hover,
+.payments-table tbody tr:hover,
+.transactions-table tbody tr:hover,
+.reports-table tbody tr:hover,
+.report-table tbody tr:hover,
+.dashboard-table tbody tr:hover,
+.table-today tbody tr:hover,
+#usersTable tbody tr:hover {
+  background: rgba(var(--apni-bs-primary-rgb), 0.08);
+  box-shadow: 0 2px 12px rgba(var(--apni-bs-primary-rgb), 0.08);
+}
+
+.table-appointments tbody tr:hover {
+  background: rgba(var(--apni-bs-primary-rgb), 0.06);
+}
+
+.availability-table tbody tr:hover {
+  background: rgba(186, 194, 210, 0.12);
+}
+
+.table-results-admin tbody tr:hover {
+  background: rgba(var(--apni-bs-primary-rgb), 0.06);
+}
+
+.table-modern tbody td,
+.payments-table tbody td,
+.transactions-table tbody td,
+.dashboard-table tbody td,
+.table-today tbody td,
+#usersTable tbody td {
+  padding: 16px 18px;
+  vertical-align: middle;
+  color: #2d3748;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.reports-table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  color: #2d3748;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-table tbody td {
+  padding: 18px 20px;
+  vertical-align: middle;
+  color: #2d3748;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(186, 194, 210, 0.25);
+}
+
+.table-appointments tbody td {
+  padding: 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f0f0f0;
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.availability-table tbody td {
+  padding: 1.25rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(186, 194, 210, 0.3);
+  color: #2d3748;
+  font-size: 0.9rem;
+}
+
+.table-results-admin tbody td {
+  padding: 16px 14px;
+  vertical-align: middle;
+  color: #2d3748;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.dashboard-table tbody td {
+  color: #041c54;
+  border-bottom: 1px solid rgba(186, 194, 210, 0.3);
+}
+
+.table-modern tbody tr:last-child td,
+.payments-table tbody tr:last-child td,
+.transactions-table tbody tr:last-child td,
+.reports-table tbody tr:last-child td,
+.report-table tbody tr:last-child td,
+.dashboard-table tbody tr:last-child td,
+.table-appointments tbody tr:last-child td,
+.table-today tbody tr:last-child td,
+.availability-table tbody tr:last-child td,
+#usersTable tbody tr:last-child td,
+.table-results-admin tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-appointments tbody tr.status-scheduled {
+  border-left-color: #667eea;
+}
+.table-appointments tbody tr.status-confirmed {
+  border-left-color: #28c76f;
+}
+.table-appointments tbody tr.status-in_progress {
+  border-left-color: #ff9f43;
+}
+.table-appointments tbody tr.status-completed {
+  border-left-color: #82868b;
+}
+.table-appointments tbody tr.status-cancelled {
+  border-left-color: #ea5455;
+}
+.table-appointments tbody tr.status-no_show {
+  border-left-color: #ff9f43;
+}
+
+.table-today tbody tr.status-scheduled {
+  border-left-color: #647494;
+}
+.table-today tbody tr.status-confirmed {
+  border-left-color: #28c76f;
+}
+.table-today tbody tr.status-in_progress {
+  border-left-color: #ff9f43;
+}
+.table-today tbody tr.status-completed {
+  border-left-color: #82868b;
+}
+.table-today tbody tr.status-cancelled {
+  border-left-color: #ea5455;
+}
+.table-today tbody tr.status-no_show {
+  border-left-color: #ff9f43;
+}
+
+.table-results-admin .dropdown-item:hover {
+  background: rgba(var(--apni-bs-primary-rgb), 0.1);
+  color: #041c54;
+}

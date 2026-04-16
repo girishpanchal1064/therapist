@@ -270,40 +270,6 @@
     font-size: 1.1rem;
   }
 
-  /* Table Styling */
-  .table-appointments {
-    margin: 0;
-  }
-  .table-appointments thead th {
-    background: linear-gradient(135deg, #f8f9fc 0%, #eef1f6 100%);
-    color: #4a5568;
-    font-weight: 600;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 14px 16px;
-    border: none;
-    white-space: nowrap;
-  }
-  .table-appointments tbody tr {
-    transition: all 0.2s ease;
-    border-left: 4px solid transparent;
-  }
-  .table-appointments tbody tr:hover {
-    background-color: rgba(102, 126, 234, 0.04);
-  }
-  .table-appointments tbody td {
-    padding: 16px;
-    vertical-align: middle;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  .table-appointments tbody tr.status-scheduled { border-left-color: #667eea; }
-  .table-appointments tbody tr.status-confirmed { border-left-color: #28c76f; }
-  .table-appointments tbody tr.status-in_progress { border-left-color: #ff9f43; }
-  .table-appointments tbody tr.status-completed { border-left-color: #82868b; }
-  .table-appointments tbody tr.status-cancelled { border-left-color: #ea5455; }
-  .table-appointments tbody tr.status-no_show { border-left-color: #ff9f43; }
-
   /* User Info */
   .user-info {
     display: flex;
@@ -833,8 +799,8 @@
   </div>
 
   @if($appointments->count() > 0)
-    <div class="table-responsive">
-      <table class="table table-appointments mb-0">
+    <div class="table-responsive admin-table-scroll">
+      <table class="table table-appointments table-hover align-middle mb-0">
         <thead>
           <tr>
             <th>Appointment</th>

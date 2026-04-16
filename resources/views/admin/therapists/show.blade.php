@@ -138,8 +138,8 @@
               </div>
               <div class="card-body">
                 @if($therapist->appointmentsAsTherapist && $therapist->appointmentsAsTherapist->count() > 0)
-                  <div class="table-responsive">
-                    <table class="table table-sm">
+                  <div class="table-responsive admin-table-scroll">
+                    <table class="table table-sm table-hover align-middle">
                       <thead>
                         <tr>
                           <th>Client</th>

@@ -302,65 +302,6 @@
     color: #4a5568;
   }
 
-  /* Table Styling - Enhanced */
-  .payments-table {
-    width: 100% !important;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  }
-
-  .payments-table thead th {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-    color: #4a5568;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 18px 20px;
-    border: none;
-    white-space: nowrap;
-  }
-
-  .payments-table thead th:first-child {
-    border-radius: 12px 0 0 0;
-  }
-
-  .payments-table thead th:last-child {
-    border-radius: 0 12px 0 0;
-  }
-
-  .payments-table tbody tr {
-    transition: all 0.3s ease;
-    background: white;
-    border-bottom: 1px solid #f0f2f5;
-  }
-
-  .payments-table tbody tr:hover {
-    background: rgba(100, 116, 148, 0.06);
-    transform: scale(1.001);
-    box-shadow: 0 2px 12px rgba(100, 116, 148, 0.1);
-  }
-
-  .payments-table tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  .payments-table tbody td {
-    padding: 18px 20px;
-    vertical-align: middle;
-    color: #2d3748;
-    font-size: 0.9rem;
-    border-bottom: 1px solid #f0f2f5;
-  }
-
-  .payments-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-
   /* User Info */
   .user-info {
     display: flex;
@@ -791,8 +732,8 @@
 
     <!-- Payments Table -->
     @if($payments->count() > 0)
-      <div class="table-responsive" style="margin-top: 20px">
-        <table class="table payments-table">
+      <div class="table-responsive admin-table-scroll" style="margin-top: 20px">
+        <table class="table payments-table table-hover align-middle">
           <thead>
             <tr>
               <th>#</th>
@@ -822,17 +763,25 @@
                 </td>
                 <td>
                   <div class="user-info">
-                    @if($payment->user->avatar)
-                      <img src="{{ asset('storage/' . $payment->user->avatar) }}" alt="{{ $payment->user->name }}" class="user-avatar">
+                    @if($payment->user)
+                      @if($payment->user->avatar)
+                        <img src="{{ asset('storage/' . $payment->user->avatar) }}" alt="{{ $payment->user->name }}" class="user-avatar">
+                      @else
+                        <div class="user-avatar-initials">
+                          {{ strtoupper(substr($payment->user->name, 0, 2)) }}
+                        </div>
+                      @endif
+                      <div class="user-details">
+                        <span class="name">{{ $payment->user->name }}</span>
+                        <span class="email">{{ $payment->user->email }}</span>
+                      </div>
                     @else
-                      <div class="user-avatar-initials">
-                        {{ strtoupper(substr($payment->user->name, 0, 2)) }}
+                      <div class="user-avatar-initials">—</div>
+                      <div class="user-details">
+                        <span class="name text-muted">—</span>
+                        <span class="email text-muted">No user linked</span>
                       </div>
                     @endif
-                    <div class="user-details">
-                      <span class="name">{{ $payment->user->name }}</span>
-                      <span class="email">{{ $payment->user->email }}</span>
-                    </div>
                   </div>
                 </td>
                 <td>

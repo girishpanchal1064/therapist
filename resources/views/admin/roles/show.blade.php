@@ -99,8 +99,8 @@
           <div class="row mt-4">
             <div class="col-12">
               <h6 class="text-muted mb-3">Users with this Role ({{ $role->users->count() }})</h6>
-              <div class="table-responsive">
-                <table class="table table-sm">
+              <div class="table-responsive admin-table-scroll">
+                <table class="table table-sm table-hover align-middle">
                   <thead>
                     <tr>
                       <th>Name</th>
