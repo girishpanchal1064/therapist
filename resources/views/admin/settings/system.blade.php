@@ -21,7 +21,7 @@
   }
 
   .dashboard-header {
-    background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%);
+    background: #041c54;
     border-radius: 24px;
     padding: 2rem;
     margin-bottom: 1.5rem;

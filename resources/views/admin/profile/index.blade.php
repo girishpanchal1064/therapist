@@ -8,11 +8,11 @@
     --theme-primary: #647494;
     --theme-primary-dark: #041C54;
     /* Force dashboard gradient (global theme vars exist elsewhere) */
-    --theme-gradient: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%) !important;
+    --theme-gradient: #041c54 !important;
 }
 
 .profile-header {
-    background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%) !important;
+    background: #041c54 !important;
     border-radius: 16px 16px 0 0;
     padding: 2.5rem;
     position: relative;

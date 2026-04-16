@@ -503,7 +503,7 @@
   }
   .empty-state-icon i {
     font-size: 3.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

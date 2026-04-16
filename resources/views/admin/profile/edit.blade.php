@@ -7,7 +7,7 @@
 :root {
     --theme-primary: #696cff;
     --theme-primary-dark: #5f61e6;
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-gradient: #041c54;
 }
 
 .page-header {

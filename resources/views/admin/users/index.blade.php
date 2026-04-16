@@ -16,7 +16,7 @@
 <style>
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border-radius: 16px;
     padding: 2rem;
     margin-bottom: 1.5rem;
@@ -83,7 +83,7 @@
 
   /* Add Button */
   .btn-add {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -133,13 +133,13 @@
     justify-content: center;
     font-weight: 600;
     font-size: 0.875rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
   }
 
   /* Role Badge */
   .role-badge {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
     padding: 0.25rem 0.625rem;
     border-radius: 6px;
@@ -185,7 +185,7 @@
   }
 
   .action-dropdown .dropdown-toggle:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
   }
 

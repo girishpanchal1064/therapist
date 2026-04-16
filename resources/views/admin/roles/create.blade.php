@@ -5,7 +5,7 @@
 @section('vendor-style')
 <style>
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border-radius: 16px;
     padding: 24px 28px;
     margin-bottom: 24px;
@@ -58,7 +58,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   }
@@ -110,7 +110,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
     font-size: 0.9rem;
   }
@@ -155,7 +155,7 @@
   }
   .btn-cancel:hover { border-color: #ea5455; color: #ea5455; }
   .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none; color: white; padding: 12px 28px; border-radius: 10px;
     font-weight: 600; transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);

@@ -11,7 +11,7 @@
 }
 
 .profile-header {
-    background: var(--theme-gradient);
+    background: var(--theme-primary);
     border-radius: 16px 16px 0 0;
     padding: 2.5rem;
     position: relative;
@@ -54,7 +54,7 @@
     border: 6px solid #fff;
     box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     object-fit: cover;
-    background: var(--theme-gradient);
+    background: var(--theme-primary);
 }
 
 .profile-avatar-initials {
@@ -69,7 +69,7 @@
     font-size: 3rem;
     font-weight: 700;
     color: #fff;
-    background: var(--theme-gradient);
+    background: var(--theme-primary);
 }
 
 .profile-card {
@@ -103,7 +103,7 @@
 }
 
 .stat-icon-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
 }
 
@@ -130,7 +130,7 @@
 }
 
 .info-card .card-header h5 {
-    color: #667eea;
+    color: var(--theme-primary);
 }
 
 .info-item {
@@ -163,7 +163,7 @@
 }
 
 .btn-theme {
-    background: var(--theme-gradient);
+    background: var(--theme-primary);
     border: none;
     color: white;
     padding: 0.65rem 1.5rem;
@@ -174,14 +174,15 @@
 
 .btn-theme:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: var(--theme-primary-dark);
+    box-shadow: 0 6px 20px rgba(4, 28, 84, 0.3);
     color: white;
 }
 
 .btn-theme-outline {
     background: transparent;
-    border: 2px solid #667eea;
-    color: #667eea;
+    border: 2px solid var(--theme-primary);
+    color: var(--theme-primary);
     padding: 0.5rem 1.25rem;
     border-radius: 10px;
     font-weight: 500;
@@ -189,15 +190,15 @@
 }
 
 .btn-theme-outline:hover {
-    background: var(--theme-gradient);
-    border-color: transparent;
+    background: var(--theme-primary);
+    border-color: var(--theme-primary);
     color: white;
 }
 
 .btn-theme-light {
     background: rgba(255,255,255,0.9);
     border: none;
-    color: #667eea;
+    color: var(--theme-primary);
     padding: 0.5rem 1rem;
     border-radius: 8px;
     font-weight: 500;
@@ -210,8 +211,8 @@
 }
 
 .role-badge {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    color: #667eea;
+    background: rgba(4, 28, 84, 0.1);
+    color: var(--theme-primary);
     padding: 0.5rem 1rem;
     border-radius: 25px;
     font-weight: 600;
@@ -231,8 +232,8 @@
 }
 
 .status-badge-verified {
-    background: linear-gradient(135deg, rgba(23, 162, 184, 0.15) 0%, rgba(32, 201, 151, 0.15) 100%);
-    color: #17a2b8;
+    background: rgba(4, 28, 84, 0.12);
+    color: var(--theme-primary);
     padding: 0.5rem 1rem;
     border-radius: 25px;
     font-weight: 600;
@@ -296,7 +297,7 @@
                     @elseif($user->getRawOriginal('avatar'))
                         <img src="{{ asset('storage/' . $user->getRawOriginal('avatar')) }}" alt="{{ $user->name }}" class="profile-avatar">
                     @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" alt="{{ $user->name }}" class="profile-avatar">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=041c54&color=fff&size=200&bold=true&format=svg" alt="{{ $user->name }}" class="profile-avatar">
                     @endif
                 </div>
                 
@@ -335,7 +336,7 @@
         <div class="card info-card mt-4">
             <div class="card-header">
                 <h6 class="card-title mb-0 fw-bold">
-                    <i class="ri-bar-chart-line me-2" style="color: #667eea;"></i>Account Statistics
+                    <i class="ri-bar-chart-line me-2" style="color: #041c54;"></i>Account Statistics
                 </h6>
             </div>
             <div class="card-body">
@@ -369,7 +370,7 @@
         <div class="card info-card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0 fw-bold">
-                    <i class="ri-user-line me-2" style="color: #667eea;"></i>Profile Information
+                    <i class="ri-user-line me-2" style="color: #041c54;"></i>Profile Information
                 </h5>
                 <a href="{{ route('client.profile.edit') }}" class="btn btn-theme-outline btn-sm">
                     <i class="ri-pencil-line me-1"></i>Edit

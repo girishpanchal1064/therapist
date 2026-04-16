@@ -6,7 +6,7 @@
 <style>
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border-radius: 16px;
     padding: 24px 28px;
     margin-bottom: 24px;
@@ -65,7 +65,7 @@
     right: 0;
     height: 4px;
   }
-  .stat-card.purple::before { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .stat-card.purple::before { background: #041c54; }
   .stat-card.green::before { background: linear-gradient(135deg, #28c76f 0%, #1e9d58 100%); }
   .stat-card.blue::before { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
   .stat-card.orange::before { background: linear-gradient(135deg, #ff9f43 0%, #ff8510 100%); }
@@ -120,7 +120,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
     font-size: 1rem;
   }
@@ -185,7 +185,7 @@
   }
 
   .btn-filter {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none;
     color: white;
     padding: 10px 20px;

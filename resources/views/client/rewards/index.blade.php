@@ -5,7 +5,7 @@
 @section('vendor-style')
 <style>
 :root {
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-gradient: #041c54;
 }
 
 .page-header {

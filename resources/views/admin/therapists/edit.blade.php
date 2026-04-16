@@ -9,7 +9,7 @@
 <style>
   /* Page Header */
   .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border-radius: 14px;
     padding: 1.25rem 1.75rem;
     margin-bottom: 1.25rem;
@@ -98,7 +98,7 @@
   .form-card .card-header .header-icon-sm {
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -165,7 +165,7 @@
     width: 100px;
     height: 100px;
     border-radius: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -239,7 +239,7 @@
   }
 
   .btn-submit {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none;
     color: white;
     padding: 0.75rem 2rem;
@@ -267,7 +267,7 @@
   }
 
   .form-select[multiple] option:checked {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
   }
 
@@ -287,7 +287,7 @@
   }
 
   .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none;
     color: #fff;
     border-radius: 999px;

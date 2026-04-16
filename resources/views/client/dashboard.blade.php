@@ -12,7 +12,7 @@
     --therapy-accent: #f59e0b;
     --therapy-calm: #06b6d4;
     --therapy-soft-bg: #faf5ff;
-    --therapy-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --therapy-gradient: #041c54;
     --therapy-gradient-calm: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
     --therapy-gradient-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     --therapy-shadow: 0 10px 40px -10px rgba(124, 58, 237, 0.2);
@@ -21,7 +21,7 @@
 
   /* Welcome Section */
   .welcome-banner {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border-radius: 20px;
     padding: 2rem 2.5rem;
     color: white;

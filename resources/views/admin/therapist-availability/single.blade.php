@@ -10,7 +10,7 @@
 
   /* Page Header */
   .availability-page-header {
-    background: linear-gradient(171deg, #647494 0%, #6d7f9d 25%, #7484A4 50%, #6d7f9d 75%, #647494 100%);
+    background: #041c54;
     border-radius: 24px;
     padding: 2rem;
     margin-bottom: 1.5rem;
@@ -286,7 +286,7 @@
 
   /* Modal Styles */
   .availability-modal-header {
-    background: linear-gradient(171deg, #647494 0%, #7484A4 100%);
+    background: #041c54;
     border: none;
     padding: 1.5rem 1.75rem;
     border-radius: 0.5rem 0.5rem 0 0;

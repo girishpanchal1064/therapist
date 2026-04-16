@@ -311,13 +311,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   .card-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
     border-radius: 12px 12px 0 0;
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none;
     border-radius: 8px;
     transition: all 0.3s ease;

@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   .card-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     color: white;
     border-radius: 16px 16px 0 0;
     padding: 1.5rem;
@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none;
     border-radius: 10px;
     padding: 0.75rem 2rem;
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     display: flex;
     align-items: center;
     justify-content: center;

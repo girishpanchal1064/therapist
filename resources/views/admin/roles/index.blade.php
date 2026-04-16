@@ -7,7 +7,7 @@
     :root {
         --theme-primary: #696cff;
         --theme-primary-dark: #5f61e6;
-        --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --theme-gradient: #041c54;
     }
     
     .page-header {
@@ -52,7 +52,7 @@
     }
     
     .count-badge {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #041c54;
         color: white;
         padding: 0.35rem 0.75rem;
         border-radius: 20px;
@@ -74,7 +74,7 @@
         width: 32px;
         height: 32px;
         border-radius: 8px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #041c54;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -108,7 +108,7 @@
     .empty-state-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #041c54;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -150,12 +150,12 @@
     }
     
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        background: #041c54 !important;
         color: white !important;
     }
     
     .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        background: #041c54 !important;
         color: white !important;
     }
 </style>

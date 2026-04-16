@@ -26,7 +26,7 @@
   }
 
   .login-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     padding: 40px 30px;
     text-align: center;
     color: white;
@@ -83,7 +83,7 @@
   }
 
   .btn-login {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #041c54;
     border: none;
     border-radius: 12px;
     padding: 15px;

@@ -776,7 +776,7 @@
   }
 
   .modal-specializations .modal-header {
-    background: linear-gradient(171deg, #647494 0%, #7484A4 100%);
+    background: #041c54;
     color: white;
     border-radius: 14px 14px 0 0;
     border-bottom: none;

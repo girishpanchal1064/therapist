@@ -5,7 +5,7 @@
 @section('page-style')
 <style>
 :root {
-    --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --theme-gradient: #041c54;
     --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
     --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
 }

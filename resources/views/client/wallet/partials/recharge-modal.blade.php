@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
       <!-- Header with gradient -->
-      <div class="modal-header border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.75rem 2rem;">
+      <div class="modal-header border-0" style="background: #041c54; padding: 1.75rem 2rem;">
         <div class="d-flex align-items-center">
           <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; backdrop-filter: blur(10px);">
             <i class="ri-wallet-3-line text-white" style="font-size: 1.75rem;"></i>
@@ -99,7 +99,7 @@
                 <label class="d-block position-relative" style="cursor: pointer;">
                   <input type="radio" class="position-absolute" name="payment_method" value="card" checked style="opacity: 0; position: absolute; z-index: -1;">
                   <div class="payment-method-card text-center" style="border: 2px solid #e5e7eb; border-radius: 14px; padding: 1.25rem 0.75rem; transition: all 0.3s ease; background: white;">
-                    <div style="width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 0.75rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div style="width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 0.75rem; display: flex; align-items: center; justify-content: center; background: #041c54;">
                       <i class="ri-bank-card-line text-white" style="font-size: 1.5rem;"></i>
                     </div>
                     <h6 style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem; font-size: 0.875rem;">Card</h6>
@@ -197,7 +197,7 @@
           <button type="button" class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 12px; padding: 0.75rem 1.5rem; font-weight: 500;">
             Cancel
           </button>
-          <button type="submit" class="btn text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 12px; padding: 0.75rem 2rem; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);">
+          <button type="submit" class="btn text-white" style="background: #041c54; border: none; border-radius: 12px; padding: 0.75rem 2rem; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);">
             <i class="ri-lock-line me-2"></i>Pay Securely
           </button>
         </div>
@@ -231,7 +231,7 @@ input[name="payment_method"]:checked + .payment-method-card {
 
 .quick-amount-btn.active,
 .quick-amount-btn.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  background: #041c54 !important;
   border-color: transparent !important;
   color: white !important;
 }
