@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password as PasswordRule;
@@ -704,7 +705,7 @@ class ApiController extends Controller
             'experiences.*.hospital_organisation' => ['required_with:experiences', 'nullable', 'string', 'max:255'],
             'experiences.*.starting_date' => ['required_with:experiences', 'nullable', 'date'],
             'experiences.*.last_date' => ['nullable', 'date'],
-            'experiences.*.document' => ['nullable', 'string', 'max:255'],
+            'experiences.*.document' => ['nullable', 'file', 'mimes:pdf,doc,docx,jpg,jpeg,png', 'max:5120'],
 
             'qualifications' => ['sometimes', 'array'],
             'qualifications.*.id' => ['sometimes', 'integer'],
@@ -713,7 +714,7 @@ class ApiController extends Controller
             'qualifications.*.institute_university' => ['required_with:qualifications', 'nullable', 'string', 'max:255'],
             'qualifications.*.year_of_passing' => ['nullable', 'string', 'max:10'],
             'qualifications.*.percentage_cgpa' => ['nullable', 'string', 'max:50'],
-            'qualifications.*.certificate' => ['nullable', 'string', 'max:255'],
+            'qualifications.*.certificate' => ['nullable', 'file', 'mimes:pdf,doc,docx,jpg,jpeg,png', 'max:5120'],
 
             'awards' => ['sometimes', 'array'],
             'awards.*.id' => ['sometimes', 'integer'],
@@ -721,7 +722,7 @@ class ApiController extends Controller
             'awards.*.awarded_by' => ['required_with:awards', 'nullable', 'string', 'max:255'],
             'awards.*.year' => ['nullable', 'string', 'max:10'],
             'awards.*.description' => ['nullable', 'string'],
-            'awards.*.document' => ['nullable', 'string', 'max:255'],
+            'awards.*.document' => ['nullable', 'file', 'mimes:pdf,doc,docx,jpg,jpeg,png', 'max:5120'],
 
             'professional_bodies' => ['sometimes', 'array'],
             'professional_bodies.*.id' => ['sometimes', 'integer'],
@@ -729,7 +730,7 @@ class ApiController extends Controller
             'professional_bodies.*.membership_number' => ['nullable', 'string', 'max:255'],
             'professional_bodies.*.membership_type' => ['nullable', 'string', 'max:255'],
             'professional_bodies.*.year_joined' => ['nullable', 'string', 'max:10'],
-            'professional_bodies.*.document' => ['nullable', 'string', 'max:255'],
+            'professional_bodies.*.document' => ['nullable', 'file', 'mimes:pdf,doc,docx,jpg,jpeg,png', 'max:5120'],
 
             'bank_details' => ['sometimes', 'array'],
             'bank_details.*.id' => ['sometimes', 'integer'],
@@ -855,7 +856,23 @@ class ApiController extends Controller
 
         if ($request->has('experiences')) {
             $keepIds = [];
-            foreach ((array) $request->input('experiences', []) as $item) {
+            foreach ((array) $request->input('experiences', []) as $index => $item) {
+                $existingExperience = null;
+                if (! empty($item['id'])) {
+                    $existingExperience = TherapistExperience::query()
+                        ->where('therapist_profile_id', $tp->id)
+                        ->find($item['id']);
+                }
+
+                $experienceDocumentPath = $item['document'] ?? ($existingExperience?->document);
+                if ($request->hasFile("experiences.$index.document")) {
+                    if ($existingExperience?->document) {
+                        Storage::disk('public')->delete($existingExperience->document);
+                    }
+                    $experienceDocumentPath = $request->file("experiences.$index.document")
+                        ->store('therapist-experiences', 'public');
+                }
+
                 $experience = TherapistExperience::updateOrCreate(
                     [
                         'id' => $item['id'] ?? null,
@@ -866,7 +883,7 @@ class ApiController extends Controller
                         'hospital_organisation' => $item['hospital_organisation'] ?? null,
                         'starting_date' => $item['starting_date'] ?? null,
                         'last_date' => $item['last_date'] ?? null,
-                        'document' => $item['document'] ?? null,
+                        'document' => $experienceDocumentPath,
                     ]
                 );
                 $keepIds[] = $experience->id;
@@ -878,7 +895,23 @@ class ApiController extends Controller
 
         if ($request->has('qualifications')) {
             $keepIds = [];
-            foreach ((array) $request->input('qualifications', []) as $item) {
+            foreach ((array) $request->input('qualifications', []) as $index => $item) {
+                $existingQualification = null;
+                if (! empty($item['id'])) {
+                    $existingQualification = TherapistQualification::query()
+                        ->where('therapist_profile_id', $tp->id)
+                        ->find($item['id']);
+                }
+
+                $qualificationCertificatePath = $item['certificate'] ?? ($existingQualification?->certificate);
+                if ($request->hasFile("qualifications.$index.certificate")) {
+                    if ($existingQualification?->certificate) {
+                        Storage::disk('public')->delete($existingQualification->certificate);
+                    }
+                    $qualificationCertificatePath = $request->file("qualifications.$index.certificate")
+                        ->store('therapist-qualifications', 'public');
+                }
+
                 $qualification = TherapistQualification::updateOrCreate(
                     [
                         'id' => $item['id'] ?? null,
@@ -890,7 +923,7 @@ class ApiController extends Controller
                         'institute_university' => $item['institute_university'] ?? null,
                         'year_of_passing' => $item['year_of_passing'] ?? null,
                         'percentage_cgpa' => $item['percentage_cgpa'] ?? null,
-                        'certificate' => $item['certificate'] ?? null,
+                        'certificate' => $qualificationCertificatePath,
                     ]
                 );
                 $keepIds[] = $qualification->id;
@@ -902,7 +935,23 @@ class ApiController extends Controller
 
         if ($request->has('awards')) {
             $keepIds = [];
-            foreach ((array) $request->input('awards', []) as $item) {
+            foreach ((array) $request->input('awards', []) as $index => $item) {
+                $existingAward = null;
+                if (! empty($item['id'])) {
+                    $existingAward = TherapistAward::query()
+                        ->where('therapist_profile_id', $tp->id)
+                        ->find($item['id']);
+                }
+
+                $awardDocumentPath = $item['document'] ?? ($existingAward?->document);
+                if ($request->hasFile("awards.$index.document")) {
+                    if ($existingAward?->document) {
+                        Storage::disk('public')->delete($existingAward->document);
+                    }
+                    $awardDocumentPath = $request->file("awards.$index.document")
+                        ->store('therapist-awards', 'public');
+                }
+
                 $award = TherapistAward::updateOrCreate(
                     [
                         'id' => $item['id'] ?? null,
@@ -913,7 +962,7 @@ class ApiController extends Controller
                         'awarded_by' => $item['awarded_by'] ?? null,
                         'year' => $item['year'] ?? null,
                         'description' => $item['description'] ?? null,
-                        'document' => $item['document'] ?? null,
+                        'document' => $awardDocumentPath,
                     ]
                 );
                 $keepIds[] = $award->id;
@@ -925,7 +974,23 @@ class ApiController extends Controller
 
         if ($request->has('professional_bodies')) {
             $keepIds = [];
-            foreach ((array) $request->input('professional_bodies', []) as $item) {
+            foreach ((array) $request->input('professional_bodies', []) as $index => $item) {
+                $existingBody = null;
+                if (! empty($item['id'])) {
+                    $existingBody = TherapistProfessionalBody::query()
+                        ->where('therapist_profile_id', $tp->id)
+                        ->find($item['id']);
+                }
+
+                $bodyDocumentPath = $item['document'] ?? ($existingBody?->document);
+                if ($request->hasFile("professional_bodies.$index.document")) {
+                    if ($existingBody?->document) {
+                        Storage::disk('public')->delete($existingBody->document);
+                    }
+                    $bodyDocumentPath = $request->file("professional_bodies.$index.document")
+                        ->store('therapist-professional-bodies', 'public');
+                }
+
                 $body = TherapistProfessionalBody::updateOrCreate(
                     [
                         'id' => $item['id'] ?? null,
@@ -936,7 +1001,7 @@ class ApiController extends Controller
                         'membership_number' => $item['membership_number'] ?? null,
                         'membership_type' => $item['membership_type'] ?? null,
                         'year_joined' => $item['year_joined'] ?? null,
-                        'document' => $item['document'] ?? null,
+                        'document' => $bodyDocumentPath,
                     ]
                 );
                 $keepIds[] = $body->id;
