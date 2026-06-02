@@ -109,6 +109,20 @@ class Appointment extends Model
         return $this->belongsTo(Payment::class);
     }
 
+    public function consultationFeeAmount(): float
+    {
+        $profile = $this->therapist?->therapistProfile;
+        if (! $profile) {
+            return 0;
+        }
+
+        return match ($this->appointment_type) {
+            'couple' => (float) ($profile->couple_consultation_fee ?: $profile->consultation_fee),
+            'family' => (float) ($profile->family_consultation_fee ?: $profile->consultation_fee),
+            default => (float) $profile->consultation_fee,
+        };
+    }
+
     /**
      * Get the therapist earning.
      */
@@ -275,9 +289,7 @@ class Appointment extends Model
 
             // Calculate payment amount
             $therapist = $this->therapist;
-            $consultationFee = $therapist && $therapist->therapistProfile 
-                ? $therapist->therapistProfile->consultation_fee 
-                : 0;
+            $consultationFee = $this->consultationFeeAmount();
 
             if ($consultationFee <= 0) {
                 throw new \Exception('Consultation fee not set for this therapist');

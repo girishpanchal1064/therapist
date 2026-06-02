@@ -17,6 +17,7 @@ class TherapistProfile extends Model
         'experience_years',
         'consultation_fee',
         'couple_consultation_fee',
+        'family_consultation_fee',
         'bio',
         'video_intro_url',
         'languages',
@@ -69,6 +70,7 @@ class TherapistProfile extends Model
             'verified_at' => 'datetime',
             'consultation_fee' => 'decimal:2',
             'couple_consultation_fee' => 'decimal:2',
+            'family_consultation_fee' => 'decimal:2',
             'rating_average' => 'decimal:2',
         ];
     }

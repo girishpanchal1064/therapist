@@ -316,7 +316,7 @@
 
                             <!-- Pricing Breakdown -->
                             <div id="pricingBreakdown" class="mb-3 p-3 bg-white/70 rounded-[10px] border border-[#BAC2D2]/30">
-                                <div class="text-xs text-[#7484A4] mb-1">Base Rate (45 min): ₹{{ number_format($therapist->therapistProfile->consultation_fee) }}</div>
+                                <div class="text-xs text-[#7484A4] mb-1">Base Rate (45 min - Individual): ₹{{ number_format($therapist->therapistProfile->consultation_fee) }}</div>
                                 <div class="text-xs text-[#7484A4] mb-1">Duration (45 minutes): 100%</div>
                             </div>
 
@@ -347,6 +347,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const dateInput = document.getElementById('appointment_date');
     const timeSlotsContainer = document.getElementById('timeSlots');
     const therapistId = {{ $therapist->id }};
+    const baseFees = {
+        individual: Number({{ $therapist->therapistProfile->consultation_fee ?? 0 }}),
+        couple: Number({{ $therapist->therapistProfile->couple_consultation_fee ?? 0 }}),
+        family: Number({{ $therapist->therapistProfile->family_consultation_fee ?? 0 }})
+    };
 
     // Update summary when form changes
     function updateSummary() {
@@ -379,7 +384,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Calculate pricing based on duration and session type
     function updatePricing(duration, sessionType) {
-        const basePrice = {{ $therapist->therapistProfile->consultation_fee }};
+        const selectedBasePrice = baseFees[sessionType] > 0 ? baseFees[sessionType] : baseFees.individual;
         let multiplier = 1;
 
         // Calculate multiplier based on duration (45 minutes = base price)
@@ -401,14 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
         }
 
-        // Apply session type multiplier
-        if (sessionType === 'couple') {
-            multiplier *= 1.5; // 50% premium for couple sessions
-        } else if (sessionType === 'family') {
-            multiplier *= 2.0; // 100% premium for family sessions
-        }
-
-        const totalPrice = Math.round(basePrice * multiplier);
+        const totalPrice = Math.round(selectedBasePrice * multiplier);
         document.getElementById('summaryPrice').textContent = `₹${totalPrice.toLocaleString()}`;
 
         // Update pricing breakdown if element exists
@@ -428,9 +426,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             pricingBreakdown.innerHTML = `
-                <div class="text-xs text-[#7484A4] mb-1">Base Rate (45 min): ₹${basePrice.toLocaleString()}</div>
+                <div class="text-xs text-[#7484A4] mb-1">Base Rate (45 min - ${sessionTypeText}): ₹${selectedBasePrice.toLocaleString()}</div>
                 <div class="text-xs text-[#7484A4] mb-1">Duration (${durationText}): ${(durationMultiplier * 100).toFixed(0)}%</div>
-                ${sessionType !== 'individual' ? `<div class="text-xs text-[#7484A4] mb-1">Session Type (${sessionTypeText}): ${sessionType === 'couple' ? '150%' : '200%'}</div>` : ''}
             `;
         }
     }

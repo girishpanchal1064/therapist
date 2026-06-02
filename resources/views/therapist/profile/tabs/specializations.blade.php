@@ -1,45 +1,46 @@
 <div>
   <h5 class="mb-4">Specializations</h5>
-  
-  <p class="text-muted mb-4">Your specializations are managed by the administrator. Contact support if you need to update your specializations.</p>
-  
-  <div class="table-responsive">
-    <table class="table table-bordered">
-      <thead class="table-light">
-        <tr>
-          <th>Sr. No.</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Icon</th>
-        </tr>
-      </thead>
-      <tbody>
-        @forelse($specializations ?? [] as $index => $specialization)
-          <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>
-              <div class="d-flex align-items-center">
+
+  <p class="text-muted mb-4">Select all specializations that match your practice. You can update these anytime.</p>
+
+  <form action="{{ route('therapist.profile.specializations.update') }}" method="POST">
+    @csrf
+
+    <div class="row g-3">
+      @forelse($specializations ?? [] as $specialization)
+        <div class="col-md-6">
+          <label class="d-flex align-items-start gap-2 border rounded-3 p-3 h-100 cursor-pointer">
+            <input
+              type="checkbox"
+              class="form-check-input mt-1"
+              name="specializations[]"
+              value="{{ $specialization->id }}"
+              {{ in_array($specialization->id, $selectedSpecializations ?? []) ? 'checked' : '' }}
+            >
+            <span>
+              <strong class="d-block">
                 @if($specialization->icon)
-                  <i class="{{ $specialization->icon }} me-2"></i>
+                  <i class="{{ $specialization->icon }} me-1"></i>
                 @endif
-                <strong>{{ $specialization->name }}</strong>
-              </div>
-            </td>
-            <td>{{ $specialization->description ?? '-' }}</td>
-            <td>
-              @if($specialization->icon)
-                <i class="{{ $specialization->icon }}" style="font-size: 1.5rem;"></i>
-              @else
-                <span class="text-muted">No icon</span>
-              @endif
-            </td>
-          </tr>
-        @empty
-          <tr>
-            <td colspan="4" class="text-center text-muted">No specializations assigned yet.</td>
-          </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
+                {{ $specialization->name }}
+              </strong>
+              <small class="text-muted">{{ $specialization->description ?: 'No description available.' }}</small>
+            </span>
+          </label>
+        </div>
+      @empty
+        <div class="col-12 text-muted">No specializations available right now.</div>
+      @endforelse
+    </div>
+
+    @error('specializations')
+      <div class="text-danger small mt-2">{{ $message }}</div>
+    @enderror
+
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">
+        <i class="ri-save-line me-1"></i> Save Specializations
+      </button>
+    </div>
+  </form>
 </div>

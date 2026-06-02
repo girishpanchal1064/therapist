@@ -518,6 +518,29 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="couple_consultation_fee" class="form-label">Couple Session Fee (₹)</label>
+              <input type="number" class="form-control @error('couple_consultation_fee') is-invalid @enderror"
+                     id="couple_consultation_fee" name="couple_consultation_fee" value="{{ old('couple_consultation_fee', $therapist->therapistProfile->couple_consultation_fee) }}" min="0" step="0.01" placeholder="0.00">
+              @error('couple_consultation_fee')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="family_consultation_fee" class="form-label">Family Session Fee (₹)</label>
+              <input type="number" class="form-control @error('family_consultation_fee') is-invalid @enderror"
+                     id="family_consultation_fee" name="family_consultation_fee" value="{{ old('family_consultation_fee', $therapist->therapistProfile->family_consultation_fee) }}" min="0" step="0.01" placeholder="0.00">
+              @error('family_consultation_fee')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+          </div>
+        </div>
+
         <div class="mb-3">
           <label for="bio" class="form-label">Bio / About <span class="text-danger">*</span></label>
           <textarea class="form-control @error('bio') is-invalid @enderror"
@@ -556,9 +579,9 @@
         </div>
 
         <div class="mb-3">
-          <label for="specializations" class="form-label">Specializations <span class="text-danger">*</span></label>
+          <label for="specializations" class="form-label">Specializations</label>
           <select class="form-select @error('specializations') is-invalid @enderror"
-                  id="specializations" name="specializations[]" multiple required>
+                  id="specializations" name="specializations[]" multiple>
             @foreach($specializations as $specialization)
               <option value="{{ $specialization->id }}"
                       {{ in_array($specialization->id, old('specializations', $therapist->therapistProfile->specializations->pluck('id')->toArray())) ? 'selected' : '' }}>
@@ -570,7 +593,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
           <div class="form-text">
-            Type to search and select multiple specializations.
+            Optional: therapist can also manage these from therapist panel.
             <span class="ms-1" id="specializationsCounterEdit"></span>
           </div>
         </div>

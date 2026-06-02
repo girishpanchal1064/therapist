@@ -127,6 +127,7 @@ Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therap
         Route::put('/qualification/{qualification}', [TherapistProfileController::class, 'updateQualification'])->name('qualification.update');
         Route::delete('/qualification/{qualification}', [TherapistProfileController::class, 'deleteQualification'])->name('qualification.delete');
         Route::post('/areas-of-expertise', [TherapistProfileController::class, 'updateAreasOfExpertise'])->name('areas-of-expertise.update');
+        Route::post('/specializations', [TherapistProfileController::class, 'updateSpecializations'])->name('specializations.update');
         Route::post('/award', [TherapistProfileController::class, 'storeAward'])->name('award.store');
         Route::put('/award/{award}', [TherapistProfileController::class, 'updateAward'])->name('award.update');
         Route::delete('/award/{award}', [TherapistProfileController::class, 'deleteAward'])->name('award.delete');

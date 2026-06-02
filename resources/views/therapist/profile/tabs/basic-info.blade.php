@@ -1,7 +1,7 @@
 <div>
   <h5 class="mb-4">Basic Information</h5>
   
-  <form action="{{ route('therapist.profile.basic-info.update') }}" method="POST">
+  <form action="{{ route('therapist.profile.basic-info.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
     
     <div class="row mb-3">
@@ -29,26 +29,37 @@
       </div>
     </div>
 
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <label class="form-label">Category</label>
-        <input type="text" name="category" class="form-control" value="{{ old('category', $profile->category) }}">
+    <div class="row mb-4 align-items-center">
+      <div class="col-md-3">
+        <label class="form-label">Profile Picture</label>
+        <input type="file" name="profile_image" class="form-control" accept="image/*">
+        @error('profile_image')<div class="text-danger small">{{ $message }}</div>@enderror
       </div>
-      <div class="col-md-4">
-        <label class="form-label">User Name</label>
-        <input type="text" name="user_name" class="form-control" value="{{ old('user_name', $profile->user_name) }}">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Email <span class="text-danger">*</span></label>
-        <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+      <div class="col-md-9">
+        @php
+          $currentImage = $profile->profile_image
+            ? asset('storage/' . $profile->profile_image)
+            : ($user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=041C54&color=fff');
+        @endphp
+        <div class="d-flex align-items-center gap-3">
+          <img src="{{ $currentImage }}" alt="Profile Image" style="width:72px;height:72px;border-radius:12px;object-fit:cover;border:1px solid #dbe2ea;">
+          <div class="text-muted small">Upload JPG, PNG, or WEBP (max 5MB).</div>
+        </div>
       </div>
     </div>
 
     <div class="row mb-3">
-      <div class="col-md-4">
+      <div class="col-md-6">
+        <label class="form-label">Email <span class="text-danger">*</span></label>
+        <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+      </div>
+      <div class="col-md-6">
         <label class="form-label">Mobile</label>
         <input type="text" name="mobile" class="form-control" value="{{ old('mobile', $user->phone) }}">
       </div>
+    </div>
+
+    <div class="row mb-3">
       <div class="col-md-4">
         <label class="form-label">Gender</label>
         <select name="gender" class="form-select">
@@ -86,9 +97,24 @@
     </div>
 
     <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Certifications</label>
+        <textarea name="certifications" class="form-control" rows="3" placeholder="List certifications...">{{ old('certifications', $profile->certifications) }}</textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Education</label>
+        <textarea name="education" class="form-control" rows="3" placeholder="Enter educational background...">{{ old('education', $profile->education) }}</textarea>
+      </div>
+    </div>
+
+    <div class="row mb-3">
       <div class="col-md-4">
         <label class="form-label">Experience (Years)</label>
         <input type="text" name="experience_years" class="form-control" value="{{ old('experience_years', $profile->experience_years) }}" placeholder="e.g., 5 years">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Consultation Fee (₹)</label>
+        <input type="number" name="consultation_fee" class="form-control" min="0" step="0.01" value="{{ old('consultation_fee', $profile->consultation_fee) }}" placeholder="e.g., 800">
       </div>
       <div class="col-md-4">
         <label class="form-label">Timezone</label>
@@ -99,6 +125,17 @@
           <option value="America/New_York" {{ $profile->timezone === 'America/New_York' ? 'selected' : '' }}>America/New_York (EST)</option>
           <option value="Europe/London" {{ $profile->timezone === 'Europe/London' ? 'selected' : '' }}>Europe/London (GMT)</option>
         </select>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Couple Session Fee (₹)</label>
+        <input type="number" name="couple_consultation_fee" class="form-control" min="0" step="0.01" value="{{ old('couple_consultation_fee', $profile->couple_consultation_fee) }}" placeholder="e.g., 1200">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Family Session Fee (₹)</label>
+        <input type="number" name="family_consultation_fee" class="form-control" min="0" step="0.01" value="{{ old('family_consultation_fee', $profile->family_consultation_fee) }}" placeholder="e.g., 1600">
       </div>
     </div>
 

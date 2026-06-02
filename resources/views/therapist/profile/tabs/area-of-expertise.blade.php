@@ -7,8 +7,8 @@
     <div class="mb-4">
       <p class="text-muted">Select your areas of expertise. Selected areas will be highlighted.</p>
       <div class="d-flex flex-wrap gap-2" id="areas-container">
-        @foreach($areasOfExpertise ?? [] as $area)
-          <button type="button" 
+        @forelse($areasOfExpertise ?? [] as $area)
+          <button type="button"
                   class="btn area-tag-btn {{ in_array($area->id, $selectedAreas ?? []) ? 'btn-primary' : 'btn-outline-primary' }}"
                   data-area-id="{{ $area->id }}">
             @if($area->icon)
@@ -16,11 +16,13 @@
             @endif
             {{ $area->name }}
           </button>
-        @endforeach
+        @empty
+          <div class="text-muted small">No expertise areas found. Please contact admin or run the expertise seeder.</div>
+        @endforelse
       </div>
     </div>
     
-    <input type="hidden" name="areas_of_expertise" id="selected-areas-input" value="{{ json_encode($selectedAreas ?? []) }}">
+    <input type="hidden" name="areas_of_expertise_json" id="selected-areas-input" value="{{ json_encode($selectedAreas ?? []) }}">
     
     <div class="mt-4">
       <button type="submit" class="btn btn-primary">

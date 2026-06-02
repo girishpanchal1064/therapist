@@ -50,8 +50,8 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Payment already exists for this appointment'], 400);
         }
 
-        // Calculate amount
-        $amount = $appointment->therapist->therapistProfile->consultation_fee;
+        // Calculate amount based on appointment type
+        $amount = $appointment->consultationFeeAmount();
         $taxAmount = $amount * 0.18; // 18% GST
         $totalAmount = $amount + $taxAmount;
 

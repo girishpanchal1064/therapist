@@ -85,19 +85,24 @@
                                 <span class="text-sm text-gray-600">Duration</span>
                                 <span class="text-sm font-medium">{{ $appointment->duration_minutes }} minutes</span>
                             </div>
+                            @php
+                                $sessionFee = $appointment->consultationFeeAmount();
+                                $sessionTax = $sessionFee * 0.18;
+                                $sessionTotal = $sessionFee + $sessionTax;
+                            @endphp
                             <div class="flex justify-between">
                                 <span class="text-sm text-gray-600">Session Fee</span>
-                                <span class="text-sm font-medium">₹{{ number_format($appointment->therapist->therapistProfile->consultation_fee) }}</span>
+                                <span class="text-sm font-medium">₹{{ number_format($sessionFee) }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-sm text-gray-600">GST (18%)</span>
-                                <span class="text-sm font-medium">₹{{ number_format($appointment->therapist->therapistProfile->consultation_fee * 0.18) }}</span>
+                                <span class="text-sm font-medium">₹{{ number_format($sessionTax) }}</span>
                             </div>
                             <div class="border-t border-gray-200 pt-2">
                                 <div class="flex justify-between">
                                     <span class="text-lg font-medium text-gray-900">Total Amount</span>
                                     <span class="text-lg font-bold text-primary-600">
-                                        ₹{{ number_format($appointment->therapist->therapistProfile->consultation_fee * 1.18) }}
+                                        ₹{{ number_format($sessionTotal) }}
                                     </span>
                                 </div>
                             </div>
@@ -126,7 +131,7 @@
                         <button type="submit"
                                 class="btn-primary"
                                 id="payButton">
-                            <span id="buttonText">Pay ₹{{ number_format($appointment->therapist->therapistProfile->consultation_fee * 1.18) }}</span>
+                            <span id="buttonText">Pay ₹{{ number_format($sessionTotal) }}</span>
                             <span id="loadingText" class="hidden">Processing...</span>
                         </button>
                     </div>

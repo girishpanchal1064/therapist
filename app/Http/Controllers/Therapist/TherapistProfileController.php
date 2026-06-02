@@ -13,7 +13,9 @@ use App\Models\AreaOfExpertise;
 use App\Models\TherapistSpecialization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class TherapistProfileController extends Controller
 {
@@ -31,6 +33,7 @@ class TherapistProfileController extends Controller
                 'experience_years' => 0,
                 'consultation_fee' => 0.00,
                 'couple_consultation_fee' => 0.00,
+                'family_consultation_fee' => 0.00,
                 'bio' => '',
                 'languages' => [],
             ]);
@@ -66,7 +69,8 @@ class TherapistProfileController extends Controller
                 $data['bankDetails'] = $profile->bankDetails()->get();
                 break;
             case 'specializations':
-                $data['specializations'] = $profile->specializations()->get();
+                $data['specializations'] = TherapistSpecialization::active()->ordered()->get();
+                $data['selectedSpecializations'] = $profile->specializations()->pluck('therapist_specializations.id')->toArray();
                 break;
         }
 
@@ -77,6 +81,7 @@ class TherapistProfileController extends Controller
     {
         $user = Auth::user();
         $profile = $user->therapistProfile;
+        $maxUploadKb = $this->getAllowedUploadKilobytes(5120);
 
         if (!$profile) {
             $profile = TherapistProfile::create([
@@ -87,6 +92,7 @@ class TherapistProfileController extends Controller
                 'experience_years' => 0,
                 'consultation_fee' => 0.00,
                 'couple_consultation_fee' => 0.00,
+                'family_consultation_fee' => 0.00,
                 'bio' => '',
                 'languages' => [],
             ]);
@@ -97,14 +103,14 @@ class TherapistProfileController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
             'email' => 'required|email',
-            'user_name' => 'nullable|string|max:255',
             'mobile' => 'nullable|string|max:20',
             'gender' => 'nullable|string|in:Male,Female,Other',
             'date_of_birth' => 'nullable|date',
             'languages' => 'nullable|array',
             'brief_description' => 'nullable|string',
+            'certifications' => 'nullable|string',
+            'education' => 'nullable|string',
             'present_address' => 'nullable|string',
             'present_country' => 'nullable|string',
             'present_state' => 'nullable|string',
@@ -120,6 +126,13 @@ class TherapistProfileController extends Controller
             'clinic_zip' => 'nullable|string',
             'timezone' => 'nullable|string',
             'experience_years' => 'nullable|string',
+            'consultation_fee' => 'nullable|numeric|min:0',
+            'couple_consultation_fee' => 'nullable|numeric|min:0',
+            'family_consultation_fee' => 'nullable|numeric|min:0',
+            'profile_image' => "nullable|image|mimes:jpeg,png,jpg,webp|max:{$maxUploadKb}",
+        ], [
+            'profile_image.uploaded' => 'The selected image is larger than the server upload limit. Please choose a smaller image and try again.',
+            'profile_image.max' => 'The profile image size is too large for current server limits. Please choose a smaller image.',
         ]);
 
         // Update user email if changed
@@ -144,14 +157,47 @@ class TherapistProfileController extends Controller
             $user->save();
         }
 
+        if ($request->hasFile('profile_image')) {
+            try {
+                $image = $request->file('profile_image');
+                if (! $image->isValid()) {
+                    return redirect()->back()
+                        ->withErrors(['profile_image' => 'The profile image failed to upload. Please try a smaller image.'])
+                        ->withInput();
+                }
+
+                $uploadedPath = $image->store('therapist-profiles', 'public');
+                $oldProfileImage = $profile->profile_image;
+
+                $profile->profile_image = $uploadedPath;
+                $user->avatar = $uploadedPath;
+                $user->save();
+
+                if ($oldProfileImage && Storage::disk('public')->exists($oldProfileImage)) {
+                    Storage::disk('public')->delete($oldProfileImage);
+                }
+            } catch (\Throwable $e) {
+                Log::error('Therapist profile image upload failed', [
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage(),
+                ]);
+
+                return redirect()->back()
+                    ->withErrors(['profile_image' => 'Failed to upload profile image. Please try again.'])
+                    ->withInput();
+            }
+        }
+
         // Update profile
         $profile->update($request->only([
-            'prefix', 'first_name', 'middle_name', 'last_name', 'category',
-            'user_name', 'brief_description', 'present_address',
+            'prefix', 'first_name', 'middle_name', 'last_name',
+            'brief_description', 'present_address',
             'present_country', 'present_state', 'present_city', 'present_district', 'present_zip',
             'clinic_address', 'same_as_present_address',
             'clinic_country', 'clinic_state', 'clinic_city', 'clinic_district', 'clinic_zip',
-            'timezone', 'languages'
+            'timezone', 'languages',
+            'consultation_fee', 'couple_consultation_fee', 'family_consultation_fee',
+            'certifications', 'education'
         ]));
 
         if ($request->experience_years) {
@@ -161,6 +207,26 @@ class TherapistProfileController extends Controller
 
         return redirect()->route('therapist.profile.index', ['tab' => 'basic-info'])
             ->with('success', 'Basic information updated successfully!');
+    }
+
+    public function updateSpecializations(Request $request)
+    {
+        $profile = Auth::user()->therapistProfile;
+
+        if (! $profile) {
+            return redirect()->route('therapist.profile.index', ['tab' => 'specializations'])
+                ->withErrors(['specializations' => 'Therapist profile not found.']);
+        }
+
+        $validated = $request->validate([
+            'specializations' => 'nullable|array',
+            'specializations.*' => ['integer', Rule::exists('therapist_specializations', 'id')],
+        ]);
+
+        $profile->specializations()->sync($validated['specializations'] ?? []);
+
+        return redirect()->route('therapist.profile.index', ['tab' => 'specializations'])
+            ->with('success', 'Specializations updated successfully.');
     }
 
     public function storeExperience(Request $request)
@@ -321,11 +387,17 @@ class TherapistProfileController extends Controller
         $user = Auth::user();
         $profile = $user->therapistProfile;
 
+        $rawAreas = $request->input('areas_of_expertise_json', '[]');
+        $decodedAreas = json_decode($rawAreas, true);
+        $areas = is_array($decodedAreas) ? array_values(array_unique(array_map('intval', $decodedAreas))) : [];
+
+        $request->merge(['areas_of_expertise' => $areas]);
         $request->validate([
             'areas_of_expertise' => 'nullable|array',
+            'areas_of_expertise.*' => 'integer|exists:areas_of_expertise,id',
         ]);
 
-        $profile->areas_of_expertise = $request->areas_of_expertise ?? [];
+        $profile->areas_of_expertise = $areas;
         $profile->save();
 
         return redirect()->route('therapist.profile.index', ['tab' => 'area-of-expertise'])
@@ -523,5 +595,32 @@ class TherapistProfileController extends Controller
 
         return redirect()->route('therapist.profile.index', ['tab' => 'bank-details'])
             ->with('success', 'Bank details deleted successfully!');
+    }
+
+    private function getAllowedUploadKilobytes(int $appLimitKb): int
+    {
+        $uploadLimitKb = $this->iniSizeToKilobytes(ini_get('upload_max_filesize'));
+        $postLimitKb = $this->iniSizeToKilobytes(ini_get('post_max_size'));
+        $serverLimitKb = max(1, min($uploadLimitKb, $postLimitKb));
+
+        return max(1, min($appLimitKb, $serverLimitKb));
+    }
+
+    private function iniSizeToKilobytes(string|false $value): int
+    {
+        if (! $value) {
+            return 5120;
+        }
+
+        $size = trim($value);
+        $unit = strtolower(substr($size, -1));
+        $number = (float) $size;
+
+        return match ($unit) {
+            'g' => (int) ($number * 1024 * 1024),
+            'm' => (int) ($number * 1024),
+            'k' => (int) $number,
+            default => (int) ($number / 1024),
+        };
     }
 }

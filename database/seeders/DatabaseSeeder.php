@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         UserSeeder::class,
         AssessmentSeeder::class,
         BlogSeeder::class,
+        AreaOfExpertiseSeeder::class,
         TherapistSpecializationSeeder::class,
       ]);
   }

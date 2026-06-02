@@ -74,12 +74,13 @@ class TherapistController extends Controller
             'experience_years'        => 'required|integer|min:0',
             'consultation_fee'        => 'required|numeric|min:0',
             'couple_consultation_fee' => 'nullable|numeric|min:0',
+            'family_consultation_fee' => 'nullable|numeric|min:0',
             'license_number'          => 'nullable|string|max:255',
             'specialization'          => 'nullable|string|max:255',
             'qualification'           => 'nullable|string|max:255',
             'languages'               => 'nullable|array',
             'languages.*'             => 'string|max:50',
-            'specializations' => 'required|array',
+            'specializations' => 'nullable|array',
             'specializations.*' => 'exists:therapist_specializations,id',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'certifications' => 'nullable|string',
@@ -121,6 +122,7 @@ class TherapistController extends Controller
                 'experience_years'        => $request->experience_years,
                 'consultation_fee'        => $request->consultation_fee,
                 'couple_consultation_fee' => $request->couple_consultation_fee ?? 0,
+                'family_consultation_fee' => $request->family_consultation_fee ?? 0,
                 'profile_image'           => $profileImagePath,
                 'certifications'          => $request->certifications,
                 'education'               => $request->education,
@@ -130,7 +132,7 @@ class TherapistController extends Controller
 
             // Attach specializations to therapist profile
             if ($therapistProfile) {
-                $therapistProfile->specializations()->attach($request->specializations);
+                $therapistProfile->specializations()->sync($request->specializations ?? []);
             }
         });
 
@@ -171,7 +173,9 @@ class TherapistController extends Controller
             'bio' => 'required|string',
             'experience_years' => 'required|integer|min:0',
             'consultation_fee' => 'required|numeric|min:0',
-            'specializations' => 'required|array',
+            'couple_consultation_fee' => 'nullable|numeric|min:0',
+            'family_consultation_fee' => 'nullable|numeric|min:0',
+            'specializations' => 'nullable|array',
             'specializations.*' => 'exists:therapist_specializations,id',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'certifications' => 'nullable|string',
@@ -208,6 +212,8 @@ class TherapistController extends Controller
             'bio' => $request->bio,
             'experience_years' => $request->experience_years,
             'consultation_fee' => $request->consultation_fee,
+            'couple_consultation_fee' => $request->couple_consultation_fee ?? 0,
+            'family_consultation_fee' => $request->family_consultation_fee ?? 0,
             'profile_image' => $profileImagePath,
             'certifications' => $request->certifications,
             'education' => $request->education,
@@ -215,7 +221,7 @@ class TherapistController extends Controller
 
         // Sync specializations with therapist profile
         if ($therapist->therapistProfile) {
-            $therapist->therapistProfile->specializations()->sync($request->specializations);
+            $therapist->therapistProfile->specializations()->sync($request->specializations ?? []);
         }
 
         return redirect()->route('admin.therapists.index')
