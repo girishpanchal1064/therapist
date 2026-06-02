@@ -59,7 +59,8 @@ class TherapistAvailabilityService
                     $slot['end'],
                     $durationMinutes,
                     $therapistId,
-                    $mode
+                    $mode,
+                    $singleAvailability->timezone
                 );
                 $availableSlots = array_merge($availableSlots, $slotSlots);
             }
@@ -102,7 +103,8 @@ class TherapistAvailabilityService
                         $slot['end'],
                         $durationMinutes,
                         $therapistId,
-                        $mode
+                        $mode,
+                        $weeklyAvailability->timezone
                     );
                     $availableSlots = array_merge($availableSlots, $slotSlots);
                 }
@@ -121,18 +123,21 @@ class TherapistAvailabilityService
     /**
      * Generate time slots from a time range
      */
-    private function generateSlotsFromTimeRange($date, $startTime, $endTime, $durationMinutes, $therapistId, $mode = null)
+    private function generateSlotsFromTimeRange($date, $startTime, $endTime, $durationMinutes, $therapistId, $mode = null, $timezone = null)
     {
         $slots = [];
-        $start = Carbon::parse($date->toDateString() . ' ' . $startTime);
-        $end = Carbon::parse($date->toDateString() . ' ' . $endTime);
+        $slotTimezone = $timezone ?: config('app.timezone', 'UTC');
+        $dateInTimezone = Carbon::parse($date->toDateString(), $slotTimezone);
+        $start = Carbon::parse($dateInTimezone->toDateString() . ' ' . $startTime, $slotTimezone);
+        $end = Carbon::parse($dateInTimezone->toDateString() . ' ' . $endTime, $slotTimezone);
         $current = $start->copy();
+        $now = Carbon::now($slotTimezone);
 
         while ($current->copy()->addMinutes($durationMinutes)->lte($end)) {
             $slotEnd = $current->copy()->addMinutes($durationMinutes);
             
-            // Skip past slots for today
-            if ($date->isToday() && $current->isPast()) {
+            // Skip slots that have already started in this availability timezone.
+            if ($dateInTimezone->isToday() && $current->lessThanOrEqualTo($now)) {
                 $current->addMinutes($durationMinutes);
                 continue;
             }

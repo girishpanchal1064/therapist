@@ -2458,6 +2458,11 @@ class ApiController extends Controller
         $slotStart = Carbon::parse($appointmentDate.' '.$timeFormatted);
         $slotEnd = $slotStart->copy()->addMinutes($durationMinutes);
 
+        // Prevent booking a slot that has already started (especially for same-day bookings).
+        if ($slotStart->lessThanOrEqualTo(now())) {
+            return $this->errorResponse('Please choose a future time slot.', 422);
+        }
+
         // Check overlapping appointments for this therapist on that date
         $existingAppointments = Appointment::where('therapist_id', $validated['therapist_id'])
             ->where('appointment_date', $appointmentDate)
