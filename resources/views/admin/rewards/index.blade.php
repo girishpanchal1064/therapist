@@ -2,9 +2,7 @@
 
 @section('title', 'Rewards Management')
 
-@section('vendor-style')
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+@section('page-style')
 <style>
   .layout-page .content-wrapper {
     background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
@@ -106,14 +104,33 @@
   }
 
   /* Table Styling */
+  .rewards-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   #rewardsTable {
     width: 100% !important;
+    min-width: 1180px;
     border-collapse: separate;
     border-spacing: 0;
     background: white;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  #rewardsTable th.cell-nowrap,
+  #rewardsTable td.cell-nowrap {
+    white-space: nowrap;
+    width: 1%;
+  }
+
+  #rewardsTable th.col-actions,
+  #rewardsTable td.col-actions {
+    width: 72px;
+    min-width: 72px;
+    text-align: center;
   }
 
   #rewardsTable thead th {
@@ -192,13 +209,95 @@
     transition: all 0.2s ease;
   }
 
+  .reward-code-pill {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
   .badge-discount {
     background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     color: white;
-    padding: 0.4rem 0.8rem;
+    padding: 0.4rem 0.85rem;
     border-radius: 20px;
     font-weight: 600;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+
+  .reward-status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+
+  .reward-status-pill.active {
+    background: rgba(16, 185, 129, 0.15);
+    color: #059669;
+  }
+
+  .reward-status-pill.expired {
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+  }
+
+  .reward-status-pill.inactive {
+    background: rgba(100, 116, 148, 0.15);
+    color: #647494;
+  }
+
+  .reward-desc-cell {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #64748b;
     font-size: 0.85rem;
+  }
+
+  .reward-actions-dropdown .btn-actions-toggle {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .reward-actions-dropdown .btn-actions-toggle:hover {
+    background: #041c54;
+    border-color: #041c54;
+    color: #fff;
+  }
+
+  .reward-actions-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   /* Filter Card */
@@ -331,11 +430,6 @@
 </style>
 @endsection
 
-@section('vendor-script')
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-@endsection
-
 @section('content')
 <div class="page-header">
   <div class="d-flex justify-content-between align-items-center position-relative" style="z-index: 2;">
@@ -435,20 +529,20 @@
     <h5 class="mb-0 fw-bold">All Rewards</h5>
   </div>
   <div class="card-body p-0" style="margin-top: 20px">
-    <div class="table-responsive admin-table-scroll">
+    <div class="table-responsive admin-table-scroll rewards-table-wrap">
       <table id="rewardsTable" class="table table-modern table-hover align-middle mb-0">
         <thead>
           <tr>
-            <th>ID</th>
+            <th class="cell-nowrap">ID</th>
             <th>Title</th>
-            <th>Code</th>
+            <th class="cell-nowrap">Code</th>
             <th>Affiliation URL</th>
             <th>Description</th>
-            <th>Discount</th>
-            <th>Valid From</th>
-            <th>Expire Date</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th class="cell-nowrap">Discount</th>
+            <th class="cell-nowrap">Valid From</th>
+            <th class="cell-nowrap">Expire Date</th>
+            <th class="cell-nowrap">Status</th>
+            <th class="text-center col-actions">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -461,8 +555,8 @@
                   <span class="badge bg-warning text-dark mt-1">Featured</span>
                 @endif
               </td>
-              <td>
-                <code class="bg-light px-2 py-1 rounded">{{ $reward->coupon_code }}</code>
+              <td class="cell-nowrap">
+                <span class="reward-code-pill" title="{{ $reward->coupon_code }}">{{ $reward->coupon_code }}</span>
               </td>
               <td>
                 @if($reward->affiliation_url)
@@ -474,47 +568,64 @@
                 @endif
               </td>
               <td>
-                <div class="text-muted small" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <div class="reward-desc-cell" title="{{ $reward->description }}">
                   {{ $reward->description ?: '-' }}
                 </div>
               </td>
-              <td>
-                <span class="badge-discount">
-                  {{ $reward->discount_text }}
+              <td class="cell-nowrap">
+                <span class="badge-discount">{{ $reward->discount_text }}</span>
+              </td>
+              <td class="cell-nowrap">
+                <span class="small fw-semibold">{{ $reward->valid_from->format('M d, Y') }}</span>
+              </td>
+              <td class="cell-nowrap">
+                <span class="small fw-semibold {{ $reward->valid_until < now() ? 'text-danger' : '' }}">
+                  {{ $reward->valid_until->format('M d, Y') }}
                 </span>
               </td>
-              <td>
-                <div class="small">{{ $reward->valid_from->format('M d, Y') }}</div>
-              </td>
-              <td>
-                <div class="small {{ $reward->valid_until < now() ? 'text-danger' : '' }}">
-                  {{ $reward->valid_until->format('M d, Y') }}
-                </div>
-              </td>
-              <td>
+              <td class="cell-nowrap">
                 @if($reward->valid_until < now())
-                  <span class="badge bg-danger">Expired</span>
+                  <span class="reward-status-pill expired">Expired</span>
                 @elseif($reward->is_active)
-                  <span class="badge bg-success">Active</span>
+                  <span class="reward-status-pill active">Active</span>
                 @else
-                  <span class="badge bg-secondary">Inactive</span>
+                  <span class="reward-status-pill inactive">Inactive</span>
                 @endif
               </td>
-              <td>
-                <div class="d-flex gap-2">
-                  <a href="{{ route('admin.rewards.show', $reward->id) }}" class="btn btn-action-view" title="View">
-                    <i class="ri-eye-line"></i>
-                  </a>
-                  <a href="{{ route('admin.rewards.edit', $reward->id) }}" class="btn btn-action-edit" title="Edit">
-                    <i class="ri-pencil-line"></i>
-                  </a>
-                  <form action="{{ route('admin.rewards.destroy', $reward->id) }}" method="POST" class="d-inline delete-form" data-title="Delete Reward" data-text="Are you sure you want to delete this reward?">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-action-delete" title="Delete">
-                      <i class="ri-delete-bin-line"></i>
-                    </button>
-                  </form>
+              <td class="col-actions">
+                <div class="dropdown reward-actions-dropdown">
+                  <button type="button"
+                          class="btn btn-actions-toggle dropdown-toggle hide-arrow"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          title="Actions">
+                    <i class="ri-more-2-fill"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="{{ route('admin.rewards.show', $reward->id) }}">
+                        <i class="ri-eye-line"></i> View Details
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ route('admin.rewards.edit', $reward->id) }}">
+                        <i class="ri-pencil-line"></i> Edit Reward
+                      </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <form action="{{ route('admin.rewards.destroy', $reward->id) }}" method="POST" class="delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                class="dropdown-item text-danger"
+                                data-title="Delete Reward"
+                                data-text="Are you sure you want to delete this reward?">
+                          <i class="ri-delete-bin-line"></i> Delete Reward
+                        </button>
+                      </form>
+                    </li>
+                  </ul>
                 </div>
               </td>
             </tr>
@@ -541,19 +652,7 @@
 </div>
 
 <script>
-$(document).ready(function() {
-  $('#rewardsTable').DataTable({
-    responsive: true,
-    order: [[0, 'desc']],
-    pageLength: 15,
-    lengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
-    language: {
-      search: "_INPUT_",
-      searchPlaceholder: "Search rewards..."
-    }
-  });
-
-  // Initialize filter state - show by default if filters are applied
+document.addEventListener('DOMContentLoaded', function() {
   const hasFilters = {{ (request('search') || request('status') || request('applicable_for')) ? 'true' : 'false' }};
   if (!hasFilters) {
     document.getElementById('filterContent').classList.add('collapsed');

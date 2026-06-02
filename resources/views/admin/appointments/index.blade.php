@@ -338,6 +338,20 @@
     gap: 6px;
   }
 
+  /* Session details pills */
+  .session-details-pills {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 280px;
+  }
+
+  .session-details-pills > * {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
   /* Badges */
   .mode-badge {
     padding: 6px 14px;
@@ -347,6 +361,9 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
   }
   .mode-video {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
@@ -361,6 +378,22 @@
     color: #ff9f43;
   }
 
+  .type-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: rgba(3, 195, 236, 0.12);
+    color: #0284c7;
+    text-transform: capitalize;
+    line-height: 1.2;
+  }
+
   .status-badge {
     padding: 6px 14px;
     border-radius: 20px;
@@ -371,18 +404,24 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
   }
 
   .duration-badge {
     background: #f5f5f9;
     padding: 4px 12px;
-    border-radius: 8px;
+    border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
     color: #566a7f;
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
   }
 
   .payment-status {
@@ -390,9 +429,33 @@
     align-items: center;
     gap: 6px;
     padding: 6px 12px;
-    border-radius: 8px;
+    border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+
+  .table-appointments td.cell-nowrap {
+    white-space: nowrap;
+    width: 1%;
+  }
+
+  .appointments-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-appointments {
+    min-width: 1080px;
+  }
+
+  .table-appointments th.col-actions,
+  .table-appointments td.col-actions {
+    width: 72px;
+    min-width: 72px;
+    text-align: center;
   }
   .payment-paid {
     background: linear-gradient(135deg, rgba(40, 199, 111, 0.15) 0%, rgba(30, 157, 88, 0.15) 100%);
@@ -407,67 +470,40 @@
     color: #ea5455;
   }
 
-  /* Action Buttons */
-  .action-buttons {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-    align-items: center;
-  }
-  .btn-action {
-    width: 36px;
-    height: 36px;
+  /* Actions dropdown */
+  .appointment-actions-dropdown .btn-actions-toggle {
+    width: 38px;
+    height: 38px;
     border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    transition: all 0.2s ease;
+  }
+
+  .appointment-actions-dropdown .btn-actions-toggle:hover,
+  .appointment-actions-dropdown .btn-actions-toggle:focus {
+    background: #041c54;
+    border-color: #041c54;
+    color: #fff;
+  }
+
+  .appointment-actions-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .appointment-actions-dropdown .dropdown-item button {
+    width: 100%;
+    text-align: left;
     border: none;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  .btn-action:hover {
-    transform: translateY(-3px);
-  }
-  .btn-action-view {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-  }
-  .btn-action-view:hover {
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-    color: white;
-  }
-  .btn-action-edit {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-  }
-  .btn-action-edit:hover {
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-    color: white;
-  }
-  .btn-action-complete {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-  }
-  .btn-action-complete:hover {
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-    color: white;
-  }
-  .btn-action-cancel {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
-  }
-  .btn-action-cancel:hover {
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-    color: white;
-  }
-  .btn-action-more {
-    background: #f1f5f9;
-    color: #64748b;
-  }
-  .btn-action-more:hover {
-    background: #e2e8f0;
-    color: #475569;
+    background: transparent;
+    padding: 0;
   }
 
   /* Date Picker */
@@ -799,7 +835,7 @@
   </div>
 
   @if($appointments->count() > 0)
-    <div class="table-responsive admin-table-scroll">
+    <div class="table-responsive admin-table-scroll appointments-table-wrap">
       <table class="table table-appointments table-hover align-middle mb-0">
         <thead>
           <tr>
@@ -810,7 +846,7 @@
             <th>Session Details</th>
             <th>Status</th>
             <th>Payment</th>
-            <th class="text-center">Actions</th>
+            <th class="text-center col-actions">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -872,8 +908,8 @@
                   @if($appointment->therapist)
                     @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
                       <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
-                    @elseif($appointment->therapist->avatar)
-                      <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
+                    @elseif($appointment->therapist->getRawOriginal('avatar'))
+                      <img src="{{ asset('storage/' . $appointment->therapist->getRawOriginal('avatar')) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
                     @else
                       <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="user-avatar">
                     @endif
@@ -906,29 +942,27 @@
                 </div>
               </td>
               <td>
-                <div class="d-flex flex-column gap-1">
+                <div class="session-details-pills">
                   <span class="mode-badge mode-{{ $appointment->session_mode }}">
                     <i class="{{ $modeIcons[$appointment->session_mode] ?? 'ri-question-line' }}"></i>
                     {{ ucfirst($appointment->session_mode) }}
                   </span>
-                  <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-label-info text-capitalize">
-                      <i class="{{ $typeIcons[$appointment->appointment_type] ?? 'ri-user-line' }} me-1"></i>
-                      {{ $appointment->appointment_type }}
-                    </span>
-                    <span class="duration-badge">
-                      <i class="ri-timer-line"></i>{{ $appointment->duration_minutes }}m
-                    </span>
-                  </div>
+                  <span class="type-badge">
+                    <i class="{{ $typeIcons[$appointment->appointment_type] ?? 'ri-user-line' }}"></i>
+                    {{ $appointment->appointment_type }}
+                  </span>
+                  <span class="duration-badge">
+                    <i class="ri-timer-line"></i>{{ $appointment->duration_minutes }}m
+                  </span>
                 </div>
               </td>
-              <td>
+              <td class="cell-nowrap">
                 <span class="status-badge bg-label-{{ $statusColors[$appointment->status] ?? 'secondary' }}">
                   <i class="{{ $statusIcons[$appointment->status] ?? 'ri-question-line' }}"></i>
                   {{ ucfirst(str_replace('_', ' ', $appointment->status)) }}
                 </span>
               </td>
-              <td>
+              <td class="cell-nowrap">
                 @if($appointment->payment)
                   @if($appointment->payment->status === 'completed')
                     <span class="payment-status payment-paid">
@@ -949,78 +983,87 @@
                   </span>
                 @endif
               </td>
-              <td>
-                <div class="action-buttons">
-                  <a href="{{ route('admin.appointments.show', $appointment) }}"
-                     class="btn-action btn-action-view"
-                     data-bs-toggle="tooltip"
-                     title="View Details">
-                    <i class="ri-eye-line"></i>
-                  </a>
-                  <a href="{{ route('admin.appointments.edit', $appointment) }}"
-                     class="btn-action btn-action-edit"
-                     data-bs-toggle="tooltip"
-                     title="Edit">
-                    <i class="ri-pencil-line"></i>
-                  </a>
-                  @if(in_array($appointment->status, ['scheduled', 'confirmed']))
-                    <form action="{{ route('admin.appointments.complete', $appointment) }}" method="POST" class="d-inline">
-                      @csrf
-                      <button type="submit"
-                              class="btn-action btn-action-complete"
-                              data-bs-toggle="tooltip"
-                              title="Mark Complete">
-                        <i class="ri-check-line"></i>
-                      </button>
-                    </form>
-                    <form action="{{ route('admin.appointments.cancel', $appointment) }}" method="POST" class="d-inline">
-                      @csrf
-                      <button type="submit"
-                              class="btn-action btn-action-cancel"
-                              data-bs-toggle="tooltip"
-                              title="Cancel"
-                              data-title="Cancel Appointment" data-text="Are you sure you want to cancel this appointment?" data-confirm-text="Yes, cancel it!" data-cancel-text="No, keep it" class="cancel-appointment-btn">
-                        <i class="ri-close-line"></i>
-                      </button>
-                    </form>
-                  @endif
-                  <div class="dropdown d-inline">
-                    <button type="button" class="btn-action btn-action-more dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                      <i class="ri-more-2-fill"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      @if($appointment->meeting_link)
-                        <li>
-                          <a class="dropdown-item" href="{{ $appointment->meeting_link }}" target="_blank">
-                            <i class="ri-video-add-line me-2"></i> Join Meeting
-                          </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                      @endif
-                      <li>
-                        <a class="dropdown-item" href="{{ route('admin.users.show', $appointment->client_id) }}">
-                          <i class="ri-user-line me-2"></i> View Client
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="{{ route('admin.therapists.show', $appointment->therapist_id) }}">
-                          <i class="ri-user-star-line me-2"></i> View Therapist
-                        </a>
-                      </li>
+              <td class="col-actions">
+                <div class="dropdown appointment-actions-dropdown">
+                  <button type="button"
+                          class="btn btn-actions-toggle dropdown-toggle hide-arrow"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                          title="Actions">
+                    <i class="ri-more-2-fill"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="{{ route('admin.appointments.show', $appointment) }}">
+                        <i class="ri-eye-line"></i> View Details
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ route('admin.appointments.edit', $appointment) }}">
+                        <i class="ri-pencil-line"></i> Edit Appointment
+                      </a>
+                    </li>
+                    @if(in_array($appointment->status, ['scheduled', 'confirmed']))
                       <li><hr class="dropdown-divider"></li>
                       <li>
-                        <form action="{{ route('admin.appointments.destroy', $appointment) }}"
-                              method="POST"
-                              class="delete-form">
+                        <form action="{{ route('admin.appointments.complete', $appointment) }}" method="POST">
                           @csrf
-                          @method('DELETE')
-                          <button type="submit" class="dropdown-item text-danger" data-title="Delete Appointment" data-text="Are you sure you want to delete this appointment? This action cannot be undone." data-confirm-text="Yes, delete it!" data-cancel-text="Cancel">
-                            <i class="ri-delete-bin-line me-2"></i> Delete Appointment
+                          <button type="submit" class="dropdown-item text-success">
+                            <i class="ri-check-line"></i> Mark Complete
                           </button>
                         </form>
                       </li>
-                    </ul>
-                  </div>
+                      <li>
+                        <form action="{{ route('admin.appointments.cancel', $appointment) }}" method="POST" class="delete-form">
+                          @csrf
+                          <button type="submit"
+                                  class="dropdown-item text-warning cancel-appointment-btn"
+                                  data-title="Cancel Appointment"
+                                  data-text="Are you sure you want to cancel this appointment?"
+                                  data-confirm-text="Yes, cancel it!"
+                                  data-cancel-text="No, keep it">
+                            <i class="ri-close-line"></i> Cancel Appointment
+                          </button>
+                        </form>
+                      </li>
+                    @endif
+                    @if($appointment->meeting_link)
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <a class="dropdown-item" href="{{ $appointment->meeting_link }}" target="_blank">
+                          <i class="ri-video-add-line"></i> Join Meeting
+                        </a>
+                      </li>
+                    @endif
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <a class="dropdown-item" href="{{ route('admin.users.show', $appointment->client_id) }}">
+                        <i class="ri-user-line"></i> View Client
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ route('admin.therapists.show', $appointment->therapist_id) }}">
+                        <i class="ri-user-star-line"></i> View Therapist
+                      </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <form action="{{ route('admin.appointments.destroy', $appointment) }}"
+                            method="POST"
+                            class="delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                class="dropdown-item text-danger"
+                                data-title="Delete Appointment"
+                                data-text="Are you sure you want to delete this appointment? This action cannot be undone."
+                                data-confirm-text="Yes, delete it!"
+                                data-cancel-text="Cancel">
+                          <i class="ri-delete-bin-line"></i> Delete Appointment
+                        </button>
+                      </form>
+                    </li>
+                  </ul>
                 </div>
               </td>
             </tr>

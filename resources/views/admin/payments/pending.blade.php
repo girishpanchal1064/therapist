@@ -140,6 +140,10 @@
         border-radius: 20px;
         font-weight: 500;
         font-size: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
     
     .payment-method {
@@ -153,6 +157,13 @@
         font-weight: 500;
         font-size: 0.8rem;
         text-transform: capitalize;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .payments-table td.cell-nowrap {
+        white-space: nowrap;
+        width: 1%;
     }
     
     .action-dropdown .dropdown-toggle {
@@ -383,10 +394,10 @@
                             <td class="amount-cell">₹{{ number_format($payment->amount, 2) }}</td>
                             <td class="amount-cell">₹{{ number_format($payment->tax_amount, 2) }}</td>
                             <td class="amount-total">₹{{ number_format($payment->total_amount, 2) }}</td>
-                            <td>
-                                <span class="payment-method">{{ $payment->payment_method }}</span>
+                            <td class="cell-nowrap">
+                                <span class="payment-method">{{ str_replace('_', ' ', $payment->payment_method) }}</span>
                             </td>
-                            <td>
+                            <td class="cell-nowrap">
                                 <span class="badge-pending">
                                     {{ ucfirst($payment->status) }}
                                 </span>

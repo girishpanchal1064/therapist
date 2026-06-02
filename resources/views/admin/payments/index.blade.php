@@ -353,6 +353,12 @@
     border-radius: 6px;
     font-size: 0.75rem;
     color: #475569;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Amount Display */
@@ -375,6 +381,9 @@
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
   }
 
   .status-badge.pending {
@@ -407,10 +416,21 @@
     background: rgba(100, 116, 148, 0.12);
     color: #647494;
     padding: 0.375rem 0.75rem;
-    border-radius: 8px;
+    border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: capitalize;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+
+  .payments-table td.cell-nowrap {
+    white-space: nowrap;
+    width: 1%;
   }
 
   /* Action Dropdown */
@@ -754,9 +774,9 @@
                 <td>
                   <span class="fw-medium text-muted">{{ $loop->iteration }}</span>
                 </td>
-                <td>
+                <td class="cell-nowrap">
                   @if($payment->transaction_id)
-                    <span class="transaction-id">{{ $payment->transaction_id }}</span>
+                    <span class="transaction-id" title="{{ $payment->transaction_id }}">{{ $payment->transaction_id }}</span>
                   @else
                     <span class="text-muted">-</span>
                   @endif
@@ -764,8 +784,8 @@
                 <td>
                   <div class="user-info">
                     @if($payment->user)
-                      @if($payment->user->avatar)
-                        <img src="{{ asset('storage/' . $payment->user->avatar) }}" alt="{{ $payment->user->name }}" class="user-avatar">
+                      @if($payment->user->getRawOriginal('avatar'))
+                        <img src="{{ asset('storage/' . $payment->user->getRawOriginal('avatar')) }}" alt="{{ $payment->user->name }}" class="user-avatar">
                       @else
                         <div class="user-avatar-initials">
                           {{ strtoupper(substr($payment->user->name, 0, 2)) }}
@@ -793,12 +813,12 @@
                 <td>
                   <span class="amount-display total">₹{{ number_format($payment->total_amount, 2) }}</span>
                 </td>
-                <td>
+                <td class="cell-nowrap">
                   <span class="payment-method">
-                    <i class="ri-bank-card-line me-1"></i>{{ $payment->payment_method }}
+                    <i class="ri-bank-card-line"></i>{{ str_replace('_', ' ', $payment->payment_method) }}
                   </span>
                 </td>
-                <td>
+                <td class="cell-nowrap">
                   <span class="status-badge {{ $payment->status }}">
                     @if($payment->status === 'completed')
                       <i class="ri-checkbox-circle-fill"></i>
