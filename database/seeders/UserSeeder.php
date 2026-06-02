@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
                 'name' => 'Therapist',
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
-                'role_id' => $therapistRole ? $therapistRole->id : null,
+                    'role_id' => $therapistRole ? $therapistRole->id : null,
                 'phone' => '+1234567890',
                 'status' => 'active',
             ]
