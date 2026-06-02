@@ -709,20 +709,6 @@
             <div class="form-text">List professional certifications (Optional)</div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="education" class="form-label">
-              <i class="ri-graduation-cap-line label-icon"></i>
-              Education
-            </label>
-            <textarea class="form-control @error('education') is-invalid @enderror"
-                      id="education" name="education" rows="3" placeholder="e.g., M.A. in Psychology, Ph.D. in Clinical Psychology...">{{ old('education') }}</textarea>
-            @error('education')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-            <div class="form-text">Educational qualifications and degrees (Optional)</div>
-          </div>
-        </div>
       </div>
 
       <div class="mb-3">

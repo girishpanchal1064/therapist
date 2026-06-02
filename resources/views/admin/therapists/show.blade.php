@@ -98,12 +98,6 @@
                     </div>
                   @endif
 
-                  @if($therapist->therapistProfile->education)
-                    <div class="mb-3">
-                      <strong>Education:</strong><br>
-                      <p class="mt-2">{{ $therapist->therapistProfile->education }}</p>
-                    </div>
-                  @endif
                 @else
                   <div class="alert alert-warning">
                     <i class="ri-alert-line me-2"></i>

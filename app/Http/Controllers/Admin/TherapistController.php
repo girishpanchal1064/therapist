@@ -84,7 +84,6 @@ class TherapistController extends Controller
             'specializations.*' => 'exists:therapist_specializations,id',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'certifications' => 'nullable|string',
-            'education' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -125,7 +124,6 @@ class TherapistController extends Controller
                 'family_consultation_fee' => $request->family_consultation_fee ?? 0,
                 'profile_image'           => $profileImagePath,
                 'certifications'          => $request->certifications,
-                'education'               => $request->education,
                 'is_verified'             => true,
                 'is_approved'             => true,
             ]);
@@ -179,7 +177,6 @@ class TherapistController extends Controller
             'specializations.*' => 'exists:therapist_specializations,id',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'certifications' => 'nullable|string',
-            'education' => 'nullable|string',
             'status' => 'required|in:active,inactive,suspended',
         ]);
 
@@ -216,7 +213,6 @@ class TherapistController extends Controller
             'family_consultation_fee' => $request->family_consultation_fee ?? 0,
             'profile_image' => $profileImagePath,
             'certifications' => $request->certifications,
-            'education' => $request->education,
         ]);
 
         // Sync specializations with therapist profile

@@ -110,7 +110,6 @@ class TherapistProfileController extends Controller
             'languages' => 'nullable|array',
             'brief_description' => 'nullable|string',
             'certifications' => 'nullable|string',
-            'education' => 'nullable|string',
             'present_address' => 'nullable|string',
             'present_country' => 'nullable|string',
             'present_state' => 'nullable|string',
@@ -197,7 +196,7 @@ class TherapistProfileController extends Controller
             'clinic_country', 'clinic_state', 'clinic_city', 'clinic_district', 'clinic_zip',
             'timezone', 'languages',
             'consultation_fee', 'couple_consultation_fee', 'family_consultation_fee',
-            'certifications', 'education'
+            'certifications'
         ]));
 
         if ($request->experience_years) {

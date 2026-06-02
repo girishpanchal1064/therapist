@@ -97,13 +97,9 @@
     </div>
 
     <div class="row mb-3">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <label class="form-label">Certifications</label>
         <textarea name="certifications" class="form-control" rows="3" placeholder="List certifications...">{{ old('certifications', $profile->certifications) }}</textarea>
-      </div>
-      <div class="col-md-6">
-        <label class="form-label">Education</label>
-        <textarea name="education" class="form-control" rows="3" placeholder="Enter educational background...">{{ old('education', $profile->education) }}</textarea>
       </div>
     </div>
 

@@ -556,22 +556,12 @@
         </div>
 
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="mb-3">
               <label for="certifications" class="form-label">Certifications</label>
               <textarea class="form-control @error('certifications') is-invalid @enderror"
                         id="certifications" name="certifications" rows="3" placeholder="List certifications...">{{ old('certifications', $therapist->therapistProfile->certifications) }}</textarea>
               @error('certifications')
-                <div class="invalid-feedback">{{ $message }}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="education" class="form-label">Education</label>
-              <textarea class="form-control @error('education') is-invalid @enderror"
-                        id="education" name="education" rows="3" placeholder="Enter educational background...">{{ old('education', $therapist->therapistProfile->education) }}</textarea>
-              @error('education')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
             </div>
