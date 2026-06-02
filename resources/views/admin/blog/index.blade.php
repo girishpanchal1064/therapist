@@ -140,52 +140,57 @@
         background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     }
     
-    .badge-draft {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-weight: 500;
-        font-size: 0.75rem;
-    }
-    
-    .badge-published {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-weight: 500;
-        font-size: 0.75rem;
-    }
-    
-    .badge-archived {
-        background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
-        color: #212529;
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-weight: 500;
-        font-size: 0.75rem;
-    }
-    
-    .badge-category {
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-weight: 500;
-        font-size: 0.75rem;
-        color: white;
-    }
-    
-    .views-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        background: rgba(100, 116, 148, 0.1);
-        padding: 0.35rem 0.65rem;
-        border-radius: 20px;
-        color: #647494;
-        font-weight: 500;
-        font-size: 0.8rem;
-    }
+  .table-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    flex-shrink: 0;
+    max-width: 100%;
+  }
+
+  td.category-cell {
+    min-width: 8.5rem;
+    max-width: 11rem;
+  }
+
+  .badge-category {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: color-mix(in srgb, var(--cat-color, #647494) 14%, transparent);
+    color: var(--cat-color, #647494);
+    border: 1px solid color-mix(in srgb, var(--cat-color, #647494) 28%, transparent);
+  }
+
+  .badge-draft {
+    background: var(--apni-lynch-10, rgba(100, 116, 148, 0.1));
+    color: var(--apni-lynch, #647494);
+    border: 1px solid var(--apni-lynch-20, rgba(100, 116, 148, 0.2));
+  }
+
+  .badge-published {
+    background: var(--apni-success-soft, #10b98115);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+  }
+
+  .badge-archived {
+    background: var(--apni-warning-soft, #f59e0b15);
+    color: #b45309;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+  }
+
+  .views-badge {
+    background: var(--apni-lynch-10, rgba(100, 116, 148, 0.1));
+    color: var(--apni-lynch, #647494);
+    border: 1px solid var(--apni-lynch-20, rgba(100, 116, 148, 0.2));
+  }
     
     .action-dropdown .dropdown-toggle {
         background: linear-gradient(90deg, #041C54 0%, #647494 100%);
@@ -536,9 +541,11 @@
                                     @endif
                                 </div>
                             </td>
-                            <td>
+                            <td class="category-cell">
                                 @if($post->category)
-                                    <span class="badge-category" style="background-color: {{ $post->category->color ?? '#647494' }};">
+                                    <span class="table-pill badge-category"
+                                          style="--cat-color: {{ $post->category->color ?? '#647494' }};"
+                                          title="{{ $post->category->name }}">
                                         {{ $post->category->name }}
                                     </span>
                                 @else
@@ -548,16 +555,24 @@
                             <td>
                                 <div class="author-info">
                                     @if($post->author)
-                                        @if($post->author->avatar)
-                                            <img src="{{ asset('storage/' . $post->author->avatar) }}" 
-                                                 alt="{{ $post->author->name }}" 
+                                        @php
+                                            $authorAvatar = null;
+                                            if ($post->author->profile?->profile_image) {
+                                                $authorAvatar = asset('storage/' . $post->author->profile->profile_image);
+                                            } elseif (!empty($post->author->getRawOriginal('avatar'))) {
+                                                $authorAvatar = asset('storage/' . $post->author->getRawOriginal('avatar'));
+                                            }
+                                        @endphp
+                                        @if($authorAvatar)
+                                            <img src="{{ $authorAvatar }}"
+                                                 alt="{{ $post->author->name }}"
                                                  class="author-avatar">
                                         @else
                                             <div class="author-avatar-initial">
                                                 {{ strtoupper(substr($post->author->name, 0, 2)) }}
                                             </div>
                                         @endif
-                                        <span class="small fw-bold">{{ $post->author->name }}</span>
+                                        <span class="small fw-bold text-truncate">{{ $post->author->name }}</span>
                                     @else
                                         <span class="text-muted small">No author</span>
                                     @endif
@@ -572,12 +587,12 @@
                                     ];
                                     $statusClass = $statusClasses[$post->status] ?? 'badge-draft';
                                 @endphp
-                                <span class="{{ $statusClass }}">
+                                <span class="table-pill {{ $statusClass }}">
                                     {{ ucfirst($post->status) }}
                                 </span>
                             </td>
                             <td>
-                                <div class="views-badge">
+                                <div class="table-pill views-badge">
                                     <i class="ri-eye-line"></i>
                                     {{ number_format($post->views_count) }}
                                 </div>

@@ -389,6 +389,12 @@
         </div>
       @endif
 
+      @if(session('status'))
+        <div class="login-alert success">
+          {{ session('status') }}
+        </div>
+      @endif
+
       @if(session('booking_redirect'))
         <div class="login-alert success">
           After logging in, you'll be redirected to complete your session booking.

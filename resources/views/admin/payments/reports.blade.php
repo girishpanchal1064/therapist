@@ -59,7 +59,11 @@
     backdrop-filter: blur(10px);
   }
 
-  /* Stats Cards */
+  /* Stats Cards — equal height row */
+  .stats-row > [class*='col-'] {
+    display: flex;
+  }
+
   .stats-card {
     border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 16px;
@@ -68,6 +72,29 @@
     overflow: hidden;
     position: relative;
     background: #fff;
+    width: 100%;
+    height: 100%;
+  }
+
+  .stats-card .card-body {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-height: 7.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .stats-card .stats-card-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .stats-card .stats-content {
+    min-width: 0;
+    flex: 1;
   }
 
   .stats-card::before {
@@ -86,31 +113,38 @@
   }
 
   .stats-icon {
-    width: 60px;
-    height: 60px;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 14px;
-    font-size: 1.6rem;
+    border-radius: 12px;
+    font-size: 1.5rem;
     background: rgba(100, 116, 148, 0.12);
     color: #647494;
   }
 
   .stats-card .stats-value {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
+    line-height: 1.2;
     background: linear-gradient(90deg, #041C54 0%, #647494 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    white-space: nowrap;
   }
 
   .stats-card .stats-label {
     color: #7484a4;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 500;
-    margin-top: 0.5rem;
+    margin-top: 0.35rem;
+    line-height: 1.3;
+    min-height: 2.6em;
+    display: flex;
+    align-items: flex-end;
   }
 
   /* Filter Card */
@@ -268,12 +302,12 @@
 </div>
 
 <!-- Stats Cards -->
-<div class="row g-4 mb-4">
-  <div class="col-md-3">
+<div class="row g-4 mb-4 stats-row">
+  <div class="col-md-3 col-sm-6">
     <div class="card stats-card">
       <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-          <div>
+        <div class="stats-card-inner">
+          <div class="stats-content">
             <div class="stats-value">₹{{ number_format($totalRevenue, 2) }}</div>
             <div class="stats-label">Total Revenue</div>
           </div>
@@ -284,11 +318,11 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 col-sm-6">
     <div class="card stats-card">
       <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-          <div>
+        <div class="stats-card-inner">
+          <div class="stats-content">
             <div class="stats-value">{{ $completedCount }}</div>
             <div class="stats-label">Completed Payments</div>
           </div>
@@ -299,11 +333,11 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 col-sm-6">
     <div class="card stats-card">
       <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-          <div>
+        <div class="stats-card-inner">
+          <div class="stats-content">
             <div class="stats-value">{{ $pendingCount }}</div>
             <div class="stats-label">Pending Payments</div>
           </div>
@@ -314,11 +348,11 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-3 col-sm-6">
     <div class="card stats-card">
       <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-          <div>
+        <div class="stats-card-inner">
+          <div class="stats-content">
             <div class="stats-value">₹{{ number_format($totalRefunded, 2) }}</div>
             <div class="stats-label">Total Refunded</div>
           </div>

@@ -881,22 +881,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const confirmText = this.dataset.confirmText || 'Yes, remove it!';
             const cancelText = this.dataset.cancelText || 'Cancel';
 
-            Swal.fire({
+            ApniSwal.confirm({
                 title: title,
                 text: text,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
                 confirmButtonText: confirmText,
                 cancelButtonText: cancelText,
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'btn btn-danger',
-                    cancelButton: 'btn btn-secondary',
-                    actions: 'swal2-actions'
-                },
-                buttonsStyling: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     removeAvatarForm.submit();

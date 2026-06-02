@@ -5,6 +5,8 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\TherapistController;
 use App\Http\Controllers\Web\BookingController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Therapist\DashboardController as TherapistDashboardController;
@@ -29,6 +31,11 @@ Route::middleware('guest')->group(function () {
     })->name('admin.login');
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
+
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

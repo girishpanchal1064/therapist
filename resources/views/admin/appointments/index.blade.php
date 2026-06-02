@@ -1106,13 +1106,7 @@
 
     // Export functionality placeholder
     document.getElementById('exportBtn')?.addEventListener('click', function() {
-      Swal.fire({
-        icon: 'info',
-        title: 'Export',
-        text: 'Export functionality would be implemented here. You can export to CSV, Excel, or PDF.',
-        confirmButtonColor: '#667eea',
-        confirmButtonText: 'OK'
-      });
+      ApniSwal.info('Export', 'Export functionality would be implemented here. You can export to CSV, Excel, or PDF.');
     });
 
     // Handle cancel appointment buttons
@@ -1125,22 +1119,15 @@
         const confirmText = this.dataset.confirmText || 'Yes, cancel it!';
         const cancelText = this.dataset.cancelText || 'No, keep it';
 
-        Swal.fire({
+        ApniSwal.confirm({
           title: title,
           text: text,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#ffc107',
-          cancelButtonColor: '#6c757d',
           confirmButtonText: confirmText,
           cancelButtonText: cancelText,
-          reverseButtons: true,
           customClass: {
             confirmButton: 'btn btn-warning',
             cancelButton: 'btn btn-secondary',
-            actions: 'swal2-actions'
           },
-          buttonsStyling: false
         }).then((result) => {
           if (result.isConfirmed && form) {
             form.submit();

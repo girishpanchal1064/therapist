@@ -4,154 +4,57 @@
 
 @section('page-style')
 <style>
-  /* Page Header */
-  .page-header {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  .layout-page .content-wrapper {
+    background: linear-gradient(to bottom, #fff, rgba(186, 194, 210, 0.05)) !important;
+  }
+
+  .summary-card {
+    background: #fff;
     border-radius: 16px;
-    padding: 2rem;
-    margin-top: 1.5rem;
+    box-shadow: var(--apni-shadow-gulf-05, 0 8px 24px rgb(4 28 84 / 0.05));
+    padding: 1.5rem;
     margin-bottom: 1.5rem;
-    position: relative;
-    overflow: hidden;
+    border: 1px solid rgba(186, 194, 210, 0.35);
+    border-left: 4px solid var(--apni-gulf-blue, #041c54);
   }
 
-  .page-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 400px;
-    height: 400px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-  }
-
-  .page-header h4 {
-    color: white;
+  .summary-card .summary-value {
+    font-size: 2.25rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    position: relative;
-    z-index: 1;
+    color: var(--apni-gulf-blue, #041c54);
+    font-family: var(--apni-font-display, 'Sora', sans-serif);
   }
 
-  .page-header p {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 0;
-    position: relative;
-    z-index: 1;
-  }
-
-  .header-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.75rem;
-    color: white;
-    backdrop-filter: blur(10px);
+  .summary-card .summary-label {
+    color: var(--apni-bermuda-gray, #7484a4);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
   }
 
   .btn-back {
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.3);
     color: white;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.25rem;
     border-radius: 10px;
     font-weight: 600;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
     text-decoration: none;
   }
 
   .btn-back:hover {
     background: white;
-    color: #f59e0b;
+    color: var(--apni-gulf-blue, #041c54);
     border-color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
   }
 
-  /* Summary Card */
-  .summary-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-left: 4px solid #f59e0b;
-  }
-
-  .summary-card .summary-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .summary-card .summary-label {
-    color: #64748b;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-top: 0.5rem;
-  }
-
-  /* Main Card */
-  .main-card {
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-  }
-
-  .main-card .card-header {
-    background: white;
-    border-bottom: 2px solid #f0f2f5;
-    padding: 1.5rem;
-  }
-
-  .main-card .card-body {
-    padding: 1.5rem;
-  }
-
-  /* Alert Styling */
-  .alert-success {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border: 1px solid #86efac;
-    color: #166534;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-  }
-
-  .alert-danger {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border: 1px solid #fecaca;
-    color: #991b1b;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-  }
-
-  /* Therapist Card */
   .therapist-card {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(186, 194, 210, 0.35);
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    overflow: hidden;
-    position: relative;
-    margin-top: 20px;
-    margin-bottom: 0.5rem;
-    border-left: 4px solid #f59e0b;
-    transition: all 0.3s ease;
-  }
-
-  .therapist-card:hover {
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
-    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(4, 28, 84, 0.06), 0 2px 4px rgba(4, 28, 84, 0.04);
+    margin-top: 1rem;
+    border-left: 4px solid var(--apni-warning, #f59e0b);
   }
 
   .therapist-card:nth-child(even) {
@@ -159,169 +62,225 @@
   }
 
   .therapist-card .card-body {
-    padding: 1rem 1.25rem;
+    padding: 0.875rem 1rem;
   }
 
-  .therapist-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    object-fit: cover;
-    border: 2px solid #e5e7eb;
+  .pending-row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(110px, 1fr) minmax(140px, 1.2fr) auto auto minmax(100px, auto) auto;
+    gap: 0.75rem 1rem;
+    align-items: center;
   }
 
-  .therapist-avatar-initials {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
+  @media (max-width: 1199px) {
+    .pending-row {
+      grid-template-columns: 1fr 1fr;
+    }
+    .pending-row__identity { grid-column: 1 / -1; }
+    .pending-row__actions { grid-column: 1 / -1; justify-content: flex-start; }
+  }
+
+  @media (max-width: 575px) {
+    .pending-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pending-row__identity {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1rem;
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-    border: 2px solid #e5e7eb;
+    gap: 0.75rem;
+    min-width: 0;
   }
 
-  .therapist-info {
-    display: flex;
-    flex-direction: column;
+  .therapist-avatar,
+  .therapist-avatar-default {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid rgba(186, 194, 210, 0.4);
+  }
+
+  .therapist-avatar-default {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
   }
 
   .therapist-name {
     font-weight: 600;
-    color: #1e293b;
-    font-size: 0.95rem;
-    margin-bottom: 0.25rem;
+    color: var(--apni-gulf-blue, #041c54);
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.125rem;
   }
 
   .therapist-email {
-    color: #64748b;
+    color: var(--apni-bermuda-gray, #7484a4);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pending-row__phone {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
     font-size: 0.8125rem;
+    color: var(--apni-lynch, #647494);
+    white-space: nowrap;
+  }
+
+  .pending-row__phone i {
+    color: var(--apni-bermuda-gray, #7484a4);
+    flex-shrink: 0;
+  }
+
+  .pending-row__specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+    min-width: 0;
   }
 
   .spec-badge {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-    padding: 0.25rem 0.625rem;
+    background: var(--apni-lynch-10, rgba(100, 116, 148, 0.1));
+    color: var(--apni-gulf-blue, #041c54);
+    padding: 0.25rem 0.5rem;
     border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    margin-right: 0.375rem;
-    margin-bottom: 0.25rem;
-    display: inline-block;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid var(--apni-lynch-20, rgba(100, 116, 148, 0.2));
   }
 
-  .spec-badge:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  .spec-badge.more {
+    background: linear-gradient(90deg, #041c54 0%, #647494 100%);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .exp-badge,
+  .fee-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .exp-badge {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-    padding: 0.25rem 0.625rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
+    background: var(--apni-lynch-10, rgba(100, 116, 148, 0.1));
+    color: #334155;
+    border: 1px solid var(--apni-lynch-20, rgba(100, 116, 148, 0.2));
+  }
+
+  .exp-badge i {
+    font-size: 0.85rem;
+    color: var(--apni-lynch, #647494);
   }
 
   .fee-badge {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    color: white;
-    padding: 0.25rem 0.625rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
+    background: var(--apni-success-soft, #10b98115);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.2);
   }
 
-  .status-badge {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #78350f;
-    padding: 0.375rem 0.875rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
+  .pending-row__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .status-badge.pending {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: var(--apni-warning-soft, #f59e0b15);
+    color: #b45309;
+    border: 1px solid rgba(245, 158, 11, 0.25);
   }
 
-  .action-btns {
+  .pending-date {
+    font-size: 0.75rem;
+    color: var(--apni-bermuda-gray, #7484a4);
+    white-space: nowrap;
+  }
+
+  .pending-row__actions {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .btn-action {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-  }
-
-  .btn-action:active {
-    transform: translateY(1px);
+    font-size: 0.9rem;
+    text-decoration: none;
+    flex-shrink: 0;
   }
 
   .btn-action.view {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    background: var(--apni-gulf-blue, #041c54);
+    color: #fff;
   }
 
   .btn-action.approve {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+    background: var(--apni-success, #10b981);
+    color: #fff;
   }
 
   .btn-action.reject {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+    background: var(--apni-danger, #ef4444);
+    color: #fff;
   }
 
-  /* Empty State */
+  .text-muted-small {
+    font-size: 0.75rem;
+    color: var(--apni-bermuda-gray, #7484a4);
+  }
+
   .empty-state {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
   }
 
   .empty-state-icon {
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    width: 80px;
+    height: 80px;
+    background: var(--apni-success-soft, #10b98115);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 2.5rem;
-    color: #f59e0b;
+    margin: 0 auto 1rem;
+    font-size: 2rem;
+    color: var(--apni-success, #10b981);
   }
 
-  .empty-state h5 {
-    color: #1e293b;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .empty-state p {
-    color: #64748b;
-  }
-
-  /* Pagination */
   .pagination-wrapper {
     display: flex;
     justify-content: space-between;
@@ -330,35 +289,21 @@
     gap: 1rem;
     margin-top: 1.5rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid rgba(186, 194, 210, 0.35);
   }
 
   .pagination-info {
-    color: #64748b;
+    color: var(--apni-bermuda-gray, #7484a4);
     font-size: 0.875rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .therapist-card .row {
-      flex-wrap: wrap;
-    }
-    
-    .action-btns {
-      width: 100%;
-      justify-content: flex-start;
-      margin-top: 0.5rem;
-    }
   }
 </style>
 @endsection
 
 @section('content')
-<!-- Page Header -->
 <div class="page-header">
   <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div class="d-flex align-items-center gap-3">
-      <div class="header-icon">
+      <div class="header-icon" style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff;">
         <i class="ri-time-line"></i>
       </div>
       <div>
@@ -372,16 +317,13 @@
   </div>
 </div>
 
-<!-- Summary Card -->
 <div class="summary-card">
   <div class="d-flex align-items-center justify-content-between">
     <div>
       <div class="summary-value">{{ $therapists->total() }}</div>
-      <div class="summary-label">Pending Approval Requests</div>
+      <div class="summary-label">Pending approval requests</div>
     </div>
-    <div class="text-end">
-      <i class="ri-user-search-line" style="font-size: 3rem; color: #fbbf24; opacity: 0.3;"></i>
-    </div>
+    <i class="ri-user-search-line" style="font-size: 2.5rem; color: var(--apni-heather, #bac2d2); opacity: 0.6;"></i>
   </div>
 </div>
 
@@ -399,129 +341,108 @@
   </div>
 @endif
 
-<!-- Main Card -->
 <div class="card main-card">
   <div class="card-header">
-    <h5 class="mb-0">Pending Therapists</h5>
+    <h5 class="mb-0" style="color: var(--apni-gulf-blue, #041c54); font-weight: 700;">Pending Therapists</h5>
   </div>
   <div class="card-body">
     @if($therapists->count() > 0)
       @foreach($therapists as $therapist)
+        @php
+          $profile = $therapist->therapistProfile;
+          if ($profile && $profile->profile_image) {
+            $avatarSrc = asset('storage/' . $profile->profile_image);
+          } elseif (!empty($therapist->getAttributes()['avatar'] ?? null)) {
+            $avatarSrc = asset('storage/' . $therapist->getAttributes()['avatar']);
+          } else {
+            $avatarSrc = 'https://ui-avatars.com/api/?name=' . urlencode($therapist->name) . '&background=647494&color=fff&size=80&bold=true&format=svg';
+          }
+        @endphp
         <div class="card therapist-card">
           <div class="card-body">
-            <div class="row align-items-center">
-              <!-- Avatar -->
-              <div class="col-lg-1 col-md-2 col-3">
-                @if($therapist->avatar)
-                  <img src="{{ asset('storage/' . $therapist->avatar) }}" alt="{{ $therapist->name }}" class="therapist-avatar">
-                @else
-                  <div class="therapist-avatar-initials">
-                    {{ strtoupper(substr($therapist->name, 0, 2)) }}
-                  </div>
-                @endif
-              </div>
-
-              <!-- Name & Email -->
-              <div class="col-lg-2 col-md-3 col-9">
-                <div class="therapist-info">
+            <div class="pending-row">
+              <div class="pending-row__identity">
+                <img src="{{ $avatarSrc }}" alt="{{ $therapist->name }}" class="{{ ($profile && $profile->profile_image) || !empty($therapist->getAttributes()['avatar'] ?? null) ? 'therapist-avatar' : 'therapist-avatar-default' }}">
+                <div class="min-width-0">
                   <div class="therapist-name">{{ $therapist->name }}</div>
                   <div class="therapist-email">{{ $therapist->email }}</div>
                 </div>
               </div>
 
-              <!-- Phone -->
-              <div class="col-lg-1 col-md-2">
-                <div class="text-muted small">
-                  <i class="ri-phone-line me-1"></i>
-                  {{ $therapist->phone ?: 'N/A' }}
-                </div>
+              <div class="pending-row__phone">
+                <i class="ri-phone-line"></i>
+                <span>{{ $therapist->phone ?: '—' }}</span>
               </div>
 
-              <!-- Specializations -->
-              <div class="col-lg-2 col-md-3">
-                @if($therapist->therapistProfile && $therapist->therapistProfile->specializations->count() > 0)
-                  @foreach($therapist->therapistProfile->specializations->take(2) as $specialization)
-                    <span class="spec-badge">{{ $specialization->name }}</span>
+              <div class="pending-row__specs">
+                @if($profile && $profile->specializations->count() > 0)
+                  @foreach($profile->specializations->take(1) as $specialization)
+                    <span class="spec-badge">{{ Str::limit($specialization->name, 20) }}</span>
                   @endforeach
-                  @if($therapist->therapistProfile->specializations->count() > 2)
-                    <span class="spec-badge">+{{ $therapist->therapistProfile->specializations->count() - 2 }}</span>
+                  @if($profile->specializations->count() > 1)
+                    <span class="spec-badge more">+{{ $profile->specializations->count() - 1 }}</span>
                   @endif
                 @else
-                  <span class="text-muted small">No specializations</span>
+                  <span class="text-muted-small">No specializations</span>
                 @endif
               </div>
 
-              <!-- Experience -->
-              <div class="col-lg-1 col-md-2">
-                @if($therapist->therapistProfile && $therapist->therapistProfile->experience_years)
+              <div>
+                @if($profile && $profile->experience_years)
                   <span class="exp-badge">
-                    <i class="ri-star-line me-1"></i>{{ $therapist->therapistProfile->experience_years }} yrs
+                    <i class="ri-award-line"></i>{{ $profile->experience_years }} yrs
                   </span>
                 @else
-                  <span class="text-muted small">N/A</span>
+                  <span class="text-muted-small">—</span>
                 @endif
               </div>
 
-              <!-- Rate -->
-              <div class="col-lg-1 col-md-2">
-                @if($therapist->therapistProfile && $therapist->therapistProfile->consultation_fee)
+              <div>
+                @if($profile)
                   <span class="fee-badge">
-                    ₹{{ number_format($therapist->therapistProfile->consultation_fee, 0) }}
+                    <i class="ri-money-rupee-circle-line"></i>₹{{ number_format($profile->consultation_fee ?? 0, 0) }}
                   </span>
                 @else
-                  <span class="text-muted small">N/A</span>
+                  <span class="text-muted-small">—</span>
                 @endif
               </div>
 
-              <!-- Status -->
-              <div class="col-lg-1 col-md-2">
-                <span class="status-badge">
+              <div class="pending-row__meta">
+                <span class="status-badge pending">
                   <i class="ri-time-line"></i>Pending
                 </span>
+                <span class="pending-date">{{ $therapist->created_at->format('M d, Y') }}</span>
               </div>
 
-              <!-- Created Date -->
-              <div class="col-lg-1 col-md-2">
-                <div class="text-muted small">
-                  {{ $therapist->created_at->format('M d, Y') }}
-                </div>
-              </div>
-
-              <!-- Actions -->
-              <div class="col-lg-2 col-md-12">
-                <div class="action-btns">
-                  <a href="{{ route('admin.therapists.show', $therapist) }}" class="btn-action view" title="View Details">
-                    <i class="ri-eye-line"></i>
-                  </a>
-                  <form action="{{ route('admin.therapists.approve', $therapist) }}" method="POST" class="d-inline approve-form" data-title="Approve Therapist" data-text="Are you sure you want to approve this therapist?">
-                    @csrf
-                    <button type="submit" class="btn-action approve" title="Approve">
-                      <i class="ri-check-line"></i>
-                    </button>
-                  </form>
-                  <form action="{{ route('admin.therapists.reject', $therapist) }}" method="POST" class="d-inline reject-form" data-title="Reject Therapist" data-text="Are you sure you want to reject this therapist? This action cannot be undone.">
-                    @csrf
-                    <button type="submit" class="btn-action reject" title="Reject">
-                      <i class="ri-close-line"></i>
-                    </button>
-                  </form>
-                </div>
+              <div class="pending-row__actions">
+                <a href="{{ route('admin.therapists.show', $therapist) }}" class="btn-action view" title="View Details">
+                  <i class="ri-eye-line"></i>
+                </a>
+                <form action="{{ route('admin.therapists.approve', $therapist) }}" method="POST" class="d-inline approve-form" data-title="Approve Therapist" data-text="Are you sure you want to approve this therapist?">
+                  @csrf
+                  <button type="submit" class="btn-action approve" title="Approve">
+                    <i class="ri-check-line"></i>
+                  </button>
+                </form>
+                <form action="{{ route('admin.therapists.reject', $therapist) }}" method="POST" class="d-inline reject-form" data-title="Reject Therapist" data-text="Are you sure you want to reject this therapist? This action cannot be undone.">
+                  @csrf
+                  <button type="submit" class="btn-action reject" title="Reject">
+                    <i class="ri-close-line"></i>
+                  </button>
+                </form>
               </div>
             </div>
           </div>
         </div>
       @endforeach
 
-      <!-- Pagination -->
       @if($therapists->hasPages())
         <div class="pagination-wrapper">
           <div class="pagination-info">
-            Showing <strong>{{ $therapists->firstItem() }}</strong> to <strong>{{ $therapists->lastItem() }}</strong> 
+            Showing <strong>{{ $therapists->firstItem() }}</strong> to <strong>{{ $therapists->lastItem() }}</strong>
             of <strong>{{ $therapists->total() }}</strong> pending therapists
           </div>
-          <div>
-            {{ $therapists->links() }}
-          </div>
+          <div>{{ $therapists->links() }}</div>
         </div>
       @endif
     @else
@@ -530,7 +451,7 @@
           <i class="ri-checkbox-circle-line"></i>
         </div>
         <h5>No Pending Therapists</h5>
-        <p>All therapist applications have been reviewed. Great job!</p>
+        <p class="text-muted">All therapist applications have been reviewed.</p>
         <a href="{{ route('admin.therapists.index') }}" class="btn btn-primary mt-3">
           <i class="ri-arrow-left-line me-2"></i>View All Therapists
         </a>
@@ -543,29 +464,32 @@
 @section('page-script')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Handle approve form submission
   document.querySelectorAll('.approve-form').forEach(function(form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const title = this.getAttribute('data-title') || 'Approve Therapist';
       const text = this.getAttribute('data-text') || 'Are you sure you want to approve this therapist?';
-      
-      if (confirm(text)) {
-        this.submit();
-      }
+      ApniSwal.confirm({
+        title: this.getAttribute('data-title') || 'Approve Therapist',
+        text: text,
+        confirmButtonText: 'Yes, approve',
+        customClass: { confirmButton: 'btn btn-success' },
+      }).then((result) => {
+        if (result.isConfirmed) this.submit();
+      });
     });
   });
 
-  // Handle reject form submission
   document.querySelectorAll('.reject-form').forEach(function(form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const title = this.getAttribute('data-title') || 'Reject Therapist';
-      const text = this.getAttribute('data-text') || 'Are you sure you want to reject this therapist? This action cannot be undone.';
-      
-      if (confirm(text)) {
-        this.submit();
-      }
+      const text = this.getAttribute('data-text') || 'Are you sure you want to reject this therapist?';
+      ApniSwal.confirm({
+        title: this.getAttribute('data-title') || 'Reject Therapist',
+        text: text,
+        confirmButtonText: 'Yes, reject',
+      }).then((result) => {
+        if (result.isConfirmed) this.submit();
+      });
     });
   });
 });
