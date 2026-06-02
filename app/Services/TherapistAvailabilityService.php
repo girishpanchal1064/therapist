@@ -182,7 +182,7 @@ class TherapistAvailabilityService
                     $q->whereNotNull('start_date')
                       ->whereNotNull('end_date')
                       ->where('start_date', '<=', $date)
-                      ->where('end_date', '>=', $date);
+                      ->where('end_date', '>=',  $date);
                 })->orWhere(function($q) use ($date) {
                     // Single date block
                     $q->whereNotNull('date')
