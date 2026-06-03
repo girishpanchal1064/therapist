@@ -784,19 +784,13 @@
                 <td>
                   <div class="user-info">
                     @if($payment->user)
-                      @if($payment->user->getRawOriginal('avatar'))
-                        <img src="{{ asset('storage/' . $payment->user->getRawOriginal('avatar')) }}" alt="{{ $payment->user->name }}" class="user-avatar">
-                      @else
-                        <div class="user-avatar-initials">
-                          {{ strtoupper(substr($payment->user->name, 0, 2)) }}
-                        </div>
-                      @endif
+                      <img src="{{ $payment->user->avatar }}" alt="{{ $payment->user->name }}" class="user-avatar">
                       <div class="user-details">
                         <span class="name">{{ $payment->user->name }}</span>
                         <span class="email">{{ $payment->user->email }}</span>
                       </div>
                     @else
-                      <div class="user-avatar-initials">—</div>
+                      <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="No user" class="user-avatar">
                       <div class="user-details">
                         <span class="name text-muted">—</span>
                         <span class="email text-muted">No user linked</span>
