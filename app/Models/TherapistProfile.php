@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ProfileAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -269,6 +270,6 @@ class TherapistProfile extends Model
      */
     public function getProfileImageUrlAttribute()
     {
-        return $this->user->avatar;
+        return ProfileAvatar::url($this->profile_image);
     }
 }

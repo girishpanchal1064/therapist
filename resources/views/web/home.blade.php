@@ -1312,11 +1312,11 @@
                                  alt="{{ $therapist->name }}"
                                  class="therapist-cover">
                         @elseif($therapist->avatar)
-                            <img src="{{ asset('storage/' . $therapist->avatar) }}"
+                            <img src="{{ $therapist->avatar }}"
                                  alt="{{ $therapist->name }}"
                                  class="therapist-cover">
                         @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=BAC2D2&color=041C54&size=640&bold=true&format=svg"
+                            <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}"
                                  alt="{{ $therapist->name }}"
                                  class="therapist-cover">
                         @endif

@@ -241,7 +241,7 @@
                                             @elseif($payment->user->getRawOriginal('avatar'))
                                                 <img src="{{ asset('storage/' . $payment->user->getRawOriginal('avatar')) }}" alt="{{ $payment->user->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                             @else
-                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($payment->user->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $payment->user->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                                <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $payment->user->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                             @endif
                                         @endif
                                     </div>

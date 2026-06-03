@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ProfileAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,9 +57,7 @@ class UserProfile extends Model
      */
     public function getProfileImageUrlAttribute()
     {
-        return $this->profile_image ? 
-            asset('storage/' . $this->profile_image) : 
-            'https://ui-avatars.com/api/?name=' . urlencode($this->full_name) . '&color=7F9CF5&background=EBF4FF';
+        return ProfileAvatar::url($this->profile_image);
     }
 
     /**

@@ -48,7 +48,7 @@
                              height="40"
                              style="object-fit: cover;">
                       @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" 
+                        <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" 
                              alt="{{ $therapist->name }}" 
                              class="rounded-circle me-2" 
                              width="40" 

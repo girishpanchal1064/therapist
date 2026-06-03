@@ -14,9 +14,9 @@
                     @if($profile && $profile->profile_image)
                         <img src="{{ asset('storage/' . $profile->profile_image) }}" alt="{{ $therapist->name }}" class="h-full w-full object-cover">
                     @elseif($therapist->avatar)
-                        <img src="{{ asset('storage/' . $therapist->avatar) }}" alt="{{ $therapist->name }}" class="h-full w-full object-cover">
+                        <img src="{{ $therapist->avatar }}" alt="{{ $therapist->name }}" class="h-full w-full object-cover">
                     @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=BAC2D2&color=041C54&size=256&bold=true&format=svg"
+                        <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}"
                              alt="{{ $therapist->name }}"
                              class="h-full w-full object-cover">
                     @endif

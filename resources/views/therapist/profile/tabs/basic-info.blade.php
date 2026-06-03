@@ -37,9 +37,7 @@
       </div>
       <div class="col-md-9">
         @php
-          $currentImage = $profile->profile_image
-            ? asset('storage/' . $profile->profile_image)
-            : ($user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=041C54&color=fff');
+          $currentImage = $user->avatar;
         @endphp
         <div class="d-flex align-items-center gap-3">
           <img src="{{ $currentImage }}" alt="Profile Image" style="width:72px;height:72px;border-radius:12px;object-fit:cover;border:1px solid #dbe2ea;">

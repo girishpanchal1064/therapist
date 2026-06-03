@@ -92,15 +92,7 @@ $currentUser = Auth::user();
             <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
               <div class="avatar avatar-online">
                 @if($currentUser)
-                  @if($currentUser->hasRole('Therapist') && $currentUser->therapistProfile && $currentUser->therapistProfile->profile_image)
-                    <img src="{{ asset('storage/' . $currentUser->therapistProfile->profile_image) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                  @elseif($currentUser->hasRole('Client') && $currentUser->profile && $currentUser->profile->profile_image)
-                    <img src="{{ asset('storage/' . $currentUser->profile->profile_image) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                  @elseif($currentUser->getRawOriginal('avatar'))
-                    <img src="{{ asset('storage/' . $currentUser->getRawOriginal('avatar')) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                  @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($currentUser->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                  @endif
+                  <img src="{{ $currentUser->avatar }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
                 @else
                   <span class="avatar-initial rounded-circle bg-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;">
                     NA
@@ -115,15 +107,7 @@ $currentUser = Auth::user();
                     <div class="flex-shrink-0 me-2">
                       <div class="avatar avatar-online">
                         @if($currentUser)
-                          @if($currentUser->hasRole('Therapist') && $currentUser->therapistProfile && $currentUser->therapistProfile->profile_image)
-                            <img src="{{ asset('storage/' . $currentUser->therapistProfile->profile_image) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                          @elseif($currentUser->hasRole('Client') && $currentUser->profile && $currentUser->profile->profile_image)
-                            <img src="{{ asset('storage/' . $currentUser->profile->profile_image) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                          @elseif($currentUser->getRawOriginal('avatar'))
-                            <img src="{{ asset('storage/' . $currentUser->getRawOriginal('avatar')) }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                          @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($currentUser->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
-                          @endif
+                          <img src="{{ $currentUser->avatar }}" alt="{{ $currentUser->name }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #e9ecef;">
                         @else
                           <span class="avatar-initial rounded-circle bg-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;">
                             NA

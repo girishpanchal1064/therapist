@@ -110,7 +110,7 @@
                     @elseif($appointment->client->getRawOriginal('avatar'))
                       <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="" class="h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-sm">
                     @else
-                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name ?? 'U') }}&background=647494&color=fff&size=96&bold=true&format=svg" alt="" class="h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-sm">
+                      <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="" class="h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-sm">
                     @endif
                   @else
                     <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#647494] text-sm font-semibold text-white">U</div>
@@ -207,7 +207,7 @@
                   @elseif($appointment->client->getRawOriginal('avatar'))
                     <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="" class="h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-sm">
                   @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name ?? 'U') }}&background=647494&color=fff&size=96&bold=true&format=svg" alt="" class="h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-sm">
+                    <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="" class="h-12 w-12 shrink-0 rounded-full border-2 border-white object-cover shadow-sm">
                   @endif
                 @else
                   <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#647494] text-sm font-semibold text-white">U</div>

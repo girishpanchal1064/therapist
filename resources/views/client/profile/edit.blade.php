@@ -459,7 +459,7 @@
                                 @elseif($user->getRawOriginal('avatar'))
                                     <img src="{{ asset('storage/' . $user->getRawOriginal('avatar')) }}" alt="{{ $user->name }}" class="avatar-upload" id="avatarPreview">
                                 @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" alt="{{ $user->name }}" class="avatar-upload" id="avatarPreview">
+                                    <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $user->name }}" class="avatar-upload" id="avatarPreview">
                                 @endif
                                 <label for="avatarInput" class="avatar-upload-overlay">
                                     <i class="ri-camera-line"></i>
@@ -663,7 +663,7 @@
                         @elseif($user->getRawOriginal('avatar'))
                             <img src="{{ asset('storage/' . $user->getRawOriginal('avatar')) }}" alt="{{ $user->name }}" class="preview-avatar" id="previewAvatar">
                         @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" alt="{{ $user->name }}" class="preview-avatar" id="previewAvatar">
+                            <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $user->name }}" class="preview-avatar" id="previewAvatar">
                         @endif
                     </div>
                     <h5 class="mb-1 fw-bold" id="previewName">{{ $user->name }}</h5>

@@ -505,11 +505,11 @@
                                          alt="{{ $review->therapist->name }}" 
                                          class="therapist-avatar">
                                 @elseif($review->therapist->avatar)
-                                    <img src="{{ asset('storage/' . $review->therapist->avatar) }}" 
+                                    <img src="{{ $review->therapist->avatar }}" 
                                          alt="{{ $review->therapist->name }}" 
                                          class="therapist-avatar">
                                 @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($review->therapist->name) }}&background=667eea&color=fff&size=120&bold=true&format=svg" 
+                                    <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" 
                                          alt="{{ $review->therapist->name }}" 
                                          class="therapist-avatar">
                                 @endif

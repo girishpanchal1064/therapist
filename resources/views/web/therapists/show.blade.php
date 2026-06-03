@@ -16,11 +16,11 @@
                                  alt="{{ $therapist->name }}"
                                  class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
                         @elseif($therapist->avatar)
-                            <img src="{{ asset('storage/' . $therapist->avatar) }}"
+                            <img src="{{ $therapist->avatar }}"
                                  alt="{{ $therapist->name }}"
                                  class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
                         @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=192&bold=true&format=svg"
+                            <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}"
                                  alt="{{ $therapist->name }}"
                                  class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
                         @endif
@@ -296,19 +296,9 @@
                                             <!-- Avatar -->
                                             <div class="flex-shrink-0">
                                                 <div class="relative">
-                                                    @if($review->client->profile && $review->client->profile->profile_image)
-                                                        <img src="{{ Storage::url($review->client->profile->profile_image) }}"
-                                                             alt="{{ $review->client->name }}"
-                                                             class="h-10 w-10 rounded-full object-cover ring-1 ring-yellow-200 shadow-sm">
-                                                    @elseif($review->client->avatar)
-                                                        <img src="{{ Storage::url($review->client->avatar) }}"
-                                                             alt="{{ $review->client->name }}"
-                                                             class="h-10 w-10 rounded-full object-cover ring-1 ring-yellow-200 shadow-sm">
-                                                    @else
-                                                        <div class="h-10 w-10 rounded-full bg-gradient-to-br from-yellow-400 via-amber-400 to-orange-400 flex items-center justify-center text-white font-bold text-sm shadow-sm ring-1 ring-yellow-200">
-                                                            {{ strtoupper(substr($review->client->name, 0, 1)) }}
-                                                        </div>
-                                                    @endif
+                                                    <img src="{{ $review->client->avatar }}"
+                                                         alt="{{ $review->client->name }}"
+                                                         class="h-10 w-10 rounded-full object-cover ring-1 ring-yellow-200 shadow-sm">
                                                     @if($review->is_verified)
                                                         <div class="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border border-white">
                                                             <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">

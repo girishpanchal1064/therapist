@@ -600,7 +600,7 @@
                             <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}"
                                  alt="{{ $appointment->therapist->name }}">
                         @elseif($appointment->therapist && $appointment->therapist->avatar)
-                            <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}"
+                            <img src="{{ $appointment->therapist->avatar }}"
                                  alt="{{ $appointment->therapist->name }}">
                         @else
                             <i class="ri-user-line"></i>
@@ -615,7 +615,7 @@
                 <div class="participant-card">
                     <div class="participant-avatar client">
                         @if($appointment->client && $appointment->client->avatar)
-                            <img src="{{ asset('storage/' . $appointment->client->avatar) }}"
+                            <img src="{{ $appointment->client->avatar }}"
                                  alt="{{ $appointment->client->name }}">
                         @else
                             <i class="ri-user-line"></i>

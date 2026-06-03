@@ -120,7 +120,7 @@
                 @elseif($agreement->client->getRawOriginal('avatar'))
                   <img src="{{ asset('storage/' . $agreement->client->getRawOriginal('avatar')) }}" alt="{{ $agreement->client->name }}" class="client-avatar">
                 @else
-                  <img src="https://ui-avatars.com/api/?name={{ urlencode($agreement->client->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $agreement->client->name }}" class="client-avatar">
+                  <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $agreement->client->name }}" class="client-avatar">
                 @endif
                 <span>{{ $agreement->client->name }}</span>
               </div>

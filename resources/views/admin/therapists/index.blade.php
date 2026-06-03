@@ -966,13 +966,7 @@
               <!-- Avatar & Name -->
               <div class="col-lg-2 col-md-3 col-sm-4 mb-0">
                 <div class="d-flex align-items-center" style="gap: 0.6rem;">
-                  @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
-                    <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}" alt="Avatar" class="therapist-avatar">
-                  @elseif($therapist->avatar)
-                    <img src="{{ asset('storage/' . $therapist->avatar) }}" alt="Avatar" class="therapist-avatar">
-                  @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="Avatar" class="therapist-avatar-default">
-                  @endif
+                  <img src="{{ $therapist->avatar }}" alt="{{ $therapist->name }}" class="therapist-avatar">
                   <div class="therapist-info" style="min-width: 0; flex: 1;">
                     <h6 style="margin: 0; font-size: 0.85rem; font-weight: 600; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $therapist->name }}</h6>
                     <small style="font-size: 0.7rem; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;"><i class="ri-mail-line"></i>{{ Str::limit($therapist->email, 22) }}</small>

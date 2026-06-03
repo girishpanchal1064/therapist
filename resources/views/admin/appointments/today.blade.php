@@ -666,17 +666,9 @@
               <td>
                 <div class="user-info">
                   @if($appointment->client)
-                    @if($appointment->client->profile && $appointment->client->profile->profile_image)
-                      <img src="{{ asset('storage/' . $appointment->client->profile->profile_image) }}" alt="{{ $appointment->client->name }}" class="user-avatar">
-                    @elseif($appointment->client->getRawOriginal('avatar'))
-                      <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="{{ $appointment->client->name }}" class="user-avatar">
-                    @else
-                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->client->name }}" class="user-avatar">
-                    @endif
+                    <img src="{{ $appointment->client->avatar }}" alt="{{ $appointment->client->name }}" class="user-avatar">
                   @else
-                    <div class="user-avatar-initials bg-label-primary">
-                      NA
-                    </div>
+                    <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="N/A" class="user-avatar">
                   @endif
                   <div class="user-details">
                     <h6>{{ $appointment->client->name ?? 'N/A' }}</h6>
@@ -687,15 +679,9 @@
               <td>
                 <div class="user-info">
                   @if($appointment->therapist)
-                    @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
-                      <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
-                    @elseif($appointment->therapist->avatar)
-                      <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
-                    @else
-                      <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="user-avatar">
-                    @endif
+                    <img src="{{ $appointment->therapist->avatar }}" alt="{{ $appointment->therapist->name }}" class="user-avatar">
                   @else
-                    <div class="user-avatar-initials therapist">NA</div>
+                    <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="N/A" class="user-avatar">
                   @endif
                   <div class="user-details">
                     <h6>{{ $appointment->therapist->name ?? 'N/A' }}</h6>

@@ -485,7 +485,7 @@
                                     @elseif($session->client->getRawOriginal('avatar'))
                                         <img src="{{ asset('storage/' . $session->client->getRawOriginal('avatar')) }}" alt="{{ $session->client->name }}" class="client-avatar">
                                     @else
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($session->client->name ?? 'N') }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $session->client->name }}" class="client-avatar">
+                                        <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $session->client->name }}" class="client-avatar">
                                     @endif
                                 @else
                                     <div class="client-avatar-placeholder">

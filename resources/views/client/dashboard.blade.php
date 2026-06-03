@@ -833,9 +833,9 @@
         @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
           <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
         @elseif($appointment->therapist->avatar)
-          <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+          <img src="{{ $appointment->therapist->avatar }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
         @else
-          <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=100&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+          <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
         @endif
         <div class="therapist-info">
           <h6>{{ $appointment->therapist->name }}</h6>
@@ -1006,9 +1006,9 @@
                 @if($session->therapist && $session->therapist->therapistProfile && $session->therapist->therapistProfile->profile_image)
                   <img src="{{ asset('storage/' . $session->therapist->therapistProfile->profile_image) }}" alt="{{ $session->therapist->name }}" class="therapist-avatar">
                 @elseif($session->therapist && $session->therapist->avatar)
-                  <img src="{{ asset('storage/' . $session->therapist->avatar) }}" alt="{{ $session->therapist->name }}" class="therapist-avatar">
+                  <img src="{{ $session->therapist->avatar }}" alt="{{ $session->therapist->name }}" class="therapist-avatar">
                 @else
-                  <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name ?? 'Therapist') }}&background=667eea&color=fff&size=100&bold=true&format=svg" alt="Therapist" class="therapist-avatar">
+                  <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="Therapist" class="therapist-avatar">
                 @endif
                 <div class="therapist-info">
                   <h6>{{ $session->therapist->name ?? 'N/A' }}</h6>
@@ -1077,9 +1077,9 @@
               @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
           <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
         @elseif($appointment->therapist->avatar)
-          <img src="{{ asset('storage/' . $appointment->therapist->avatar) }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+          <img src="{{ $appointment->therapist->avatar }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
         @else
-          <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=667eea&color=fff&size=100&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
+          <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $appointment->therapist->name }}" class="therapist-avatar">
         @endif
               <div class="therapist-info">
                 <h6>{{ $appointment->therapist->name }}</h6>

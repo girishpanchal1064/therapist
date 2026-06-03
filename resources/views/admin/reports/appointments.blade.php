@@ -201,7 +201,7 @@
                                             @elseif($appointment->client->getRawOriginal('avatar'))
                                                 <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="{{ $appointment->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                             @else
-                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                                <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $appointment->client->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                             @endif
                                         @endif
                                     </div>
@@ -217,7 +217,7 @@
                                             @elseif($appointment->therapist->getRawOriginal('avatar'))
                                                 <img src="{{ asset('storage/' . $appointment->therapist->getRawOriginal('avatar')) }}" alt="{{ $appointment->therapist->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                             @else
-                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->therapist->name) }}&background=10b981&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->therapist->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                                <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $appointment->therapist->name }}" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
                                             @endif
                                         @endif
                                     </div>

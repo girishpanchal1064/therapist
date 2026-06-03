@@ -345,19 +345,7 @@
                             <td><span class="fw-bold text-muted">{{ $loop->iteration }}</span></td>
                             <td>
                                 <div class="user-info">
-                                    @if($review->client->profile && $review->client->profile->profile_image)
-                                        <img src="{{ asset('storage/' . $review->client->profile->profile_image) }}" 
-                                             alt="{{ $review->client->name }}" 
-                                             class="user-avatar">
-                                    @elseif($review->client->getRawOriginal('avatar'))
-                                        <img src="{{ asset('storage/' . $review->client->getRawOriginal('avatar')) }}" 
-                                             alt="{{ $review->client->name }}" 
-                                             class="user-avatar">
-                                    @else
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($review->client->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" 
-                                             alt="{{ $review->client->name }}" 
-                                             class="user-avatar">
-                                    @endif
+                                    <img src="{{ $review->client->avatar }}" alt="{{ $review->client->name }}" class="user-avatar">
                                     <div>
                                         <div class="fw-bold">{{ $review->client->name }}</div>
                                         <small class="text-muted">{{ $review->client->email }}</small>
@@ -366,15 +354,7 @@
                             </td>
                             <td>
                                 <div class="user-info">
-                                    @if($review->therapist->avatar)
-                                        <img src="{{ asset('storage/' . $review->therapist->avatar) }}" 
-                                             alt="{{ $review->therapist->name }}" 
-                                             class="user-avatar">
-                                    @else
-                                        <div class="user-avatar-initial" style="background: linear-gradient(90deg, #041C54 0%, #647494 100%);">
-                                            {{ strtoupper(substr($review->therapist->name, 0, 2)) }}
-                                        </div>
-                                    @endif
+                                    <img src="{{ $review->therapist->avatar }}" alt="{{ $review->therapist->name }}" class="user-avatar">
                                     <div>
                                         <div class="fw-bold">{{ $review->therapist->name }}</div>
                                         <small class="text-muted">{{ $review->therapist->email }}</small>

@@ -557,7 +557,7 @@
               <p class="mb-1 fw-semibold">Click to upload or drag & drop</p>
               <p class="mb-0 text-muted" style="font-size: 0.8rem;">JPEG, PNG, JPG, GIF - Max 2MB</p>
               <div class="mt-3 d-flex justify-content-center">
-                <img id="avatarPreview" src="https://ui-avatars.com/api/?name={{ urlencode(old('name', 'New Therapist')) }}&background=647494&color=fff&size=200&bold=true&format=svg"
+                <img id="avatarPreview" src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}"
                      alt="Avatar preview" style="width: 72px; height: 72px; border-radius: 999px; object-fit: cover; border: 2px solid rgba(255,255,255,0.7); box-shadow: 0 4px 14px rgba(15,23,42,0.3);">
               </div>
             </div>

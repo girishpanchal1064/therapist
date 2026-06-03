@@ -503,7 +503,7 @@
                   @elseif($summary->client->getRawOriginal('avatar'))
                     <img src="{{ asset('storage/' . $summary->client->getRawOriginal('avatar')) }}" alt="{{ $summary->client->name }}" class="client-avatar">
                   @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($summary->client->name) }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="{{ $summary->client->name }}" class="client-avatar">
+                    <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $summary->client->name }}" class="client-avatar">
                   @endif
                   <div>
                     <div class="client-name">{{ $summary->client->name }}</div>

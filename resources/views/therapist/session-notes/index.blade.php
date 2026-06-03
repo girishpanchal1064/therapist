@@ -322,7 +322,7 @@
                       @elseif($note->client->getRawOriginal('avatar'))
                         <img src="{{ asset('storage/' . $note->client->getRawOriginal('avatar')) }}" alt="" class="client-avatar">
                       @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($note->client->name ?? 'U') }}&background=647494&color=fff&size=80&bold=true&format=svg" alt="" class="client-avatar">
+                        <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="" class="client-avatar">
                       @endif
                     @else
                       <div class="client-avatar d-flex align-items-center justify-content-center text-white" style="background: #647494; font-size: 0.75rem;">U</div>

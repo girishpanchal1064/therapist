@@ -485,17 +485,9 @@
                   <td>
                     <div class="user-info">
                       @if($appointment->client)
-                        @if($appointment->client->profile && $appointment->client->profile->profile_image)
-                          <img src="{{ asset('storage/' . $appointment->client->profile->profile_image) }}" alt="{{ $appointment->client->name }}" class="user-avatar">
-                        @elseif($appointment->client->getRawOriginal('avatar'))
-                          <img src="{{ asset('storage/' . $appointment->client->getRawOriginal('avatar')) }}" alt="{{ $appointment->client->name }}" class="user-avatar">
-                        @else
-                          <img src="https://ui-avatars.com/api/?name={{ urlencode($appointment->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $appointment->client->name }}" class="user-avatar">
-                        @endif
+                        <img src="{{ $appointment->client?->avatar ?? \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $appointment->client->name ?? 'N/A' }}" class="user-avatar">
                       @else
-                        <div class="user-avatar-initials">
-                          NA
-                        </div>
+                        <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="N/A" class="user-avatar">
                       @endif
                       <div class="user-details">
                         <h6>{{ $appointment->client->name ?? 'N/A' }}</h6>
@@ -554,13 +546,7 @@
                 <tr>
                   <td>
                     <div class="user-info">
-                      @if($user->getRawOriginal('avatar'))
-                        <img src="{{ $user->avatar }}" alt="Avatar" class="user-avatar">
-                      @else
-                        <div class="user-avatar-initials">
-                          {{ strtoupper(substr($user->name, 0, 2)) }}
-                        </div>
-                      @endif
+                      <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="user-avatar">
                       <div class="user-details">
                         <h6>{{ $user->name }}</h6>
                       </div>

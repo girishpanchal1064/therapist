@@ -348,21 +348,11 @@
   <div class="card-body">
     @if($therapists->count() > 0)
       @foreach($therapists as $therapist)
-        @php
-          $profile = $therapist->therapistProfile;
-          if ($profile && $profile->profile_image) {
-            $avatarSrc = asset('storage/' . $profile->profile_image);
-          } elseif (!empty($therapist->getAttributes()['avatar'] ?? null)) {
-            $avatarSrc = asset('storage/' . $therapist->getAttributes()['avatar']);
-          } else {
-            $avatarSrc = 'https://ui-avatars.com/api/?name=' . urlencode($therapist->name) . '&background=647494&color=fff&size=80&bold=true&format=svg';
-          }
-        @endphp
         <div class="card therapist-card">
           <div class="card-body">
             <div class="pending-row">
               <div class="pending-row__identity">
-                <img src="{{ $avatarSrc }}" alt="{{ $therapist->name }}" class="{{ ($profile && $profile->profile_image) || !empty($therapist->getAttributes()['avatar'] ?? null) ? 'therapist-avatar' : 'therapist-avatar-default' }}">
+                <img src="{{ $therapist->avatar }}" alt="{{ $therapist->name }}" class="therapist-avatar">
                 <div class="min-width-0">
                   <div class="therapist-name">{{ $therapist->name }}</div>
                   <div class="therapist-email">{{ $therapist->email }}</div>

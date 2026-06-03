@@ -403,11 +403,11 @@
                                                  alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @elseif($session->therapist->avatar)
-                                            <img src="{{ asset('storage/' . $session->therapist->avatar) }}"
+                                            <img src="{{ $session->therapist->avatar }}"
                                                  alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($session->therapist->name) }}&background=647494&color=fff&size=72&bold=true&format=svg"
+                                            <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}"
                                                  alt="{{ $session->therapist->name }}"
                                                  class="user-avatar">
                                         @endif

@@ -560,9 +560,9 @@
                 @if($summary->therapist->therapistProfile && $summary->therapist->therapistProfile->profile_image)
                   <img src="{{ asset('storage/' . $summary->therapist->therapistProfile->profile_image) }}" alt="{{ $summary->therapist->name }}" class="user-avatar">
                 @elseif($summary->therapist->avatar)
-                  <img src="{{ asset('storage/' . $summary->therapist->avatar) }}" alt="{{ $summary->therapist->name }}" class="user-avatar">
+                  <img src="{{ $summary->therapist->avatar }}" alt="{{ $summary->therapist->name }}" class="user-avatar">
                 @else
-                  <img src="https://ui-avatars.com/api/?name={{ urlencode($summary->therapist->name) }}&background=667eea&color=fff&size=80&bold=true&format=svg" alt="{{ $summary->therapist->name }}" class="user-avatar">
+                  <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $summary->therapist->name }}" class="user-avatar">
                 @endif
                 <div class="user-details">
                   <div class="name">{{ $summary->therapist->name }}</div>
@@ -577,7 +577,7 @@
                 @elseif($summary->client->getRawOriginal('avatar'))
                   <img src="{{ asset('storage/' . $summary->client->getRawOriginal('avatar')) }}" alt="{{ $summary->client->name }}" class="user-avatar">
                 @else
-                  <img src="https://ui-avatars.com/api/?name={{ urlencode($summary->client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $summary->client->name }}" class="user-avatar">
+                  <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $summary->client->name }}" class="user-avatar">
                 @endif
                 <div class="user-details">
                   <div class="name">{{ $summary->client->name }}</div>

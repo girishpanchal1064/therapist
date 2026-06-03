@@ -362,7 +362,7 @@
                   <td>
                     <div class="d-flex align-items-center">
                       @if($result->user->avatar)
-                        <img src="{{ asset('storage/' . $result->user->avatar) }}" 
+                        <img src="{{ $result->user->avatar }}" 
                              alt="{{ $result->user->name }}" 
                              class="rounded-circle me-2" 
                              width="32" 

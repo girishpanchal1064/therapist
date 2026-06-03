@@ -292,13 +292,7 @@
             <!-- Profile Body -->
             <div class="card-body text-center pt-0">
                 <div class="profile-avatar-wrapper d-flex justify-content-center">
-                    @if($profile && $profile->profile_image)
-                        <img src="{{ asset('storage/' . $profile->profile_image) }}" alt="{{ $user->name }}" class="profile-avatar">
-                    @elseif($user->getRawOriginal('avatar'))
-                        <img src="{{ asset('storage/' . $user->getRawOriginal('avatar')) }}" alt="{{ $user->name }}" class="profile-avatar">
-                    @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=041c54&color=fff&size=200&bold=true&format=svg" alt="{{ $user->name }}" class="profile-avatar">
-                    @endif
+                    <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="profile-avatar">
                 </div>
                 
                 <h4 class="mt-4 mb-1 fw-bold">{{ $user->name }}</h4>

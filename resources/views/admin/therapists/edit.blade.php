@@ -451,9 +451,9 @@
               @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
                 <img id="currentAvatarPreview" src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}" alt="Current Avatar" class="current-avatar">
               @elseif($therapist->avatar)
-                <img id="currentAvatarPreview" src="{{ asset('storage/' . $therapist->avatar) }}" alt="Current Avatar" class="current-avatar">
+                <img id="currentAvatarPreview" src="{{ $therapist->avatar }}" alt="Current Avatar" class="current-avatar">
               @else
-                <img id="currentAvatarPreview" src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=200&bold=true&format=svg" alt="Default Avatar" class="current-avatar">
+                <img id="currentAvatarPreview" src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="Default Avatar" class="current-avatar">
               @endif
             </div>
           </div>

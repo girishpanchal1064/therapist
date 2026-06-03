@@ -680,7 +680,7 @@
                       @elseif($client->getRawOriginal('avatar'))
                         <img src="{{ asset('storage/' . $client->getRawOriginal('avatar')) }}" alt="{{ $client->name }}" class="user-avatar">
                       @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($client->name) }}&background=3b82f6&color=fff&size=80&bold=true&format=svg" alt="{{ $client->name }}" class="user-avatar">
+                        <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}" alt="{{ $client->name }}" class="user-avatar">
                       @endif
                       <div class="user-info">
                         <h6>{{ $client->name }}</h6>

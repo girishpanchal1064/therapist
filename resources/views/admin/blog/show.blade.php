@@ -217,7 +217,7 @@
           <div class="d-flex flex-wrap gap-4 text-muted small mb-3">
             <div class="d-flex align-items-center">
               @if($blog->author->avatar)
-                <img src="{{ asset('storage/' . $blog->author->avatar) }}" 
+                <img src="{{ $blog->author->avatar }}" 
                      alt="{{ $blog->author->name }}" 
                      class="rounded-circle me-2" 
                      width="32" 

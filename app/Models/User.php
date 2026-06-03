@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ProfileAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -207,16 +208,35 @@ class User extends Authenticatable
     }
 
     /**
-     * Get avatar URL.
+     * Storage-relative path for the user's profile image, if uploaded.
      */
-    public function getAvatarAttribute()
+    public function getProfileImagePathAttribute(): ?string
     {
-        if ($this->attributes['avatar'] ?? null) {
-            return asset('storage/' . $this->attributes['avatar']);
+        if ($path = $this->getRawOriginal('avatar')) {
+            return $path;
         }
 
-        return $this->profile?->profile_image ?
-            asset('storage/' . $this->profile->profile_image) :
-            'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+        if ($this->therapistProfile?->profile_image) {
+            return $this->therapistProfile->profile_image;
+        }
+
+        if ($this->profile?->profile_image) {
+            return $this->profile->profile_image;
+        }
+
+        return null;
+    }
+
+    public function hasProfileImage(): bool
+    {
+        return $this->profile_image_path !== null;
+    }
+
+    /**
+     * Get avatar URL (uploaded image or app placeholder).
+     */
+    public function getAvatarAttribute(?string $value): string
+    {
+        return ProfileAvatar::url($this->profile_image_path);
     }
 }

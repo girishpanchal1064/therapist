@@ -23,13 +23,7 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-body text-center">
-                @if($therapist->therapistProfile && $therapist->therapistProfile->profile_image)
-                  <img src="{{ asset('storage/' . $therapist->therapistProfile->profile_image) }}" alt="Avatar" class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;">
-                @elseif($therapist->avatar)
-                  <img src="{{ asset('storage/' . $therapist->avatar) }}" alt="Avatar" class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;">
-                @else
-                  <img src="https://ui-avatars.com/api/?name={{ urlencode($therapist->name) }}&background=667eea&color=fff&size=240&bold=true&format=svg" alt="Avatar" class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;">
-                @endif
+                <img src="{{ $therapist->avatar }}" alt="{{ $therapist->name }}" class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;">
 
                 <h4 class="mb-1">{{ $therapist->name }}</h4>
                 <p class="text-muted mb-3">{{ $therapist->email }}</p>

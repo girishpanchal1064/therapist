@@ -64,9 +64,7 @@ class UserController extends Controller
                 foreach ($users as $index => $user) {
                     $data[] = [
                         'DT_RowIndex' => $start + $index + 1,
-                        'avatar' => $user->avatar ?
-                            '<div class="avatar avatar-sm me-2"><img src="' . asset('storage/' . $user->avatar) . '" alt="Avatar" class="rounded-circle" width="32" height="32"></div>' :
-                            '<div class="avatar avatar-sm me-2"><span class="avatar-initial rounded bg-label-primary">' . strtoupper(substr($user->name, 0, 2)) . '</span></div>',
+                        'avatar' => '<div class="avatar avatar-sm me-2"><img src="' . e($user->avatar) . '" alt="' . e($user->name) . '" class="rounded-circle" width="32" height="32" style="object-fit: cover;"></div>',
                         'name' => $user->name,
                         'email' => $user->email,
                         'phone' => $user->phone ?: '<span class="text-muted">Not set</span>',
@@ -228,8 +226,10 @@ class UserController extends Controller
         // Handle avatar upload
         if ($request->hasFile('avatar')) {
             // Delete old avatar if exists
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
+            if ($avatarPath = $user->getRawOriginal('avatar')) {
+                if (Storage::disk('public')->exists($avatarPath)) {
+                    Storage::disk('public')->delete($avatarPath);
+                }
             }
             $userData['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
