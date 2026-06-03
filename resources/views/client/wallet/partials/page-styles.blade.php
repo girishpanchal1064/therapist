@@ -160,7 +160,7 @@
 
 .stat-card {
     background: white;
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.45);
     border-radius: 16px;
     box-shadow: var(--apni-shadow-gulf-05);
     padding: 1.25rem;
@@ -177,12 +177,8 @@
     left: 0;
     width: 100%;
     height: 4px;
+    background: var(--apni-gulf-blue);
 }
-
-.stat-card.credit::before { background: var(--apni-success); }
-.stat-card.debit::before { background: var(--apni-danger); }
-.stat-card.transactions::before { background: var(--apni-info); }
-.stat-card.monthly::before { background: var(--apni-warning); }
 
 .stat-card:hover {
     transform: translateY(-4px);
@@ -198,25 +194,22 @@
     justify-content: center;
     margin: 0 auto 1rem;
     font-size: 1.5rem;
+    background: rgba(4, 28, 84, 0.1);
+    color: var(--apni-gulf-blue);
 }
 
-.stat-icon.credit { background: var(--apni-success-soft); color: var(--apni-success); }
-.stat-icon.debit { background: var(--apni-danger-soft); color: var(--apni-danger); }
-.stat-icon.transactions { background: var(--apni-info-soft); color: var(--apni-info); }
-.stat-icon.monthly { background: var(--apni-warning-soft); color: var(--apni-warning); }
-
 .stat-label {
-    color: var(--apni-lynch);
+    color: #7484a4;
     font-size: 0.8rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
 }
 
-.stat-value { font-size: 1.35rem; font-weight: 700; }
-.stat-value.credit { color: var(--apni-success); }
-.stat-value.debit { color: var(--apni-danger); }
-.stat-value.transactions { color: var(--apni-info); }
-.stat-value.monthly { color: var(--apni-warning); }
+.stat-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--apni-gulf-blue);
+}
 
 .transactions-card {
     background: white;

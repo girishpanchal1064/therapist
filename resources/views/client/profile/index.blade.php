@@ -87,9 +87,18 @@
     overflow: hidden;
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+.stat-card.account-stat {
+    background: #fff !important;
+    border: 1px solid rgba(186, 194, 210, 0.45);
+}
+
+.stat-card.account-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(4, 28, 84, 0.1);
+}
+
+.stat-card.account-stat .fw-bold {
+    color: #041c54;
 }
 
 .stat-icon {
@@ -102,64 +111,61 @@
     font-size: 1.5rem;
 }
 
-.stat-icon-primary {
-    background: #041c54;
-    color: white;
-}
-
-.stat-icon-success {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-}
-
+.stat-icon-primary,
+.stat-icon-success,
 .stat-icon-info {
-    background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
-    color: white;
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
 }
 
 .info-card {
-    border: none;
+    border: 1px solid rgba(186, 194, 210, 0.45);
     border-radius: 16px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05);
 }
 
 .info-card .card-header {
     background: transparent;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    border-bottom: 1px solid rgba(186, 194, 210, 0.45);
     padding: 1.25rem 1.5rem;
 }
 
-.info-card .card-header h5 {
+.info-card .card-header h5,
+.info-card .card-header h6 {
     color: var(--theme-primary);
 }
 
 .info-item {
     padding: 1.25rem;
     border-radius: 12px;
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    background: #fff;
     margin-bottom: 1rem;
     transition: all 0.2s ease;
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    border: 1px solid rgba(186, 194, 210, 0.45);
 }
 
 .info-item:hover {
-    background: linear-gradient(135deg, #f0f2ff 0%, #e8e9ff 100%);
-    border-color: rgba(102, 126, 234, 0.15);
+    background: rgba(4, 28, 84, 0.03);
+    border-color: rgba(4, 28, 84, 0.2);
 }
 
 .info-label {
     font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #667eea;
+    letter-spacing: 0.05em;
+    color: #7484a4;
     margin-bottom: 0.35rem;
     font-weight: 600;
+}
+
+.info-label i {
+    color: #041c54;
 }
 
 .info-value {
     font-size: 1rem;
     font-weight: 600;
-    color: #212529;
+    color: #041c54;
 }
 
 .btn-theme {
@@ -223,8 +229,8 @@
 }
 
 .status-badge-active {
-    background: linear-gradient(135deg, rgba(40, 167, 69, 0.15) 0%, rgba(32, 201, 151, 0.15) 100%);
-    color: #28a745;
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
     padding: 0.5rem 1rem;
     border-radius: 25px;
     font-weight: 600;
@@ -336,7 +342,7 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-6">
-                        <div class="stat-card bg-light p-3 rounded-3">
+                        <div class="stat-card account-stat p-3 rounded-3">
                             <div class="stat-icon stat-icon-primary mb-2">
                                 <i class="ri-calendar-line"></i>
                             </div>
@@ -345,8 +351,8 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="stat-card bg-light p-3 rounded-3">
-                            <div class="stat-icon stat-icon-success mb-2">
+                        <div class="stat-card account-stat p-3 rounded-3">
+                            <div class="stat-icon stat-icon-primary mb-2">
                                 <i class="ri-time-line"></i>
                             </div>
                             <div class="text-muted small mb-1">Account Age</div>
@@ -388,7 +394,7 @@
                             <div class="info-value d-flex align-items-center">
                                 {{ $user->email }}
                                 @if($user->email_verified_at)
-                                    <i class="ri-verified-badge-fill ms-2" style="color: #28a745;" title="Verified"></i>
+                                    <i class="ri-verified-badge-fill ms-2" style="color: #041c54;" title="Verified"></i>
                                 @endif
                             </div>
                         </div>

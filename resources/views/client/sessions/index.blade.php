@@ -88,7 +88,7 @@
 
 .btn-book-new:hover {
     background: white;
-    color: #667eea;
+    color: #041c54;
     border-color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
@@ -96,7 +96,7 @@
 
 .btn-book-new:active {
     background: white;
-    color: #667eea;
+    color: #041c54;
     border-color: white;
     transform: translateY(0);
 }
@@ -129,12 +129,12 @@
 
 /* Summary Card */
 .summary-card {
-    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
-    border: 1px solid rgba(102, 126, 234, 0.2);
+    background: #fff;
+    border: 1px solid rgba(186, 194, 210, 0.45);
     border-radius: 14px;
     padding: 1rem 1.25rem;
     margin-bottom: 1.25rem;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05);
 }
 
 .summary-item {
@@ -142,44 +142,42 @@
     padding: 0.5rem;
 }
 
+@media (min-width: 768px) {
+    .summary-card .col-md-4:not(:last-child) .summary-item {
+        border-right: 1px solid rgba(186, 194, 210, 0.45);
+    }
+}
+
 .summary-value {
     font-size: 1.75rem;
     font-weight: 700;
-    background: var(--theme-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #041c54;
     margin-bottom: 0.25rem;
     display: block;
 }
 
 .summary-label {
     font-size: 0.75rem;
-    color: #4b5563;
+    color: #7484a4;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
 }
 
 /* Session Cards */
 .session-card {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(186, 194, 210, 0.45);
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 12px rgba(4, 28, 84, 0.04);
     overflow: hidden;
     position: relative;
     margin-bottom: 0.5rem;
-    border-left: 4px solid transparent;
+    border-left: 4px solid #041c54;
 }
 
 .session-card:nth-child(even) {
-    background: #fafbfc;
-    border-left-color: #667eea;
-}
-
-.session-card:nth-child(odd) {
-    border-left-color: #764ba2;
+    background: rgba(4, 28, 84, 0.02);
 }
 
 .session-card .card-body {
@@ -192,8 +190,8 @@
     height: 40px;
     border-radius: 10px;
     object-fit: cover;
-    border: 2px solid #f0f2ff;
-    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.1);
+    border: 2px solid rgba(186, 194, 210, 0.7);
+    box-shadow: 0 1px 4px rgba(4, 28, 84, 0.08);
 }
 
 .therapist-avatar-placeholder {
@@ -211,14 +209,14 @@
 
 .therapist-info h6 {
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     margin-bottom: 0;
     font-size: 0.875rem;
     line-height: 1.2;
 }
 
 .therapist-info small {
-    color: #6b7280;
+    color: #7484a4;
     display: flex;
     align-items: center;
     gap: 0.2rem;
@@ -232,10 +230,15 @@
     gap: 0.5rem;
     margin: 0;
     padding: 0.35rem 0.65rem;
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    background: rgba(4, 28, 84, 0.04);
     border-radius: 8px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(186, 194, 210, 0.45);
     margin-right: 0.5rem;
+}
+
+.detail-text-today {
+    color: #041c54;
+    font-weight: 700;
 }
 
 .detail-icon {
@@ -249,12 +252,12 @@
     color: white;
     font-size: 0.75rem;
     flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 1px 3px rgba(4, 28, 84, 0.15);
 }
 
 .detail-text {
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     font-size: 0.8rem;
     line-height: 1.3;
     white-space: nowrap;
@@ -272,19 +275,14 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.08);
 }
 
-.status-badge.scheduled {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
-    color: #d97706;
-}
-
-.status-badge.confirmed {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
-    color: #059669;
+.status-badge.scheduled,
+.status-badge.confirmed,
+.status-badge.in_progress {
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
 }
 
 .status-badge.in_progress {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
-    color: #2563eb;
     animation: pulse 2s infinite;
 }
 
@@ -312,24 +310,16 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.08);
 }
 
-.session-badge.video {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
-    color: #2563eb;
-}
-
-.session-badge.audio {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
-    color: #059669;
-}
-
+.session-badge.video,
+.session-badge.audio,
 .session-badge.chat {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
-    color: #7c3aed;
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
 }
 
 .type-badge {
-    background: linear-gradient(135deg, rgba(107, 114, 128, 0.1) 0%, rgba(75, 85, 99, 0.1) 100%);
-    color: #4b5563;
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
     padding: 0.3rem 0.65rem;
     border-radius: 8px;
     font-size: 0.7rem;
@@ -339,86 +329,84 @@
 }
 
 /* Action Buttons */
-.action-buttons {
+.session-actions {
     display: flex;
-    gap: 0.5rem;
     align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .action-btn {
     width: 36px;
     height: 36px;
     border-radius: 10px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
     transition: all 0.2s ease;
     border: none;
     text-decoration: none;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    flex-shrink: 0;
     cursor: pointer;
 }
 
-/* Removed hover transform */
-
 .action-btn.join {
-    background: var(--success-gradient);
-    color: white;
+    background: #041c54;
+    color: #fff;
     padding: 0.4rem 0.85rem;
     width: auto;
     height: auto;
     font-size: 0.8rem;
     font-weight: 600;
     gap: 0.35rem;
-    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.25);
+    box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
 }
 
-.action-btn.join:active {
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-    color: white;
+.action-btn.join:hover {
+    background: #052a66;
+    color: #fff;
 }
 
 .action-btn.view {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    color: #667eea;
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
 }
 
-.action-btn.view:active {
-    background: var(--theme-gradient);
-    color: white;
+.action-btn.view:hover {
+    background: #041c54;
+    color: #fff;
 }
 
 .action-btn.disabled {
-    background: #f3f4f6;
-    color: #6b7280;
+    background: rgba(186, 194, 210, 0.25);
+    color: #7484a4;
     cursor: not-allowed;
-    transform: none;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.75rem;
     width: auto;
     height: auto;
-    font-size: 0.875rem;
-    position: relative;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(186, 194, 210, 0.6);
 }
 
-/* Disabled buttons don't need hover */
-
 .action-btn.disabled.expired {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-    color: #991b1b;
-    border: 1px solid #fca5a5;
+    background: rgba(220, 38, 38, 0.08);
+    color: #b91c1c;
+    border-color: rgba(220, 38, 38, 0.25);
 }
 
 .action-btn.disabled.waiting {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    color: #92400e;
-    border: 1px solid #fcd34d;
+    background: rgba(4, 28, 84, 0.06);
+    color: #041c54;
+    border-color: rgba(4, 28, 84, 0.2);
 }
 
 .action-btn.disabled.not-available {
-    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
-    color: #4b5563;
-    border: 1px solid #9ca3af;
+    background: rgba(100, 116, 148, 0.1);
+    color: #647494;
+    border-color: rgba(186, 194, 210, 0.6);
 }
 
 /* Live Indicator */
@@ -460,7 +448,7 @@
 .empty-state-icon {
     width: 100px;
     height: 100px;
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    background: rgba(4, 28, 84, 0.08);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -470,10 +458,7 @@
 
 .empty-state-icon i {
     font-size: 2.5rem;
-    background: var(--theme-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #041c54;
 }
 
 .empty-state h5 {
@@ -504,9 +489,27 @@
     gap: 0.5rem;
 }
 
+.btn-book:hover {
+    background: #052a66;
+    color: #fff;
+}
+
 .btn-book:active {
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    color: white;
+    box-shadow: 0 4px 12px rgba(4, 28, 84, 0.25);
+    color: #fff;
+}
+
+.pagination .page-link {
+    color: #041c54;
+    border-color: rgba(186, 194, 210, 0.45);
+    border-radius: 8px;
+    margin: 0 2px;
+}
+
+.pagination .page-item.active .page-link {
+    background: #041c54;
+    border-color: #041c54;
+    color: #fff;
 }
 
 /* Responsive */
@@ -715,7 +718,7 @@
                                     </div>
                                     <span class="detail-text">
                                         @if($isToday)
-                                            <span class="text-success fw-bold">Today</span>
+                                            <span class="detail-text-today">Today</span>
                                         @else
                                             {{ $session->appointment_date->format('M d, Y') }}
                                         @endif
@@ -760,7 +763,7 @@
 
                         <!-- Actions -->
                         <div class="col-lg-3 col-md-12 mb-0">
-                            <div class="d-flex align-items-center justify-content-lg-end justify-content-start" style="gap: 0.5rem;">
+                            <div class="session-actions justify-content-lg-end justify-content-start">
                                     <a href="{{ route('client.appointments.show', $session->id) }}"
                                        class="action-btn view"
                                        title="View Details">
