@@ -36,14 +36,23 @@
     color: #fff !important;
   }
 
+  .therapist-agreements-apni .agr-table-wrap {
+    overflow: visible;
+    border-radius: 12px;
+    border: 1px solid rgba(186, 194, 210, 0.45);
+    background: #fff;
+  }
+
+  .therapist-agreements-apni .agr-table-panel {
+    overflow: visible;
+  }
+
   .therapist-agreements-apni .agr-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(186, 194, 210, 0.45);
+    margin-bottom: 0;
   }
   .therapist-agreements-apni .agr-table thead th {
     background: rgba(186, 194, 210, 0.2);
@@ -89,6 +98,20 @@
     font-family: var(--apni-font-display, 'Sora', system-ui, sans-serif);
   }
 
+  .therapist-agreements-apni .agr-table th.col-actions,
+  .therapist-agreements-apni .agr-table td.col-actions {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .therapist-agreements-apni .agr-action-btns {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
   .therapist-agreements-apni .agr-btn-view,
   .therapist-agreements-apni .agr-btn-edit,
   .therapist-agreements-apni .agr-btn-delete {
@@ -103,23 +126,29 @@
     text-decoration: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
+
   .therapist-agreements-apni .agr-btn-view {
     background: #041c54;
   }
+
   .therapist-agreements-apni .agr-btn-view:hover {
     background: #052a66;
     color: #fff;
   }
+
   .therapist-agreements-apni .agr-btn-edit {
     background: #d97706;
   }
+
   .therapist-agreements-apni .agr-btn-edit:hover {
     background: #b45309;
     color: #fff;
   }
+
   .therapist-agreements-apni .agr-btn-delete {
     background: #dc2626;
   }
+
   .therapist-agreements-apni .agr-btn-delete:hover {
     background: #b91c1c;
     color: #fff;
@@ -175,9 +204,9 @@
   }
 
   @media (max-width: 768px) {
-    .therapist-agreements-apni .agr-table {
-      display: block;
+    .therapist-agreements-apni .agr-table-wrap {
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
   }
 </style>
@@ -274,9 +303,9 @@
       </div>
     </form>
 
-    <div class="mt-6 border-t border-[#BAC2D2]/30 pt-6">
+    <div class="mt-6 border-t border-[#BAC2D2]/30 pt-6 agr-table-panel">
       <h2 class="font-display mb-4 text-lg font-medium text-[#041C54]">All agreements</h2>
-      <div class="table-responsive">
+      <div class="agr-table-wrap">
         <table class="agr-table">
           <thead>
             <tr>
@@ -286,7 +315,7 @@
               <th>Status</th>
               <th>Effective</th>
               <th>Expiry</th>
-              <th style="width: 130px;">Actions</th>
+              <th class="col-actions">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -324,14 +353,26 @@
                 </td>
                 <td class="text-[#647494]">{{ $agreement->effective_date ? $agreement->effective_date->format('Y-m-d') : '—' }}</td>
                 <td class="text-[#647494]">{{ $agreement->expiry_date ? $agreement->expiry_date->format('Y-m-d') : '—' }}</td>
-                <td>
-                  <div class="d-flex flex-wrap gap-1">
-                    <a href="{{ route('therapist.agreements.show', $agreement->id) }}" class="agr-btn-view" title="View"><i class="ri-eye-line"></i></a>
-                    <a href="{{ route('therapist.agreements.edit', $agreement->id) }}" class="agr-btn-edit" title="Edit"><i class="ri-pencil-line"></i></a>
-                    <form action="{{ route('therapist.agreements.destroy', $agreement->id) }}" method="POST" class="d-inline delete-form" data-title="Delete Agreement" data-text="Are you sure you want to delete this agreement? This action cannot be undone.">
+                <td class="col-actions">
+                  <div class="agr-action-btns">
+                    <a href="{{ route('therapist.agreements.show', $agreement->id) }}" class="agr-btn-view" title="View">
+                      <i class="ri-eye-line"></i>
+                    </a>
+                    <a href="{{ route('therapist.agreements.edit', $agreement->id) }}" class="agr-btn-edit" title="Edit">
+                      <i class="ri-pencil-line"></i>
+                    </a>
+                    <form action="{{ route('therapist.agreements.destroy', $agreement->id) }}" method="POST" class="d-inline delete-form">
                       @csrf
                       @method('DELETE')
-                      <button type="submit" class="agr-btn-delete" title="Delete"><i class="ri-delete-bin-line"></i></button>
+                      <button type="submit"
+                              class="agr-btn-delete"
+                              title="Delete"
+                              data-title="Delete Agreement"
+                              data-text="Are you sure you want to delete this agreement? This action cannot be undone."
+                              data-confirm-text="Yes, delete it!"
+                              data-cancel-text="Cancel">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
                     </form>
                   </div>
                 </td>
