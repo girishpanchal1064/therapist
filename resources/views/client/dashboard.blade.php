@@ -138,10 +138,12 @@
     border-radius: 16px 16px 0 0;
   }
 
-  .stat-card.primary::before { background: var(--therapy-gradient); }
-  .stat-card.success::before { background: var(--therapy-gradient-success); }
-  .stat-card.info::before { background: linear-gradient(135deg, #667eea 0%, #00d4ff 100%); }
-  .stat-card.warning::before { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+  .stat-card.primary::before,
+  .stat-card.success::before,
+  .stat-card.info::before,
+  .stat-card.warning::before {
+    background: #041c54;
+  }
 
   .stat-icon {
     width: 56px;
@@ -152,23 +154,8 @@
     justify-content: center;
     font-size: 1.5rem;
     margin-bottom: 1rem;
-  }
-
-  .stat-icon.primary {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    color: #764ba2;
-  }
-  .stat-icon.success {
-    background: linear-gradient(135deg, rgba(17, 153, 142, 0.15) 0%, rgba(56, 239, 125, 0.15) 100%);
-    color: #11998e;
-  }
-  .stat-icon.info {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(0, 212, 255, 0.15) 100%);
-    color: #667eea;
-  }
-  .stat-icon.warning {
-    background: linear-gradient(135deg, rgba(240, 147, 251, 0.15) 0%, rgba(245, 87, 108, 0.15) 100%);
-    color: #f5576c;
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
   }
 
   .stat-label {
@@ -197,8 +184,8 @@
     gap: 0.25rem;
   }
 
-  .stat-meta.positive { color: #10b981; }
-  .stat-meta.neutral { color: #6b7280; }
+  .stat-meta.positive { color: #041c54; }
+  .stat-meta.neutral { color: #7484a4; }
 
   .stat-action-btn {
     margin-top: 1rem;
@@ -206,6 +193,16 @@
     border-radius: 10px;
     font-size: 0.8125rem;
     font-weight: 500;
+    border: 2px solid rgba(4, 28, 84, 0.35);
+    color: #041c54;
+    background: transparent;
+  }
+
+  .stat-action-btn:hover,
+  .stat-action-btn:focus {
+    background: #041c54;
+    border-color: #041c54;
+    color: #fff;
   }
 
   /* Section Headers */
@@ -219,7 +216,7 @@
   .section-title {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -236,17 +233,74 @@
     font-size: 1rem;
   }
 
-  .section-title-icon.primary { background: rgba(124, 58, 237, 0.1); color: #7c3aed; }
-  .section-title-icon.success { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-  .section-title-icon.info { background: rgba(6, 182, 212, 0.1); color: #06b6d4; }
-  .section-title-icon.warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+  .section-title-icon.primary,
+  .section-title-icon.success,
+  .section-title-icon.info,
+  .section-title-icon.warning {
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
+  }
+
+  .btn-dashboard-primary {
+    background: #041c54 !important;
+    border-color: #041c54 !important;
+    color: #fff !important;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .btn-dashboard-primary:hover {
+    background: #052a66 !important;
+    border-color: #052a66 !important;
+    color: #fff !important;
+  }
+
+  .btn.btn-dashboard-outline,
+  a.btn.btn-dashboard-outline {
+    border: 2px solid #041c54 !important;
+    color: #041c54 !important;
+    background: transparent !important;
+    border-radius: 10px;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: none !important;
+  }
+
+  .btn.btn-dashboard-outline:hover,
+  a.btn.btn-dashboard-outline:hover,
+  .btn.btn-dashboard-outline:focus,
+  a.btn.btn-dashboard-outline:focus {
+    background: #041c54 !important;
+    border-color: #041c54 !important;
+    color: #fff !important;
+  }
+
+  .btn-dashboard-icon {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid rgba(4, 28, 84, 0.35) !important;
+    color: #041c54 !important;
+    background: transparent !important;
+    border-radius: 10px;
+  }
+
+  .btn-dashboard-icon:hover {
+    background: #041c54 !important;
+    border-color: #041c54 !important;
+    color: #fff !important;
+  }
 
   /* Cards */
   .dashboard-card {
     background: white;
     border-radius: 16px;
-    border: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid rgba(186, 194, 210, 0.45);
+    box-shadow: 0 10px 15px rgba(4, 28, 84, 0.05), 0 4px 6px rgba(4, 28, 84, 0.05);
     overflow: hidden;
     height: 100%;
   }
@@ -301,7 +355,7 @@
   .session-card {
     background: white;
     border-radius: 14px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(186, 194, 210, 0.45);
     padding: 1.25rem;
     transition: all 0.3s ease;
     position: relative;
@@ -309,17 +363,14 @@
   }
 
   .session-card:hover {
-    border-color: var(--therapy-primary-light);
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.12);
+    border-color: rgba(4, 28, 84, 0.25);
+    box-shadow: 0 8px 25px rgba(4, 28, 84, 0.08);
   }
 
-  .session-card.today {
-    border-left: 4px solid #10b981;
-    background: linear-gradient(90deg, rgba(16, 185, 129, 0.03) 0%, transparent 100%);
-  }
-
+  .session-card.today,
   .session-card.upcoming {
-    border-left: 4px solid #7c3aed;
+    border-left: 4px solid #041c54;
+    background: linear-gradient(90deg, rgba(4, 28, 84, 0.04) 0%, transparent 100%);
   }
 
   .session-therapist {
@@ -339,14 +390,14 @@
 
   .therapist-info h6 {
     font-weight: 600;
-    color: #1f2937;
+    color: #041c54;
     margin-bottom: 0.125rem;
     font-size: 0.9375rem;
   }
 
   .therapist-info span {
     font-size: 0.8125rem;
-    color: #6b7280;
+    color: #7484a4;
   }
 
   .session-details {
@@ -367,37 +418,68 @@
 
   .session-detail-item i {
     font-size: 1rem;
-    color: #9ca3af;
+    color: #7484a4;
   }
 
   .session-actions {
     margin-top: 1rem;
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
   }
 
-  .join-session-btn {
-    background: var(--therapy-gradient-success);
-    border: none;
-    color: white;
-    padding: 0.625rem 1.25rem;
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 0.875rem;
-    transition: all 0.3s ease;
-    display: inline-flex;
+  .session-action-row {
+    display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  .join-session-btn:hover {
-    color: white;
-    transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(17, 153, 142, 0.3);
+  .session-join-hint {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #7484a4;
+    line-height: 1.45;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
   }
 
-  .join-session-btn i {
-    font-size: 1.125rem;
+  .session-join-hint i {
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    color: #647494;
+  }
+
+  .btn-session-join {
+    flex: 1;
+    min-width: 0;
+    background: #041c54;
+    border: none;
+    color: #fff;
+    padding: 0.625rem 1rem;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .btn-session-join:hover {
+    background: #052a66;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(4, 28, 84, 0.2);
+  }
+
+  .btn-session-join:disabled,
+  .btn-session-join.disabled {
+    background: rgba(186, 194, 210, 0.35);
+    color: #7484a4;
+    cursor: not-allowed;
+    box-shadow: none;
   }
 
   /* Status Badges */
@@ -410,11 +492,22 @@
     letter-spacing: 0.02em;
   }
 
-  .status-badge.confirmed { background: rgba(16, 185, 129, 0.1); color: #059669; }
-  .status-badge.scheduled { background: rgba(124, 58, 237, 0.1); color: #7c3aed; }
-  .status-badge.pending { background: rgba(245, 158, 11, 0.1); color: #d97706; }
-  .status-badge.in_progress { background: rgba(6, 182, 212, 0.1); color: #0891b2; }
-  .status-badge.completed { background: rgba(107, 114, 128, 0.1); color: #4b5563; }
+  .status-badge.confirmed,
+  .status-badge.scheduled,
+  .status-badge.in_progress {
+    background: rgba(4, 28, 84, 0.1);
+    color: #041c54;
+  }
+
+  .status-badge.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #b45309;
+  }
+
+  .status-badge.completed {
+    background: rgba(100, 116, 148, 0.12);
+    color: #647494;
+  }
 
   /* Assessment Cards */
   .assessment-item {
@@ -596,7 +689,7 @@
   /* Custom Scrollbar */
   .custom-scroll {
     scrollbar-width: thin;
-    scrollbar-color: rgba(124, 58, 237, 0.3) transparent;
+    scrollbar-color: rgba(4, 28, 84, 0.25) transparent;
   }
 
   .custom-scroll::-webkit-scrollbar {
@@ -609,12 +702,12 @@
   }
 
   .custom-scroll::-webkit-scrollbar-thumb {
-    background: rgba(124, 58, 237, 0.3);
+    background: rgba(4, 28, 84, 0.25);
     border-radius: 10px;
   }
 
   .custom-scroll::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 58, 237, 0.5);
+    background: rgba(4, 28, 84, 0.4);
   }
 
   /* Appointments Table */
@@ -647,7 +740,7 @@
   }
 
   .appointments-table tbody tr:hover {
-    background: #faf5ff;
+    background: rgba(4, 28, 84, 0.03);
   }
 
   /* Animations */
@@ -780,7 +873,7 @@
       </div>
       <div class="stat-label">Wallet Balance</div>
       <div class="stat-value">₹{{ number_format($stats['wallet_balance'], 0) }}</div>
-      <button type="button" class="btn btn-sm btn-outline-success stat-action-btn" data-bs-toggle="modal" data-bs-target="#rechargeWalletModal">
+      <button type="button" class="btn btn-sm stat-action-btn" data-bs-toggle="modal" data-bs-target="#rechargeWalletModal">
         <i class="ri-add-circle-line me-1"></i>Top Up
       </button>
     </div>
@@ -909,23 +1002,24 @@
       @endphp
       @if($isActive)
       <div class="session-actions">
-        <a href="{{ route('sessions.join', $appointment->id) }}" class="join-session-btn" target="_blank">
-          <i class="ri-vidicon-line"></i>
-          Join Session Now
-        </a>
-        <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-outline-secondary btn-sm" style="border-radius: 10px;">
-          <i class="ri-eye-line"></i>
-        </a>
+        <div class="session-action-row">
+          <a href="{{ route('sessions.join', $appointment->id) }}" class="btn-session-join" target="_blank">
+            <i class="ri-vidicon-line"></i>
+            Join Session Now
+          </a>
+          <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-dashboard-icon" title="View details">
+            <i class="ri-eye-line"></i>
+          </a>
+        </div>
       </div>
       @elseif(!empty($isSessionExpired) && $isSessionExpired)
       <div class="session-actions">
-        <button class="join-session-btn" disabled style="opacity: 0.6; cursor: not-allowed;">
-          <i class="ri-timer-line"></i>
-          Session Expired
-        </button>
-        <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-outline-secondary btn-sm" style="border-radius: 10px;">
-          <i class="ri-eye-line"></i>
-        </a>
+        <p class="session-join-hint"><i class="ri-timer-line"></i> This session has ended.</p>
+        <div class="session-action-row">
+          <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-dashboard-outline">
+            <i class="ri-eye-line me-1"></i>View Details
+          </a>
+        </div>
       </div>
       @elseif(!$canJoin)
       @php
@@ -933,13 +1027,15 @@
           $timeUntilJoin = $joinAvailableAt->diffForHumans(\Carbon\Carbon::now('Asia/Kolkata'), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
       @endphp
       <div class="session-actions">
-        <button class="join-session-btn" disabled style="opacity: 0.6; cursor: not-allowed;">
+        <p class="session-join-hint">
           <i class="ri-time-line"></i>
-          Join button available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }})
-        </button>
-        <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-outline-secondary btn-sm" style="border-radius: 10px;">
-          <i class="ri-eye-line"></i>
-        </a>
+          Join opens {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }} IST)
+        </p>
+        <div class="session-action-row">
+          <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-dashboard-outline">
+            <i class="ri-eye-line me-1"></i>View Details
+          </a>
+        </div>
       </div>
       @endif
     </div>
@@ -952,15 +1048,15 @@
 <div class="row mb-4">
   <!-- Online Sessions -->
   <div class="col-12 animate-fade-in animation-delay-3">
-    <div class="dashboard-card" style="border-left: 4px solid #10b981;">
+    <div class="dashboard-card" style="border-left: 4px solid #041c54;">
       <div class="card-header">
         <div class="section-header mb-0">
           <h5 class="section-title">
-            <span class="section-title-icon success"><i class="ri-broadcast-line"></i></span>
+            <span class="section-title-icon primary"><i class="ri-broadcast-line"></i></span>
             Online Sessions
-            <span class="badge bg-success ms-2">{{ $onlineSessions->count() }}</span>
+            <span class="badge ms-2" style="background: rgba(4, 28, 84, 0.1); color: #041c54;">{{ $onlineSessions->count() }}</span>
           </h5>
-          <a href="{{ route('client.sessions.index') }}" class="btn btn-sm btn-outline-success" style="border-radius: 10px;">
+          <a href="{{ route('client.sessions.index') }}" class="btn btn-sm btn-dashboard-outline">
             View All
           </a>
         </div>
@@ -1001,7 +1097,7 @@
             $isActive = $canJoin && !$isSessionExpired && in_array($session->session_mode, ['video', 'audio']);
           @endphp
           <div class="col-md-6">
-            <div class="session-card" style="border-left: 3px solid #10b981; background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);">
+            <div class="session-card today">
               <div class="session-therapist">
                 @if($session->therapist && $session->therapist->therapistProfile && $session->therapist->therapistProfile->profile_image)
                   <img src="{{ asset('storage/' . $session->therapist->therapistProfile->profile_image) }}" alt="{{ $session->therapist->name }}" class="therapist-avatar">
@@ -1030,19 +1126,23 @@
               </div>
               <div class="session-actions">
                 @if($isActive)
-                  <a href="{{ route('sessions.join', $session->id) }}" class="join-session-btn" target="_blank" style="flex: 1; justify-content: center;">
+                <div class="session-action-row">
+                  <a href="{{ route('sessions.join', $session->id) }}" class="btn-session-join" target="_blank">
                     <i class="ri-{{ $session->session_mode === 'video' ? 'video' : 'mic' }}-line"></i>
                     Join Now
                   </a>
+                  <a href="{{ route('client.appointments.show', $session->id) }}" class="btn btn-sm btn-dashboard-icon" title="View details">
+                    <i class="ri-eye-line"></i>
+                  </a>
+                </div>
                 @else
-                  <button class="join-session-btn" disabled style="opacity: 0.6; cursor: not-allowed; flex: 1; justify-content: center;">
-                    <i class="ri-time-off-line"></i>
-                    Session Expired
-                  </button>
+                <p class="session-join-hint"><i class="ri-time-off-line"></i> Session has ended.</p>
+                <div class="session-action-row">
+                  <a href="{{ route('client.appointments.show', $session->id) }}" class="btn btn-sm btn-dashboard-outline">
+                    <i class="ri-eye-line me-1"></i>View Details
+                  </a>
+                </div>
                 @endif
-                <a href="{{ route('client.appointments.show', $session->id) }}" class="btn btn-sm btn-outline-primary" style="border-radius: 10px;">
-                  <i class="ri-eye-line"></i>
-                </a>
               </div>
             </div>
           </div>
@@ -1064,7 +1164,7 @@
             <span class="section-title-icon primary"><i class="ri-calendar-schedule-line"></i></span>
             Upcoming Sessions
           </h5>
-          <a href="{{ route('therapists.index') }}" class="btn btn-sm btn-primary" style="border-radius: 10px;">
+          <a href="{{ route('therapists.index') }}" class="btn btn-sm btn-dashboard-primary">
             <i class="ri-add-line me-1"></i>Book
           </a>
         </div>
@@ -1098,9 +1198,6 @@
               </div>
             </div>
             <div class="session-actions">
-              <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-outline-primary" style="border-radius: 10px;">
-                <i class="ri-eye-line me-1"></i>View Details
-              </a>
               @php
                 // Check if join button should be shown for upcoming appointments
                 $timeString = is_string($appointment->appointment_time)
@@ -1140,24 +1237,37 @@
                 );
               @endphp
               @if($isActiveUpcoming)
-              <a href="{{ route('sessions.join', $appointment->id) }}" class="btn btn-sm btn-success" style="border-radius: 10px;" target="_blank">
-                <i class="ri-vidicon-line me-1"></i>Join
-              </a>
-              @elseif(!$canJoinUpcoming)
+              <div class="session-action-row">
+                <a href="{{ route('sessions.join', $appointment->id) }}" class="btn-session-join" target="_blank">
+                  <i class="ri-vidicon-line"></i>Join Session
+                </a>
+                <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-dashboard-icon" title="View details">
+                  <i class="ri-eye-line"></i>
+                </a>
+              </div>
+              @else
+              @if(!$canJoinUpcoming)
               @php
                   $joinAvailableAtUpcoming = $appointmentDateTime->copy()->subMinutes(5);
                   $timeUntilJoinUpcoming = $joinAvailableAtUpcoming->diffForHumans(\Carbon\Carbon::now('Asia/Kolkata'), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
               @endphp
-              <button class="btn btn-sm btn-outline-secondary" disabled style="border-radius: 10px; font-size: 0.7rem;">
-                <i class="ri-time-line me-1"></i>Available {{ $timeUntilJoinUpcoming }} ({{ $joinAvailableAtUpcoming->format('g:i A') }})
-              </button>
+              <p class="session-join-hint">
+                <i class="ri-time-line"></i>
+                Join opens {{ $timeUntilJoinUpcoming }} (at {{ $joinAvailableAtUpcoming->format('g:i A') }} IST)
+              </p>
+              @endif
+              <div class="session-action-row">
+                <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-dashboard-outline">
+                  <i class="ri-eye-line me-1"></i>View Details
+                </a>
+              </div>
               @endif
             </div>
           </div>
           @endforeach
           @if($upcomingAppointments->count() > 4)
           <div class="text-center mt-3">
-            <a href="{{ route('client.appointments.index') }}" class="btn btn-sm btn-outline-primary" style="border-radius: 10px;">
+            <a href="{{ route('client.appointments.index') }}" class="btn btn-sm btn-dashboard-outline">
               View All ({{ $upcomingAppointments->count() }})
             </a>
           </div>
@@ -1188,7 +1298,7 @@
             <span class="section-title-icon success"><i class="ri-history-line"></i></span>
             Recent Sessions
           </h5>
-          <a href="{{ route('client.appointments.index') }}" class="btn btn-sm btn-outline-secondary" style="border-radius: 10px;">
+          <a href="{{ route('client.appointments.index') }}" class="btn btn-sm btn-dashboard-outline">
             View All
           </a>
         </div>
@@ -1219,10 +1329,10 @@
                 </td>
                 <td>
                   <div class="d-flex gap-2">
-                    <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-light" style="border-radius: 8px;" title="View">
+                    <a href="{{ route('client.appointments.show', $appointment->id) }}" class="btn btn-sm btn-dashboard-icon" title="View">
                       <i class="ri-eye-line"></i>
                     </a>
-                    <a href="{{ route('client.reviews.create', $appointment->id) }}" class="btn btn-sm btn-light" style="border-radius: 8px;" title="Review">
+                    <a href="{{ route('client.reviews.create', $appointment->id) }}" class="btn btn-sm btn-dashboard-icon" title="Review">
                       <i class="ri-star-line"></i>
                     </a>
                   </div>
@@ -1255,7 +1365,7 @@
             <span class="section-title-icon info"><i class="ri-mental-health-line"></i></span>
             Wellness Assessments
           </h5>
-          <a href="{{ route('assessments.index') }}" class="btn btn-sm btn-outline-info" style="border-radius: 10px;">
+          <a href="{{ route('assessments.index') }}" class="btn btn-sm btn-dashboard-outline">
             View All
           </a>
         </div>
@@ -1305,10 +1415,10 @@
       <div class="card-header">
         <div class="section-header mb-0">
           <h5 class="section-title">
-            <span class="section-title-icon warning"><i class="ri-wallet-3-line"></i></span>
+            <span class="section-title-icon primary"><i class="ri-wallet-3-line"></i></span>
             Recent Transactions
           </h5>
-          <button type="button" class="btn btn-sm btn-warning" style="border-radius: 10px; color: white;" data-bs-toggle="modal" data-bs-target="#rechargeWalletModal">
+          <button type="button" class="btn btn-sm btn-dashboard-primary" data-bs-toggle="modal" data-bs-target="#rechargeWalletModal">
             <i class="ri-add-circle-line me-1"></i>Add Money
           </button>
         </div>
@@ -1332,7 +1442,7 @@
           </div>
           @endforeach
           <div class="text-center mt-3">
-            <a href="{{ route('client.wallet.index') }}" class="btn btn-sm btn-outline-secondary" style="border-radius: 10px;">
+            <a href="{{ route('client.wallet.index') }}" class="btn btn-sm btn-dashboard-outline">
               View All Transactions
             </a>
           </div>

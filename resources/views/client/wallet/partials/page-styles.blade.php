@@ -249,20 +249,21 @@
 }
 
 .btn-view-all {
-    background: var(--apni-gulf-10);
-    color: var(--apni-gulf-blue);
-    border: none;
+    background: transparent;
+    color: #041c54;
+    border: 2px solid #041c54;
     padding: 0.5rem 1rem;
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.85rem;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     text-decoration: none;
 }
 
 .btn-view-all:hover {
-    background: var(--apni-gulf-blue);
-    color: white;
+    background: #041c54;
+    border-color: #041c54;
+    color: #fff;
 }
 
 .txn-date { font-weight: 600; color: var(--apni-gulf-blue); }
