@@ -28,7 +28,8 @@ class AppointmentController extends Controller
 
         $appointments = $query->orderBy('appointment_date', 'desc')
             ->orderBy('appointment_time', 'desc')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
         $stats = [
             'total' => $user->appointmentsAsClient()->count(),
