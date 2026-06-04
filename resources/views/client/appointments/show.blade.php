@@ -587,6 +587,24 @@
     </div>
 </div>
 
+@if($appointment->wasDeclinedByTherapist())
+<div class="alert alert-dismissible fade show mb-4" role="alert" style="border-radius: 14px; border: 1px solid rgba(220, 38, 38, 0.35); background: #fef2f2; color: #991b1b;">
+    <div class="d-flex align-items-start gap-2">
+        <i class="ri-calendar-close-line fs-5 mt-1"></i>
+        <div>
+            <strong>Session declined by your therapist</strong>
+            <p class="mb-1 mt-1">{{ $appointment->cancellation_reason }}</p>
+            @if($appointment->payment && $appointment->payment->status === 'refunded')
+                <p class="mb-0 small">Your payment has been refunded to your wallet. You can book another session with a different time or therapist.</p>
+            @else
+                <p class="mb-0 small">You can book another session with a different time or therapist.</p>
+            @endif
+        </div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
 <div class="row g-3">
     <!-- Left Column -->
     <div class="col-lg-4">

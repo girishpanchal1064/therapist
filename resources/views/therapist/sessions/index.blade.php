@@ -230,6 +230,25 @@
     background: #059669;
     color: #fff;
   }
+  .therapist-sessions-apni .action-btn.decline {
+    background: #fff;
+    color: #b91c1c;
+    border: 2px solid rgba(220, 38, 38, 0.45);
+    padding: 0.45rem 0.75rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .therapist-sessions-apni .action-btn.decline:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+  }
   .therapist-sessions-apni .action-btn.disabled {
     background: #f1f5f9;
     color: #7484a4;
@@ -393,6 +412,13 @@
     </div>
   @endif
 
+  @if(session('error'))
+    <div class="mb-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 md:px-5" role="alert">
+      <i class="ri-error-warning-fill mt-0.5 text-lg"></i>
+      <div class="min-w-0 flex-1">{{ session('error') }}</div>
+    </div>
+  @endif
+
   <div class="mb-6 overflow-x-auto rounded-2xl border border-[#BAC2D2]/30 bg-white p-3 shadow-[0_10px_15px_rgba(4,28,84,0.05),0_4px_6px_rgba(4,28,84,0.05)] sm:p-4">
     <div class="flex min-w-max flex-wrap gap-2">
       <a href="{{ route('therapist.sessions.index', ['status' => 'pending']) }}" class="{{ $status === 'pending' ? $tabActive : $tabIdle }}">
@@ -472,6 +498,7 @@
             $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
             $isLive = $session->status === 'in_progress';
             $isToday = $session->appointment_date->isToday();
+            $canDecline = $session->canBeDeclinedByTherapist();
         @endphp
         <div class="col-12">
             <div class="card session-card">
@@ -567,7 +594,19 @@
                         </div>
 
                         <div class="col-lg-3 col-md-12 mb-0">
-                            <div class="d-flex align-items-center justify-content-lg-end justify-content-start" style="gap: 0.5rem;">
+                            <div class="d-flex align-items-center justify-content-lg-end justify-content-start flex-wrap" style="gap: 0.5rem;">
+                                @if($canDecline)
+                                    <button type="button"
+                                            class="action-btn decline"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#declineSessionModal"
+                                            data-decline-url="{{ route('therapist.sessions.decline', $session) }}"
+                                            data-client-name="{{ $session->client->name ?? 'Client' }}"
+                                            data-session-date="{{ $session->appointment_date->format('M d, Y') }}"
+                                            data-session-time="{{ $startTime->format('g:i A') }} IST">
+                                        <i class="ri-close-circle-line me-1"></i>Decline
+                                    </button>
+                                @endif
                                 @if($isSessionExpired)
                                     <span class="status-badge expired">
                                         <i class="ri-time-off-line"></i>Expired
@@ -621,6 +660,50 @@
     @endif
   </div>
 </div>
+
+<div class="modal fade" id="declineSessionModal" tabindex="-1" aria-labelledby="declineSessionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 16px; border: 1px solid rgba(186, 194, 210, 0.45);">
+      <form method="POST" id="declineSessionForm" action="#">
+        @csrf
+        <input type="hidden" name="status" value="{{ $status }}">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold text-[#041c54]" id="declineSessionModalLabel">
+            <i class="ri-calendar-close-line me-2 text-danger"></i>Decline session
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-2">
+          <p class="text-sm text-[#7484a4] mb-3">
+            The client will be notified that you cannot take this session. If they already paid, the amount will be refunded to their wallet.
+          </p>
+          <p class="mb-3 small fw-semibold text-[#041c54]" id="declineSessionSummary"></p>
+          <label for="cancellation_reason" class="form-label fw-semibold text-[#041c54]">
+            Reason for declining <span class="text-danger">*</span>
+          </label>
+          <textarea name="cancellation_reason"
+                    id="cancellation_reason"
+                    class="form-control @error('cancellation_reason') is-invalid @enderror"
+                    rows="4"
+                    required
+                    minlength="10"
+                    maxlength="1000"
+                    placeholder="e.g. I have an emergency and cannot attend this session. Please book another slot or therapist."></textarea>
+          @error('cancellation_reason')
+            <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
+          <div class="form-text text-[#7484a4]">Minimum 10 characters. This message is shown to the client.</div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="border-radius: 10px;">Cancel</button>
+          <button type="submit" class="btn btn-danger" style="border-radius: 10px;">
+            <i class="ri-close-circle-line me-1"></i>Decline session
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('page-script')
@@ -630,5 +713,29 @@
     url.searchParams.set('per_page', value);
     window.location.href = url.toString();
   }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.getElementById('declineSessionModal');
+    if (!modal) return;
+
+    modal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      if (!button) return;
+
+      var form = document.getElementById('declineSessionForm');
+      var summary = document.getElementById('declineSessionSummary');
+      form.action = button.getAttribute('data-decline-url') || '#';
+      summary.textContent = (button.getAttribute('data-client-name') || 'Client')
+        + ' — '
+        + (button.getAttribute('data-session-date') || '')
+        + ' at '
+        + (button.getAttribute('data-session-time') || '');
+    });
+
+    @if($errors->has('cancellation_reason'))
+    var declineModal = bootstrap.Modal.getOrCreateInstance(modal);
+    declineModal.show();
+    @endif
+  });
 </script>
 @endsection

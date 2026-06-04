@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'My Appointments')
+@section('title', 'My Appointments & Sessions')
 
 @section('page-style')
 <style>
@@ -228,270 +228,307 @@
     color: #fff;
 }
 
-/* Appointment Cards */
-.appointment-card {
-    background: white;
-    border: 1px solid rgba(186, 194, 210, 0.45);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(4, 28, 84, 0.04);
+/* Session list cards */
+.appt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.appt-card {
+    background: #fff;
+    border: 1px solid rgba(186, 194, 210, 0.5);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(4, 28, 84, 0.05);
     overflow: hidden;
-    position: relative;
-    margin-bottom: 0.5rem;
-    border-left: 4px solid #041c54;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.appointment-card:nth-child(even) {
-    background: rgba(4, 28, 84, 0.02);
+.appt-card:hover {
+    box-shadow: 0 6px 20px rgba(4, 28, 84, 0.08);
+    border-color: rgba(4, 28, 84, 0.2);
 }
 
-.appointment-card .card-body {
-    padding: 0.875rem 1.25rem;
-}
+.appt-card--cancelled { border-left: 4px solid #dc2626; }
+.appt-card--completed { border-left: 4px solid #94a3b8; }
+.appt-card--in_progress { border-left: 4px solid #ef4444; }
+.appt-card--scheduled,
+.appt-card--confirmed { border-left: 4px solid #041c54; }
 
-/* Therapist Avatar */
-.therapist-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    object-fit: cover;
-    border: 2px solid rgba(186, 194, 210, 0.7);
-    box-shadow: 0 1px 4px rgba(4, 28, 84, 0.08);
-}
-
-.therapist-avatar-placeholder {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: var(--theme-gradient);
+.appt-card__inner {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: white;
+    align-items: stretch;
+    gap: 0;
+    padding: 1rem 1.15rem;
 }
 
-.therapist-info h6 {
-    font-weight: 600;
-    color: #041c54;
-    margin-bottom: 0;
-    font-size: 0.875rem;
-    line-height: 1.2;
-}
-
-.therapist-info small {
-    color: #7484a4;
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-    font-size: 0.65rem;
-}
-
-/* Appointment Details */
-.detail-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0.35rem 0.65rem;
-    background: rgba(4, 28, 84, 0.04);
-    border-radius: 8px;
-    border: 1px solid rgba(186, 194, 210, 0.45);
-    margin-right: 0.5rem;
-}
-
-.detail-text-today {
-    color: #041c54;
-    font-weight: 700;
-}
-
-.detail-item:last-child {
-    margin-bottom: 0;
-}
-
-.detail-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--theme-gradient);
-    color: white;
-    font-size: 0.75rem;
+.appt-card__avatar {
     flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(4, 28, 84, 0.15);
-}
-
-.detail-text {
-    font-weight: 600;
-    color: #041c54;
-    font-size: 0.8rem;
-    line-height: 1.3;
-    white-space: nowrap;
-}
-
-/* Session Type Badges */
-.session-badge {
-    display: inline-flex;
+    padding-right: 1rem;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.875rem;
+}
+
+.appt-card__avatar img {
+    width: 52px;
+    height: 52px;
     border-radius: 12px;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    object-fit: cover;
+    border: 2px solid rgba(186, 194, 210, 0.6);
 }
 
-.session-badge.video,
-.session-badge.audio,
-.session-badge.chat {
-    background: rgba(4, 28, 84, 0.1);
+.appt-card__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.appt-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.appt-card__title {
+    font-size: 0.95rem;
+    font-weight: 700;
     color: #041c54;
+    margin: 0;
+    line-height: 1.3;
 }
 
-.type-badge {
-    background: rgba(100, 116, 148, 0.12);
-    color: #647494;
-    padding: 0.3rem 0.65rem;
-    border-radius: 8px;
+.appt-card__role {
     font-size: 0.7rem;
-    font-weight: 600;
-    border: 1px solid rgba(107, 114, 128, 0.15);
-    display: inline-block;
+    color: #7484a4;
+    font-weight: 500;
+    margin-top: 0.1rem;
 }
 
-/* Status Badges */
-.status-badge {
+.appt-status {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.status-badge.scheduled,
-.status-badge.confirmed,
-.status-badge.in_progress {
-    background: rgba(4, 28, 84, 0.1);
+.appt-status--scheduled,
+.appt-status--confirmed {
+    background: rgba(4, 28, 84, 0.08);
     color: #041c54;
 }
 
-.status-badge.completed {
+.appt-status--in_progress {
+    background: rgba(239, 68, 68, 0.12);
+    color: #b91c1c;
+}
+
+.appt-status--in_progress::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: live-blink 1s infinite;
+}
+
+.appt-status--completed {
     background: rgba(100, 116, 148, 0.12);
     color: #647494;
 }
 
-.status-badge.cancelled {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
+.appt-status--cancelled {
+    background: rgba(239, 68, 68, 0.1);
     color: #dc2626;
 }
 
-.status-badge.expired {
-    background: linear-gradient(135deg, rgba(75, 85, 99, 0.15) 0%, rgba(55, 65, 81, 0.15) 100%);
-    color: #374151;
-}
-
-/* Action Buttons */
-.appointment-actions {
+.appt-card__schedule {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.35rem 0.5rem;
+    font-size: 0.8125rem;
+    color: #334155;
+    margin: 0;
+    line-height: 1.4;
 }
 
-.action-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+.appt-card__schedule i {
+    color: #041c54;
+    font-size: 0.9rem;
+    vertical-align: -1px;
+}
+
+.appt-card__schedule .is-today {
+    color: #041c54;
+    font-weight: 700;
+}
+
+.appt-card__sep {
+    color: #bac2d2;
+    user-select: none;
+}
+
+.appt-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.appt-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: rgba(4, 28, 84, 0.05);
+    color: #475569;
+    border: 1px solid rgba(186, 194, 210, 0.5);
+}
+
+.appt-tag--mode {
+    color: #041c54;
+    background: rgba(4, 28, 84, 0.06);
+    border-color: rgba(4, 28, 84, 0.12);
+}
+
+.appt-tag--paid {
+    color: #059669;
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.appt-tag--pending {
+    color: #d97706;
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+.appt-tag--muted {
+    color: #7484a4;
+    background: transparent;
+    border-style: dashed;
+}
+
+.appt-card__actions {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(186, 194, 210, 0.4);
+    margin-left: 0.5rem;
+    min-width: 140px;
+}
+
+.appt-card__actions-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.appt-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    border: none;
+    gap: 0.35rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
     text-decoration: none;
-    flex-shrink: 0;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-.action-btn.view,
-.action-btn.review {
-    background: rgba(4, 28, 84, 0.1);
+.appt-btn--icon {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    background: rgba(4, 28, 84, 0.08);
     color: #041c54;
 }
 
-.action-btn.view:hover,
-.action-btn.review:hover {
+.appt-btn--icon:hover {
     background: #041c54;
     color: #fff;
 }
 
-.action-btn.join {
+.appt-btn--join {
+    padding: 0.5rem 1rem;
     background: #041c54;
     color: #fff;
-    padding: 0.4rem 0.85rem;
-    width: auto;
-    height: auto;
-    font-size: 0.8rem;
-    font-weight: 600;
-    white-space: nowrap;
     box-shadow: 0 4px 12px rgba(4, 28, 84, 0.2);
 }
 
-.action-btn.join:hover {
+.appt-btn--join:hover {
     background: #052a66;
     color: #fff;
 }
 
-.action-btn.disabled {
-    background: rgba(186, 194, 210, 0.35);
+.appt-btn--hint {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    cursor: default;
+    max-width: 160px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.appt-btn--hint.is-waiting {
+    background: rgba(4, 28, 84, 0.06);
+    color: #041c54;
+    border: 1px solid rgba(4, 28, 84, 0.15);
+}
+
+.appt-btn--hint.is-muted {
+    background: rgba(186, 194, 210, 0.2);
     color: #7484a4;
-    cursor: not-allowed;
+    border: 1px solid rgba(186, 194, 210, 0.5);
 }
 
-/* Payment Section */
-.payment-section {
-    background: rgba(4, 28, 84, 0.04);
-    border-radius: 8px;
-    padding: 0.5rem 0.875rem;
-    margin-top: 0.75rem;
-    border: 1px solid rgba(186, 194, 210, 0.45);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
+.appt-btn--hint.is-expired {
+    background: rgba(75, 85, 99, 0.08);
+    color: #64748b;
+    border: 1px solid rgba(186, 194, 210, 0.5);
 }
 
-.payment-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 8px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-}
-
-.payment-status.completed {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
-    color: #059669;
-}
-
-.payment-status.pending {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
-    color: #d97706;
-}
-
-.payment-amount {
+.appt-card__notice {
+    padding: 0.65rem 1.15rem 0.85rem;
+    margin: 0 1.15rem 1rem;
+    background: rgba(254, 226, 226, 0.5);
+    border-radius: 10px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
     font-size: 0.8rem;
-    font-weight: 600;
-    color: #1f2937;
-    letter-spacing: 0.3px;
+    color: #991b1b;
+    line-height: 1.45;
+}
+
+.appt-card__notice strong {
+    font-weight: 700;
+}
+
+@keyframes live-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
 }
 
 /* Empty State */
@@ -586,28 +623,34 @@
         font-size: 1.15rem;
     }
 
-    .appointment-card .card-body {
-        padding: 0.85rem 1rem;
+    .appt-card__inner {
+        flex-direction: column;
+        padding: 1rem;
     }
 
-    .detail-item {
-        padding: 0.35rem 0.5rem;
+    .appt-card__avatar {
+        padding-right: 0;
+        padding-bottom: 0.75rem;
     }
 
-    .therapist-avatar {
-        width: 42px;
-        height: 42px;
+    .appt-card__actions {
+        border-left: none;
+        border-top: 1px solid rgba(186, 194, 210, 0.4);
+        margin-left: 0;
+        padding-left: 0;
+        padding-top: 0.75rem;
+        min-width: 0;
+        width: 100%;
+        align-items: stretch;
     }
 
-    .action-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 0.85rem;
+    .appt-card__actions-row {
+        justify-content: flex-start;
     }
 
-    .action-btn.join {
-        padding: 0.35rem 0.7rem;
-        font-size: 0.75rem;
+    .appt-btn--hint {
+        max-width: none;
+        flex: 1;
     }
 }
 </style>
@@ -622,8 +665,8 @@
                 <i class="ri-calendar-check-line"></i>
             </div>
             <div>
-                <h4 class="mb-1">My Appointments</h4>
-                <p class="mb-0">View and manage all your therapy sessions</p>
+                <h4 class="mb-1">My Appointments & Sessions</h4>
+                <p class="mb-0">View, join, and manage all your therapy sessions</p>
             </div>
         </div>
         <a href="{{ route('therapists.index') }}" class="btn btn-book-new">
@@ -696,12 +739,7 @@
 </div>
 
 <!-- Appointments Summary -->
-@if($appointments->count() > 0)
-    @php
-        $totalAppointments = $appointments->total();
-        $upcomingCount = $appointments->whereIn('status', ['scheduled', 'confirmed'])->where('appointment_date', '>=', today())->count();
-        $completedCount = $appointments->where('status', 'completed')->count();
-    @endphp
+@if(($stats['total'] ?? 0) > 0)
     <div class="card appointments-summary mb-3">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
@@ -710,16 +748,16 @@
                         <i class="ri-calendar-check-line"></i>
                     </div>
                     <div>
-                        <div class="appointments-summary-label">Total Appointments</div>
-                        <div class="appointments-summary-value">{{ $totalAppointments }}</div>
+                        <div class="appointments-summary-label">Total Sessions</div>
+                        <div class="appointments-summary-value">{{ $stats['total'] }}</div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <span class="summary-pill summary-pill-upcoming">
-                        <i class="ri-calendar-todo-line me-1"></i>{{ $upcomingCount }} Upcoming
+                        <i class="ri-calendar-todo-line me-1"></i>{{ $stats['upcoming'] }} Upcoming
                     </span>
                     <span class="summary-pill summary-pill-completed">
-                        <i class="ri-checkbox-circle-line me-1"></i>{{ $completedCount }} Completed
+                        <i class="ri-checkbox-circle-line me-1"></i>{{ $stats['completed'] }} Completed
                     </span>
                 </div>
             </div>
@@ -729,197 +767,180 @@
 
 <!-- Appointments List -->
 @if($appointments->count() > 0)
-    <div class="row g-2">
+    <div class="appt-list">
         @foreach($appointments as $appointment)
-        <div class="col-12">
-            <div class="card appointment-card">
-                <div class="card-body">
-                    <div class="row align-items-center g-2">
-                        <!-- Therapist Info -->
-                        <div class="col-lg-2 col-md-3 mb-0">
-                            <div class="d-flex align-items-center" style="gap: 0.5rem;">
-                                @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
-                                    <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}"
-                                         alt="{{ $appointment->therapist->name }}"
-                                         class="therapist-avatar">
-                                @elseif($appointment->therapist->avatar)
-                                    <img src="{{ $appointment->therapist->avatar }}"
-                                         alt="{{ $appointment->therapist->name }}"
-                                         class="therapist-avatar">
-                                @else
-                                    <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}"
-                                         alt="{{ $appointment->therapist->name }}"
-                                         class="therapist-avatar">
-                                @endif
-                                <div class="therapist-info">
-                                    <h6>{{ $appointment->therapist->name }}</h6>
-                                    <small>
-                                        <i class="ri-user-heart-line"></i>Therapist
-                                    </small>
-                                </div>
-                            </div>
+        @php
+            $isToday = \Carbon\Carbon::parse($appointment->appointment_date)->isToday();
+            $timeString = is_string($appointment->appointment_time)
+                ? $appointment->appointment_time
+                : (is_object($appointment->appointment_time)
+                    ? $appointment->appointment_time->format('H:i:s')
+                    : $appointment->appointment_time);
+
+            if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
+                try {
+                    $timeString = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata')->format('H:i:s');
+                } catch (\Exception $e) {
+                    if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
+                        $timeString = $matches[1];
+                    } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
+                        $timeString = $matches[1] . ':00';
+                    }
+                }
+            }
+
+            if (strlen($timeString) <= 5) {
+                $timeString = $timeString . ':00';
+            }
+
+            $startTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
+            $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
+            $appointmentDateTime = \Carbon\Carbon::parse(
+                $appointment->appointment_date->format('Y-m-d') . ' ' . $timeString,
+                'Asia/Kolkata'
+            )->setTimezone('Asia/Kolkata');
+            $sessionEndTime = $appointmentDateTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
+            $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
+            $minutesDiff = $appointmentDateTime->diffInMinutes($nowIST, false);
+            $canJoin = $minutesDiff >= -5;
+            $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
+            $isVideoOrAudio = in_array($appointment->session_mode, ['video', 'audio']);
+            $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress'])
+                || ($appointment->status === 'scheduled' && ($appointmentDateTime->lessThan($nowIST) || $canJoin));
+            $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
+
+            $statusIcon = match ($appointment->status) {
+                'completed' => 'checkbox-circle',
+                'cancelled' => 'close-circle',
+                'in_progress' => 'broadcast',
+                'confirmed' => 'check-double',
+                default => 'time',
+            };
+            $modeIcon = match ($appointment->session_mode) {
+                'video' => 'video',
+                'audio' => 'mic',
+                default => 'chat-3',
+            };
+        @endphp
+        <article class="appt-card appt-card--{{ $appointment->status }}">
+            <div class="appt-card__inner">
+                <div class="appt-card__avatar">
+                    @if($appointment->therapist->therapistProfile && $appointment->therapist->therapistProfile->profile_image)
+                        <img src="{{ asset('storage/' . $appointment->therapist->therapistProfile->profile_image) }}"
+                             alt="{{ $appointment->therapist->name }}">
+                    @elseif($appointment->therapist->avatar)
+                        <img src="{{ $appointment->therapist->avatar }}"
+                             alt="{{ $appointment->therapist->name }}">
+                    @else
+                        <img src="{{ \App\Support\ProfileAvatar::placeholderUrl() }}"
+                             alt="{{ $appointment->therapist->name }}">
+                    @endif
+                </div>
+
+                <div class="appt-card__content">
+                    <div class="appt-card__header">
+                        <div>
+                            <h6 class="appt-card__title">{{ $appointment->therapist->name }}</h6>
+                            <div class="appt-card__role">Therapist</div>
                         </div>
+                        <span class="appt-status appt-status--{{ $appointment->status }}">
+                            <i class="ri-{{ $statusIcon }}-line"></i>
+                            {{ ucfirst(str_replace('_', ' ', $appointment->status)) }}
+                        </span>
+                    </div>
 
-                        <!-- Appointment Details -->
-                        <div class="col-lg-3 col-md-4 mb-0">
-                            <div class="d-flex align-items-center flex-wrap" style="gap: 0.25rem;">
-                                <div class="detail-item">
-                                    <div class="detail-icon">
-                                        <i class="ri-calendar-line"></i>
-                                    </div>
-                                    <span class="detail-text">
-                                        @php
-                                            $isToday = \Carbon\Carbon::parse($appointment->appointment_date)->isToday();
-                                        @endphp
-                                        @if($isToday)
-                                            <span class="detail-text-today">Today</span>
-                                        @else
-                                            {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}
-                                        @endif
-                                    </span>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-icon">
-                                        <i class="ri-time-line"></i>
-                                    </div>
-                                    <span class="detail-text">
-                                        @php
-                                          $startTime = \Carbon\Carbon::parse($appointment->appointment_time, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
-                                          $endTime = $startTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
-                                        @endphp
-                                        {{ $startTime->format('g:i A') }} - {{ $endTime->format('g:i A') }} IST
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                    <p class="appt-card__schedule">
+                        <span>
+                            <i class="ri-calendar-line me-1"></i>
+                            @if($isToday)
+                                <span class="is-today">Today</span>
+                            @else
+                                {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }}
+                            @endif
+                        </span>
+                        <span class="appt-card__sep">·</span>
+                        <span>
+                            <i class="ri-time-line me-1"></i>
+                            {{ $startTime->format('g:i A') }} – {{ $endTime->format('g:i A') }} IST
+                        </span>
+                    </p>
 
-                        <!-- Session Mode & Status -->
-                        <div class="col-lg-2 col-md-3 mb-0">
-                            <div class="d-flex align-items-center flex-wrap" style="gap: 0.5rem;">
-                                <span class="session-badge {{ $appointment->session_mode }}">
-                                    <i class="ri-{{ $appointment->session_mode === 'video' ? 'video' : ($appointment->session_mode === 'audio' ? 'mic' : 'chat-3') }}-line"></i>
-                                    {{ ucfirst($appointment->session_mode) }}
-                                </span>
-                                <span class="status-badge {{ $appointment->status }}">
-                                    <i class="ri-{{ $appointment->status === 'completed' ? 'checkbox-circle' : ($appointment->status === 'cancelled' ? 'close-circle' : ($appointment->status === 'confirmed' ? 'check-double' : 'time')) }}-line"></i>
-                                    {{ ucfirst(str_replace('_', ' ', $appointment->status)) }}
-                                </span>
-                            </div>
-                        </div>
+                    <div class="appt-card__tags">
+                        <span class="appt-tag appt-tag--mode">
+                            <i class="ri-{{ $modeIcon }}-line"></i>
+                            {{ ucfirst($appointment->session_mode) }}
+                        </span>
+                        <span class="appt-tag">{{ ucfirst($appointment->appointment_type) }}</span>
+                        @if($appointment->payment)
+                            <span class="appt-tag appt-tag--{{ $appointment->payment->status === 'completed' ? 'paid' : 'pending' }}">
+                                <i class="ri-{{ $appointment->payment->status === 'completed' ? 'checkbox-circle' : 'time' }}-line"></i>
+                                {{ ucfirst($appointment->payment->status) }} · ₹{{ number_format($appointment->payment->total_amount ?? 0, 0) }}
+                            </span>
+                        @else
+                            <span class="appt-tag appt-tag--muted">No payment</span>
+                        @endif
+                    </div>
+                </div>
 
-                        <!-- Session Type & Payment -->
-                        <div class="col-lg-2 col-md-2 mb-0">
-                            <div class="d-flex flex-column" style="gap: 0.35rem;">
-                                <span class="type-badge">{{ ucfirst($appointment->appointment_type) }}</span>
-                                @if($appointment->payment)
-                                    <div class="d-flex align-items-center gap-1" style="font-size: 0.7rem;">
-                                        <span class="payment-status {{ $appointment->payment->status === 'completed' ? 'completed' : 'pending' }}" style="font-size: 0.65rem; padding: 0.2rem 0.45rem;">
-                                            <i class="ri-{{ $appointment->payment->status === 'completed' ? 'checkbox-circle' : 'time' }}-line"></i>
-                                            {{ ucfirst($appointment->payment->status) }}
-                                        </span>
-                                        <span class="payment-amount" style="font-size: 0.8rem; font-weight: 600;">₹{{ number_format($appointment->payment->total_amount ?? 0, 0) }}</span>
-                                    </div>
-                                @else
-                                    <span class="text-muted" style="font-size: 0.7rem;">No payment</span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <!-- Actions -->
-                        <div class="col-lg-3 col-md-12 mb-0">
-                            <div class="appointment-actions justify-content-lg-end justify-content-start">
-                                    <a href="{{ route('client.appointments.show', $appointment->id) }}"
-                                       class="action-btn view"
-                                       title="View Details">
-                                        <i class="ri-eye-line"></i>
-                                    </a>
-                                    @php
-                                      // Handle appointment_time - it might be a datetime or time string
-                                      $timeString = is_string($appointment->appointment_time)
-                                        ? $appointment->appointment_time
-                                        : (is_object($appointment->appointment_time)
-                                            ? $appointment->appointment_time->format('H:i:s')
-                                            : $appointment->appointment_time);
-
-                                      // Extract just time if it's a full datetime string (contains date part)
-                                      if (strlen($timeString) > 8 || strpos($timeString, '-') !== false) {
-                                        // If it contains a date (has dashes or is longer than time format), extract just time
-                                        try {
-                                            $parsedTime = \Carbon\Carbon::parse($timeString, 'Asia/Kolkata');
-                                            $timeString = $parsedTime->format('H:i:s');
-                                        } catch (\Exception $e) {
-                                            // If parsing fails, try to extract time manually
-                                            if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
-                                                $timeString = $matches[1];
-                                            } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
-                                                $timeString = $matches[1] . ':00';
-                                            }
-                                        }
-                                      }
-
-                                      // Ensure we have a valid time string (HH:MM:SS format)
-                                      if (strlen($timeString) <= 5) {
-                                          $timeString = $timeString . ':00'; // Add seconds if missing
-                                      }
-
-                                      $appointmentDateTime = \Carbon\Carbon::parse($appointment->appointment_date->format('Y-m-d') . ' ' . $timeString, 'Asia/Kolkata')->setTimezone('Asia/Kolkata');
-                                      // Calculate session end time
-                                      $sessionEndTime = $appointmentDateTime->copy()->addMinutes($appointment->duration_minutes ?? 60);
-                                      
-                                      // Allow joining 5 minutes before appointment time or anytime after
-                                      // diffInMinutes(nowIST(), false) returns negative for future times, positive for past times
-                                      $nowIST = \Carbon\Carbon::now('Asia/Kolkata');
-                                      $minutesDiff = $appointmentDateTime->diffInMinutes($nowIST, false);
-                                      $canJoin = $minutesDiff >= -5; // True if within 5 minutes before or anytime after
-                                      
-                                      // Check if session has expired (current time is past session end time)
-                                      $isSessionExpired = $nowIST->greaterThan($sessionEndTime);
-
-                                      // Show join button if time has arrived (or within 5 min) AND status allows it
-                                      // Allow join button even if status is still 'scheduled' as long as we're within 5 minutes (cron may not have run yet)
-                                      $isVideoOrAudio = in_array($appointment->session_mode, ['video', 'audio']);
-                                      $statusCheck = in_array($appointment->status, ['confirmed', 'in_progress']) ||
-                                        ($appointment->status === 'scheduled' && ($appointmentDateTime->lessThan(\Carbon\Carbon::now('Asia/Kolkata')) || $canJoin));
-
-                                      $isActive = $canJoin && !$isSessionExpired && $isVideoOrAudio && $statusCheck;
-                                    @endphp
-                                    @if($isSessionExpired)
-                                        <span class="status-badge expired">
-                                            <i class="ri-time-off-line"></i>Expired
-                                        </span>
-                                    @elseif($isActive)
-                                        <a href="{{ route('sessions.join', $appointment->id) }}"
-                                           class="action-btn join"
-                                           title="Join Session"
-                                           target="_blank">
-                                            <i class="ri-{{ $appointment->session_mode === 'video' ? 'video' : 'mic' }}-line me-1"></i>Join Session
-                                        </a>
-                                    @elseif(!$canJoin)
-                                        @php
-                                            $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
-                                            $timeUntilJoin = $joinAvailableAt->diffForHumans(\Carbon\Carbon::now('Asia/Kolkata'), ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
-                                        @endphp
-                                        <button class="action-btn disabled" disabled title="Join button will be available {{ $timeUntilJoin }} (at {{ $joinAvailableAt->format('g:i A') }})">
-                                            <i class="ri-time-line"></i>
-                                        </button>
-                                    @else
-                                        <button class="action-btn disabled" disabled title="Not available yet">
-                                            <i class="ri-time-line"></i>
-                                        </button>
-                                    @endif
-                                    @if($appointment->status === 'completed')
-                                        <a href="{{ route('client.reviews.create', $appointment->id) }}"
-                                           class="action-btn review"
-                                           title="Add Review">
-                                            <i class="ri-star-line"></i>
-                                        </a>
-                                    @endif
-                            </div>
-                        </div>
+                <div class="appt-card__actions">
+                    <div class="appt-card__actions-row">
+                        <a href="{{ route('client.appointments.show', $appointment->id) }}"
+                           class="appt-btn appt-btn--icon"
+                           title="View details">
+                            <i class="ri-eye-line"></i>
+                        </a>
+                        @if($appointment->status === 'completed')
+                            <a href="{{ route('client.reviews.create', $appointment->id) }}"
+                               class="appt-btn appt-btn--icon"
+                               title="Add review">
+                                <i class="ri-star-line"></i>
+                            </a>
+                        @endif
+                    </div>
+                    <div class="appt-card__actions-row">
+                        @if($isSessionExpired)
+                            <span class="appt-btn appt-btn--hint is-expired">
+                                <i class="ri-time-off-line"></i> Session ended
+                            </span>
+                        @elseif($isActive)
+                            <a href="{{ route('sessions.join', $appointment->id) }}"
+                               class="appt-btn appt-btn--join"
+                               title="Join session"
+                               target="_blank">
+                                <i class="ri-{{ $modeIcon }}-line"></i> Join
+                            </a>
+                        @elseif(!$isVideoOrAudio)
+                            <span class="appt-btn appt-btn--hint is-muted" title="Only video/audio sessions can be joined">
+                                <i class="ri-video-off-line"></i> Chat only
+                            </span>
+                        @elseif(!$canJoin)
+                            @php
+                                $joinAvailableAt = $appointmentDateTime->copy()->subMinutes(5);
+                                $timeUntilJoin = $joinAvailableAt->diffForHumans($nowIST, ['syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+                            @endphp
+                            <span class="appt-btn appt-btn--hint is-waiting"
+                                  title="Join opens {{ $timeUntilJoin }} ({{ $joinAvailableAt->format('g:i A') }} IST)">
+                                <i class="ri-time-line"></i> Opens {{ $timeUntilJoin }}
+                            </span>
+                        @else
+                            <span class="appt-btn appt-btn--hint is-muted">
+                                <i class="ri-information-line"></i> Unavailable
+                            </span>
+                        @endif
                     </div>
                 </div>
             </div>
-        </div>
+
+            @if($appointment->wasDeclinedByTherapist())
+            <div class="appt-card__notice">
+                <i class="ri-error-warning-line me-1"></i>
+                <strong>Declined by therapist:</strong> {{ $appointment->cancellation_reason }}
+                @if($appointment->payment && $appointment->payment->status === 'refunded')
+                    <span class="d-block mt-1" style="color: #7f1d1d; opacity: 0.85;">Payment refunded to your wallet.</span>
+                @endif
+            </div>
+            @endif
+        </article>
         @endforeach
     </div>
 

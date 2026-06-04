@@ -93,6 +93,7 @@ Route::middleware(['auth', 'role:Therapist'])->prefix('therapist')->name('therap
     // Online Sessions module
     Route::prefix('sessions')->name('sessions.')->group(function () {
         Route::get('/', [TherapistSessionController::class, 'index'])->name('index');
+        Route::post('/{appointment}/decline', [TherapistSessionController::class, 'decline'])->name('decline');
     });
 
     // Reviews module

@@ -14,7 +14,7 @@ class AppointmentController extends Controller
         $user = Auth::user();
         
         $query = $user->appointmentsAsClient()
-            ->with(['therapist.therapistProfile', 'payment']);
+            ->with(['therapist.therapistProfile', 'payment', 'cancelledBy']);
 
         // Filter by status
         if ($request->filled('status')) {
@@ -30,12 +30,21 @@ class AppointmentController extends Controller
             ->orderBy('appointment_time', 'desc')
             ->paginate(15);
 
-        return view('client.appointments.index', compact('appointments'));
+        $stats = [
+            'total' => $user->appointmentsAsClient()->count(),
+            'upcoming' => $user->appointmentsAsClient()
+                ->whereIn('status', ['scheduled', 'confirmed'])
+                ->where('appointment_date', '>=', now()->toDateString())
+                ->count(),
+            'completed' => $user->appointmentsAsClient()->where('status', 'completed')->count(),
+        ];
+
+        return view('client.appointments.index', compact('appointments', 'stats'));
     }
 
     public function show($appointmentId)
     {
-        $appointment = Appointment::with(['therapist.therapistProfile', 'client', 'payment'])
+        $appointment = Appointment::with(['therapist.therapistProfile', 'client', 'payment', 'cancelledBy'])
             ->findOrFail($appointmentId);
 
         // Check if user owns this appointment

@@ -1056,7 +1056,7 @@
             Online Sessions
             <span class="badge ms-2" style="background: rgba(4, 28, 84, 0.1); color: #041c54;">{{ $onlineSessions->count() }}</span>
           </h5>
-          <a href="{{ route('client.sessions.index') }}" class="btn btn-sm btn-dashboard-outline">
+          <a href="{{ route('client.appointments.index') }}" class="btn btn-sm btn-dashboard-outline">
             View All
           </a>
         </div>

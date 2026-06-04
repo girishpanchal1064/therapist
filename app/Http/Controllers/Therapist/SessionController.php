@@ -65,4 +65,33 @@ class SessionController extends Controller
 
         return view('therapist.sessions.index', compact('sessions', 'status', 'search'));
     }
+
+    public function decline(Request $request, Appointment $appointment)
+    {
+        if ($appointment->therapist_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'cancellation_reason' => 'required|string|min:10|max:1000',
+        ]);
+
+        try {
+            $appointment->declineByTherapist($validated['cancellation_reason'], (int) Auth::id());
+
+            return redirect()
+                ->route('therapist.sessions.index', ['status' => $request->get('status', 'pending')])
+                ->with('success', 'Session declined. The client has been notified and will receive a refund if payment was completed.');
+        } catch (\RuntimeException $e) {
+            return redirect()
+                ->back()
+                ->with('error', $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+
+            return redirect()
+                ->back()
+                ->with('error', 'Unable to decline this session. Please try again or contact support.');
+        }
+    }
 }

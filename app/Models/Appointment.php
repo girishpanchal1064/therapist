@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Models\Wallet;
 use App\Models\Payment;
 use App\Models\TherapistEarning;
@@ -218,41 +219,129 @@ class Appointment extends Model
     }
 
     /**
+     * Normalized session start time in Asia/Kolkata.
+     */
+    public function appointmentStartsAt(): Carbon
+    {
+        $timeString = is_string($this->appointment_time)
+            ? $this->appointment_time
+            : (is_object($this->appointment_time)
+                ? $this->appointment_time->format('H:i:s')
+                : $this->appointment_time);
+
+        if (strlen($timeString) > 8 || str_contains($timeString, '-')) {
+            try {
+                $timeString = Carbon::parse($timeString, 'Asia/Kolkata')->format('H:i:s');
+            } catch (\Exception $e) {
+                if (preg_match('/(\d{2}:\d{2}:\d{2})/', $timeString, $matches)) {
+                    $timeString = $matches[1];
+                } elseif (preg_match('/(\d{2}:\d{2})/', $timeString, $matches)) {
+                    $timeString = $matches[1] . ':00';
+                }
+            }
+        }
+
+        if (strlen($timeString) <= 5) {
+            $timeString .= ':00';
+        }
+
+        return Carbon::parse(
+            $this->appointment_date->format('Y-m-d') . ' ' . $timeString,
+            'Asia/Kolkata'
+        )->setTimezone('Asia/Kolkata');
+    }
+
+    /**
      * Check if appointment can be cancelled.
      */
-    public function canBeCancelled()
+    public function canBeCancelled(): bool
     {
-        // Handle appointment_time - extract just time portion
-        $timeString = is_string($this->appointment_time) 
-            ? $this->appointment_time 
-            : (is_object($this->appointment_time) 
-                ? $this->appointment_time->format('H:i:s') 
-                : $this->appointment_time);
-        
-        // Extract just time if it's a full datetime string
-        if (strlen($timeString) > 8) {
-            $timeString = \Carbon\Carbon::parse($timeString)->format('H:i:s');
+        $hoursUntilAppointment = $this->appointmentStartsAt()->diffInHours(Carbon::now('Asia/Kolkata'), false);
+
+        return in_array($this->status, ['scheduled', 'confirmed'], true)
+            && $hoursUntilAppointment > 2;
+    }
+
+    /**
+     * Whether the assigned therapist may decline before the session starts.
+     */
+    public function canBeDeclinedByTherapist(): bool
+    {
+        if (! in_array($this->status, ['scheduled', 'confirmed'], true)) {
+            return false;
         }
-        
-        $appointmentDateTime = $this->appointment_date->format('Y-m-d') . ' ' . $timeString;
-        $appointmentTime = strtotime($appointmentDateTime);
-        $currentTime = time();
-        $hoursUntilAppointment = ($appointmentTime - $currentTime) / 3600;
-        
-        return in_array($this->status, ['scheduled', 'confirmed']) && 
-               $hoursUntilAppointment > 2; // Can cancel if more than 2 hours before
+
+        return Carbon::now('Asia/Kolkata')->lessThan($this->appointmentStartsAt());
     }
 
     /**
      * Cancel the appointment.
      */
-    public function cancel($reason, $userId)
+    public function cancel($reason, $userId): void
     {
         $this->status = 'cancelled';
         $this->cancellation_reason = $reason;
         $this->cancelled_by = $userId;
         $this->cancelled_at = now();
         $this->save();
+    }
+
+    /**
+     * Therapist declines the session; refunds the client when payment was completed.
+     */
+    public function declineByTherapist(string $reason, int $therapistId): void
+    {
+        if ($this->therapist_id !== $therapistId) {
+            throw new \RuntimeException('You are not assigned to this session.');
+        }
+
+        if (! $this->canBeDeclinedByTherapist()) {
+            throw new \RuntimeException('This session can no longer be declined.');
+        }
+
+        DB::transaction(function () use ($reason, $therapistId) {
+            $payment = $this->payment()->lockForUpdate()->first();
+
+            if ($payment && $payment->status === 'completed') {
+                $client = $this->client;
+                if ($client) {
+                    $wallet = $client->wallet;
+                    if (! $wallet) {
+                        $wallet = Wallet::create([
+                            'user_id' => $client->id,
+                            'balance' => 0,
+                            'currency' => 'INR',
+                        ]);
+                    }
+
+                    $wallet->addMoney(
+                        (float) $payment->total_amount,
+                        'Refund: session declined by therapist (Appointment #' . $this->id . ')',
+                        self::class,
+                        $this->id
+                    );
+                }
+
+                $payment->processRefund((float) $payment->total_amount, $reason);
+
+                $earning = TherapistEarning::where('payment_id', $payment->id)->first();
+                if ($earning && (float) $earning->disbursed_amount <= 0) {
+                    $earning->delete();
+                }
+            }
+
+            $this->cancel($reason, $therapistId);
+        });
+    }
+
+    /**
+     * Declined by the therapist (cancelled with therapist as cancelled_by).
+     */
+    public function wasDeclinedByTherapist(): bool
+    {
+        return $this->status === 'cancelled'
+            && $this->cancelled_by
+            && (int) $this->cancelled_by === (int) $this->therapist_id;
     }
 
     /**

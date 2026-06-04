@@ -64,15 +64,9 @@ class MenuServiceProvider extends ServiceProvider
                 ],
                 [
                     'url' => '/client/appointments',
-                    'name' => 'Appointments',
+                    'name' => 'Appointments & Sessions',
                     'icon' => 'menu-icon tf-icons ri-calendar-check-line',
                     'slug' => 'client.appointments.index'
-                ],
-                [
-                    'url' => '/client/sessions',
-                    'name' => 'My Sessions',
-                    'icon' => 'menu-icon tf-icons ri-video-line',
-                    'slug' => 'client.sessions.index'
                 ],
                 [
                     'url' => '/client/wallet',
