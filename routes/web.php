@@ -157,6 +157,10 @@ Route::middleware(['auth', 'role:Client'])->prefix('client')->name('client.')->g
     Route::post('/wallet/recharge', [App\Http\Controllers\Client\WalletController::class, 'recharge'])->name('wallet.recharge');
     Route::get('/wallet/transactions', [App\Http\Controllers\Client\WalletController::class, 'transactions'])->name('wallet.transactions');
     
+    // Assessment history (completed via app or web)
+    Route::get('/assessments/history', [App\Http\Controllers\Client\AssessmentController::class, 'history'])->name('assessments.history');
+    Route::get('/assessments/history/{userAssessment}', [App\Http\Controllers\Client\AssessmentController::class, 'show'])->name('assessments.history.show');
+
     // Reviews
     Route::get('/reviews/create/{appointment}', [App\Http\Controllers\Client\ReviewController::class, 'create'])->name('reviews.create');
     
@@ -214,10 +218,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/conversation/create', [App\Http\Controllers\ChatController::class, 'createConversation'])->name('chat.conversation.create');
 });
 
-// Placeholder routes for other pages
+// Assessments (public browse + take; submit requires login as client)
 Route::get('/assessments', [App\Http\Controllers\Web\AssessmentController::class, 'index'])->name('assessments.index');
-Route::get('/assessments/{slug}', [App\Http\Controllers\Web\AssessmentController::class, 'show'])->name('assessments.show');
 Route::get('/assessments/{slug}/start', [App\Http\Controllers\Web\AssessmentController::class, 'start'])->name('assessments.start');
+Route::middleware('auth')->post('/assessments/{slug}/submit', [App\Http\Controllers\Web\AssessmentController::class, 'submit'])->name('assessments.submit');
+Route::get('/assessments/{slug}', [App\Http\Controllers\Web\AssessmentController::class, 'show'])->name('assessments.show');
 
 Route::get('/blog', [App\Http\Controllers\Web\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [App\Http\Controllers\Web\BlogController::class, 'show'])->name('blog.show');

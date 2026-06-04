@@ -1365,12 +1365,38 @@
             <span class="section-title-icon info"><i class="ri-mental-health-line"></i></span>
             Wellness Assessments
           </h5>
-          <a href="{{ route('assessments.index') }}" class="btn btn-sm btn-dashboard-outline">
-            View All
+          <a href="{{ route('client.assessments.history') }}" class="btn btn-sm btn-dashboard-outline">
+            My Results
           </a>
         </div>
       </div>
       <div class="card-body">
+        @if(isset($userAssessments) && $userAssessments->count() > 0)
+          <div class="mb-3 pb-3" style="border-bottom: 1px dashed rgba(186, 194, 210, 0.6);">
+            <small class="text-muted fw-semibold text-uppercase d-block mb-2" style="font-size: 0.65rem; letter-spacing: 0.05em;">Recent Results</small>
+            @foreach($userAssessments->take(3) as $pastAssessment)
+            <div class="assessment-item">
+              <div class="d-flex align-items-center">
+                <div class="assessment-icon" style="background-color: {{ ($pastAssessment->assessment->color ?? '#041c54') }}15;">
+                  <i class="ri-checkbox-circle-line" style="color: {{ $pastAssessment->assessment->color ?? '#041c54' }};"></i>
+                </div>
+                <div class="assessment-info">
+                  <h6>{{ $pastAssessment->assessment->title ?? 'Assessment' }}</h6>
+                  <small>
+                    <span><i class="ri-calendar-line"></i> {{ ($pastAssessment->completed_at ?? $pastAssessment->created_at)?->format('M d, Y') }}</span>
+                    @if($pastAssessment->percentage !== null)
+                      <span><i class="ri-bar-chart-line"></i> {{ number_format($pastAssessment->percentage, 0) }}%</span>
+                    @endif
+                  </small>
+                </div>
+              </div>
+              <a href="{{ route('client.assessments.history.show', $pastAssessment->id) }}" class="btn btn-sm btn-dashboard-outline assessment-action-btn">
+                View
+              </a>
+            </div>
+            @endforeach
+          </div>
+        @endif
         @if($availableAssessments->count() > 0)
           @foreach($availableAssessments->take(4) as $assessment)
           <div class="assessment-item">

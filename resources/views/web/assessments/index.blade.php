@@ -3,6 +3,27 @@
 @section('title', 'Mental Health Assessments - Apani Psychology')
 @section('description', 'Take our comprehensive mental health assessments to better understand your mental wellness and get personalized recommendations.')
 
+@section('head')
+<style>
+    .assessment-history-btn {
+        box-sizing: border-box;
+        min-height: 3.25rem !important;
+        padding-top: 0.875rem !important;
+        padding-bottom: 0.875rem !important;
+        line-height: 1.5 !important;
+        text-decoration: none !important;
+    }
+    @media (min-width: 640px) {
+        .assessment-history-btn {
+            white-space: nowrap;
+        }
+    }
+    .assessment-history-btn--outline {
+        line-height: 1.45 !important;
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="assessments-page min-h-screen bg-gradient-to-b from-white to-[#BAC2D2]/5">
     {{-- Hero — Figma node 1:1458; solid Gulf Blue, buttons per colors.txt --}}
@@ -27,6 +48,74 @@
                    class="inline-flex min-h-[3.75rem] w-full items-center justify-center rounded-[14px] border-2 border-white px-8 text-base font-medium text-white transition hover:bg-white/10 sm:w-auto sm:min-w-[10rem]">
                     Learn More
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-4 pt-6 sm:px-6 lg:px-8" aria-label="Assessment history">
+        <div class="mx-auto max-w-7xl">
+            <div class="flex flex-col items-stretch justify-between gap-4 rounded-2xl border border-[#BAC2D2]/40 bg-white px-5 py-5 shadow-sm sm:flex-row sm:items-center sm:px-6">
+                <div class="flex items-center gap-3 text-center sm:text-left">
+                    <div class="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#041C54]/10 text-[#041C54] sm:mx-0" aria-hidden="true">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        @auth
+                            @if(auth()->user()->isClient())
+                                <p class="mb-0 font-semibold text-[#041C54]">Already completed an assessment?</p>
+                                @if(($assessmentHistory['count'] ?? 0) > 0)
+                                    <p class="mb-0 text-sm text-[#7484A4]">
+                                        You have {{ $assessmentHistory['count'] }} saved {{ Str::plural('result', $assessmentHistory['count']) }}.
+                                        @if($assessmentHistory['latest']?->percentage !== null)
+                                            Latest: <span class="font-semibold text-[#041C54]">{{ number_format($assessmentHistory['latest']->percentage, 0) }}%</span>
+                                            @if($assessmentHistory['latest']->assessment?->title)
+                                                on {{ $assessmentHistory['latest']->assessment->title }}.
+                                            @endif
+                                        @else
+                                            View scores and answers in your dashboard.
+                                        @endif
+                                    </p>
+                                @else
+                                    <p class="mb-0 text-sm text-[#7484A4]">Complete an assessment while signed in to save your score here.</p>
+                                @endif
+                            @else
+                                <p class="mb-0 font-semibold text-[#041C54]">Looking for assessment results?</p>
+                                <p class="mb-0 text-sm text-[#7484A4]">Assessment history is available on client accounts. Sign in with your client profile or use the mobile app.</p>
+                            @endif
+                        @else
+                            <p class="mb-0 font-semibold text-[#041C54]">Already completed an assessment?</p>
+                            <p class="mb-0 text-sm text-[#7484A4]">Sign in with your client account to view saved scores from the app or website.</p>
+                        @endauth
+                    </div>
+                </div>
+                <div class="flex w-full shrink-0 flex-col items-stretch gap-3 sm:w-auto sm:min-w-[12.5rem] sm:items-end">
+                    @auth
+                        @if(auth()->user()->isClient())
+                            @if(($assessmentHistory['count'] ?? 0) > 0 && $assessmentHistory['latest'])
+                                <a href="{{ route('client.assessments.history.show', $assessmentHistory['latest']) }}"
+                                   class="assessment-history-btn assessment-history-btn--outline inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-[14px] border-2 border-[#041C54] bg-white px-6 py-3.5 text-sm font-semibold leading-normal text-[#041C54] transition hover:bg-[#041C54]/5 sm:w-auto sm:min-w-[11.5rem]">
+                                    View Latest Result
+                                </a>
+                            @endif
+                            <a href="{{ route('client.assessments.history') }}"
+                               class="assessment-history-btn inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-[14px] bg-[#041C54] px-6 py-3.5 text-sm font-semibold leading-normal text-white transition hover:bg-[#031340] sm:w-auto sm:min-w-[11.5rem]">
+                                My Assessment History
+                            </a>
+                        @else
+                            <a href="{{ route('client.dashboard') }}"
+                               class="assessment-history-btn inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-[14px] bg-[#041C54] px-6 py-3.5 text-sm font-semibold leading-normal text-white transition hover:bg-[#031340] sm:w-auto sm:min-w-[11.5rem]">
+                                Go to Dashboard
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{ route('login', ['redirect' => route('client.assessments.history')]) }}"
+                           class="assessment-history-btn inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-[14px] bg-[#041C54] px-6 py-3.5 text-sm font-semibold leading-normal text-white transition hover:bg-[#031340] sm:w-auto sm:min-w-[11.5rem]">
+                            Sign in to View History
+                        </a>
+                    @endauth
+                </div>
             </div>
         </div>
     </section>

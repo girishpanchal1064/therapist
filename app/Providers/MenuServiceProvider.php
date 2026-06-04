@@ -75,10 +75,10 @@ class MenuServiceProvider extends ServiceProvider
                     'slug' => 'client.wallet.index'
                 ],
                 [
-                    'url' => '/assessments',
-                    'name' => 'Assessments',
+                    'url' => '/client/assessments/history',
+                    'name' => 'My Assessments',
                     'icon' => 'menu-icon tf-icons ri-file-list-3-line',
-                    'slug' => 'assessments.index'
+                    'slug' => 'client.assessments.history'
                 ],
                 [
                     'url' => '/client/reviews',
